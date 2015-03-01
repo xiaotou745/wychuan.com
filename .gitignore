@@ -3,12 +3,12 @@
 *.bak
 
 #=============ac.core ignore
-src/AC/AC.Core/bin/
-src/AC/AC.Core/obj/
+src/wychuan/wychuan.com/bin/
+src/wychuan/wychuan.com/obj/
 
 #=============ac.data ignore
-src/AC/AC.Data/bin/
-src/AC/AC.Data/obj/
+src/wychuan/wychuan.com.Tests/bin/
+src/wychuan/wychuan.com.Tests/obj/
 
 #=============ac.codegenerator ignore
 src/AC/AC.CodeGenerator/bin/

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using AC.Web.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using wychuan.com;
-using wychuan.com.Controllers;
 
 namespace wychuan.com.Tests.Controllers
 {

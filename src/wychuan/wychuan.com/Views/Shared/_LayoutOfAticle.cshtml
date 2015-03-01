@@ -5,12 +5,14 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>@ViewBag.Title - 我的 ASP.NET MVC 应用程序</title>
-        @Styles.Render("~/Content/bootstrap")
+        <title>@ViewBag.Title - 码农阿川</title>
+        @Styles.Render("~/Content/bootstrap_sticky_footer")
     </head>
     <body>
-        <h1>Hello, world!</h1>
-        @RenderBody()
+        <div class="container">
+            @RenderBody()
+        </div>
+        
         
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")

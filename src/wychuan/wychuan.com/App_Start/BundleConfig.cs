@@ -1,7 +1,6 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
-namespace wychuan.com
+namespace AC.Web.App_Start
 {
     public class BundleConfig
     {
@@ -9,10 +8,10 @@ namespace wychuan.com
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.min.js"));
+                        "~/Scripts/jquery-1.11.2*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                        "~/Scripts/bootstrap.min.js"));
+                        "~/Scripts/bootstrap*"));
 
             //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
             //            "~/Scripts/jquery-ui-{version}.js"));
@@ -26,7 +25,11 @@ namespace wychuan.com
             //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
             //            "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootstrap/css/bootstrap.min.css"));
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
+                "~/Content/bootstrap/css/bootstrap.css"));
+            bundles.Add(new StyleBundle("~/Content/bootstrap_sticky_footer").Include(
+                "~/Content/bootstrap/css/bootstrap.css",
+                "~/Content/bootstrap/css/sticky-footer.css"));
             //bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             //bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

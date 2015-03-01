@@ -1,4 +1,4 @@
-﻿namespace wychuan.com
+﻿namespace AC.Web.App_Start
 {
     public static class AuthConfig
     {
