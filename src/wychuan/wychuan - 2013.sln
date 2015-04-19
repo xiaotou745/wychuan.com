@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 13.00
+# Visual Studio 2013
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wychuan.com", "wychuan.com\wychuan.com.csproj", "{170EB67A-CC4C-4BF3-8656-649A97124D01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC.Service", "AC.Service\AC.Service.csproj", "{A74CD8C8-5224-4019-BE8C-13324D794189}"

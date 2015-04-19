@@ -19,5 +19,13 @@ namespace AC.Web.Common.Config
         /// <param name="category">要创建的分类对象</param>
         /// <returns>返回新创建的分类Id</returns>
         int Create(CategoryConfigInfo category);
+
+        void Modify(CategoryConfigInfo category);
+
+        /// <summary>
+        /// 移除一个分类
+        /// </summary>
+        /// <param name="id">要移除的分类Id</param>
+        void Remove(int id, int parentId);
     }
 }

@@ -1,7 +1,188 @@
-﻿@model dynamic
+﻿@using AC.Web.Common.Config
+@model IList<CategoryConfigInfo>
 
 @{
     ViewBag.Title = "类目管理";
 }
 
-<h2>title</h2>
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">类目管理 
+            <button class="btn btn-primary" id="btnCreateCategory">添加类目</button>
+        </div>
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Id</th>
+                    <th>名称</th>
+                    <th>父Id</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5">还没有类目数据，请添加。</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (CategoryConfigInfo category in Model)
+                    {
+                        <tr>
+                            <td>@category.Id<input type="hidden" value="@category.Id" /></td>
+                            <td data-id="@category.Id">@category.Id</td>
+                            <td>@category.Name</td>
+                            <td>@category.ParentId</td>
+                            <td><a href="javascript:;" name="btnModify">修改</a> <a href="javascript:;" name="btnRemove">删除</a></td>
+                        </tr>
+                        if (category.Childs.Count > 0)
+                        {
+                            foreach (var child in category.Childs)
+                            {
+                                <tr>
+                                    <td><input type="hidden" value="@category.Id" /></td>
+                                    <td>@child.Id</td>
+                                    <td>@child.Name</td>
+                                    <td>@child.ParentId</td>
+                                    <td>
+                                        <a href="javascript:;" name="btnModify">修改</a> 
+                                        <a href="javascript:;" name="btnRemove">删除</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                }
+            </tbody >
+        </table>
+    </div>
+</div>
+@section modal{
+    <div id="modalCreateCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="createCategoryLabel">添加类目</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="hidId" type="hidden" value="0" />
+                    <form id="formCreateCategory" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="ParentId" class="col-sm-4 control-label">父类目:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" id="ParentId" name="ParentId">
+                                    <option value="0">一级类目</option>
+                                    @{
+                                        var lstRoots = Model.Where(c => c.ParentId == 0).ToList();
+                                        if (lstRoots.Count > 0)
+                                        {
+                                            foreach (var rootItem in lstRoots)
+                                            {
+                                                <option value="@rootItem.Id">@rootItem.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Id" class="col-sm-4 control-label">类目Id:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="Id" name="Id" placeholder="类目Id" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Name" class="col-sm-4 control-label">类目名称:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="Name" name="Name" placeholder="类目名称" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="btnSave" type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            /*添加类目*/
+            $("#btnCreateCategory").bind("click", function () {
+                clear();
+                $("#modalCreateCategory").modal({
+                    keyboard: true,
+                    show: true,
+                    backdrop:true
+                });
+            });
+            $("a[name=btnModify]").bind("click", function () {
+                var $this = $(this);
+                var id = $this.closest("tr").find("td:eq(1)").text();
+                var name = $this.closest("tr").find("td:eq(2)").text();
+                var parentId = $this.closest("tr").find("td:eq(3)").text();
+
+                $("#hidId").val(id);
+                $("#ParentId").val(parentId);
+                $("#Id").val(id);
+                $("#Name").val(name);
+
+                $("#modalCreateCategory").modal({
+                    keyboard: true,
+                    show: true,
+                    backdrop: true
+                });
+            });
+            $("a[name=btnRemove]").bind("click", function () {
+                var $this = $(this);
+                var id = $this.closest("tr").find("td:eq(1)").text();
+                var parentId = $this.closest("tr").find("td:eq(3)").text();
+                console.log(id, parentId);
+                $.post("/api/category/remove", { id: id, parentId: parentId } , function (resp) {
+                    console.log(resp);
+                })
+            })
+
+            $("#btnSave").bind("click", function () {
+                var model = getCategory();
+                var url = "/api/category/create";
+                if (model.type > 0) {
+                    url = "/api/category/modify";
+                }
+                $.post(url, model, function (resp) {
+                    if (!resp.iserror) {
+                        alert("保存成功!");
+                        window.location.href = window.location.href;
+                    }
+                })
+            });
+        })
+        function clear() {
+            $("#hidId").val(0);
+            $("#ParentId").val(0);
+            $("#Id").val("");
+            $("#Name").val("");
+        }
+        function getCategory() {
+            var model = {
+                type: $("#hidId").val(),
+                ParentId: $("#ParentId").val(),
+                Id: $("#Id").val(),
+                Name: $("#Name").val()
+            };
+            return model;
+        }
+    </script>
+}
+
+
