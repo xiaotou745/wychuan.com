@@ -26,7 +26,8 @@ namespace AC.Web.App_Start
             //            "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
-                "~/Content/bootstrap/css/bootstrap.css"));
+                "~/Content/bootstrap.min.css"));
+
             bundles.Add(new StyleBundle("~/Content/bootstrap_sticky_footer").Include(
                 "~/Content/bootstrap/css/bootstrap.css",
                 "~/Content/bootstrap/css/sticky-footer.css"));
