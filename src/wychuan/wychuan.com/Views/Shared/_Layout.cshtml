@@ -12,13 +12,8 @@
         <title>@ViewBag.Title - 码农阿川</title>
         <!-- Bootstrap core CSS -->
         <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-        <style>
-            body {
-              min-height: 2000px;
-              padding-top: 70px;
-            }
+        <link href="~/content/site.css" rel="stylesheet" />
 
-        </style>
         @RenderSection("styles", required: false)
     </head>
     <body>
@@ -48,9 +43,30 @@
         </nav>
         
         <div class="container">
-            @RenderBody()
+            <div class="row">
+                @RenderBody()
+            </div>
         </div>
         
+        <footer class="bs-docs-footer" role="contentinfo">
+            <div class="container">
+                <p>
+                    Designed and built with all the love in the world by 
+                    <a href="https://twitter.com/mdo" target="_blank">mdo</a> and 
+                    <a href="https://twitter.com/fat" target="_blank">fat</a>.
+                </p>
+                <p>
+                    Maintained by the <a href="https://github.com/orgs/twbs/people">core team</a> 
+                    with the help of <a href="https://github.com/twbs/bootstrap/graphs/contributors">our contributors</a>.
+                </p>
+                <p>
+                    本项目源码受 <a rel="license" href="https://github.com/twbs/bootstrap/blob/master/LICENSE" target="_blank">MIT</a>
+                    开源协议保护，文档受 <a rel="license" href="https://creativecommons.org/licenses/by/3.0/" target="_blank">
+                                   CC BY 3.0
+                               </a> 开源协议保护。
+                </p>
+            </div>
+        </footer>
         <script src="~/scripts/jquery-1.11.2.min.js"></script>
         <script src="~/scripts/bootstrap.min.js"></script>
         @RenderSection("scripts", required: false)

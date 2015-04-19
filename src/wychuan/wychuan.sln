@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wychuan.com", "wychuan.com\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wychuan.com.Tests", "wychuan.com.Tests\wychuan.com.Tests.csproj", "{1096428E-840B-49A2-B61E-0943E44048C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC.Service", "AC.Service\AC.Service.csproj", "{A74CD8C8-5224-4019-BE8C-13324D794189}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC.Web.Common", "AC.Web.Common\AC.Web.Common.csproj", "{89F39709-BF9A-48AC-ABD9-2BE676BA08D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,14 @@ Global
 		{1096428E-840B-49A2-B61E-0943E44048C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1096428E-840B-49A2-B61E-0943E44048C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1096428E-840B-49A2-B61E-0943E44048C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A74CD8C8-5224-4019-BE8C-13324D794189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A74CD8C8-5224-4019-BE8C-13324D794189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A74CD8C8-5224-4019-BE8C-13324D794189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A74CD8C8-5224-4019-BE8C-13324D794189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89F39709-BF9A-48AC-ABD9-2BE676BA08D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89F39709-BF9A-48AC-ABD9-2BE676BA08D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89F39709-BF9A-48AC-ABD9-2BE676BA08D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89F39709-BF9A-48AC-ABD9-2BE676BA08D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
