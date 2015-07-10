@@ -1,22 +1,7 @@
 *.user
 *.suo
 *.bak
+*.pubxml
 
-#=============ac.core ignore
-src/wychuan/wychuan.com/bin/
-src/wychuan/wychuan.com/obj/
-
-#=============ac.data ignore
-src/wychuan/wychuan.com.Tests/bin/
-src/wychuan/wychuan.com.Tests/obj/
-
-#=============ac.codegenerator ignore
-src/AC/AC.CodeGenerator/bin/
-src/AC/AC.CodeGenerator/obj/
-
-#=============tools ignore
-src/AC/tools/bin/
-src/AC/tools/obj/
-src/AC/tools.Tests/bin/
-src/AC/tools.Tests/obj/
-Debug
+obj
+bin
