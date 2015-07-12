@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 13.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wychuan.com", "wychuan.com\wychuan.com.csproj", "{170EB67A-CC4C-4BF3-8656-649A97124D01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC.Service", "AC.Service\AC.Service.csproj", "{A74CD8C8-5224-4019-BE8C-13324D794189}"
@@ -14,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC.Data", "..\..\..\achuan.lib\net\net.libs\AC.Data\AC.Data.csproj", "{FA85394F-AC26-4F5F-B192-CB3B96CC4C18}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC.Common", "..\..\..\achuan.lib\net\net.libs\AC.Common\AC.Common.csproj", "{C4D5E6B0-AEA1-4ACC-BABD-3CCFDFCB6BF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BDF72722-18B2-423D-AD66-2ED8E59A7780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AC.Tests", "AC.Tests\AC.Tests.csproj", "{C57D155F-1A70-4D19-BE77-263C3AB7D144}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +51,10 @@ Global
 		{C4D5E6B0-AEA1-4ACC-BABD-3CCFDFCB6BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4D5E6B0-AEA1-4ACC-BABD-3CCFDFCB6BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4D5E6B0-AEA1-4ACC-BABD-3CCFDFCB6BF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C57D155F-1A70-4D19-BE77-263C3AB7D144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57D155F-1A70-4D19-BE77-263C3AB7D144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C57D155F-1A70-4D19-BE77-263C3AB7D144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C57D155F-1A70-4D19-BE77-263C3AB7D144}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +63,6 @@ Global
 		{FDF6B367-6E74-4E7E-BEA8-FD53D6278C9A} = {8A372AFC-EE30-4B01-95AF-E3ED3E5AE269}
 		{FA85394F-AC26-4F5F-B192-CB3B96CC4C18} = {8A372AFC-EE30-4B01-95AF-E3ED3E5AE269}
 		{C4D5E6B0-AEA1-4ACC-BABD-3CCFDFCB6BF2} = {8A372AFC-EE30-4B01-95AF-E3ED3E5AE269}
+		{C57D155F-1A70-4D19-BE77-263C3AB7D144} = {BDF72722-18B2-423D-AD66-2ED8E59A7780}
 	EndGlobalSection
 EndGlobal

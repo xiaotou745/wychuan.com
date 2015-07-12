@@ -5,8 +5,6 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using AC.Helper;
-using AC.Security;
-using Common.Logging;
 
 namespace AC.Web.Filters
 {
@@ -16,7 +14,6 @@ namespace AC.Web.Filters
     public class WXAuthorizeAttribute : AuthorizeAttribute
     {
         private string wxtoken = ConfigHelper.GetConfigString("wxtoken", string.Empty);
-        private ILog logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// 验证请求者身份是否从微信服务器过来
@@ -41,10 +38,8 @@ namespace AC.Web.Filters
             var waitEncryptParamsArray = new[] {wxtoken, requestQueryPairs["timestamp"], requestQueryPairs["nonce"]};
             //排序
             string waitEncryptParamStr = string.Join(string.Empty, waitEncryptParamsArray.OrderBy(m => m));
-            logger.InfoFormat("wxtoken:{0} timestamp:{1} nonce:{2},waitEncryptParamStr:{3}", wxtoken, requestQueryPairs["timestamp"], requestQueryPairs["nonce"], waitEncryptParamStr);
             //sha1加密
             string encryptStr = AC.Security.HashAlgorithm.SHA1(waitEncryptParamStr);// HashEncode.GetSha1HashString(waitEncryptParamStr);
-            logger.InfoFormat("encryptStr:{0} signature:{1}", encryptStr, requestQueryPairs["signature"]);
             return encryptStr.ToLower().Equals(requestQueryPairs["signature"].ToLower());
         }
 
