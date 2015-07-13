@@ -52,6 +52,12 @@
     <Compile Include="Config\ICategoryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WeiXin\AccessTokenService.cs" />
+    <Compile Include="WeiXin\MsgSerializer.cs" />
+    <Compile Include="WeiXin\MsgType.cs" />
+    <Compile Include="WeiXin\Request\BaseMsg.cs" />
+    <Compile Include="WeiXin\Request\TextMsg.cs" />
+    <Compile Include="WeiXin\Response\MsgResponseBuilder.cs" />
+    <Compile Include="WeiXin\Response\TextMsgResponse.cs" />
     <Compile Include="WeiXin\WXAuthorizeService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +73,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
