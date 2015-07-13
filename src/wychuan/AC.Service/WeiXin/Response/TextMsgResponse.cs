@@ -2,22 +2,6 @@
 
 namespace AC.Service.WeiXin.Response
 {
-    public abstract class MsgResponse
-    {
-        public abstract string GetResponse();
-    }
-
-    /// <summary>
-    /// 错误消息
-    /// </summary>
-    public class ErrorMsgResponse : MsgResponse
-    {
-        public override string GetResponse()
-        {
-            return string.Empty;
-        }
-    }
-
     /// <summary>
     /// 文本消息回复
     /// </summary>
