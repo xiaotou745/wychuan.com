@@ -17,7 +17,6 @@ namespace AC.Web.Controllers.API
         // GET api/weixin/processor
         public HttpResponseMessage Processor()
         {
-            ILog logger = LogManager.GetLogger("WeixinLog");
             if (Request.Method == HttpMethod.Get)
             {
                 #region 如果是get请求,则验证token,只有要配置微信服务器的时候,才会使用到;
@@ -46,10 +45,23 @@ namespace AC.Web.Controllers.API
             readAsStringAsync.Wait();
             string response = MsgResponseBuilder.Builder(readAsStringAsync.Result)
                 .GetResponse();
-            logger.Info(response);
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(response)
+            };
+        }
+
+        /// <summary>
+        /// 获取当前access_token
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetCurrentAccessToken()
+        {
+            string currentToken = AccessTokenService.GetAccessToken();
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(currentToken),
             };
         }
     }

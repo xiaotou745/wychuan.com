@@ -1,0 +1,17 @@
+2015-07-14 21:51:08,715 [35] INFO  WeixinLog [(null)] - timestamp:1436457556 nonce:1643592056 signature:acfd110ba87a9c6d511d4c91bd820ae4b7b62a3f encryptStr:acfd110ba87a9c6d511d4c91bd820ae4b7b62a3f
+2015-07-14 22:40:29,481 [6] INFO  WeixinLog [(null)] - <xml>
+ <ToUserName><![CDATA[toUser]]></ToUserName>
+ <FromUserName><![CDATA[fromUser]]></FromUserName> 
+ <CreateTime>1348831860</CreateTime>
+ <MsgType><![CDATA[text]]></MsgType>
+ <Content><![CDATA[this is a test]]></Content>
+ <MsgId>1234567890123456</MsgId>
+ </xml>
+2015-07-14 22:47:30,222 [6] INFO  WeixinLog [(null)] - <xml>
+ <ToUserName><![CDATA[toUser]]></ToUserName>
+ <FromUserName><![CDATA[fromUser]]></FromUserName> 
+ <CreateTime>1348831860</CreateTime>
+ <MsgType><![CDATA[text]]></MsgType>
+ <Content><![CDATA[this is a test]]></Content>
+ <MsgId>1234567890123456</MsgId>
+ </xml>

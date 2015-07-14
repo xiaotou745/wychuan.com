@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AC.Service.WeiXin.Common;
 using AC.Service.WeiXin.Request;
 
 namespace AC.Service.WeiXin.Response

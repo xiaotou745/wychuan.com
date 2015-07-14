@@ -58,6 +58,7 @@
     <Compile Include="Core\XmlSerializerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\WeiXin\AccessTokenServiceTests.cs" />
+    <Compile Include="Service\WeiXin\MaterialServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\wychuan.com\log4net.config">

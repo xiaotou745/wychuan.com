@@ -6,6 +6,9 @@ using Common.Logging;
 
 namespace AC.Service.WeiXin
 {
+    /// <summary>
+    /// 微信身份验证服务
+    /// </summary>
     public class WXAuthorizeService
     {
         private WXAuthorizeService()
@@ -18,13 +21,11 @@ namespace AC.Service.WeiXin
             return new WXAuthorizeService();
         }
 
-        private readonly ILog logger = LogManager.GetCurrentClassLogger();
-        private string wxtoken = ConfigHelper.GetConfigString("wxtoken", string.Empty);
+        private readonly string wxtoken = ConfigHelper.GetConfigString("wxtoken", string.Empty);
 
         /// <summary>
         /// 验证请求者身份是否从微信服务器过来
         /// </summary>
-        /// <param name="request"></param>
         /// <returns></returns>
         public bool IsAuthorized()
         {
@@ -47,7 +48,7 @@ namespace AC.Service.WeiXin
             string waitEncryptParamStr = string.Join(string.Empty, waitEncryptParamsArray.OrderBy(m => m));
             //sha1加密
             string encryptStr = AC.Security.HashAlgorithm.SHA1(waitEncryptParamStr);// HashEncode.GetSha1HashString(waitEncryptParamStr);
-            logger.InfoFormat("timestamp:{0} nonce:{1} signature:{2} encryptStr:{3}", requestQueryParams["timestamp"],
+            AppLogger.LoggerOfWeiXin.InfoFormat("timestamp:{0} nonce:{1} signature:{2} encryptStr:{3}", requestQueryParams["timestamp"],
                 requestQueryParams["nonce"], requestQueryParams["signature"], encryptStr);
             return encryptStr.ToLower().Equals(requestQueryParams["signature"].ToLower());
         }

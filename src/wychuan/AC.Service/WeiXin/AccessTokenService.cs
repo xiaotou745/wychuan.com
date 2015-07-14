@@ -13,6 +13,8 @@ namespace AC.Service.WeiXin
     /// </summary>
     public class AccessTokenService
     {
+        #region 微信返回的access_token对象
+
         /// <summary>
         /// access_token 对象
         /// </summary>
@@ -21,11 +23,14 @@ namespace AC.Service.WeiXin
             public string access_token { get; set; }
             public int expires_in { get; set; }
         }
+
+        #endregion
+
         /// <summary>
         /// 缓存的key
         /// </summary>
         private const string ACCESS_TOKEN_CACHE_KEY = "ACCESS_TOKEN_CACHE_KEY";
-        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
+
 
         /// <summary>
         /// 获取微信的access_token值
@@ -46,10 +51,11 @@ namespace AC.Service.WeiXin
             }
             catch (Exception ex)
             {
-                Logger.Error("weixin access_token get error:", ex);
+                AppLogger.LoggerOfWeiXin.Error("weixin access_token get error:", ex);
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// 刷新缓存中的access_token值
         /// </summary>
@@ -76,14 +82,17 @@ namespace AC.Service.WeiXin
                 //}
             }
         }
+
         /// <summary>
         /// 获取微信access_token值的url
         /// </summary>
         /// <returns></returns>
         private static string GetWeiXinAccessTokenUrl()
         {
-            const string tempStr = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
-            return tempStr.format(ConfigHelper.GetConfigString("wxAppID",""), ConfigHelper.GetConfigString("wxAppSecret",""));
+            const string tempStr =
+                "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
+            return tempStr.format(ConfigHelper.GetConfigString("wxAppID", ""),
+                ConfigHelper.GetConfigString("wxAppSecret", ""));
         }
     }
 }
