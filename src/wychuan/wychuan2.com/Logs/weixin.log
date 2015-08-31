@@ -15,3 +15,6 @@
  <Content><![CDATA[this is a test]]></Content>
  <MsgId>1234567890123456</MsgId>
  </xml>
+2015-07-23 17:08:45,698 [7] INFO  WeixinLog [(null)] - 
+2015-07-23 17:12:14,848 [18] INFO  WeixinLog [(null)] - 
+2015-07-23 17:12:23,363 [9] INFO  WeixinLog [(null)] - 

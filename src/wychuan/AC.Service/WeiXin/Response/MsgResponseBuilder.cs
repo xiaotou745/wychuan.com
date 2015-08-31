@@ -17,25 +17,25 @@ namespace AC.Service.WeiXin.Response
 
         public static MsgResponse Builder(string requestContent)
         {
-            BaseMsg baseMsg = MsgSerializer.Deserialize(requestContent);
-            if (baseMsg == null)
+            RequestMsgBase requestMsgBase = MsgSerializer.Deserialize(requestContent);
+            if (requestMsgBase == null)
             {
                 return new ErrorMsgResponse();
             }
-            switch (baseMsg.MsgType)
+            switch (requestMsgBase.MsgType)
             {
-                case MsgType.Text:
-                    return new TextMsgResponse(baseMsg);
-                case MsgType.Image:
-                case MsgType.Voice:
-                case MsgType.Video:
-                case MsgType.Shortvideo:
-                case MsgType.Location:
-                case MsgType.Link:
-                case MsgType.Event:
-                    return new TextMsgResponse(baseMsg);
+                case RequestMsgType.Text:
+                    return new TextMsgResponse(requestMsgBase);
+                case RequestMsgType.Image:
+                case RequestMsgType.Voice:
+                case RequestMsgType.Video:
+                case RequestMsgType.Shortvideo:
+                case RequestMsgType.Location:
+                case RequestMsgType.Link:
+                case RequestMsgType.Event:
+                    return new TextMsgResponse(requestMsgBase);
                 default:
-                    return new TextMsgResponse(baseMsg);
+                    return new TextMsgResponse(requestMsgBase);
             }
         }
     }

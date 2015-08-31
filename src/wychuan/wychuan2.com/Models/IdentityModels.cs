@@ -1,32 +1,54 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using AC.Helper;
 
 namespace wychuan2.com.Models
 {
     // 可以通过向 ApplicationUser 类添加更多属性来为用户添加配置文件数据。若要了解详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=317594。
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public static readonly ApplicationUser Empty = new ApplicationUser();
+        private const string LOGIN_COOKIE_NAME = "loginuser";
+
+        public static ApplicationUser Current
         {
-            // 请注意，authenticationType 必须与 CookieAuthenticationOptions.AuthenticationType 中定义的相应项匹配
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // 在此处添加自定义用户声明
-            return userIdentity;
+            get
+            {
+                var applicationUser = CookieHelper.Get<ApplicationUser>(LOGIN_COOKIE_NAME);
+                if (applicationUser == null)
+                {
+                    return Empty;
+                }
+                return applicationUser;
+            }
         }
+
+        public static void Login(ApplicationUser user)
+        {
+            CookieHelper.Set(LOGIN_COOKIE_NAME, user);
+        }
+
+        public static void LogOff()
+        {
+            CookieHelper.Remove(LOGIN_COOKIE_NAME);
+        }
+
+        public static bool IsLogin()
+        {
+            return Current.UserId > 0;
+        }
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class LogonAccount
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ArrayOfMenuInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <MenuInfo href="" icon="fa-th-large" text="菜单管理">
+    <Childs>
+      <MenuInfo href="/home/index" icon="text" text="菜单查询" />
+      <MenuInfo href="/home/index" icon="text" text="菜单查询" />
+    </Childs>
+  </MenuInfo>
+  <MenuInfo href="" icon="fa-th-large" text="菜单管理">
+    <Childs>
+      <MenuInfo href="/home/index" icon="text" text="菜单查询" />
+      <MenuInfo href="/home/index" icon="text" text="菜单查询" />
+    </Childs>
+  </MenuInfo>
+</ArrayOfMenuInfo>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AC.Service.Config;
 
 namespace AC.Web.Common.Config
 {

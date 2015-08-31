@@ -33,61 +33,61 @@ namespace AC.Service.WeiXin.Common
         /// </summary>
         /// <param name="msgStr"></param>
         /// <returns></returns>
-        public static BaseMsg Deserialize(string msgStr)
+        public static RequestMsgBase Deserialize(string msgStr)
         {
-            MsgType? msgType = GetMsgType(msgStr);
-            if (msgType == null)
+            RequestMsgType? requestMsgType = GetMsgType(msgStr);
+            if (requestMsgType == null)
             {
                 return null;
             }
             using (var sr = new StringReader(msgStr))
             {
-                var xmlSerializer = new XmlSerializer(GetMessageType(msgType.Value));
+                var xmlSerializer = new XmlSerializer(GetMessageType(requestMsgType.Value));
                 object deserialize = xmlSerializer.Deserialize(sr);
                 if (deserialize == null)
                 {
                     return null;
                 }
-                return (deserialize as BaseMsg);
+                return (deserialize as RequestMsgBase);
             }
         }
 
-        private static Type GetMessageType(MsgType msgType)
+        private static Type GetMessageType(RequestMsgType requestMsgType)
         {
-            switch (msgType)
+            switch (requestMsgType)
             {
-                case MsgType.Text:
-                    return typeof (TextMsg);
-                case MsgType.Image:
-                    return typeof (ImageMsg);
-                case MsgType.Voice:
-                    return typeof (VoiceMsg);
-                case MsgType.Video:
-                    return typeof (VideoMsg);
-                case MsgType.Shortvideo:
-                    return typeof (ShortVideoMsg);
-                case MsgType.Location:
-                    return typeof (LocationMsg);
-                case MsgType.Link:
-                    return typeof (LinkMsg);
-                case MsgType.Event:
-                    return typeof (EventMsg);
+                case RequestMsgType.Text:
+                    return typeof (RequestTextMsg);
+                case RequestMsgType.Image:
+                    return typeof (RequestImageMsg);
+                case RequestMsgType.Voice:
+                    return typeof (RequestVoiceMsg);
+                case RequestMsgType.Video:
+                    return typeof (RequestVideoMsg);
+                case RequestMsgType.Shortvideo:
+                    return typeof (RequestShortVideoMsg);
+                case RequestMsgType.Location:
+                    return typeof (RequestLocationMsg);
+                case RequestMsgType.Link:
+                    return typeof (RequestLinkMsg);
+                case RequestMsgType.Event:
+                    return typeof (Event);
                 default:
-                    throw new ArgumentOutOfRangeException("msgType");
+                    throw new ArgumentOutOfRangeException("requestMsgType");
             }
         }
 
-        private static MsgType? GetMsgType(string msgStr)
+        private static RequestMsgType? GetMsgType(string msgStr)
         {
             using (StringReader sr = new StringReader(msgStr))
             {
-                var xmlSerializer = new XmlSerializer(typeof (BaseMsg));
+                var xmlSerializer = new XmlSerializer(typeof (RequestMsgBase));
                 object deserialize = xmlSerializer.Deserialize(sr);
                 if (deserialize == null)
                 {
                     return null;
                 }
-                return (deserialize as BaseMsg).MsgType;
+                return (deserialize as RequestMsgBase).MsgType;
             }
         }
     }

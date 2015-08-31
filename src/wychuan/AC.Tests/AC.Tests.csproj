@@ -54,11 +54,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Cache\DataCacheTests.cs" />
+    <Compile Include="Common\GenericTypeTest.cs" />
     <Compile Include="Core\Security\SHA1Test.cs" />
     <Compile Include="Core\XmlSerializerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\WeiXin\AccessTokenServiceTests.cs" />
     <Compile Include="Service\WeiXin\MaterialServiceTests.cs" />
+    <Compile Include="Service\WeiXin\ToolTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\wychuan.com\log4net.config">
@@ -81,6 +83,10 @@
     <ProjectReference Include="..\AC.Service\AC.Service.csproj">
       <Project>{a74cd8c8-5224-4019-be8c-13324d794189}</Project>
       <Name>AC.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AC.Web.Common\AC.Web.Common.csproj">
+      <Project>{89F39709-BF9A-48AC-ABD9-2BE676BA08D4}</Project>
+      <Name>AC.Web.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

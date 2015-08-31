@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AC.Cache;
 using AC.Extension;
 using AC.Helper;
+using AC.Service.WeiXin.Common;
 using Common.Logging;
 
 namespace AC.Service.WeiXin
@@ -62,10 +63,9 @@ namespace AC.Service.WeiXin
         /// <returns></returns>
         private static async Task RefreshAccessToken()
         {
-            string weiXinAccessTokenUrl = GetWeiXinAccessTokenUrl();
             using (var httpClient = new HttpClient())
             {
-                string accessTokenStr = await httpClient.GetStringAsync(weiXinAccessTokenUrl);
+                string accessTokenStr = await httpClient.GetStringAsync(WeiXinUrl.AccessTokenUrl);
                 var accessToken = Json.JsonSerializer.Deserialize<AccessToken>(accessTokenStr);
 
                 DataCache.SetCacheOfAbsolute(ACCESS_TOKEN_CACHE_KEY, accessToken.access_token,
@@ -83,16 +83,5 @@ namespace AC.Service.WeiXin
             }
         }
 
-        /// <summary>
-        /// 获取微信access_token值的url
-        /// </summary>
-        /// <returns></returns>
-        private static string GetWeiXinAccessTokenUrl()
-        {
-            const string tempStr =
-                "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
-            return tempStr.format(ConfigHelper.GetConfigString("wxAppID", ""),
-                ConfigHelper.GetConfigString("wxAppSecret", ""));
-        }
     }
 }

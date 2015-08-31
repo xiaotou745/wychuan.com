@@ -49,5 +49,21 @@ namespace wychuan2.com.Areas.weixin.Controllers.api
                 Content = new StringContent(response)
             };
         }
+
+        /// <summary>
+        /// 获取accesstoken
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public string GetAccessToken()
+        {
+            return AccessTokenService.GetAccessToken();
+        }
+
+        [HttpGet]
+        public string test()
+        {
+            return "hello world";
+        }
     }
 }

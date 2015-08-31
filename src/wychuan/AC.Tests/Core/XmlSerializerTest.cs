@@ -1,5 +1,8 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
+using AC.Helper;
 using AC.Service.WeiXin.Request;
+using AC.Web.Common.Config;
 using Common.Logging;
 using NUnit.Framework;
 
@@ -22,7 +25,7 @@ namespace AC.Tests.Core
  <MsgId>1234567890123456</MsgId>
  </xml>";
 
-            XmlSerializer serializer = new XmlSerializer(typeof (TextMsg));
+            XmlSerializer serializer = new XmlSerializer(typeof (RequestTextMsg));
 
             using (System.IO.StringReader reader = new System.IO.StringReader(s))
             {
@@ -32,7 +35,7 @@ namespace AC.Tests.Core
                     logger.Info("is null?");
                 }
                 logger.Info(Json.JsonSerializer.Serialize(deserialize));
-                //var xmlSerializer = new XmlSerializer(typeof (TextMsg));
+                //var xmlSerializer = new XmlSerializer(typeof (text));
                 //using (System.IO.StringWriter sw = new System.IO.StringWriter())
                 //{
                 //    var xmlNameSpace = new XmlSerializerNamespaces();
@@ -100,6 +103,57 @@ A:叫救命啦! ",
             };
 
             AC.Helper.XmlHelper.ToXml("xiaohua.xml", arrays);
+        }
+
+        [Test]
+        public void MenuSerializeTest()
+        {
+            List<MenuInfo> menus = new List<MenuInfo>();
+            MenuInfo menuInfo = new MenuInfo()
+            {
+                Href = string.Empty,
+                Icon = "fa-th-large",
+                Text = "菜单管理",
+                Childs = new MenuInfo[]
+                {
+                    new MenuInfo()
+                    {
+                        Href = "/home/index",
+                        Text = "菜单查询",
+                        Icon = "text",
+                    },
+                    new MenuInfo()
+                    {
+                        Href = "/home/index",
+                        Text = "菜单查询",
+                        Icon = "text",
+                    },
+                }
+            };
+            MenuInfo menuInfo2 = new MenuInfo()
+            {
+                Href = string.Empty,
+                Icon = "fa-th-large",
+                Text = "菜单管理",
+                Childs = new MenuInfo[]
+                {
+                    new MenuInfo()
+                    {
+                        Href = "/home/index",
+                        Text = "菜单查询",
+                        Icon = "text",
+                    },
+                    new MenuInfo()
+                    {
+                        Href = "/home/index",
+                        Text = "菜单查询",
+                        Icon = "text",
+                    },
+                }
+            };
+            menus.Add(menuInfo);
+            menus.Add(menuInfo2);
+            XmlHelper.ToXml("menuOfWeixin.xml", menus.ToArray());
         }
     }
 }
