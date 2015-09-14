@@ -1,6 +1,9 @@
 using AC.Dao.User;
 using AC.Security;
+using AC.Service.DTO.LiCai;
 using AC.Service.DTO.User;
+using AC.Service.Impl.LiCai;
+using AC.Service.LiCai;
 using AC.Service.User;
 using AC.Util;
 
@@ -8,11 +11,13 @@ namespace AC.Service.Impl.User
 {
     public class UserService : IUserService
     {
+        private readonly IBillBookService bookService;
         private readonly UserDao userDao;
 
         public UserService()
         {
             userDao = new UserDao();
+            bookService = new BillBookService();
         }
 
         public bool Logout(string userName)
@@ -57,12 +62,20 @@ namespace AC.Service.Impl.User
             }
 
             UserDTO userDTO = userDao.GetByName(user.LoginName);
-            if (userDTO != null)
+            if (userDTO != null)//用户名已存在
             {
                 return RegisterResult.UserNameExists;
             }
-            user.LoginPassword = MD5.Encrypt(user.LoginPassword);
+            user.LoginPassword = MD5.Encrypt(user.LoginPassword);//加密密码
             user.Id = userDao.Insert(user);
+
+            //添加默认账本
+            BillBooksDTO defaultBook = BillBooksDTO.Default();
+            defaultBook.UserId = user.Id;
+            defaultBook.CreateBy = user.LoginName;
+
+            bookService.Create(defaultBook);
+
             return RegisterResult.Success;
         }
         #endregion

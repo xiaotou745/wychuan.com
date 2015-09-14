@@ -155,5 +155,23 @@ A:叫救命啦! ",
             menus.Add(menuInfo2);
             XmlHelper.ToXml("menuOfWeixin.xml", menus.ToArray());
         }
+
+        [Test]
+        public void KeyValueTest()
+        {
+            var accountType = new List<KeyValuePair<int, string>>
+            {
+                new KeyValuePair<int, string>(1, "现金"),
+                new KeyValuePair<int, string>(2, "储蓄卡"),
+                new KeyValuePair<int, string>(1, "信用卡"),
+                new KeyValuePair<int, string>(1, "投资账户"),
+                new KeyValuePair<int, string>(1, "虚拟账户"),
+                new KeyValuePair<int, string>(1, "网络账户"),
+                new KeyValuePair<int, string>(1, "储值卡")
+            };
+
+            XmlHelper.ToXml("lc_accounttype.config", accountType);
+
+        }
     }
 }

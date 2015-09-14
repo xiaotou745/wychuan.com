@@ -52,7 +52,12 @@
     <Compile Include="AppLogger.cs" />
     <Compile Include="Config\CategoryConfigInfo.cs" />
     <Compile Include="Config\ICategoryService.cs" />
+    <Compile Include="DTO\LiCai\AccountDTO.cs" />
+    <Compile Include="DTO\LiCai\AccountType.cs" />
+    <Compile Include="DTO\LiCai\BillBooksDTO.cs" />
     <Compile Include="DTO\User\Enums.cs" />
+    <Compile Include="LiCai\IAccountService.cs" />
+    <Compile Include="LiCai\IBillBookService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DTO\User\UserDTO.cs" />
     <Compile Include="User\IUserService.cs" />

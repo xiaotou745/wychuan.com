@@ -2,8 +2,9 @@
 using System.Web.Http;
 using AC.Json;
 using AC.Extension;
-using AC.Web.Common.Config;
+using AC.Service.Config;
 using Common.Logging;
+using ICategoryService = AC.Web.Common.Config.ICategoryService;
 
 namespace AC.Web.Controllers.API
 {
@@ -11,13 +12,13 @@ namespace AC.Web.Controllers.API
     {
         private readonly ILog logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ICategoryService categoryService = new CategoryConfigHelper();
+        //private readonly ICategoryService categoryService = new CategoryConfigHelper();
 
         // GET api/<controller>
-        public IList<CategoryConfigInfo> Get()
-        {
-            return categoryService.GetAll() ?? new List<CategoryConfigInfo>();
-        }
+        //public IList<CategoryConfigInfo> Get()
+        //{
+            //return categoryService.GetAll() ?? new List<CategoryConfigInfo>();
+        //}
 
         // GET api/<controller>/5
         public string Get(int id)
@@ -28,7 +29,7 @@ namespace AC.Web.Controllers.API
         // POST api/<controller>
         public AjaxResult Create([FromBody] CategoryConfigInfo value)
         {
-            var categoryId = categoryService.Create(value);
+            //var categoryId = categoryService.Create(value);
             //if (value.Id <= 0)
             //{
             //    value.Id = categoryId;
@@ -52,14 +53,14 @@ namespace AC.Web.Controllers.API
         // PUT api/<controller>/5
         public AjaxResult Modify([FromBody] CategoryConfigInfo value)
         {
-            categoryService.Modify(value);
+            //categoryService.Modify(value);
             return AjaxResult.Success();
         }
 
 
         public AjaxResult Remove([FromBody] int id, [FromBody] int parentId)
         {
-            categoryService.Remove(id, parentId);
+            //categoryService.Remove(id, parentId);
             return AjaxResult.Success();
         }
     }

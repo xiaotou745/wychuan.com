@@ -2,6 +2,7 @@
 *.suo
 *.bak
 *.pubxml
+*.pdb
 
 obj
 bin

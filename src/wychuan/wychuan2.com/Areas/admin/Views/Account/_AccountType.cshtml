@@ -1,0 +1,20 @@
+﻿@model wychuan2.com.Models.LiCaiAccount
+
+<div class="col-lg-2">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content mailbox-content">
+            <div class="file-manager">
+                <a class="btn btn-block btn-primary compose-mail" href="#accountModal" data-toggle="modal" data-type="1" data-whatever="添加账户">添加账户</a>
+                <div class="space-25"></div>
+                <h5>账户类型</h5>
+                <ul class="folder-list m-b-md" style="padding: 0">
+                    @foreach (var item in Model.AccountTypes)
+                    {
+                        <li><a href="/licai/account?type=@item.Id"><i class="fa fa-inbox"></i>@item.Name <span class="label label-warning pull-right">@item.Count</span></a></li>
+                    }
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>

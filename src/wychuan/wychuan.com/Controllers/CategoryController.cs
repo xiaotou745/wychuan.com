@@ -6,15 +6,15 @@ namespace AC.Web.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryService categoryService = new CategoryConfigHelper();
+        //private readonly ICategoryService categoryService = new CategoryConfigHelper();
         //
         // GET: /Category/
 
-        public ActionResult Index()
-        {
-            var lstCategories = categoryService.GetAll();
+        //public ActionResult Index()
+        //{
+        //    var lstCategories = categoryService.GetAll();
 
-            return View(lstCategories);
-        }
+        //    return View(lstCategories);
+        //}
     }
 }

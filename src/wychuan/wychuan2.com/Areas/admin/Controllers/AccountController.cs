@@ -10,6 +10,7 @@ namespace wychuan2.com.Areas.admin.Controllers
 {
     public class AccountController : Controller
     {
+        #region 登录
         // GET: admin/Account/logon
         public ActionResult Logon()
         {
@@ -19,16 +20,30 @@ namespace wychuan2.com.Areas.admin.Controllers
             }
             return View();
         }
+        #endregion
 
+        #region 注册
         public ActionResult Register()
         {
             return View();
         }
+        #endregion
 
+        #region 注销
         public ActionResult LogOff()
         {
             ApplicationUser.LogOff();
             return Redirect("/admin/account/logon");
         }
+        #endregion
+
+
+        #region 忘记密码
+
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+        #endregion
     }
 }
