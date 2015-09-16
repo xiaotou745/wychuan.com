@@ -191,6 +191,7 @@
     <Compile Include="Areas\admin\Controllers\LiCai\SettingController.cs" />
     <Compile Include="Areas\admin\Controllers\LiCai\TongJiController.cs" />
     <Compile Include="Areas\admin\Controllers\LiCai\YuSuanController.cs" />
+    <Compile Include="Areas\admin\Models\LiCai\BillModel.cs" />
     <Compile Include="Areas\weixin\Controllers\AccountController.cs" />
     <Compile Include="Areas\weixin\Controllers\api\ProcessorController.cs" />
     <Compile Include="Areas\admin\Controllers\BaseController.cs" />
@@ -241,6 +242,7 @@
     <Content Include="Content\plugins\dataTables\dataTables.bootstrap.css" />
     <Content Include="Content\plugins\dataTables\dataTables.responsive.css" />
     <Content Include="Content\plugins\dataTables\dataTables.tableTools.min.css" />
+    <Content Include="Content\plugins\datetimepicker\jquery.datetimepicker.css" />
     <Content Include="Content\plugins\dropzone\basic.css" />
     <Content Include="Content\plugins\dropzone\dropzone.css" />
     <Content Include="Content\plugins\fullcalendar\fullcalendar.css" />
@@ -376,6 +378,10 @@
     <Content Include="Areas\admin\Views\Setting\Index.cshtml" />
     <Content Include="Areas\admin\Views\TongJi\Index.cshtml" />
     <Content Include="Areas\admin\Views\YuSuan\Index.cshtml" />
+    <Content Include="Areas\admin\Views\Shared\_Layout_BS.cshtml" />
+    <Content Include="data\lc_accounttype.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -411,6 +417,7 @@
     <Content Include="Scripts\plugins\dataTables\dataTables.responsive.js" />
     <Content Include="Scripts\plugins\dataTables\dataTables.tableTools.min.js" />
     <Content Include="Scripts\plugins\dataTables\jquery.dataTables.js" />
+    <Content Include="Scripts\plugins\datetimepicker\jquery.datetimepicker.js" />
     <Content Include="Scripts\plugins\diff_match_patch\javascript\diff_match_patch.js" />
     <Content Include="Scripts\plugins\dropzone\dropzone.js" />
     <Content Include="Scripts\plugins\easypiechart\jquery.easypiechart.js" />
@@ -499,10 +506,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\admin\Models\" />
     <Folder Include="Areas\weixin\Models\" />
     <Folder Include="Areas\weixin\Views\Base\" />
-    <Folder Include="data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

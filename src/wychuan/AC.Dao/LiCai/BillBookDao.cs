@@ -12,6 +12,18 @@ namespace AC.Dao.LiCai
 {
     public class BillBookDao : DaoBase
     {
+        public void InitUserBooks(int userId)
+        {
+            const string initSql = @"
+insert  into LC_BillBooks ( Name, UserId, CreateBy, IsDefault )
+select  ldv.Name, @UserId, 'system', ldv.IsDefault
+from    LC_DefaultValues ldv ( nolock )
+where   ldv.Type = 3";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("UserId", DbType.Int32, 4, userId);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, initSql, dbParameters);
+        }
         /// <summary>
         /// 增加一条记录
         /// </summary>

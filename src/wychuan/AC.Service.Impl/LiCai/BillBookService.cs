@@ -15,6 +15,11 @@ namespace AC.Service.Impl.LiCai
             this.bookDao = new BillBookDao();
         }
 
+        public void InitUserBooks(int userId)
+        {
+            bookDao.InitUserBooks(userId);
+        }
+
         public int Create(BillBooksDTO book)
         {
             AssertUtils.ArgumentNotNull(book, "book");

@@ -5,6 +5,8 @@ namespace AC.Service.LiCai
 {
     public interface IBillBookService
     {
+        void InitUserBooks(int userId);
+
         /// <summary>
         /// 新增一条记录
         ///<param name="book">要新增的对象</param>

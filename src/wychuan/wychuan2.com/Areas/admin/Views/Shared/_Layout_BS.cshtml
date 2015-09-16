@@ -1,0 +1,63 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 码农阿川</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/font-awesome/css/font-awesome.min.css" />
+    @RenderSection("styles", required: false)
+</head>
+<body>
+        <div id="wrapper">
+            @Html.Partial("_Layout_LeftNav")
+            <div id="page-wrapper" class="gray-bg dashbard-1">
+                <div class="row border-bottom">
+                    @Html.Partial("_Layout_TopNav")
+                </div>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-lg-10">
+                        <h2>功能名称</h2>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/admin">Home</a>
+                            </li>
+                            <li>
+                                <a>Graphs</a>
+                            </li>
+                            <li class="active">
+                                <strong>Chart</strong>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="col-lg-2">
+                        
+                    </div>
+                </div>
+                
+                <div class="wrapper wrapper-content">
+                    @RenderBody()
+                </div>
+
+                @Html.Partial("_Layout_Footer")
+            </div>
+
+        </div>
+
+        <!-- Mainly scripts -->
+        <script src="~/Scripts/jquery-2.1.1.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+        <script src="~/Scripts/inspinia.js"></script>
+
+        <!-- jQuery UI -->
+        <script src="~/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

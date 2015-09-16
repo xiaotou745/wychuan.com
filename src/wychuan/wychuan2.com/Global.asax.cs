@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using AC.Service.DTO.LiCai;
 
 namespace wychuan2.com
 {
@@ -18,6 +19,8 @@ namespace wychuan2.com
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            AccountType.Create(Server.MapPath("~/data/lc_accounttype.config"), true);
         }
     }
 }

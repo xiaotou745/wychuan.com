@@ -40,7 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LiCai\AccountService.cs" />
-    <Compile Include="LiCai\BillBookService.cs" />
+    <Compile Include="LiCai\CategoryService.cs" />
+    <Compile Include="LiCai\ItemsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\UserService.cs" />
   </ItemGroup>

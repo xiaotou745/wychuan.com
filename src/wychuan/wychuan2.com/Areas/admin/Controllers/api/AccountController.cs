@@ -6,7 +6,9 @@ using System.Net.Http;
 using System.Web.Http;
 using AC.Helper;
 using AC.Service.DTO.User;
+using AC.Service.Impl.LiCai;
 using AC.Service.Impl.User;
+using AC.Service.LiCai;
 using AC.Service.User;
 using AC.Web;
 using wychuan2.com.Models;
@@ -16,6 +18,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
     public class AccountController : ApiController
     {
         private readonly IUserService userService = new UserService();
+        private readonly ICategoryService categoryService = new CategoryService();
 
         #region 登录
         public AjaxResult Logon(LogonAccount account)

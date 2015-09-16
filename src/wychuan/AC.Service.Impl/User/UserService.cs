@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AC.Dao.User;
 using AC.Security;
 using AC.Service.DTO.LiCai;
@@ -11,13 +12,21 @@ namespace AC.Service.Impl.User
 {
     public class UserService : IUserService
     {
-        private readonly IBillBookService bookService;
         private readonly UserDao userDao;
+        //private readonly IMemberService memberService;
+        //private readonly IBillBookService bookService;
+        //private readonly IProjectService projectService;
+        private readonly IItemsService itemsService;
+        private readonly ICategoryService categoryService;
 
         public UserService()
         {
             userDao = new UserDao();
-            bookService = new BillBookService();
+            //bookService = new BillBookService();
+            //memberService = new MemberService();
+            //projectService = new ProjectService();
+            itemsService = new ItemsService();
+            categoryService = new CategoryService();
         }
 
         public bool Logout(string userName)
@@ -69,12 +78,20 @@ namespace AC.Service.Impl.User
             user.LoginPassword = MD5.Encrypt(user.LoginPassword);//加密密码
             user.Id = userDao.Insert(user);
 
-            //添加默认账本
-            BillBooksDTO defaultBook = BillBooksDTO.Default();
-            defaultBook.UserId = user.Id;
-            defaultBook.CreateBy = user.LoginName;
+            //初始化默认数据
+            itemsService.InitUserItems(user.Id);
 
-            bookService.Create(defaultBook);
+            ////添加默认账本
+            //bookService.InitUserBooks(user.Id);
+
+            ////添加默认成员
+            //memberService.InitUserMember(user.Id);
+
+            ////添加默认项目
+            //projectService.InitUserProject(user.Id);
+
+            //初始化默认收支分类
+            categoryService.InitUser(user.Id);
 
             return RegisterResult.Success;
         }
