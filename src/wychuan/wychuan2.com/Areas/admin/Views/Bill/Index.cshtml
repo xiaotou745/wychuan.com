@@ -60,7 +60,7 @@
                                             var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
                                             var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
                                         }
-                                        <div class=" col-sm-3">
+                                        <div class=" col-sm-4">
                                             <div class="input-group">
                                                 <select class="input-sm form-control">
                                                     @foreach (var first in lstFirsts)
@@ -284,7 +284,7 @@
 
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">账户</label>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-4">
                                             <div class="input-group">
                                                 <select class="input-sm form-control">
                                                     @foreach (var item in Model.Accounts)
