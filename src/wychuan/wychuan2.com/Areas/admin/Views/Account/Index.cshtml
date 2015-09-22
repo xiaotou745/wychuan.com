@@ -7,8 +7,26 @@
 @section styles{
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
 }
-<div class="row">
-    @Html.Partial("_AccountType",Model)
+<div class="row" id="content">
+    @Html.Partial("_AccountType", Model)
+    @*<div class="col-lg-2">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content mailbox-content">
+                <div class="file-manager">
+                    <a class="btn btn-block btn-primary compose-mail" href="#accountModal" data-toggle="modal" data-type="1" data-whatever="添加账户">添加账户</a>
+                    <div class="space-25"></div>
+                    <h5>账户类型</h5>
+                    <ul class="folder-list m-b-md" style="padding: 0">
+                        @foreach (var item in Model.AccountTypes)
+                        {
+                            <li><a href="javascript:;" class="J_AccountType" data-type="@item.Id"><i class="fa fa-inbox"></i>@item.Name <span class="label label-warning pull-right">@item.Count</span></a></li>
+                        }
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="col-lg-10 animated fadeInRight">
         <div class="mail-box-header">
@@ -17,24 +35,29 @@
                 @Model.CurrentType.Name (@Model.CurrentType.Count)
             </h2>
             <div class="mail-tools tooltip-demo m-t-md">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
-                    <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
-
-                </div>
                 <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh</button>
-                <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
-                <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i> </button>
                 <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
-
             </div>
         </div>
         <div class="mail-box">
-
-            @Html.Partial("_AccountList",Model)
-
+            
+            <table id="tblAccountsList" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>名称</th>
+                        <th>币种</th>
+                        <th>当前余额</th>
+                        <th>备注</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("_AccountList", Model)
+                </tbody>
+            </table>
         </div>
-    </div>
+    </div>*@
 </div>
 
 <!--账户对话框-->
@@ -114,110 +137,5 @@
     <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
     <script src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
     <script src="~/Scripts/plugins/validate/messages_zh.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
-
-            $('#accountModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var modal = $(this);
-                var recipient = button.data('whatever');
-                modal.find('.modal-title').text(recipient);
-
-                var operateType = button.data("type");
-
-                if (operateType == 1) { //新增
-                    modal.find("#Id").val(0);
-                    modal.find("#Type").val(modal.find("#Type option:first").val());
-                    modal.find("#Name").val("");
-                    modal.find("#Balance").val("0.00");
-                    modal.find("#InNetAssets").iCheck("uncheck");
-                    modal.find("#Remark").val("");
-                } else if (operateType == 2) { //编辑
-                    var $tr = button.parents("tr");
-                    modal.find("#Id").val($tr.find("[name=Id]").val());
-                    modal.find("#Type").val($tr.find("[name=Type]").val());
-                    modal.find("#Name").val($tr.find("[name=Name]").text());
-                    modal.find("#Balance").val($tr.find("[name=Balance] a").text());
-                    var inNetAssets = $tr.find("[name=InNetAssets]").val();
-                    if (inNetAssets) {
-                        modal.find("#InNetAssets").iCheck("check");
-                    } else {
-                        modal.find("#InNetAssets").iCheck("uncheck");
-                    }
-                    modal.find("#Remark").val($tr.find("[name=Remark]").text());
-                }
-            });
-
-            $("#frmAccount").validate({
-                rules: {
-                    Name: {
-                        required: true
-                    },
-                    Balance: {
-                        required: true,
-                        number: true
-                    }
-                },
-                messages: {
-                    Name: "请输入账户名称",
-                    Balance: "余额必须为数字"
-                },
-                submitHandler: function(form) {
-                    save();
-                }
-            });
-
-
-            $("#btnSave").bind("click", function() {
-                $("#frmAccount").trigger("submit");
-            });
-
-            $("#tblAccountsList").delegate(".J_Remove", "click", function() {
-                remove($(this).parents("tr").find("[name=Id]").val());
-            });
-        });
-
-        function save() {
-            var account = {
-                Id: $("#Id").val(),
-                Type: $("#Type").val(),
-                Name: $("#Name").val(),
-                Balance: $("#Balance").val(),
-                Remark: $("#Remark").val(),
-                InNetAssets: $("#InNetAssets").is(":checked"),
-                Currency: $("#Currency option:selected").text()
-            };
-
-            $.ajax({
-                url: "/licai/account/save",
-                type: "post",
-                dataType: "json",
-                data: account,
-                success: function(resp) {
-                    console && console.log(resp);
-                    if (!resp.iserror) {
-                        $("#accountModal").modal("hide");
-                    }
-                }
-            });
-        }
-
-        function remove(id) {
-            $.ajax({
-                url: "/licai/account/delete",
-                type: "post",
-                data: { id: id },
-                dataType: "json",
-                success: function(resp) {
-                    if (!resp.iserror) {
-                        alert("删除成功.");
-                    }
-                }
-            });
-        }
-    </script>
+    <script src="~/Scripts/licai/account.js"></script>
 }

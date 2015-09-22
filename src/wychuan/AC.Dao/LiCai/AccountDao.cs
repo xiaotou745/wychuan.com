@@ -199,16 +199,19 @@ where   la.Id=@Id";
 
         #endregion
 
-        public Dictionary<int, int> GetTypeCounts()
+        public Dictionary<int, int> GetTypeCounts(int userId)
         {
             const string querySql = @"
 select la.Type,count(1) 'Count'
 from LC_Account la(nolock)
 where la.IsEnable=1
+	and la.UserId=@UserId
 group by la.Type";
 
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("UserId", DbType.Int32, 4, userId);
+
             var result = new Dictionary<int, int>();
-            DataSet dataSet = DbHelper.ExecuteDataset(ConnStringOfAchuan, querySql);
+            DataSet dataSet = DbHelper.ExecuteDataset(ConnStringOfAchuan, querySql, dbParameters);
             if (!dataSet.IsEmpty())
             {
                 foreach (DataRow datarow in dataSet.Tables[0].Rows)

@@ -161,7 +161,6 @@
         function changeStatus(event, ui) {
             var targetStatus = $(ui.item[0]).parent().data("status");
             var id = $(ui.item[0]).find("[name=id]").val();
-            console.log(targetStatus, id);
             var data = {
                 id: id,
                 status: targetStatus

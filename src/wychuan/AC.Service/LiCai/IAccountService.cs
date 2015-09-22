@@ -26,6 +26,6 @@ namespace AC.Service.LiCai
 
         void Remove(int id);
 
-        Dictionary<int, int> GetTypeCounts();
+        Dictionary<int, int> GetTypeCounts(int userId);
     }
 }

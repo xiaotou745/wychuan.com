@@ -61,9 +61,9 @@ namespace AC.Service.Impl.LiCai
             accountDao.Delete(id);
         }
 
-        public Dictionary<int, int> GetTypeCounts()
+        public Dictionary<int, int> GetTypeCounts(int userId)
         {
-            Dictionary<int, int> typeCounts = accountDao.GetTypeCounts();
+            Dictionary<int, int> typeCounts = accountDao.GetTypeCounts(userId);
             typeCounts.Add(0, typeCounts.Values.Sum());
             return typeCounts;
         }

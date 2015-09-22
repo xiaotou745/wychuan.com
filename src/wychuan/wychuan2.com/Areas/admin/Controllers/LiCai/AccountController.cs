@@ -32,13 +32,12 @@ namespace wychuan2.com.Areas.admin.Controllers.LiCai
         {
             var model = new LiCaiAccount();
 
-            List<AccountType> accountTypes =
-                AccountType.Create(Server.MapPath("~/data/lc_accounttype.config"), true).GetAccountTypes();
-
+            List<AccountType> accountTypes = AccountType.Create().GetAccountTypes();
+            
             //账户类型s
             model.AccountTypes = accountTypes;
 
-            Dictionary<int, int> typeCounts = accountService.GetTypeCounts();
+            Dictionary<int, int> typeCounts = accountService.GetTypeCounts(ApplicationUser.Current.UserId);
             accountTypes.ForEach(t => t.Count = typeCounts.ContainsKey(t.Id) ? typeCounts[t.Id] : 0);
 
             //当前类型
@@ -95,5 +94,31 @@ namespace wychuan2.com.Areas.admin.Controllers.LiCai
             return AjaxResult.Success();
         }
         #endregion
+
+        public ActionResult AccountList(int type=0)
+        {
+            var model = new LiCaiAccount();
+
+            List<AccountType> accountTypes = AccountType.Create().GetAccountTypes();
+
+            //账户类型s
+            model.AccountTypes = accountTypes;
+
+            Dictionary<int, int> typeCounts = accountService.GetTypeCounts(ApplicationUser.Current.UserId);
+            accountTypes.ForEach(t => t.Count = typeCounts.ContainsKey(t.Id) ? typeCounts[t.Id] : 0);
+
+            //当前类型
+            model.CurrentType = accountTypes.FirstOrDefault(a => a.Id == type);
+
+            var queryInfo = new AccountQueryInfo { UserId = ApplicationUser.Current.UserId };
+            if (type > 0)
+            {
+                queryInfo.AccountTypeId = type;
+            }
+            //查询账户列表
+            IList<AccountDTO> lstAccounts = accountService.Query(queryInfo);
+            model.Accounts = lstAccounts;
+            return View("_AccountList", model);
+        }
     }
 }
