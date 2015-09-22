@@ -8,81 +8,21 @@
 @section styles{
     @*<link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">*@
 }
-<div class="row" id="jobs">
-    <div class="col-lg-4">
-        <div class="ibox">
-            <div class="ibox-content">
-                <h3>未开始</h3>
-                <p class="small"><i class="fa fa-hand-o-up"></i> 可以拖拉哦</p>
-
-                <div class="input-group">
-                    <input type="text" placeholder="添加新任务. " class="input input-sm form-control">
-                    <span class="input-group-btn">
-                        <a class="btn btn-sm btn-white" href="#modalTask" data-toggle="modal"><i class="fa fa-plus"></i>添加账户</a>
-                    </span>
+@*<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox-content m-b-sm border-bottom">
+            <div class="p-xs">
+                <div class="pull-left m-r-md">
+                    <i class="fa fa-globe text-navy mid-icon"></i>
                 </div>
-
-                <ul id="toDoTasks" data-status="1" class="sortable-list connectList agile-list ui-sortable">
-                    @foreach (var task in Model.MyTasks.Where(t => t.Status == 1))
-                    {
-                        <li class="@(string.IsNullOrEmpty(task.Class) ? "danger-element" : task.Class)">
-                            <input name="id" type="hidden" value="@task.Id" />
-                            <h3>@task.Title</h3>
-                            @task.Content
-                            <div class="agile-detail">
-                                <a href="javascript:;" class="pull-right btn btn-xs btn-white J_Remove">删除</a>
-                                <i class="fa fa-clock-o"></i> @task.PubTime
-                            </div>
-                        </li>
-                    }
-                </ul>
+                <h2>Welcome in Inspinia Forum</h2>
+                <span>Feel free to choose topic you're interested in.</span>
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
-        <div class="ibox">
-            <div class="ibox-content">
-                <h3>进行中</h3>
-                <p class="small"><i class="fa fa-hand-o-up"></i> 真的可以拖拽啊.</p>
-                <ul data-status="2" class="sortable-list connectList agile-list ui-sortable">
-                    @foreach (var task in Model.MyTasks.Where(t => t.Status == 2))
-                    {
-                        <li class="@(string.IsNullOrEmpty(task.Class) ? "warning-element" : task.Class)">
-                            <input name="id" type="hidden" value="@task.Id" />
-                            <h3>@task.Title</h3>
-                            @task.Content
-                            <div class="agile-detail">
-                                <a href="javascript:;" class="pull-right btn btn-xs btn-white J_Remove">删除</a>
-                                <i class="fa fa-clock-o"></i> @task.PubTime
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="ibox">
-            <div class="ibox-content">
-                <h3>已完成</h3>
-                <p class="small"><i class="fa fa-hand-o-up"></i> 确实可以拖拽.</p>
-                <ul data-status="3" class="sortable-list connectList agile-list ui-sortable">
-                    @foreach (var task in Model.MyTasks.Where(t => t.Status == 3))
-                    {
-                        <li class="@(string.IsNullOrEmpty(task.Class) ? "success-element" : task.Class)">
-                            <input name="id" type="hidden" value="@task.Id" />
-                            <h3>@task.Title</h3>
-                            @task.Content
-                            <div class="agile-detail">
-                                <a href="javascript:;" class="pull-right btn btn-xs btn-white J_Hide">Hide</a>
-                                <i class="fa fa-clock-o"></i> @task.PubTime
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
+</div>*@
+<div class="row" id="jobs">
+    @Html.Partial("_JobList",Model)
 </div>
 
 <!--账户对话框-->
@@ -123,108 +63,5 @@
 @section scripts{
     <script src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
     <script src="~/Scripts/plugins/validate/messages_zh.js"></script>
-
-    <script>
-        $(function() {
-            $("#frmTask").validate({
-                rules: {
-                    Content: {
-                        required: true
-                    }
-                },
-                messages: {
-                    Content: "请输入任务内容"
-                },
-                submitHandler: function(form) {
-                    save();
-                }
-            });
-
-            $("#btnSave").bind("click", function() {
-                $("#frmTask").trigger("submit");
-            });
-
-            $(".sortable-list").sortable({
-                connectWith: ".connectList",
-                stop: function(event, ui) {
-                    changeStatus(event, ui);
-                }
-            }).disableSelection();
-            
-            $("#jobs").delegate(".J_Hide", "click", function () {
-                var id = $(this).parents("li").find("[name=id]").val();
-                Hide(id);
-            });
-            
-        });
-
-        function changeStatus(event, ui) {
-            var targetStatus = $(ui.item[0]).parent().data("status");
-            var id = $(ui.item[0]).find("[name=id]").val();
-            var data = {
-                id: id,
-                status: targetStatus
-            };
-
-            $.ajax({
-                url: "/api/tasks/modifystatus",
-                type: "get",
-                dataType: "json",
-                data: data,
-                success: function(resp) {
-                    console.log(resp);
-                }
-            });
-        }
-
-        function save() {
-            var id = $("#Id").val();
-            var title = $("#Title").val();
-            var content = $("#Content").val();
-
-            var task = {
-                Id: id,
-                Title: title,
-                Content: content
-            };
-            $.ajax({
-                url: "/api/tasks/save",
-                type: "post",
-                dataType: "json",
-                data: task,
-                success: function(resp) {
-                    console && console.log(resp);
-                    if (!resp.iserror) {
-                        refreshToDoTasks();
-                        $("#modalTask").modal("hide");
-                    }
-                }
-            });
-        }
-
-        function refreshToDoTasks() {
-            $.ajax({
-                url: "/admin/tools/todojobs",
-                type: "post",
-                success: function(resp) {
-                    $("#toDoTasks").html(resp);
-                }
-            });
-        }
-
-        function Hide(id) {
-            $.ajax({
-                url: "/api/tasks/hide",
-                type: "get",
-                dataType: "json",
-                data: { id: id },
-                success: function(resp) {
-                    console && console.log(resp);
-                    if (!resp.iserror) {
-                        refreshToDoTasks();
-                    }
-                }
-            });
-        }
-        </script>
+    <script src="~/Scripts/tools/myjobs.js"></script>
 }

@@ -41,20 +41,6 @@ namespace wychuan2.com.Areas.admin.Controllers.api
             return AjaxResult.Success();
         }
 
-        public AjaxResult InProcess(int id)
-        {
-            mytaskService.ToInProcess(id);
-
-            return AjaxResult.Success();
-        }
-
-        public AjaxResult Completed(int id)
-        {
-            mytaskService.ToCompleted(id);
-
-            return AjaxResult.Success();
-        }
-
         [HttpGet]
         [HttpPost]
         public AjaxResult ModifyStatus(int id, int status)
@@ -68,6 +54,14 @@ namespace wychuan2.com.Areas.admin.Controllers.api
         public AjaxResult Hide(int id)
         {
             mytaskService.Hide(id);
+            return AjaxResult.Success();
+        }
+
+        [HttpGet]
+        [HttpPost]
+        public AjaxResult Remove(int id)
+        {
+            mytaskService.Remove(id);
             return AjaxResult.Success();
         }
     }

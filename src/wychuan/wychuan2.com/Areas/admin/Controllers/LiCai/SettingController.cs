@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace wychuan2.com.Areas.admin.Controllers.LiCai
 {
-    public class SettingController : Controller
+    public class SettingController : BaseController
     {
         // GET: admin/Setting
         public ActionResult Index()

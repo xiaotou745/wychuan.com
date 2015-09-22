@@ -58,24 +58,7 @@ where   mt.IsEnable = 1 and mt.IsShow=1 {0}";
                 : DbHelper.QueryWithRowMapper(ConnStringOfAchuan, getSql.format(queryStr), new MyTasksRowMapper());
         }
         #endregion
-
-        #region GetToDoJobs
-
-        public IList<MyTaskDTO> GetToDoTasks(int userId)
-        {
-            const string getSql = @"
-select  mt.Id, mt.UserId, mt.Status, mt.PubTime, mt.Title, mt.Content, mt.IsEnable, 
-        mt.Class, mt.Remark
-from    MyTasks mt ( nolock )
-where   mt.IsEnable = 1 and mt.IsShow=1 and mt.Status=1 and mt.UserId = @UserId";
-
-            IDbParameters dbParameters = DbHelper.CreateDbParameters("UserId", DbType.Int32, 4, userId);
-
-            return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, getSql, dbParameters,
-                new MyTasksRowMapper());
-        }
-        #endregion
-
+        
         #region ChangeStatus
 
         public void UpdateStatus(int id, int targetStatus)
@@ -190,6 +173,17 @@ where  Id=@Id ";
         public void Hide(int id)
         {
             const string strSql = "update MyTasks set IsShow=0 where Id=@Id";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, strSql, dbParameters);
+        }
+        #endregion
+
+        #region Delete
+        public void Delete(int id)
+        {
+            const string strSql = "update MyTasks set IsEnable=0 where Id=@Id";
 
             IDbParameters dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
 

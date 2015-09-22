@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace wychuan2.com.Areas.admin.Controllers.LiCai
 {
-    public class TongJiController : Controller
+    public class TongJiController : BaseController
     {
         // GET: admin/TongJi
         public ActionResult Index()

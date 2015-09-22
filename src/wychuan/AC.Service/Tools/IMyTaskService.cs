@@ -14,14 +14,10 @@ namespace AC.Service.Tools
 
         IList<MyTaskDTO> GetMyTasks(MyTaskQueryInfo queryInfo);
 
-        IList<MyTaskDTO> GetToDoTasks(int userId);
-
-        void ToInProcess(int id);
-
-        void ToCompleted(int id);
-
         void ModifyStatus(int id, int status);
 
         void Hide(int id);
+
+        void Remove(int id);
     }
 }

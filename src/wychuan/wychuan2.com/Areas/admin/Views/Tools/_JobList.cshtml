@@ -1,0 +1,78 @@
+﻿@model wychuan2.com.Areas.admin.Models.MyTaskModel
+
+<div class="col-lg-4">
+    <div class="ibox">
+        <div class="ibox-content">
+            <h3>未开始</h3>
+            <p class="small"><i class="fa fa-hand-o-up"></i> 可以拖拉哦</p>
+
+            <div class="input-group">
+                <input type="text" placeholder="添加新任务. " class="input input-sm form-control">
+                <span class="input-group-btn">
+                    <a class="btn btn-sm btn-white" href="#modalTask" data-toggle="modal" data-type="1" data-whatever="创建任务"><i class="fa fa-plus"></i>添加账户</a>
+                </span>
+            </div>
+
+            <ul id="toDoTasks" data-status="1" class="sortable-list connectList agile-list ui-sortable">
+                @foreach (var task in Model.MyTasks.Where(t => t.Status == 1))
+                {
+                    <li class="@(string.IsNullOrEmpty(task.Class) ? "danger-element" : task.Class)">
+                        <input name="id" type="hidden" value="@task.Id" />
+                        <h3>@task.Title</h3>
+                        <span>@task.Content</span>
+                        <div class="agile-detail">
+                            <a href="javascript:;" class="pull-right J_Remove"><i class="fa fa-trash-o"></i></a>
+                            <a href="#modalTask" data-toggle="modal" data-type="2" data-whatever="修改任务" class="pull-right J_Edit m-r-sm"><i class="fa fa-edit"></i></a>
+                            <i class="fa fa-clock-o"></i> @task.PubTime
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4">
+    <div class="ibox">
+        <div class="ibox-content">
+            <h3>进行中</h3>
+            <p class="small"><i class="fa fa-hand-o-up"></i> 真的可以拖拽啊.</p>
+            <ul data-status="2" class="sortable-list connectList agile-list ui-sortable">
+                @foreach (var task in Model.MyTasks.Where(t => t.Status == 2))
+                {
+                    <li class="@(string.IsNullOrEmpty(task.Class) ? "warning-element" : task.Class)">
+                        <input name="id" type="hidden" value="@task.Id" />
+                        <h3>@task.Title</h3>
+                        <span>@task.Content</span>
+                        <div class="agile-detail">
+                            <a href="javascript:;" class="pull-right J_Remove"><i class="fa fa-trash-o"></i></a>
+                            <a href="#modalTask" data-toggle="modal" data-type="2" data-whatever="修改任务" class="pull-right J_Edit m-r-sm"><i class="fa fa-edit"></i></a>
+                            <i class="fa fa-clock-o"></i> @task.PubTime
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-4">
+    <div class="ibox">
+        <div class="ibox-content">
+            <h3>已完成</h3>
+            <p class="small"><i class="fa fa-hand-o-up"></i> 确实可以拖拽.</p>
+            <ul data-status="3" class="sortable-list connectList agile-list ui-sortable">
+                @foreach (var task in Model.MyTasks.Where(t => t.Status == 3))
+                {
+                    <li class="@(string.IsNullOrEmpty(task.Class) ? "success-element" : task.Class)">
+                        <input name="id" type="hidden" value="@task.Id" />
+                        <h3>@task.Title</h3>
+                        @task.Content
+                        <div class="agile-detail">
+                            <a href="javascript:;" class="pull-right btn btn-xs btn-white J_Hide">Hide</a>
+                            <i class="fa fa-clock-o"></i> @task.PubTime
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

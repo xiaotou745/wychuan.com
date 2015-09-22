@@ -36,22 +36,7 @@ namespace AC.Service.Impl.Tools
         {
             return myTaskDao.GetMyTask(queryInfo);
         }
-
-        public IList<MyTaskDTO> GetToDoTasks(int userId)
-        {
-            return myTaskDao.GetToDoTasks(userId);
-        }
-
-        public void ToInProcess(int id)
-        {
-            myTaskDao.UpdateStatus(id, TaskStatus.InProcess.GetHashCode());
-        }
-
-        public void ToCompleted(int id)
-        {
-            myTaskDao.UpdateStatus(id, TaskStatus.Completed.GetHashCode());
-        }
-
+        
         public void ModifyStatus(int id, int status)
         {
             myTaskDao.UpdateStatus(id, status);
@@ -60,6 +45,11 @@ namespace AC.Service.Impl.Tools
         public void Hide(int id)
         {
             myTaskDao.Hide(id);
+        }
+
+        public void Remove(int id)
+        {
+            myTaskDao.Delete(id);
         }
     }
 }
