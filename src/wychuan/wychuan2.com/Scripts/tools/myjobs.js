@@ -32,7 +32,6 @@
             var id = $li.find("[name=id]").val();
             var title = $li.find("h3").text();
             var context = button.parent().prev().text();
-            console.log(button.parent().prev());
             modal.find("#Id").val(id);
             modal.find("#Title").val(title);
             modal.find("#Content").val(context);

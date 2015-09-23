@@ -14,7 +14,7 @@ namespace wychuan2.com.Areas.admin.Controllers
     public class ToolsController : BaseController
     {
         private readonly IMyTaskService myTaskService = new MyTaskService();
-
+        private readonly ICompanyService companyService = new CompanyService();
         #region Jobs
         // GET: admin/Tools
         public ActionResult Jobs()
@@ -52,81 +52,55 @@ namespace wychuan2.com.Areas.admin.Controllers
 
         #endregion
 
+        #region Pin board
         public ActionResult PinBoard()
         {
             return View();
         }
+        #endregion
 
-        // GET: admin/Tools/Details/5
-        public ActionResult Details(int id)
+        #region Companys
+
+        public ActionResult Company()
+        {
+            CompanyModel model = new CompanyModel();
+
+            model.Companys = companyService.GetByUserId(ApplicationUser.Current.UserId);
+
+            return View(model);
+        }
+
+        public ActionResult CompanyList()
+        {
+            CompanyModel model = new CompanyModel();
+
+            model.Companys = companyService.GetByUserId(ApplicationUser.Current.UserId);
+
+            return View("_CompanyList", model);
+        }
+        #endregion
+
+        #region TimeLine
+
+        public ActionResult Timeline()
+        {
+            CompanyModel model = new CompanyModel();
+
+            model.Companys = companyService.GetByUserId(ApplicationUser.Current.UserId);
+
+            return View(model);
+        }
+
+        public ActionResult TimelineProjects()
         {
             return View();
         }
 
-        // GET: admin/Tools/Create
-        public ActionResult Create()
+        public ActionResult TimelineDetails(int id)
         {
             return View();
         }
-
-        // POST: admin/Tools/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: admin/Tools/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: admin/Tools/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: admin/Tools/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: admin/Tools/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
+        #endregion
     }
 }

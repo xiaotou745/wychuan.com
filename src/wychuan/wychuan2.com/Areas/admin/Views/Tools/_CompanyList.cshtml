@@ -1,0 +1,26 @@
+﻿@model wychuan2.com.Areas.admin.Models.CompanyModel
+
+@foreach (var company in Model.Companys)
+{
+    <div class="col-lg-4">
+        <div class="contact-box">
+            <a href="/admin/tools/timelinedetails/@company.Id">
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <img alt="image" class="img-circle m-t-xs img-responsive" src="/img/a2.jpg">
+                        <div class="m-t-xs font-bold">@company.Creator</div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <h3><strong>@company.Name</strong></h3>
+                    <p><i class="fa fa-map-marker"></i>创始日期： @company.CreateTime.ToString("yyyy-MM-dd")</p>
+                    <p>
+                        @company.Introdution
+                    </p>
+                                    
+                </div>
+                <div class="clearfix"></div>
+            </a>
+        </div>
+    </div>
+}

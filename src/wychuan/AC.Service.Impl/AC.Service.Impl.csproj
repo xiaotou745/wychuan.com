@@ -43,6 +43,8 @@
     <Compile Include="LiCai\CategoryService.cs" />
     <Compile Include="LiCai\ItemsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\CompanyService.cs" />
+    <Compile Include="Tools\CompanyTimelineService.cs" />
     <Compile Include="Tools\MyTaskService.cs" />
     <Compile Include="User\UserService.cs" />
   </ItemGroup>

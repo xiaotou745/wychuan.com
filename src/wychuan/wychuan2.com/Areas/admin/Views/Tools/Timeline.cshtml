@@ -1,0 +1,95 @@
+﻿@model wychuan2.com.Areas.admin.Models.CompanyModel
+@{
+    ViewBag.Title = "牛逼公司发展史";
+    Layout = "../Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>公司列表</h5>
+                <div class="ibox-tools">
+                    <a href="#timelineModal" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-plus"></i> 添加公司</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="m-b-lg">
+                    <div class="input-group">
+                        <input type="text" placeholder="Search issue by name..." class=" form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-white"><i class="fa fa-search"></i> Search</button>
+                        </span>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-comments"></i> Test</button>
+                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-user"></i> Test</button>
+                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-list"></i> Test</button>
+                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-pencil"></i> Test</button>
+                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-print"></i> Test</button>
+                            <button type="button" class="btn btn-sm btn-white"> <i class="fa fa-cogs"></i> Test</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="companys">
+                    @Html.Partial("_Company", Model)
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--账户对话框-->
+<div class="modal fade" id="timelineModal" tabindex="-1" role="dialog" aria-labelledby="timelineModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="timelineModalLabel">创建公司</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frmTimeline">
+                    <input type="hidden" value="0" id="Id" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Name">公司名称</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder="公司名称" required />
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">创始人</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="Creator" name="Creator" placeholder="创始人" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="">创始时间</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="CreateDate" name="CreateDate" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">简介</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" id="Introdution" placeholder="请填写公司简介"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSave" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
+    <script src="~/Scripts/plugins/validate/messages_zh.js"></script>
+    <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
+    <script src="~/Scripts/tools/company.js"></script>
+}

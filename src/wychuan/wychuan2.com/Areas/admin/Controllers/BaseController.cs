@@ -11,7 +11,7 @@ namespace wychuan2.com.Areas.admin.Controllers
             {
                 Response.Redirect("/admin/account/logon");
             }
-            ViewBag.ShowTopNav = true;
+            //ViewBag.ShowTopNav = true;
             base.OnActionExecuting(filterContext);
         }
     }

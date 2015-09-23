@@ -32,6 +32,7 @@
                 <ul class="nav nav-second-level">
                     <li class="@("jobs".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/tools/jobs">任务管理</a></li>
                     <li class="@("pinboard".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a href="/admin/tools/pinboard">记事本</a></li>
+                    <li class="@("company".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a href="/admin/tools/company">牛逼公司</a></li>
                 </ul>
             </li>
             <li class="@(Request.RawUrl.ToLower().Contains("licai") ? "active" : string.Empty)">

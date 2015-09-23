@@ -65,7 +65,7 @@
                     <li class="@(string.IsNullOrEmpty(task.Class) ? "success-element" : task.Class)">
                         <input name="id" type="hidden" value="@task.Id" />
                         <h3>@task.Title</h3>
-                        @task.Content
+                        <span>@task.Content</span>
                         <div class="agile-detail">
                             <a href="javascript:;" class="pull-right btn btn-xs btn-white J_Hide">Hide</a>
                             <i class="fa fa-clock-o"></i> @task.PubTime
