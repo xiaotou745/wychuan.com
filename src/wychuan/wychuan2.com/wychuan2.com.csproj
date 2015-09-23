@@ -389,11 +389,9 @@
     <Content Include="Areas\admin\Views\Tools\Jobs.cshtml" />
     <Content Include="Areas\admin\Views\Tools\PinBoard.cshtml" />
     <Content Include="Areas\admin\Views\Tools\_JobList.cshtml" />
-    <Content Include="Areas\admin\Views\Tools\Timeline.cshtml" />
-    <Content Include="Areas\admin\Views\Tools\TimelineDetails.cshtml" />
-    <Content Include="Areas\admin\Views\Tools\TimelineProjects.cshtml" />
     <Content Include="Areas\admin\Views\Tools\_CompanyList.cshtml" />
     <Content Include="Areas\admin\Views\Tools\Company.cshtml" />
+    <Content Include="Areas\admin\Views\Tools\CompanyDetail.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

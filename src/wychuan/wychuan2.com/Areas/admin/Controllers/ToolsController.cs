@@ -78,29 +78,12 @@ namespace wychuan2.com.Areas.admin.Controllers
 
             return View("_CompanyList", model);
         }
-        #endregion
 
-        #region TimeLine
-
-        public ActionResult Timeline()
-        {
-            CompanyModel model = new CompanyModel();
-
-            model.Companys = companyService.GetByUserId(ApplicationUser.Current.UserId);
-
-            return View(model);
-        }
-
-        public ActionResult TimelineProjects()
+        public ActionResult CompanyDetail(int id)
         {
             return View();
         }
-
-        public ActionResult TimelineDetails(int id)
-        {
-            return View();
-        }
-        
         #endregion
+
     }
 }

@@ -3,6 +3,7 @@
 *.bak
 *.pubxml
 *.pdb
+*.log
 
 obj
 bin

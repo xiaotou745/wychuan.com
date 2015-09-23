@@ -17,10 +17,12 @@
         <div id="wrapper">
             @Html.Partial("_Layout_LeftNav")
             <div id="page-wrapper" class="gray-bg dashbard-1">
+                @if (ViewBag.ShowTopNav != null && ViewBag.ShowTopNav)
+                {
                     <div class="row border-bottom">
                         @Html.Partial("_Layout_TopNav")
                     </div>
-                
+                }
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <div class="col-lg-10">
                         <h2>功能名称</h2>
