@@ -1,0 +1,102 @@
+﻿@model wychuan2.com.Areas.admin.Models.TableViewModel
+@{
+    ViewBag.Title = "表结构查看";
+    Layout = "../Shared/_Layout.cshtml";
+}
+@section styles{
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <form id="dbSelector" method="POST">
+                            <legend>配置条件</legend>
+                            <input type="hidden" data-type="1" id="viewType" />
+                            <span class="hide alert-danger" id="txtError"></span>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="control-label" for="dbServer">选择服务器</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                        <select id="dbServer" name="dbServer" class="form-control">
+                                            @foreach (string serverName in Model.DbServers)
+                                            {
+                                                <option @(serverName == Model.CurrentDbServer ? @Html.Raw("selected='selected'").ToString() : string.Empty)>@serverName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label" for="txtDbName">选择数据库</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                        <input type="text" id="txtDbName" name="dbName" class="form-control" value="@Model.CurrentDbName" data-provide="typeahead" data-items="100" data-source="@Model.DbNameSource">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtTableName" class="control-label">选择数据表</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                        <input type="text" id="txtTableName" class="form-control" data-provide="typeahead" data-items="50" data-source="@Model.DbTableSource" />
+                                    </div>
+                                    <a id="returnTableList" href="javascript:;">返回上一步</a>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="col-sm-9" id="contents">
+                        @Html.Partial("_DatabaseList", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalDescEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="accountModalLabel">编辑描述信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">表名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="disabled form-control" id="lblTableName" disabled="disabled" placeholder="表名称" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">列名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="disabled form-control" id="lblColumnName" disabled="disabled" placeholder="列名称" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="txtDesc">描述</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="txtDesc"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSaveDesc" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/dbtools/tableview.js"></script>
+}

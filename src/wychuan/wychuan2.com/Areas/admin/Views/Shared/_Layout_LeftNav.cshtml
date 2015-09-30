@@ -35,6 +35,12 @@
                     <li class="@(Html.Action().ToLower().StartsWith("company") ? "active" : string.Empty) "><a href="/admin/tools/company">牛逼公司</a></li>
                 </ul>
             </li>
+            <li class="@("dbtools".Equals(Html.Controller(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)">
+                <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据库</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li class="@("tableview".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/dbtools/tableview">表结构查看</a></li>
+                </ul>
+            </li>
             <li class="@(Request.RawUrl.ToLower().Contains("licai") ? "active" : string.Empty)">
                 <a href=""><i class="fa fa-money"></i> <span class="nav-label">财务概况</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

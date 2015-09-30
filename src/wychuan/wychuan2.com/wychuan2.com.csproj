@@ -184,6 +184,7 @@
     <Compile Include="Areas\admin\Controllers\api\AccountController.cs" />
     <Compile Include="Areas\admin\Controllers\api\TasksController.cs" />
     <Compile Include="Areas\admin\Controllers\api\CompanyController.cs" />
+    <Compile Include="Areas\admin\Controllers\DbToolsController.cs" />
     <Compile Include="Areas\admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\admin\Controllers\LiCai\AccountController.cs" />
     <Compile Include="Areas\admin\Controllers\LiCai\BillController.cs" />
@@ -193,9 +194,14 @@
     <Compile Include="Areas\admin\Controllers\LiCai\TongJiController.cs" />
     <Compile Include="Areas\admin\Controllers\LiCai\YuSuanController.cs" />
     <Compile Include="Areas\admin\Controllers\ToolsController.cs" />
+    <Compile Include="Areas\admin\Models\ColumnNames.cs" />
+    <Compile Include="Areas\admin\Models\CommonTableInfo.cs" />
     <Compile Include="Areas\admin\Models\CompanyModel.cs" />
     <Compile Include="Areas\admin\Models\LiCai\BillModel.cs" />
     <Compile Include="Areas\admin\Models\MyTaskModel.cs" />
+    <Compile Include="Areas\admin\Models\TableRow.cs" />
+    <Compile Include="Areas\admin\Models\TableRowItem.cs" />
+    <Compile Include="Areas\admin\Models\TableViewModel.cs" />
     <Compile Include="Areas\weixin\Controllers\AccountController.cs" />
     <Compile Include="Areas\weixin\Controllers\api\ProcessorController.cs" />
     <Compile Include="Areas\admin\Controllers\BaseController.cs" />
@@ -219,6 +225,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Data\dbservers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
@@ -392,10 +401,14 @@
     <Content Include="Areas\admin\Views\Tools\_CompanyList.cshtml" />
     <Content Include="Areas\admin\Views\Tools\Company.cshtml" />
     <Content Include="Areas\admin\Views\Tools\CompanyDetail.cshtml" />
+    <Content Include="Areas\admin\Views\DbTools\TableView.cshtml" />
+    <Content Include="Areas\admin\Views\DbTools\CodeGenerate.cshtml" />
+    <Content Include="Areas\admin\Views\DbTools\_DatabaseList.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\dbtools\tableview.js" />
     <Content Include="Scripts\demo\chartjs-demo.js" />
     <Content Include="Scripts\demo\flot-demo.js" />
     <Content Include="Scripts\demo\morris-demo.js" />
@@ -534,6 +547,10 @@
     <ProjectReference Include="..\..\..\..\achuan.lib\net\net.libs\AC.Core\AC.Core.csproj">
       <Project>{fdf6b367-6e74-4e7e-bea8-fd53d6278c9a}</Project>
       <Name>AC.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\achuan.net\src\AC\AC.CodeGenerator\AC.CodeGenerator.csproj">
+      <Project>{32A0597B-29EC-421E-ACEE-790085E652F1}</Project>
+      <Name>AC.CodeGenerator</Name>
     </ProjectReference>
     <ProjectReference Include="..\AC.Service.Impl\AC.Service.Impl.csproj">
       <Project>{421DB240-01BF-4D80-9695-69EA7C3815C4}</Project>
