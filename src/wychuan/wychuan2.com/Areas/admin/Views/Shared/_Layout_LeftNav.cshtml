@@ -33,12 +33,15 @@
                     <li class="@("jobs".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/tools/jobs">任务管理</a></li>
                     <li class="@("pinboard".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a href="/admin/tools/pinboard">记事本</a></li>
                     <li class="@(Html.Action().ToLower().StartsWith("company") ? "active" : string.Empty) "><a href="/admin/tools/company">牛逼公司</a></li>
+                    <li class="@("algorithm".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a href="/admin/tools/algorithm">算法大全</a></li>
                 </ul>
             </li>
             <li class="@("dbtools".Equals(Html.Controller(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)">
                 <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据库</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li class="@("tableview".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/dbtools/tableview">表结构查看</a></li>
+                    <li class="@("codegenerate".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/dbtools/codegenerate">代码生成</a></li>
+                    <li class="@("codetemplate".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/dbtools/codetemplate">代码模板</a></li>
                 </ul>
             </li>
             <li class="@(Request.RawUrl.ToLower().Contains("licai") ? "active" : string.Empty)">

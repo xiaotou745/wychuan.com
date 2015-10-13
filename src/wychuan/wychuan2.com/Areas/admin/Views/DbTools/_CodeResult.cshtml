@@ -1,0 +1,64 @@
+﻿@using wychuan2.com.Areas.admin.Models.DbTools
+@model CodeResult
+           
+@{
+    string preClass;
+    switch (Model.Language)
+    {
+        case AC.Code.Config.CodeLanguage.CSharp:
+            preClass = "brush:csharp";
+            break;
+        case AC.Code.Config.CodeLanguage.Java:
+            preClass = "brush:java";
+            break;
+        default:
+            preClass = "brush:csharp";
+            break;
+    }
+}
+
+@if (!CodeResult.Empty.Equals(Model))
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content ibox-heading">
+                    <a id="btnDownloadCode" href="javascript:;" class="btn btn-white">下载代码</a>
+                    <a class="btn btn-white">sfsdf</a>
+                    <a class="btn btn-white">sfsdf</a>
+                    <a class="btn btn-white">sfsdf</a>
+                </div>
+                <div class="ibox-content">
+                    <ul class="nav nav-tabs">
+                        @{
+                            if (Model.Codes != null)
+                            {
+                                int index = 1;
+                                foreach (var code in Model.Codes)
+                                {
+                                    <li @(index++==1?"class=active":string.Empty)>
+                                        <a href="#@code.Id" data-toggle="tab">@code.TabText</a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                    <div class="tab-content">
+                        @{
+                            if (Model.Codes != null)
+                            {
+                                int tabindex = 1;
+                                foreach (var code in Model.Codes)
+                                {
+                                    <div class="tab-pane @(tabindex++==1?"active":"")" id="@code.Id">
+                                        <pre name="@code.Id" class="@preClass">@code.Code</pre>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

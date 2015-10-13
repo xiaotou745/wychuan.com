@@ -4,12 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AC.Code.Builder;
 using AC.Code.Config;
 using AC.Code.DbObjects;
 using AC.Code.Helper;
+using AC.Code.IBuilder;
 using AC.Extension;
 using Newtonsoft.Json;
 using wychuan2.com.Areas.admin.Models;
+using wychuan2.com.Areas.admin.Models.DbTools;
+using wychuan2.com.Areas.admin.Models.HtmlTable;
 
 namespace wychuan2.com.Areas.admin.Controllers
 {
@@ -52,37 +56,8 @@ namespace wychuan2.com.Areas.admin.Controllers
             //默认显示类型为数据库列表
             model.CurrentViewType = 1;
             model.HtmlTableResult = GetDatabaseList(model.CurrentDbServer);
-
-            //当前选择的服务器,如果初始，则默认选中第一个服务器
-            //string dbServerSelected = string.IsNullOrEmpty(Request["dbServer"]) ? dbServers[0] : Request["dbServer"];
-            //model.CurrentDbServer = dbServerSelected;
-
-            //string dbNameSelected = string.IsNullOrEmpty(Request["dbName"]) ? string.Empty : Request["dbName"];
-            ////当前选择的数据库，如果初始，则空；
-            //model.CurrentDbName = dbNameSelected;
-
-            //如果当前没有选择数据库，那就显示数据库列表，否则显示表列表
-            //if (string.IsNullOrEmpty(dbNameSelected))
-            //{
-            //    //ViewData["Type"] = 1;
-            //    //ViewData["TypeHtml"] = GetHtmlDbList(dbServerSelected);
-            //    model.HtmlTableResult = GetDatabaseList(dbServerSelected);
-            //}
-            //else
-            //{
-            //    //ViewData["Type"] = 2;
-            //    //ViewData["TypeHtml"] = GetHtmlTableList(dbServerSelected, dbNameSelected);
-            //    model.HtmlTableResult = GetDataTableList(dbServerSelected, dbNameSelected);
-            //}
-
-            //IDbObject dbObject = DbSetting.CreateDbObject(dbServerSelected);
-
-            //model.DbNameSource = JsonConvert.SerializeObject(dbObject.GetDBList());
-
-            //model.DbTableSource = string.IsNullOrEmpty(dbNameSelected)
-            //                                ? string.Empty
-            //                                : JsonConvert.SerializeObject(dbObject.GetTables(dbNameSelected));
-
+            model.TableHasEditOper = true.ToString();
+            model.TableHasGenerateCodeOper = false.ToString();
             return View(model);
         }
 
@@ -110,7 +85,7 @@ namespace wychuan2.com.Areas.admin.Controllers
         /// <param name="dbName">数据库</param>
         /// <param name="dbTable">表</param>
         /// <returns></returns>
-        public ActionResult Refresh(int viewType, string dbServer, string dbName = "", string dbTable = "")
+        public ActionResult Refresh(int viewType, string dbServer, string dbName = "", string dbTable = "", bool hasEdit = true, bool hasGenerateCode = false)
         {
             var model = new TableViewModel();
             model.CurrentDbServer = dbServer;
@@ -123,14 +98,14 @@ namespace wychuan2.com.Areas.admin.Controllers
             {
                 model.CurrentViewType = 2;
                 model.CurrentDbName = dbName;
-                model.HtmlTableResult = GetDataTableList(dbServer, dbName);
+                model.HtmlTableResult = GetDataTableList(dbServer, dbName, hasEdit, hasGenerateCode);
             }
             else if (viewType == 3)
             {
                 model.CurrentViewType = 3;
                 model.CurrentDbName = dbName;
                 model.CurrentTableName = dbTable;
-                model.HtmlTableResult = GetDataTableDetails(dbServer, dbName, dbTable);
+                model.HtmlTableResult = GetDataTableDetails(dbServer, dbName, dbTable, hasEdit);
             }
             return View("_DatabaseList", model);
         }
@@ -140,12 +115,14 @@ namespace wychuan2.com.Areas.admin.Controllers
         /// </summary>
         /// <param name="dbServer">服务器</param>
         /// <param name="dbName">数据库</param>
+        /// <param name="hasEdit"></param>
+        /// <param name="hasGenerateCode"></param>
         /// <returns></returns>
-        private CommonTableInfo GetDataTableList(string dbServer, string dbName)
+        private HtmlTableInfo GetDataTableList(string dbServer, string dbName, bool hasEdit=true,bool hasGenerateCode=false)
         {
             IDbObject dbObject = DbSetting.CreateDbObject(dbServer);
             List<TableInfo> lstTables = dbObject.GetTablesInfo(dbName);
-            var commonTableInfo = new CommonTableInfo
+            var htmlTable = new HtmlTableInfo
             {
                 UseSection = false,
                 UseStripped = true,
@@ -159,31 +136,36 @@ namespace wychuan2.com.Areas.admin.Controllers
             };
             foreach (var tableInfo in lstTables)
             {
-                var tableRow = new TableRow();
-                tableRow.AddItem(new TableRowItem
+                HtmlTableTrItem tr = htmlTable.NewRow();
+                tr.NewLinkTd("tableName", "javascript:;", "J_tableName", tableInfo.TabName);
+                tr.NewTd(string.Empty, tableInfo.TabUser);
+                tr.NewTd(string.Empty, tableInfo.TabDate);
+                tr.NewTd(string.Empty, tableInfo.TabDesc);
+
+                var linkTd = new HtmlTableTdLinkItem()
                 {
-                    Name = "tableName",
-                    Data = tableInfo.TabName,
-                    Class = "J_tableName",
-                    AsLink = true.ToString(),
-                    LinkHref = "javascript:;",
-                });
-                tableRow.AddItem(string.Empty, tableInfo.TabUser);
-                tableRow.AddItem(string.Empty, tableInfo.TabDate);
-                tableRow.AddItem(string.Empty, tableInfo.TabDesc);
-                tableRow.AddItem(new TableRowItem
-                {
-                    Name = string.Empty,
-                    Data = "编辑",
                     Class = "J_editTableDesc",
-                    AsLink = true.ToString(),
-                    LinkHref = "#modalDescEdit",
-                    LinkProperty = "data-toggle='modal'",
                     Properties = "data-table={0} data-desc={1}".format(tableInfo.TabName, tableInfo.TabDesc),
-                });
-                commonTableInfo.AddRow(tableRow);
+                };
+                if (hasEdit)
+                {
+                    LinkItem editLink = new LinkItem();
+                    editLink.Text = "编辑描述";
+                    editLink.Href = "#modalDescEdit";
+                    editLink.Properties = "data-toggle='modal'";
+                    linkTd.LinkItems.Add(editLink);
+                }
+                if (hasGenerateCode)
+                {
+                    LinkItem codeLink = new LinkItem();
+                    codeLink.Text = "生成代码";
+                    codeLink.Href = "#generateCodeSettings";
+                    codeLink.Properties = "data-toggle='modal'";
+                    linkTd.LinkItems.Add(codeLink);
+                }
+                tr.AddTd(linkTd);
             }
-            return commonTableInfo;
+            return htmlTable;
         }
 
         /// <summary>
@@ -191,11 +173,11 @@ namespace wychuan2.com.Areas.admin.Controllers
         /// </summary>
         /// <param name="dbServer">服务器</param>
         /// <returns></returns>
-        private CommonTableInfo GetDatabaseList(string dbServer)
+        private HtmlTableInfo GetDatabaseList(string dbServer)
         {
             IDbObject dbObject = DbSetting.CreateDbObject(dbServer);
             List<string> lstDbNames = dbObject.GetDBList();
-            var commonTableInfo = new CommonTableInfo
+            var htmlTable = new HtmlTableInfo
             {
                 UseSection = false,
                 UseStripped = true,
@@ -205,19 +187,10 @@ namespace wychuan2.com.Areas.admin.Controllers
             };
             foreach (var dbName in lstDbNames)
             {
-                var tableRow = new TableRow();
-                var item = new TableRowItem
-                {
-                    Name = "dbname",
-                    Data = dbName,
-                    AsLink = true.ToString(),
-                    LinkHref = "javascript:;"
-                };
-                tableRow.AddItem(item);
-
-                commonTableInfo.AddRow(tableRow);
+                HtmlTableTrItem tableTr = htmlTable.NewRow();
+                tableTr.NewLinkTd("dbname", "javascript:;", dbName);
             }
-            return commonTableInfo;
+            return htmlTable;
         }
 
         /// <summary>
@@ -227,11 +200,11 @@ namespace wychuan2.com.Areas.admin.Controllers
         /// <param name="dbName">数据库</param>
         /// <param name="dbTable">表</param>
         /// <returns></returns>
-        private CommonTableInfo GetDataTableDetails(string dbServer, string dbName, string dbTable)
+        private HtmlTableInfo GetDataTableDetails(string dbServer, string dbName, string dbTable, bool hasEdit=true)
         {
             IDbObject dbObject = DbSetting.CreateDbObject(dbServer);
             List<ColumnInfo> lstColumnInfo = dbObject.GetColumnInfoList(dbName, dbTable);
-            var commonTableInfo = new CommonTableInfo
+            var htmlTable = new HtmlTableInfo
             {
                 UseSection = false,
                 UseStripped = true,
@@ -253,31 +226,37 @@ namespace wychuan2.com.Areas.admin.Controllers
             };
             foreach (ColumnInfo columnInfo in lstColumnInfo)
             {
-                var tableRow = new TableRow();
-                tableRow.AddItem(string.Empty, columnInfo.Colorder);
-                tableRow.AddItem(string.Empty, columnInfo.ColumnName);
-                tableRow.AddItem(string.Empty, columnInfo.TypeName);
-                tableRow.AddItem(string.Empty, columnInfo.Length);
-                tableRow.AddItem(string.Empty, columnInfo.Preci);
-                tableRow.AddItem(string.Empty, columnInfo.Scale);
-                tableRow.AddItem(string.Empty, columnInfo.IsIdentity ? "√" : string.Empty);
-                tableRow.AddItem(string.Empty, columnInfo.IsPK ? "√" : string.Empty);
-                tableRow.AddItem(string.Empty, columnInfo.cisNull ? "√" : string.Empty);
-                tableRow.AddItem(string.Empty, columnInfo.DefaultVal);
-                tableRow.AddItem(string.Empty, columnInfo.DeText);
-                tableRow.AddItem(new TableRowItem
+                HtmlTableTrItem tr = htmlTable.NewRow();
+                tr.AddTd(string.Empty, columnInfo.Colorder);
+                tr.AddTd(string.Empty, columnInfo.ColumnName);
+                tr.AddTd(string.Empty, columnInfo.TypeName);
+                tr.AddTd(string.Empty, columnInfo.Length);
+                tr.AddTd(string.Empty, columnInfo.Preci);
+                tr.AddTd(string.Empty, columnInfo.Scale);
+                tr.AddTd(string.Empty, columnInfo.IsIdentity ? "√" : string.Empty);
+                tr.AddTd(string.Empty, columnInfo.IsPK ? "√" : string.Empty);
+                tr.AddTd(string.Empty, columnInfo.cisNull ? "√" : string.Empty);
+                tr.AddTd(string.Empty, columnInfo.DefaultVal);
+                tr.AddTd(string.Empty, columnInfo.DeText);
+
+                if (hasEdit)
                 {
-                    Name = string.Empty,
-                    Data = "编辑",
-                    Class = "J_editColumnDesc",
-                    AsLink = true.ToString(),
-                    LinkHref = "#modalDescEdit",
-                    LinkProperty = "data-toggle='modal'",
-                    Properties = "data-col={0} data-desc={1}".format(columnInfo.ColumnName,columnInfo.DeText),
-                });
-                commonTableInfo.AddRow(tableRow);
+                    LinkItem editLink = new LinkItem();
+                    editLink.Text = "编辑";
+                    editLink.Href = "#modalDescEdit";
+                    editLink.Properties = "data-toggle='modal'";
+
+                    var linkTd = new HtmlTableTdLinkItem()
+                    {
+                        Class = "J_editColumnDesc",
+                        Properties = "data-col={0} data-desc={1}".format(columnInfo.ColumnName, columnInfo.DeText),
+                    };
+                    linkTd.LinkItems.Add(editLink);
+
+                    tr.Add(linkTd);
+                }
             }
-            return commonTableInfo;
+            return htmlTable;
         }
         #endregion
 
@@ -289,34 +268,110 @@ namespace wychuan2.com.Areas.admin.Controllers
             //服务器列表
             IList<string> dbServers = DbSetting.GetDbServers();
             model.DbServers = dbServers;
+            //默认选中第一个服务器
+            model.CurrentDbServer = dbServers[0];
+            model.CurrentDbName = string.Empty;//默认没有选中数据库
+            //默认显示类型为数据库列表
+            model.CurrentViewType = 1;
+            model.HtmlTableResult = GetDatabaseList(model.CurrentDbServer);
+            model.TableHasEditOper = true.ToString();
+            model.TableHasGenerateCodeOper = true.ToString();
 
-            //当前选择的服务器,如果初始，则默认选中第一个服务器
-            string dbServerSelected = string.IsNullOrEmpty(Request["dbServer"]) ? dbServers[0] : Request["dbServer"];
-            model.CurrentDbServer = dbServerSelected;
+            //model.CodeResult = GenerateCode("127.0.0.1", "WYC", "Company", "Company", "1", "1", "1", 1);
 
-            string dbNameSelected = string.IsNullOrEmpty(Request["dbName"]) ? string.Empty : Request["dbName"];
-            //当前选择的数据库，如果初始，则空；
-            model.CurrentDbName = dbNameSelected;
+            return View(model);
+        }
 
-            //如果当前没有选择数据库，那就显示数据库列表，否则显示表列表
-            if (string.IsNullOrEmpty(dbNameSelected))
+        public ActionResult Generate(string dbServer, string dbName, string tableName, string modelName,
+                                         string callStyle, string daoStyle, string codeLayer, int codeType)
+        {
+            var model = GenerateCode(dbServer, dbName, tableName, modelName, callStyle, daoStyle, codeLayer, codeType);
+            
+            return View("_CodeResult", model);
+        }
+
+        private CodeResult GenerateCode(string dbServer, string dbName, string tableName, string modelName,
+            string callStyle, string daoStyle, string codeLayer, int codeType)
+        {
+            var model = new CodeResult();
+            model.Language = (CodeLanguage)Enum.Parse(typeof(CodeLanguage), codeType.ToString());
+            //model.Codes.Add(new CodeFileItem { Id = "tabService", TabText = "ServiceCode", Code = "Service" });
+            //model.Codes.Add(new CodeFileItem { Id = "tabServiceImpl", TabText = "ServiceImplCode", Code = "ServiceImpl" });
+            //model.Codes.Add(new CodeFileItem { Id = "tabDao", TabText = "DaoCode", Code = "Dao" });
+
+            var codeGenerateConfig = new CodeGenerateConfig
             {
-                //ViewData["Type"] = 1;
-                //ViewData["TypeHtml"] = GetHtmlDbList(dbServerSelected);
-            }
-            else
+                CallStyleHashCode = callStyle,
+                CodeLayerHashCode = codeLayer,
+                DaoStyleHashCode = daoStyle,
+                ModelName = modelName,
+                CodeType = (CodeType)Enum.Parse(typeof(CodeType), codeType.ToString())
+            };
+
+            IDbObject dbObj = DbSetting.CreateDbObject(dbServer);
+
+            //获取数据库表的详细列信息
+            List<ColumnInfo> lstColumns = dbObj.GetColumnInfoList(dbName, tableName);
+            //获取主键列信息
+            List<ColumnInfo> lstKeys = (from columnInfo in lstColumns
+                                        where columnInfo.IsPK
+                                        select columnInfo).ToList();
+
+            //Service  代码生成
+            IBuilderService serviceBuilder = ServiceBuilder.Create()
+                .SetGenerateConfig(codeGenerateConfig)
+                .SetKeys(lstKeys)
+                .GetServiceBuilder();
+            string serviceCode = serviceBuilder.GetServiceCode();
+            model.Codes.Add(new CodeFileItem { Id = "tabService", TabText = "ServiceCode", Code = serviceCode });
+
+            //Dao 代码生成
+            IBuilderDao daoBuilder = DaoBuilder.Create()
+                .SetDbObj(dbObj)
+                .SetDbName(dbName)
+                .SetTableName(tableName)
+                .SetColFields(lstColumns)
+                .SetKeys(lstKeys)
+                .SetGenerateConfig(codeGenerateConfig)
+                .GetDaoBuilder();
+            string daoCode = daoBuilder.GetDaoCode();
+            model.Codes.Add(new CodeFileItem { Id = "tabDao", TabText = "DaoCode", Code = daoCode });
+
+            //Service DTO 代码生成
+            IBuilderDTO serviceDTOBuilder = DTOBuilder.Create(codeGenerateConfig, lstColumns).GetDTOCode();
+            string serviceDTOCode = serviceDTOBuilder.GetServiceDTOCode();
+            model.Codes.Add(new CodeFileItem { Id = "tabDTO", TabText = "DTOCode", Code = serviceDTOCode });
+
+            //如果是Service五层架构，则继续生成Domain和ServiceImpl层
+            if (codeGenerateConfig.CodeLayer == CodeLayer.ServiceLayerWithDomain)
             {
-                //ViewData["Type"] = 2;
-                //ViewData["TypeHtml"] = GetHtmlTableList(dbServerSelected, dbNameSelected);
+                //生成Domain层代码
+                IBuilderDomain builderDomain = new BuilderDomain(lstKeys, codeGenerateConfig);
+                string domainCode = builderDomain.GetDomainCode();
+                model.Codes.Add(new CodeFileItem { Id = "tabDomain", TabText = "DomainCode", Code = domainCode });
+
+                //生成ServiceImpl层代码
+                IBuilderServiceImpl builderServiceImpl = new BuilderServiceImpl(lstKeys, codeGenerateConfig);
+                string serviceImplCode = builderServiceImpl.GetServiceImplCode();
+                model.Codes.Add(new CodeFileItem { Id = "tabServiceImpl", TabText = "ServiceImplCode", Code = serviceImplCode });
+            }
+            //如果是Service不带Domain层代码，只需要生成ServiceImpl层代码
+            else if (codeGenerateConfig.CodeLayer == CodeLayer.ServiceLayerWithoutDomain)
+            {
+                IBuilderServiceImpl builderServiceImpl = new BuilderServiceImpl(lstKeys, codeGenerateConfig);
+                string serviceImplCode = builderServiceImpl.GetServiceImplCode();
+                model.Codes.Add(new CodeFileItem { Id = "tabServiceImpl", TabText = "ServiceImplCode", Code = serviceImplCode });
+
             }
 
-            IDbObject dbObject = DbSetting.CreateDbObject(dbServerSelected);
+            return model;
+        }
+        #endregion
 
-            model.DbNameSource = JsonConvert.SerializeObject(dbObject.GetDBList());
+        #region CodeTemplate
 
-            model.DbTableSource = string.IsNullOrEmpty(dbNameSelected)
-                                            ? string.Empty
-                                            : JsonConvert.SerializeObject(dbObject.GetTables(dbNameSelected));
+        public ActionResult CodeTemplate()
+        {
             return View();
         }
         #endregion

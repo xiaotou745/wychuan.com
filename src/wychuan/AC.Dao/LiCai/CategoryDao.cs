@@ -38,6 +38,17 @@ select @@IDENTITY";
             return int.Parse(result.ToString());
         }
 
+        public void Rename(int id, string name)
+        {
+            const string sqlText = @"update LC_Category set Name=@Name where ID=@Id";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.Add("Id", DbType.Int32, 4).Value = id;
+            dbParameters.Add("Name", DbType.String, 50).Value = name;
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, sqlText, dbParameters);
+        }
+
         public void InitUser(int userId)
         {
             const string initSql = @"
@@ -118,5 +129,13 @@ where   lc.IsEnable = 1
             }
         }
 
+        public void Delete(int id)
+        {
+            const string sqlText = @"update LC_Category set IsEnable=0 where ID=@Id";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, sqlText, dbParameters);
+        }
     }
 }

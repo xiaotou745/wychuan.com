@@ -108,9 +108,12 @@
 
 //刷新
 function refresh(viewType, dbServer, dbName, dbTable) {
+    var tableHasEditOper = $("#tableHasEditOper").val();
+    var tableHasGenerateCodeOper = $("#tableHasGenerateCodeOper").val();
     $.get("/admin/dbtools/refresh",
-        { viewType: viewType, dbServer: dbServer, dbName: dbName, dbTable: dbTable },
+        { viewType: viewType, dbServer: dbServer, dbName: dbName, dbTable: dbTable, hasEdit: tableHasEditOper, hasGenerateCode: tableHasGenerateCodeOper },
         function (resp) {
             $("#contents").html(resp);
+            $("#codeResult").html("");
         });
 }

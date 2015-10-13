@@ -12,6 +12,10 @@ namespace AC.Service.LiCai
 
         int Create(ItemDTO item);
 
+        void Rename(int id, string name);
+
+        void Remove(int id);
+
         IList<ItemDTO> GetByUserId(int userId);
 
         IList<ItemDTO> GetByUserId(int userId, ItemType type);

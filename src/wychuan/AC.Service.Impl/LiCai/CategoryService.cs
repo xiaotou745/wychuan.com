@@ -23,6 +23,14 @@ namespace AC.Service.Impl.LiCai
             return categoryDao.Insert(category);
         }
 
+        public void Rename(int id, string newName)
+        {
+            AssertUtils.Greater(id, 0);
+            AssertUtils.ArgumentNotNull(newName, "name");
+
+            categoryDao.Rename(id, newName);
+        }
+
         public void InitUser(int userId)
         {
             AssertUtils.Greater(userId, 0);
@@ -33,6 +41,13 @@ namespace AC.Service.Impl.LiCai
         public IList<CategoryDTO> GetByUserId(int userId)
         {
             return categoryDao.GetByUserId(userId);
+        }
+
+        public void Remove(int id)
+        {
+            AssertUtils.Greater(id, 0);
+
+            categoryDao.Delete(id);
         }
     }
 }

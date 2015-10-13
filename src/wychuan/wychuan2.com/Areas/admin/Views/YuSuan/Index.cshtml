@@ -5,14 +5,79 @@
 }
 
 @section styles{
-    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
 }
 <div class="row">
-    预算
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h4>$.jstree() methods</h4>
+            </div>
+            <div class="ibox-content">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active" role="presentation"><a href="#tabConfig" role="tab" data-toggle="tab">config</a></li>
+                    <li role="presentation"><a href="#tabMethods" role="tab" data-toggle="tab">method</a></li>
+                    <li role="presentation"><a href="#tabEvents" role="tab" data-toggle="tab">event</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tabConfig" class="tab-pane active">
+                        config
+                    </div>
+                    <div id="tabMethods" class="tab-pane">
+                        <table class="table table-bordered table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">method name</th>
+                                    <th class="col-sm-5">desc</th>
+                                    <th class="col-sm-5">demo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>get_node (obj [, as_dom])</code></td>
+                                    <td>get the JSON representation of a node (or the actual jQuery extended DOM node) by using any input (child DOM element, ID string, selector, etc)</td>
+                                    <td><code>$("#jstreediv").jstree(true).get_node(node_id);</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>create_node ([obj, node, pos, callback, is_loaded])</code></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><code>edit (obj [, default_text, callback])</code></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="tabEvents" class="tab-pane">
+                        <table class="table table-bordered table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">event name</th>
+                                    <th class="col-sm-5">desc</th>
+                                    <th class="col-sm-5">demo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>create_node.jstree</code></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><code>changed.jstree</code></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts{
-    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
-    <script src="~/Scripts/plugins/validate/messages_zh.js"></script>
 }

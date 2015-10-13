@@ -10,8 +10,11 @@ namespace AC.Service.LiCai
     {
         int Create(CategoryDTO category);
 
+        void Rename(int id, string newName);
+
         void InitUser(int userId);
 
         IList<CategoryDTO> GetByUserId(int userId);
+        void Remove(int id);
     }
 }

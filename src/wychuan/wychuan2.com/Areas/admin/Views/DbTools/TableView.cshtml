@@ -1,11 +1,12 @@
-﻿@model wychuan2.com.Areas.admin.Models.TableViewModel
+﻿@model wychuan2.com.Areas.admin.Models.DbTools.TableViewModel
 @{
     ViewBag.Title = "表结构查看";
     Layout = "../Shared/_Layout.cshtml";
 }
 @section styles{
 }
-
+<input type="hidden" value="@Model.TableHasEditOper" id="tableHasEditOper" />
+<input type="hidden" value="@Model.TableHasGenerateCodeOper" id="tableHasGenerateCodeOper" />
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox">

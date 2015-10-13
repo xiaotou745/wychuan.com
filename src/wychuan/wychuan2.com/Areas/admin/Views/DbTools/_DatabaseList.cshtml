@@ -1,60 +1,8 @@
-﻿@using AC.Security
-@model wychuan2.com.Areas.admin.Models.TableViewModel
+﻿@model wychuan2.com.Areas.admin.Models.DbTools.TableViewModel
 
 <input type="hidden" value="@Model.CurrentViewType" id="currentViewType" />
 <input type="hidden" value="@Model.CurrentDbServer" id="currentDbServer" />
 <input type="hidden" value="@Model.CurrentDbName" id="currentDbName" />
 <input type="hidden" value="@Model.CurrentTableName" id="currentTableName" />
-<table class="table table-bordered table-condensed @(Model.HtmlTableResult.UseStripped ? "table-striped" : string.Empty)">
-    <thead>
-        <tr>
-            @foreach (var colName in Model.HtmlTableResult.ColumnNames)
-            {
-                <th>@colName</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tableRow in Model.HtmlTableResult.DataRows)
-        {
-            <tr>
-                @foreach (var rowItem in tableRow)
-                {
-                    //如果Display属性为false，则不显示
-                    if (!string.IsNullOrEmpty(rowItem.Display) &&
-                        rowItem.Display.ToLower() == false.ToString().ToLower())
-                    {
-                        continue;
-                    }
-                    string data = rowItem.Data;
-                    //是否使用了加密
-                    if (!string.IsNullOrEmpty(rowItem.UseDES) && bool.Parse(rowItem.UseDES))
-                    {
-                        rowItem.Data = DES.Decrypt3DES(rowItem.Data);
-                    }
-                    //是否使用链接展示td内容
-                    if (!string.IsNullOrEmpty(rowItem.AsLink) && bool.Parse(rowItem.AsLink))
-                    {
-                        var href = string.IsNullOrEmpty(rowItem.LinkHref) ? rowItem.Data : rowItem.LinkHref;
-                        rowItem.Data = "<a href='" + href + "' "+@rowItem.LinkProperty+">" + rowItem.Data + "</a>";
-                    }
-                    //是否使用<code>
-                    if (!string.IsNullOrEmpty(rowItem.UseCode) && bool.Parse(rowItem.UseCode))
-                    {
-                        rowItem.Data = "<code>" + rowItem.Data + "</code>";
-                    }
 
-                    if (rowItem.UsePopover)
-                    {
-                        rowItem.Data = "<a href='#' rel='popover' " + rowItem.PopoverOptions +
-                                       " data-content='" + rowItem.Data + "'>详细信息</a>";
-                    }
-
-                    <td @(!string.IsNullOrEmpty(rowItem.Name) ? "name=" + rowItem.Name : "") class="@(rowItem.Class ?? string.Empty)" @(!string.IsNullOrEmpty(rowItem.Rowspan) ? "rowspan=" + rowItem.Rowspan : "") @(!string.IsNullOrEmpty(rowItem.Colspan) ? "colspan=" + rowItem.Colspan : "") @rowItem.Properties>
-                        @Html.Raw(rowItem.Data)
-                    </td>
-                }
-            </tr>
-        }
-    </tbody>
-</table>
+@Html.Raw(Model.HtmlTableResult.ToString())

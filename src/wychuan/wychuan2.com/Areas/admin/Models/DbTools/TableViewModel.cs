@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using wychuan2.com.Areas.admin.Models.HtmlTable;
 
-namespace wychuan2.com.Areas.admin.Models
+namespace wychuan2.com.Areas.admin.Models.DbTools
 {
     public class TableViewModel
     {
@@ -35,7 +33,27 @@ namespace wychuan2.com.Areas.admin.Models
         /// <summary>
         /// HtmlTable信息
         /// </summary>
-        public CommonTableInfo HtmlTableResult { get; set; }
+        public HtmlTableInfo HtmlTableResult { get; set; }
+
+        /// <summary>
+        /// 是否含有编辑按钮 
+        /// </summary>
+        public string TableHasEditOper { get; set; }
+        /// <summary>
+        /// 是否含有生成代码按钮
+        /// </summary>
+        public string TableHasGenerateCodeOper { get; set; }
+
+        private CodeResult codeResult = CodeResult.Empty;
+
+        /// <summary>
+        /// 代码生成结果
+        /// </summary>
+        public CodeResult CodeResult
+        {
+            get { return codeResult; }
+            set { codeResult = value; }
+        }
 
         public string DbNameSource { get; set; }
         public string DbTableSource { get; set; }

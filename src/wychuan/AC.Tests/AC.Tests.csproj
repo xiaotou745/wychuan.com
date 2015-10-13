@@ -70,7 +70,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Template\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\achuan.lib\net\net.libs\AC.Common\AC.Common.csproj">
       <Project>{c4d5e6b0-aea1-4acc-babd-3ccfdfcb6bf2}</Project>

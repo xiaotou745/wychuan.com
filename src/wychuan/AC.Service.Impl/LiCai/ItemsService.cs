@@ -29,6 +29,21 @@ namespace AC.Service.Impl.LiCai
             return itemsDao.Insert(item);
         }
 
+        public void Rename(int id, string name)
+        {
+            AssertUtils.Greater(id, 0);
+            AssertUtils.ArgumentNotNull(name, "name");
+
+            itemsDao.Rename(id, name);
+        }
+
+        public void Remove(int id)
+        {
+            AssertUtils.Greater(id, 0);
+
+            itemsDao.Delete(id);
+        }
+
         public IList<ItemDTO> GetByUserId(int userId)
         {
             return itemsDao.GetByUserId(userId);

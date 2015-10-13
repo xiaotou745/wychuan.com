@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AC.Service.DTO.LiCai
 {
@@ -7,11 +8,13 @@ namespace AC.Service.DTO.LiCai
         /// <summary>
         /// 收入
         /// </summary>
+        [Description("收入")]
         Income=2,
         /// <summary>
         /// 支出
         /// </summary>
-        Expend=1,
+        [Description("支出")]
+        Expend = 1,
     }
 
     public class CategoryDTO

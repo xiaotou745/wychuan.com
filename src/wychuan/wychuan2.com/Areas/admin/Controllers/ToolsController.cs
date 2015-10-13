@@ -15,6 +15,7 @@ namespace wychuan2.com.Areas.admin.Controllers
     {
         private readonly IMyTaskService myTaskService = new MyTaskService();
         private readonly ICompanyService companyService = new CompanyService();
+        
         #region Jobs
         // GET: admin/Tools
         public ActionResult Jobs()
@@ -85,5 +86,12 @@ namespace wychuan2.com.Areas.admin.Controllers
         }
         #endregion
 
+        #region Algorithm算法
+
+        public ActionResult Algorithm()
+        {
+            return View();
+        }
+        #endregion
     }
 }

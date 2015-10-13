@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,36 +12,43 @@ namespace AC.Service.DTO.LiCai
         /// <summary>
         /// 账本
         /// </summary>
+        [Description("账本")]
         BillBook = 0,
 
         /// <summary>
         /// 成员
         /// </summary>
+        [Description("成员")]
         Member = 1,
 
         /// <summary>
         /// 项目
         /// </summary>
+        [Description("项目")]
         Project = 2,
 
         /// <summary>
         /// 商家
         /// </summary>
+        [Description("商家")]
         Business = 3,
 
         /// <summary>
         /// 付款方
         /// </summary>
+        [Description("付款方")]
         PaymentPerson = 4,
 
         /// <summary>
         /// 债权人
         /// </summary>
+        [Description("债权人")]
         Creditor = 5,
 
         /// <summary>
         /// 收支分类
         /// </summary>
+        [Description("收支分类")]
         Category = 6,
     }
 
