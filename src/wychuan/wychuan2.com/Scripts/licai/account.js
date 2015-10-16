@@ -57,7 +57,7 @@ $(document).ready(function() {
         $("#frmAccount").trigger("submit");
     });
 
-    $("#tblAccountsList").delegate(".J_Remove", "click", function() {
+    $("#tblAccountsList").delegate(".J_Remove", "click", function () {
         remove($(this).parents("tr").find("[name=Id]").val());
     });
 
@@ -87,7 +87,7 @@ function save() {
     };
 
     $.ajax({
-        url: "/licai/account/save",
+        url: "/admin/licai/saveaccount",
         type: "post",
         dataType: "json",
         data: account,
@@ -104,7 +104,7 @@ function save() {
 //删除一个账户
 function remove(id) {
     $.ajax({
-        url: "/licai/account/delete",
+        url: "/admin/licai/deleteaccount",
         type: "post",
         data: { id: id },
         dataType: "json",
@@ -123,7 +123,7 @@ function refresh(type) {
         params.type = type;
     }
     $.ajax({
-        url: "/licai/account/accountlist",
+        url: "/admin/licai/accountlist",
         type: "get",
         data: params,
         success: function(resp) {

@@ -41,11 +41,13 @@
   <ItemGroup>
     <Compile Include="DaoBase.cs" />
     <Compile Include="LiCai\AccountDao.cs" />
+    <Compile Include="LiCai\BillDao.cs" />
     <Compile Include="LiCai\CategoryDao.cs" />
     <Compile Include="LiCai\ItemsDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\CompanyDao.cs" />
     <Compile Include="Tools\CompanyTimelineDao.cs" />
+    <Compile Include="Tools\MyNotesDao.cs" />
     <Compile Include="Tools\MyTaskDao.cs" />
     <Compile Include="User\UserDao.cs" />
   </ItemGroup>

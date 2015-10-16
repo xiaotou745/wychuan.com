@@ -565,3 +565,56 @@ System.Data.SqlClient.SqlException (0x80131904): 列名 'Creator' 无效。
    在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
    在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
 ClientConnectionId:3f4cc8b2-a581-46b0-a4f2-452c4eee646d
+2015-10-13 20:29:38,757 [76] ERROR ErrorLog [(null)] - 
+-----------------start----------------------
+2015/10/13 20:29:38
+异常发生地址:http://mywww2.wychuan.com/api/items/saveitems
+请求类型:POST
+异常:System.IO.InvalidDataException: [AsserUtils-Greater] failed with arg1:-1 arg2:0, -1<=0
+   在 AC.Util.AssertUtils.Greater(Int64 arg1, Int64 arg2, String message) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Core\Util\AssertUtils.cs:行号 165
+   在 AC.Util.AssertUtils.Greater(Int32 arg1, Int32 arg2) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Core\Util\AssertUtils.cs:行号 140
+   在 AC.Service.Impl.LiCai.ItemsService.Rename(Int32 id, String name) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\ItemsService.cs:行号 34
+   在 wychuan2.com.Areas.admin.Controllers.api.ItemsController.SaveItems(ItemDTO item) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\ItemsController.cs:行号 77
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+--------------------end---------------------
+
+System.IO.InvalidDataException: [AsserUtils-Greater] failed with arg1:-1 arg2:0, -1<=0
+   在 AC.Util.AssertUtils.Greater(Int64 arg1, Int64 arg2, String message) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Core\Util\AssertUtils.cs:行号 165
+   在 AC.Util.AssertUtils.Greater(Int32 arg1, Int32 arg2) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Core\Util\AssertUtils.cs:行号 140
+   在 AC.Service.Impl.LiCai.ItemsService.Rename(Int32 id, String name) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\ItemsService.cs:行号 34
+   在 wychuan2.com.Areas.admin.Controllers.api.ItemsController.SaveItems(ItemDTO item) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\ItemsController.cs:行号 77
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()

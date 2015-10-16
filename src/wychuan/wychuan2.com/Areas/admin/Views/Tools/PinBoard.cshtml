@@ -1,82 +1,76 @@
-﻿@{
-    ViewBag.Title = "管理后台";
+﻿@model List<AC.Service.DTO.Tools.MyNotesDTO>
+@{
+    ViewBag.Title = "记事本";
     Layout = "../Shared/_Layout.cshtml";
 }
 
 @section styles{
-    @*<link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">*@
+    <link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />
 }
 <div class="row">
     <div class="col-lg-12">
-                <ul class="notes">
-                    <li>
-                        <div>
-                            <small>12:03:28 12-04-2014</small>
-                            <h4>Long established fact</h4>
-                            <p>The years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                            <a href="#"><i class="fa fa-trash-o "></i></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <small>11:08:33 16-04-2014</small>
-                            <h4>Latin professor at Hampden-Sydney </h4>
-                            <p>The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-                            <a href="#"><i class="fa fa-trash-o "></i></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <small>9:12:28 10-04-2014</small>
-                            <h4>The standard chunk of Lorem</h4>
-                            <p>Ipsum used since the 1500s is reproduced below for those interested.</p>
-                            <a href="#"><i class="fa fa-trash-o "></i></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <small>3:33:12 6-03-2014</small>
-                            <h4>The generated Lorem Ipsum </h4>
-                            <p>The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
-                            <a href="#"><i class="fa fa-trash-o "></i></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <small>5:20:11 4-04-2014</small>
-                            <h4>Contrary to popular belief</h4>
-                            <p>Hampden-Sydney College in Virginia, looked up one.</p>
-                            <a href="#"><i class="fa fa-trash-o "></i></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <small>2:10:12 4-05-2014</small>
-                            <h4>There are many variations</h4>
-                            <p>All the Lorem Ipsum generators on the Internet .</p>
-                            <a href="#"><i class="fa fa-trash-o "></i></a>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <small>10:15:26 6-04-2014</small>
-                            <h4>Ipsum used standard chunk of Lorem</h4>
-                            <p>Standard chunk  is reproduced below for those.</p>
-                            <a href="#"><i class="fa fa-trash-o "></i></a>
-                        </div>
-                    </li>
-                </ul>
-    </div>
+        <div class="ibox-content">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label class="control-label">创建时间：</label>
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" id="starttime" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
+                        <span class="input-group-addon">to</span>
+                        <input type="text" id="overtime" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <span class="input-group-btn">
+                            <button type="button" id="btnQuery" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
 
+                <a class="btn btn-primary pull-right" type="button" data-toggle="modal" href="#mynotesModal"><i class="fa fa-check"></i>&nbsp;新增</a>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="mynotesContainer">
+            @Html.Partial("_PinBoardList", Model)
+        </div>
+    </div>
+</div>
+
+<!--账户对话框-->
+<div class="modal fade" id="mynotesModal" tabindex="-1" role="dialog" aria-labelledby="myNotesModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myNotesModalLabel">记事本</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frmTimeline">
+                    <input type="hidden" value="0" id="Id" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Title">事件主题</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Title" name="Title" placeholder="事件主题" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Content">事件内容</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" id="Content" placeholder="请输入事件内容"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSave" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts{
-    @*<script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
-        <script src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
-        <script src="~/Scripts/plugins/validate/messages_zh.js"></script>*@
-    <script>
-        $(function() {
-                
-        })
-    </script>
+    <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"> </script>
+    <script src="~/Scripts/tools/mynotes.js"></script>
 }

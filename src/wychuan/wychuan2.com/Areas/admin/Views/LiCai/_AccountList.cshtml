@@ -1,0 +1,69 @@
+﻿@model wychuan2.com.Models.LiCaiAccount
+
+<div class="col-lg-2">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content mailbox-content">
+            <div class="file-manager">
+                <a class="btn btn-block btn-primary compose-mail" href="#accountModal" data-toggle="modal" data-type="1" data-whatever="添加账户">添加账户</a>
+                <div class="space-25"></div>
+                <h5>账户类型</h5>
+                <ul class="folder-list m-b-md" style="padding: 0">
+                    @foreach (var item in Model.AccountTypes)
+                    {
+                        <li><a href="javascript:;" class="J_AccountType" data-type="@item.Id"><i class="fa fa-inbox"></i>@item.Name <span class="label label-warning pull-right">@item.Count</span></a></li>
+                    }
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-10 animated fadeInRight">
+    <div class="mail-box-header">
+
+        <h2>
+            @Model.CurrentType.Name (@Model.CurrentType.Count)
+        </h2>
+        <div class="mail-tools tooltip-demo m-t-md">
+            <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh</button>
+            <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
+        </div>
+    </div>
+    <div class="mail-box">
+
+        <table id="tblAccountsList" class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>名称</th>
+                    <th>币种</th>
+                    <th>当前余额</th>
+                    <th>备注</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var account in Model.Accounts)
+                {
+                    <tr class="read">
+                        <td class="check-mail">
+                            <input type="checkbox" class="i-checks">
+                            <input name="Id" type="hidden" value="@account.Id" />
+                            <input name="InNetAssets" type="hidden" value="@account.InNetAssets" />
+                            <input name="Type" type="hidden" value="@account.Type" />
+                        </td>
+                        <td name="Name">@account.Name</td>
+                        <td name="Currency">@account.Currency</td>
+                        <td name="Balance"><a href="#">@account.Balance</a></td>
+                        <td name="Remark">@account.Remark</td>
+                        <td>
+                            <a class="btn btn-white btn-sm" href="#accountModal" data-toggle="modal" data-type="2" data-whatever="编辑账户"><i class="fa fa-folder"></i> 编辑 </a>
+                            <a href="javascript:;" class="btn btn-white btn-sm J_Remove"><i class="fa fa-trash-o"></i> 删除 </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

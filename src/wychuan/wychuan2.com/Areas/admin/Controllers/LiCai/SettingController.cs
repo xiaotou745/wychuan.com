@@ -25,6 +25,5 @@ namespace wychuan2.com.Areas.admin.Controllers.LiCai
 
             return View();
         }
-
     }
 }

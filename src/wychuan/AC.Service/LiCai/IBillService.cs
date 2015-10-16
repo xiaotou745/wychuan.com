@@ -6,12 +6,8 @@ using AC.Service.DTO.LiCai;
 
 namespace AC.Service.LiCai
 {
-    public interface IProjectService
+    public interface IBillService
     {
-        void InitUserProject(int userId);
-
-        int Create(ProjectDTO business);
-
-        IList<ProjectDTO> GetByUserId(int userId);
+        int Create(BillDTO bill);
     }
 }

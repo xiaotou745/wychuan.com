@@ -18,7 +18,9 @@ namespace wychuan2.com.Areas.admin.Controllers.api
     {
         private readonly ICategoryService categoryService = new CategoryService();
         private readonly IItemsService itemsService = new ItemsService();
+
         #region Categories
+
         /// <summary>
         /// /api/items/savecategory
         /// </summary>
@@ -54,6 +56,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
             categoryService.Remove(id);
             return AjaxResult.Success();
         }
+
         #endregion
 
         #region Items
@@ -90,6 +93,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
             itemsService.Remove(id);
             return AjaxResult.Success();
         }
+
         #endregion
     }
 }

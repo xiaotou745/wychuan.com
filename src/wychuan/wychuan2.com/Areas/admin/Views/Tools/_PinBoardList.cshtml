@@ -1,0 +1,17 @@
+﻿@model List<AC.Service.DTO.Tools.MyNotesDTO>
+
+
+<ul class="notes">
+    @foreach (var note in Model)
+    {
+        <li>
+            <div>
+                <input type="hidden" value="@note.Id" />
+                <small>@note.PubTime.ToString("yyyy-MM-dd HH:dd")</small>
+                <h4>@note.Title</h4>
+                <p>@note.Content</p>
+                <a class="btn btn-default J_DeleteNote"><i class="fa fa-trash-o "></i></a>
+            </div>
+        </li>
+    }
+</ul>

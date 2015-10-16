@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AC;
+using AC.Service.DTO.LiCai;
 using AC.Service.DTO.Tools;
+using AC.Service.Impl.LiCai;
 using AC.Service.Impl.Tools;
+using AC.Service.LiCai;
 using AC.Service.Tools;
+using AC.Web;
 using wychuan2.com.Areas.admin.Models;
+using wychuan2.com.Areas.admin.Models.LiCai;
 using wychuan2.com.Models;
 
 namespace wychuan2.com.Areas.admin.Controllers
@@ -15,7 +21,8 @@ namespace wychuan2.com.Areas.admin.Controllers
     {
         private readonly IMyTaskService myTaskService = new MyTaskService();
         private readonly ICompanyService companyService = new CompanyService();
-        
+        private readonly IMyNotesService myNotesService = new MyNotesService();
+
         #region Jobs
         // GET: admin/Tools
         public ActionResult Jobs()
@@ -56,7 +63,59 @@ namespace wychuan2.com.Areas.admin.Controllers
         #region Pin board
         public ActionResult PinBoard()
         {
-            return View();
+            var queryInfo = new MyNotesQueryInfo
+            {
+                UserId = ApplicationUser.Current.UserId,
+                CreateTimeRange =
+                    new AC.StartOverTimePair {StartTime = DateTime.Now.AddDays(-7), OverTime = DateTime.Now}
+            };
+
+            IList<MyNotesDTO> notes = myNotesService.Query(queryInfo);
+            return View(notes);
+        }
+
+        public AjaxResult SaveNotes(MyNotesDTO note)
+        {
+            if (note == null)
+            {
+                return AjaxResult.Error("note is null");
+            }
+            if (note.Id == 0)
+            {
+                note.UserId = ApplicationUser.Current.UserId;
+                note.Id = myNotesService.Create(note);
+            }
+            return AjaxResult.Success(note.Id);
+        }
+
+        public AjaxResult RemoveNotes(int id)
+        {
+            if (id <= 0)
+            {
+                return AjaxResult.Error("id <= 0");
+            }
+            myNotesService.Remove(id);
+            return AjaxResult.Success();
+        }
+
+        public ActionResult RefreshNotes(StartOverTimePair timeRange)
+        {
+            var queryInfo = new MyNotesQueryInfo {UserId = ApplicationUser.Current.UserId};
+            if (timeRange != null)
+            {
+                queryInfo.CreateTimeRange = timeRange;
+            }
+            else
+            {
+                queryInfo.CreateTimeRange = new StartOverTimePair
+                {
+                    StartTime = DateTime.Now.AddDays(-7),
+                    OverTime = DateTime.Now
+                };
+            }
+            
+            IList<MyNotesDTO> notes = myNotesService.Query(queryInfo);
+            return View("_PinBoardList", notes);
         }
         #endregion
 
@@ -87,8 +146,32 @@ namespace wychuan2.com.Areas.admin.Controllers
         #endregion
 
         #region Algorithm算法
-
+        private readonly IAccountService accountService = new AccountService();
+        private readonly IItemsService itemService = new ItemsService();
+        private readonly ICategoryService categoryService = new CategoryService();
         public ActionResult Algorithm()
+        {
+            var model = new BillModel();
+
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
+
+            return View(model);
+        }
+        #endregion
+
+        #region 表单构建器
+
+        public ActionResult FormBuilder()
+        {
+            return View();
+        }
+        #endregion
+
+        #region Wyswig
+
+        public ActionResult Wyswig()
         {
             return View();
         }

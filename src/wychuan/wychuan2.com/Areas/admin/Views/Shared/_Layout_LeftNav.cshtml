@@ -27,32 +27,34 @@
                     IN+
                 </div>
             </li>
-            <li class="@("tools".Equals(Html.Controller(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)">
+            <li class="@("tools".Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">
                 <a href=""><i class="fa fa-twitter"></i> <span class="nav-label">日常工具</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li class="@("jobs".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/tools/jobs">任务管理</a></li>
+                    <li class="@("jobs".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/tools/jobs">任务管理</a></li>
                     <li class="@("pinboard".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a href="/admin/tools/pinboard">记事本</a></li>
                     <li class="@(Html.Action().ToLower().StartsWith("company") ? "active" : string.Empty) "><a href="/admin/tools/company">牛逼公司</a></li>
                     <li class="@("algorithm".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a href="/admin/tools/algorithm">算法大全</a></li>
+                    <li class="@("formbuilder".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a href="/admin/tools/formbuilder">表单构建器</a></li>
+                    <li class="@("wyswig".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty) "><a target="_blank" href="/admin/tools/wyswig">见得编辑器</a></li>
                 </ul>
             </li>
-            <li class="@("dbtools".Equals(Html.Controller(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)">
+            <li class="@("dbtools".Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">
                 <a href=""><i class="fa fa-database"></i> <span class="nav-label">数据库</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li class="@("tableview".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/dbtools/tableview">表结构查看</a></li>
-                    <li class="@("codegenerate".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/dbtools/codegenerate">代码生成</a></li>
-                    <li class="@("codetemplate".Equals(Html.Action(),StringComparison.InvariantCultureIgnoreCase)?"active":string.Empty)"><a href="/admin/dbtools/codetemplate">代码模板</a></li>
+                    <li class="@("tableview".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/dbtools/tableview">表结构查看</a></li>
+                    <li class="@("codegenerate".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/dbtools/codegenerate">代码生成</a></li>
+                    <li class="@("codetemplate".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/dbtools/codetemplate">代码模板</a></li>
                 </ul>
             </li>
-            <li class="@(Request.RawUrl.ToLower().Contains("licai") ? "active" : string.Empty)">
+            <li class="@("licai".Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">
                 <a href=""><i class="fa fa-money"></i> <span class="nav-label">财务概况</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    @RenderMenuItem("bill", "index", "记账")
-                    @RenderMenuItem("details", "index", "明细")
-                    @RenderMenuItem("account", "index", "账户")
-                    @RenderMenuItem("yusuan", "index", "预算")
-                    @RenderMenuItem("tongji", "index", "统计")
-                    @RenderMenuItem("setting", "index", "设置")
+                    <li class="@("bill".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/licai/bill">记账</a></li>
+                    <li class="@("details".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/licai/details">明细</a></li>
+                    <li class="@("account".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/licai/account">账户</a></li>
+                    <li class="@("yusuan".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/licai/yusuan">预算</a></li>
+                    <li class="@("tongji".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/licai/tongji">统计</a></li>
+                    <li class="@("setting".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/licai/setting">设置</a></li>
                 </ul>
             </li>
             <li class="@(!Request.RawUrl.ToLower().Contains("licai") && "account".Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">

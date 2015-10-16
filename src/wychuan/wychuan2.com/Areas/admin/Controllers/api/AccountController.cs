@@ -21,6 +21,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
         private readonly ICategoryService categoryService = new CategoryService();
 
         #region 登录
+
         public AjaxResult Logon(LogonAccount account)
         {
             if (account == null)
@@ -45,9 +46,11 @@ namespace wychuan2.com.Areas.admin.Controllers.api
             }
             return AjaxResult.Error(EnumHelper.GetEnumDescription(loginResult));
         }
+
         #endregion
 
         #region 注册
+
         public AjaxResult Register(LogonAccount account)
         {
             if (account == null)
@@ -55,7 +58,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
                 return AjaxResult.Error("用户名不允许为空.");
             }
             var user = new UserDTO {LoginName = account.UserName, LoginPassword = account.Password};
-            RegisterResult registerResult = userService.Register(user);//调用注册接口
+            RegisterResult registerResult = userService.Register(user); //调用注册接口
             if (registerResult.Equals(RegisterResult.Success))
             {
                 //如果注册成功,操作登录;
@@ -69,7 +72,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
             }
             return AjaxResult.Error(EnumHelper.GetEnumDescription(registerResult));
         }
-        #endregion
 
+        #endregion
     }
 }

@@ -182,18 +182,13 @@
     <Compile Include="Areas\admin\adminAreaRegistration.cs" />
     <Compile Include="Areas\admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\admin\Controllers\api\AccountController.cs" />
+    <Compile Include="Areas\admin\Controllers\api\BillController.cs" />
     <Compile Include="Areas\admin\Controllers\api\ItemsController.cs" />
     <Compile Include="Areas\admin\Controllers\api\TasksController.cs" />
     <Compile Include="Areas\admin\Controllers\api\CompanyController.cs" />
     <Compile Include="Areas\admin\Controllers\DbToolsController.cs" />
     <Compile Include="Areas\admin\Controllers\HomeController.cs" />
-    <Compile Include="Areas\admin\Controllers\LiCai\AccountController.cs" />
-    <Compile Include="Areas\admin\Controllers\LiCai\BillController.cs" />
-    <Compile Include="Areas\admin\Controllers\LiCai\DetailsController.cs" />
-    <Compile Include="Areas\admin\Controllers\LiCai\HomeController.cs" />
-    <Compile Include="Areas\admin\Controllers\LiCai\SettingController.cs" />
-    <Compile Include="Areas\admin\Controllers\LiCai\TongJiController.cs" />
-    <Compile Include="Areas\admin\Controllers\LiCai\YuSuanController.cs" />
+    <Compile Include="Areas\admin\Controllers\LiCaiController.cs" />
     <Compile Include="Areas\admin\Controllers\ToolsController.cs" />
     <Compile Include="Areas\admin\Models\DbTools\CodeResult.cs" />
     <Compile Include="Areas\admin\Models\HtmlTable\ColumnNames.cs" />
@@ -333,6 +328,7 @@
     <Content Include="Content\plugins\switchery\switchery.css" />
     <Content Include="Content\plugins\toastr\toastr.min.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\summernotepage.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -411,16 +407,7 @@
     <Content Include="Areas\weixin\Views\Account\Logon.cshtml" />
     <Content Include="Areas\admin\Views\Account\Logon.cshtml" />
     <Content Include="Areas\admin\Views\Account\Register.cshtml" />
-    <Content Include="Areas\admin\Views\Items\Account.cshtml" />
-    <Content Include="Areas\admin\Views\Account\Index.cshtml" />
-    <Content Include="Areas\admin\Views\Account\_AccountType.cshtml" />
-    <Content Include="Areas\admin\Views\Account\_AccountList.cshtml" />
     <Content Include="Areas\admin\Views\Account\ForgetPassword.cshtml" />
-    <Content Include="Areas\admin\Views\Bill\Index.cshtml" />
-    <Content Include="Areas\admin\Views\Details\Index.cshtml" />
-    <Content Include="Areas\admin\Views\Setting\Index.cshtml" />
-    <Content Include="Areas\admin\Views\TongJi\Index.cshtml" />
-    <Content Include="Areas\admin\Views\YuSuan\Index.cshtml" />
     <Content Include="Areas\admin\Views\Shared\_Layout_BS.cshtml" />
     <Content Include="data\lc_accounttype.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -437,8 +424,19 @@
     <Content Include="Areas\admin\Views\Tools\Algorithm.cshtml" />
     <Content Include="Areas\admin\Views\DbTools\CodeTemplate.cshtml" />
     <Content Include="Areas\admin\Views\DbTools\_CodeResult.cshtml" />
+    <Content Include="Areas\admin\Views\Tools\FormBuilder.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\Account.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\_AccountList.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\Setting.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\Bill.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\Details.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\TongJi.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\YuSuan.cshtml" />
+    <Content Include="Areas\admin\Views\Tools\Wyswig.cshtml" />
+    <Content Include="Areas\admin\Views\Tools\_PinBoardList.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\beautifyhtml.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\dbtools\tableview.js" />
@@ -548,6 +546,8 @@
     <Content Include="Scripts\plugins\slimscroll\jquery.slimscroll.min.js" />
     <Content Include="Scripts\plugins\sparkline\jquery.sparkline.min.js" />
     <Content Include="Scripts\plugins\staps\jquery.steps.min.js" />
+    <Content Include="Scripts\plugins\summernote\summernote-zh-CN.js" />
+    <Content Include="Scripts\plugins\summernote\summernote.js" />
     <Content Include="Scripts\plugins\summernote\summernote.min.js" />
     <Content Include="Scripts\plugins\switchery\switchery.js" />
     <Content Include="Scripts\plugins\tinycon\tinycon.min.js" />
@@ -558,7 +558,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\tools\company.js" />
+    <Content Include="Scripts\tools\formbuilder.js" />
     <Content Include="Scripts\tools\myjobs.js" />
+    <Content Include="Scripts\tools\mynotes.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -592,6 +594,7 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout_Summernote.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

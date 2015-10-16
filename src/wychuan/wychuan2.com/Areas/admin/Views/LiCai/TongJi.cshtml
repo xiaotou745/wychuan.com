@@ -2,7 +2,7 @@
 @using AC.Util
 @model wychuan2.com.Models.LiCaiAccount
 @{
-    ViewBag.Title = "管理后台";
+    ViewBag.Title = "理财-统计";
     Layout = "../Shared/_Layout.cshtml";
 }
 
@@ -34,24 +34,24 @@
                             <li type="@type.Key" cid="0" parentid="0" class="jstree-open">
                                 @type.Value
                                 @{
-                                    IEnumerable<CategoryDTO> lstCategorys = lstCategories.Where(c => c.InOutType.GetHashCode().ToString().Equals(type.Key) && c.ParentId == 0);
-                                    foreach (var category in lstCategorys)
-                                    {
-                                        <ul>
-                                            <li type="@type.Key" cid="@category.Id" parentid="@category.ParentId">
-                                                @category.Name
-                                                @{
-                                                    IEnumerable<CategoryDTO> lstChilds = lstCategories.Where(c => c.ParentId == category.Id);
-                                                    foreach (var child in lstChilds)
-                                                    {
-                                                        <ul>
-                                                            <li type="@type.Key" cid="@child.Id" parentid="@child.ParentId">@child.Name</li>
-                                                        </ul>
-                                                    }
-                                                }
-                                            </li>
-                                        </ul>
-                                    }
+                            IEnumerable<CategoryDTO> lstCategorys = lstCategories.Where(c => c.InOutType.GetHashCode().ToString().Equals(type.Key) && c.ParentId == 0);
+                            foreach (var category in lstCategorys)
+                            {
+                                <ul>
+                                    <li type="@type.Key" cid="@category.Id" parentid="@category.ParentId">
+                                        @category.Name
+                                        @{
+                                IEnumerable<CategoryDTO> lstChilds = lstCategories.Where(c => c.ParentId == category.Id);
+                                foreach (var child in lstChilds)
+                                {
+                                    <ul>
+                                        <li type="@type.Key" cid="@child.Id" parentid="@child.ParentId">@child.Name</li>
+                                    </ul>
+                                }
+                                        }
+                                    </li>
+                                </ul>
+                            }
                                 }
                             </li>
                         }
@@ -74,19 +74,19 @@
                             {
                                 <li type="@itemtype.Key" cid="0" class="jstree-open">
                                     @itemtype.Value
-                                    @{
-                                        IEnumerable<ItemDTO> items = lstItems.Where(i => i.Type.GetHashCode().ToString().Equals(itemtype.Key));
-                                        if (items.Any())
+                                @{
+                                IEnumerable<ItemDTO> items = lstItems.Where(i => i.Type.GetHashCode().ToString().Equals(itemtype.Key));
+                                if (items.Any())
+                                {
+                                    <ul>
+                                        @foreach (var item in items)
                                         {
-                                            <ul>
-                                                @foreach (var item in items)
-                                                {
-                                                    <li type="@itemtype.Key" cid="@item.Id">@item.Name</li>
-                                                }
-                                            </ul>
+                                            <li type="@itemtype.Key" cid="@item.Id">@item.Name</li>
                                         }
-                                    }
-                                </li>
+                                    </ul>
+                                }
+                                }
+                            </li>
                             }
                         }
                     </ul>
