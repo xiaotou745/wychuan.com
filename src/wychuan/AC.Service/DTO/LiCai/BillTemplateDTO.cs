@@ -1,38 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AC.Service.DTO.LiCai
 {
-    public enum BillDetailType
-    {
-        /// <summary>
-        /// 收入
-        /// </summary>
-        [Description("收入")]
-        Income = 2,
-        /// <summary>
-        /// 支出
-        /// </summary>
-        [Description("支出")]
-        Expend = 1,
-
-        [Description("转账")]
-        Transfer=3,
-
-        [Description("借贷")]
-        Creditor=4,
-    }
-
-    public class BillDTO
+    /// <summary>
+    /// 实体类LCBillTemplateDTO 。(属性说明自动提取数据库字段的描述信息)
+    /// Generate By: tools.wychuan.com
+    /// Generate Time: 2015-10-21 15:16:09
+    /// </summary>
+    public class BillTemplateDTO
     {
         /// <summary>
         /// ID
         /// </summary>
         public int ID { get; set; }
+        /// <summary>
+        /// 模板名称
+        /// </summary>
+        public string Name { get; set; }
         /// <summary>
         /// 用户ID
         /// </summary>
@@ -42,37 +30,29 @@ namespace AC.Service.DTO.LiCai
         /// </summary>
         public int BookId { get; set; }
         /// <summary>
-        /// 金额
+        /// 
         /// </summary>
-        public decimal Price { get; set; }
+        public int FirstCategoryId { get; set; }
         /// <summary>
-        ///
-        /// </summary>
-        public int? FirstCategoryId { get; set; }
-        /// <summary>
-        ///
+        /// 一级类目
         /// </summary>
         public string FirstCategory { get; set; }
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public int SecondCategoryId { get; set; }
         /// <summary>
-        /// 支出/收入分类ID
+        /// 二级类目
         /// </summary>
         public string SecondCategory { get; set; }
         /// <summary>
-        /// 账户ID/借入账户/借出账户
+        /// 账户ID
         /// </summary>
         public int AccountId { get; set; }
         /// <summary>
-        /// 转账使用，目标账户ID
+        /// 账户文本
         /// </summary>
-        public int ToAccountId { get; set; }
-        /// <summary>
-        /// 消费时间
-        /// </summary>
-        public DateTime ConsumeTime { get; set; }
+        public string AccountDesc { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
@@ -82,15 +62,15 @@ namespace AC.Service.DTO.LiCai
         /// </summary>
         public int DetailType { get; set; }
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public int BusinessId { get; set; }
         /// <summary>
-        /// 收入付款方或支出商家或借出债务人或借入债权人
+        /// 支出商家
         /// </summary>
         public string Business { get; set; }
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public int MemberId { get; set; }
         /// <summary>
@@ -98,7 +78,7 @@ namespace AC.Service.DTO.LiCai
         /// </summary>
         public string Member { get; set; }
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public int ProjectId { get; set; }
         /// <summary>
@@ -106,16 +86,15 @@ namespace AC.Service.DTO.LiCai
         /// </summary>
         public string Project { get; set; }
         /// <summary>
-        /// 还款是否需要提醒
-        /// </summary>
-        public string RefundNotice { get; set; }
-        /// <summary>
-        /// 还款日期
-        /// </summary>
-        public DateTime? RefundTime { get; set; }
-        /// <summary>
         /// 报销状态（0 不报销 1 待报销 2 已报销)
         /// </summary>
         public int BaoXiao { get; set; }
+        /// <summary>
+        /// 是否有效(0无效 1有效)
+        /// </summary>
+        public bool Enable { get; set; }
+
+
     }
+
 }

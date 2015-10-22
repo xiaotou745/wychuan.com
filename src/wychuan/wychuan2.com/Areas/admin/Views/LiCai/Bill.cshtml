@@ -1,5 +1,5 @@
 ﻿@model wychuan2.com.Areas.admin.Models.LiCai.BillModel
-
+@using AC.Util
 @using AC.Service.DTO.LiCai;
 @{
     ViewBag.Title = "理财-记账";
@@ -11,6 +11,7 @@
     List<ItemDTO> lstProjects = Model.Items.Where(m => m.Type == ItemType.Project).ToList();
     List<ItemDTO> lstMembers = Model.Items.Where(m => m.Type == ItemType.Member).ToList();
     List<ItemDTO> lstBusiness = Model.Items.Where(m => m.Type == ItemType.Business).ToList();
+    string strCategories = JsonHelper.ToJson(Model.Categories);
 }
 
 @section styles{
@@ -60,9 +61,9 @@
                                             var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
                                             var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
                                         }
-                                        <div class=" col-sm-4">
+                                        <div class="col-sm-5">
                                             <div class="input-group">
-                                                <select class="input-sm form-control">
+                                                <select class="input-sm form-control" name="selFirstCategory">
                                                     @foreach (var first in lstFirsts)
                                                     {
                                                         <option value="@first.Id">@first.Name</option>
@@ -83,6 +84,7 @@
                                         <label class="col-sm-1 control-label">商家</label>
                                         <div class="col-sm-3">
                                             <select class="form-control" name="selBusiness">
+                                                <option value="0">商家</option>
                                                 @foreach (var business in lstBusiness)
                                                 {
                                                     <option value="@business.Id">@business.Name</option>
@@ -181,8 +183,29 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">类别</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control" name="selCategory">
+
+                                        <div class="col-sm-5">
+                                            <div class="input-group">
+                                                @{
+                                                    List<CategoryDTO> lstIncomeFirstLevels = Model.Categories.Where(c => c.InOutType == CategoryType.Income && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse).ToList();
+                                                    List<CategoryDTO> lstChilds = Model.Categories.Where(c => c.ParentId == lstIncomeFirstLevels.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse).ToList();
+                                                }
+                                                <select class="input-sm form-control" name="selFirstCategory">
+                                                    @foreach (var first in lstIncomeFirstLevels)
+                                                    {
+                                                        <option value="@first.Id">@first.Name</option>
+                                                    }
+                                                </select>
+                                                <span class="input-group-addon">-</span>
+                                                <select class="input-sm form-control" name="selCategory">
+                                                    @foreach (var child in lstChilds)
+                                                    {
+                                                        <option value="@child.Id">@child.Name</option>
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            @*<select class="form-control" name="selCategory">
                                                 @{
                                                     List<CategoryDTO> lstIncomeFirstLevels = Model.Categories.Where(c => c.InOutType == CategoryType.Income && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse).ToList();
                                                     foreach (var category in lstIncomeFirstLevels)
@@ -197,7 +220,7 @@
                                                         }
                                                     }
                                                 }
-                                            </select>
+                                            </select>*@
                                         </div>
                                     </div>
                                     <hr />
@@ -449,6 +472,7 @@
     <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
     @*<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>*@
     <script>
+        window.categories=@Html.Raw(strCategories);
         $(function() {
             $(".datetimepicker").datetimepicker({
                 lang: "ch"
@@ -457,23 +481,47 @@
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
+            $("#tab1").find("[name=txtPrice]").select();
+            $("#tab1").find("[name=txtPrice]").focus();
 
+            //类别一级菜单事件
+            $("[name=selFirstCategory]").bind("change", function () {
+                var $second = $(this).next().next();
+                var firstId = $(this).val();
+                var seconds = $.grep(window.categories, function (item, index) {
+                    return item.ParentId == firstId;
+                });
+                $second.html("");
+                $.each(seconds, function (i, category) {
+                    $second.append("<option value='" + category.Id + "'>" + category.Name + "</option>");
+                });
+            });
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                console.log(e, e.target, e.relatedTarget);
+                $($(e.target).attr("href")).find("[name=txtPrice]").select();
+                $($(e.target).attr("href")).find("[name=txtPrice]").focus();
+            });
+            
             $("form").delegate("[name=btnSave]", "click", saveBill);
             $("form").delegate("[name=btnSaveContinue]", "click", saveBill);
+            
         });
 
         function saveBill(e) {
             var form = $(e.delegateTarget);
             var btn = $(e.currentTarget);
-            var isContinue = btn.data("clear");
             var bill = getModel(form, btn);
+            //return;
             $.ajax({
                 url: "/api/bill/save",
                 type: "post",
                 data: bill,
                 dataType: "json",
                 success: function(resp) {
-                    console.log(resp);
+                    if (!resp.iserror) {
+                        alert("保存成功.");
+                    }
                 }
             });
         }
@@ -485,24 +533,30 @@
             } else {
                 isBaoXiao = 0;
             }
-
             var bill = {
                 BookId: form.find("[name=selBook]").val(),
                 Price: form.find("[name=txtPrice]").val(),
-                Category: form.find("[name=selCategory]").val(),
+                FirstCategoryId: form.find("[name=selFirstCategory]").val(),
+                FirstCategory: form.find("[name=selFirstCategory] option:selected").text(),
+                SecondCategoryId: form.find("[name=selCategory]").val(),
+                SecondCategory: form.find("[name=selCategory] option:selected").text(),
                 AccountId: form.find("[name=selAccount]").val(),
                 ToAccountId: form.find("[name=selAccountTo]").val(),
                 ConsumeTime: form.find("[name=txtConsumeTime]").val(),
                 Remark: form.find("[name=txtRemark]").val(),
                 DetailType: sender.data("type"),
-                Business: form.find("[name=selBusiness]").val(),
-                Member: form.find("[name=selMember]").val(),
-                Project: form.find("[name=selProject]").val(),
+                BusinessId: form.find("[name=selBusiness]").val(),
+                Business: form.find("[name=selBusiness] option:selected").text(),
+                MemberId: form.find("[name=selMember]").val(),
+                Member: form.find("[name=selMember] option:selected").text(),
+                ProjectId: form.find("[name=selProject]").val(),
+                Project: form.find("[name=selProject] option:selected").text(),
                 RefundTime: form.find("[name=txtRefundTime]").val(),
                 RefundNotice: form.find("[name=selRefundNotice]").val(),
-                CreditorType: form.find("[name=selCreditorType]").text(),
+                CreditorType: form.find("[name=selCreditorType] option:selected").text(),
                 BaoXiao: isBaoXiao
             };
+            
             return bill;
         }
     </script>

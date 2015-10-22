@@ -42,6 +42,7 @@
     <Compile Include="DaoBase.cs" />
     <Compile Include="LiCai\AccountDao.cs" />
     <Compile Include="LiCai\BillDao.cs" />
+    <Compile Include="LiCai\BillTemplateDao.cs" />
     <Compile Include="LiCai\CategoryDao.cs" />
     <Compile Include="LiCai\ItemsDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

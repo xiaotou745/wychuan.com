@@ -1,0 +1,328 @@
+﻿@model wychuan2.com.Areas.admin.Models.LiCai.BillModel
+@using AC.Service.DTO.LiCai;
+@using AC.Util
+@{
+    ViewBag.Title = "理财-快速记账";
+    Layout = "../Shared/_Layout.cshtml";
+}
+@{
+    List<ItemDTO> lstBooks = Model.Items.Where(m => m.Type == ItemType.BillBook).ToList();
+    List<ItemDTO> lstProjects = Model.Items.Where(m => m.Type == ItemType.Project).ToList();
+    List<ItemDTO> lstMembers = Model.Items.Where(m => m.Type == ItemType.Member).ToList();
+    List<ItemDTO> lstBusiness = Model.Items.Where(m => m.Type == ItemType.Business).ToList();
+    string strCategories = JsonHelper.ToJson(Model.Categories);
+}
+@section styles{
+<link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+    <style type="text/css">
+        .bill {
+            border-radius: 5px;
+            padding: 10px 10px;
+            margin-bottom: 5px;
+            margin-top: 0px;
+            background-color: #1ab394;
+            color: #fff;
+            display: block;
+            cursor: pointer;
+        }
+        .bill h4 {
+            margin: 0;
+            padding: 0;
+        }
+        .bill span {
+            float: right;
+        }
+        .bill a.a1 {
+            position: absolute;
+            right: 25px;
+            bottom: 10px;
+            color: inherit;
+        }
+        .bill a.a2 {
+            position: absolute;
+            right: 65px;
+            bottom: 10px;
+            color: inherit;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>快速记账</h5>
+                <div class="ibox-tools">
+                    <a id="btnAddTemplate" class="btn btn-primary btn-sm">添加模板</a>
+                </div>
+            </div>
+            <input type="hidden" id="categoryDatas" />
+            <div class="ibox-content" id="content">
+                @Html.Partial("_FastBillList",Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalExpendTemplate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblCategory">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblCategory">模板管理</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="Id" value="0" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-1 sr-only control-label">名称</label>
+                                <div class="col-md-offset-1 col-md-11">
+                                    <input name="txtName" type="text" class="form-control" placeholder="模板名称" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <label class="sr-only control-label">类别</label>
+                                @{
+                                    var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
+                                    var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
+                                }
+
+                                <div class="col-md-offset-2 col-md-10">
+                                    <div class="input-group">
+                                        <select class="input-sm form-control" name="selFirstCategory">
+                                            @foreach (var first in lstFirsts)
+                                            {
+                                                <option value="@first.Id">@first.Name</option>
+                                            }
+                                        </select>
+                                        <span class="input-group-addon">-</span>
+                                        <select class="input-sm form-control" name="selCategory">
+                                            @foreach (var first in lstSeconds)
+                                            {
+                                                <option value="@first.Id">@first.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-sm-1 sr-only control-label">账本</label>*@
+                                <div class="col-md-12">
+                                    <select class="form-control input-sm" name="selBook">
+                                        @foreach (var book in lstBooks)
+                                        {
+                                            <option value="@book.Id">@book.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-md-2 sr-only control-label">商家</label>*@
+                                <div class="col-md-offset-2 col-md-10">
+                                    <select class="form-control input-sm" name="selBusiness">
+                                        <option value="0">商家</option>
+                                        @foreach (var business in lstBusiness)
+                                        {
+                                            <option value="@business.Id">@business.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-md-2 sr-only control-label">账户</label>*@
+                                <div class="col-md-12">
+                                    <select class="form-control input-sm" name="selAccount">
+                                        @foreach (var account in Model.Accounts)
+                                        {
+                                            <option value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-md-2 control-label">项目</label>*@
+                                <div class="col-md-offset-2 col-md-10">
+                                    <select class="form-control input-sm" name="selProject">
+                                        @foreach (var project in lstProjects)
+                                        {
+                                            <option value="@project.Id">@project.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-md-2 sr-only control-label">成员</label>*@
+                                <div class="col-md-12">
+                                    <select class="form-control input-sm" name="selMember">
+                                        @foreach (var member in lstMembers)
+                                        {
+                                            <option value="@member.Id">@member.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-md-2 control-label">备注</label>*@
+                                <div class="col-md-offset-2 col-md-10">
+                                    <textarea name="txtRemark" cols="10" rows="3" class="form-control" placeholder="输入备注信息"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="chkBaoXiao" type="checkbox" class="form-control">  可报销
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSaveTemplate" class="btn btn-primary">保存为模板</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalBill" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblFastBill">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblFastBill">快速记账 </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="templateId" value="0" />
+                    <input type="hidden" name="BookId" value="0" />
+                    <input type="hidden" name="BaoXiao" value="0"/>
+                    <input type="hidden" name="ProjectId" value="0" />
+                    <input type="hidden" name="Project" value="" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-md-1 sr-only control-label">金额</label>*@
+                                <div class="col-md-offset-1 col-md-11">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">￥</span>
+                                        <input name="txtPrice" type="text" value="0" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-sm-1 control-label">时间</label>*@
+                                <div class="col-sm-12">
+                                    <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@DateTime.Now.ToString("yyyy/MM/dd HH:mm")" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-sm-1 control-label">备注</label>*@
+                                <div class="col-md-offset-1 col-md-11">
+                                    <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="sr-only control-label">类别</label>*@
+
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <select class="input-sm form-control" name="selFirstCategory">
+                                            @foreach (var first in lstFirsts)
+                                            {
+                                                <option value="@first.Id">@first.Name</option>
+                                            }
+                                        </select>
+                                        <span class="input-group-addon">-</span>
+                                        <select class="input-sm form-control" name="selCategory">
+                                            @foreach (var first in lstSeconds)
+                                            {
+                                                <option value="@first.Id">@first.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group col-md-offset-1">
+                                <select class="input-sm" name="selAccount">
+                                    @foreach (var account in Model.Accounts)
+                                    {
+                                        <option value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                    }
+                                </select>
+                                <select class="input-sm" name="selBusiness">
+                                    <option value="0">商家</option>
+                                    @foreach (var business in lstBusiness)
+                                    {
+                                        <option value="@business.Id">@business.Name</option>
+                                    }
+                                </select>
+                                <select class="input-sm" name="selMember">
+                                    @foreach (var member in lstMembers)
+                                    {
+                                        <option value="@member.Id">@member.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSaveBill" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
+    <script type="text/javascript">
+        window.categories=@Html.Raw(strCategories);
+    </script>
+    <script src="~/Scripts/licai/fastbill.js"></script>
+}

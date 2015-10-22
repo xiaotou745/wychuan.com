@@ -30,6 +30,8 @@ namespace wychuan2.com.Areas.admin.Models.LiCai
         /// </summary>
         public IList<CategoryDTO> Categories { get; set; }
 
+        public IList<BillTemplateDTO> Templates { get; set; }
+
         /// <summary>
         /// 商家列表
         /// </summary>

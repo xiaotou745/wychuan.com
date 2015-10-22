@@ -15,7 +15,9 @@ namespace wychuan2.com.Areas.admin.Controllers.api
     public class BillController : ApiController
     {
         private readonly IBillService billService = new BillService();
+        private readonly IBillTemplateService billTemplateService = new BillTemplateService();
 
+        #region bill
         public AjaxResult Save(BillDTO bill)
         {
             if (bill == null)
@@ -30,5 +32,50 @@ namespace wychuan2.com.Areas.admin.Controllers.api
 
             return AjaxResult.Success(bill.ID);
         }
+
+        /// <summary>
+        /// 快速保存，根据模板保存的支出记录
+        /// </summary>
+        /// <param name="bill"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public AjaxResult FastSave(BillDTO bill)
+        {
+            bill.UserId = ApplicationUser.Current.UserId;
+            bill.DetailType = BillDetailType.Expend.GetHashCode();
+            bill.ID = billService.Create(bill);
+            return AjaxResult.Success(bill.ID);
+        }
+        #endregion
+
+        #region bill template
+        public AjaxResult SaveTemplate(BillTemplateDTO template)
+        {
+            if (template == null)
+            {
+                return AjaxResult.Error("template is null");
+            }
+            if (template.ID == 0)
+            {
+                template.UserId = ApplicationUser.Current.UserId;
+                template.ID = billTemplateService.Create(template);
+            }
+            else
+            {
+                billTemplateService.Modify(template);
+            }
+
+            return AjaxResult.Success(template.ID);
+        }
+        [HttpGet]
+        [HttpPost]
+        public AjaxResult RemoveTemplate(int id)
+        {
+            billTemplateService.Remove(id);
+
+            return AjaxResult.Success();
+        }
+        #endregion
+
     }
 }

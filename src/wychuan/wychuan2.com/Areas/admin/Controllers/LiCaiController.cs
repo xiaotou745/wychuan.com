@@ -16,6 +16,7 @@ namespace wychuan2.com.Areas.admin.Controllers
     {
         private readonly IItemsService itemService = new ItemsService();
         private readonly ICategoryService categoryService = new CategoryService();
+        private readonly IBillTemplateService billTemplateService = new BillTemplateService();
 
         #region 账户
         /// <summary>
@@ -130,6 +131,30 @@ namespace wychuan2.com.Areas.admin.Controllers
             model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
 
             return View(model);
+        }
+        #endregion
+
+        #region 快速记账
+
+        public ActionResult FastBill()
+        {
+            var model = new BillModel();
+
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Templates = billTemplateService.GetByUserId(ApplicationUser.Current.UserId);
+
+            return View(model);
+        }
+
+        public ActionResult RefreshBill()
+        {
+            var model = new BillModel();
+            IList<BillTemplateDTO> lstTemplates = billTemplateService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Templates = lstTemplates;
+
+            return View("_FastBillList", model);
         }
         #endregion
 

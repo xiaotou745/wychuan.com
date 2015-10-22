@@ -618,3 +618,119 @@ System.IO.InvalidDataException: [AsserUtils-Greater] failed with arg1:-1 arg2:0,
    在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
    在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+2015-10-22 19:54:10,959 [11] ERROR ErrorLog [(null)] - 
+-----------------start----------------------
+2015/10/22 19:54:10
+异常发生地址:http://mywww2.wychuan.com/api/bill/fastsave
+请求类型:POST
+异常:System.Data.SqlClient.SqlException (0x80131904): 必须声明标量变量 "@Category"。
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, CommandType commandType, String commandText, Int32 timeoutInSeconds, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 485
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, String commandText, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 417
+   在 AC.Dao.LiCai.BillDao.Insert(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\BillDao.cs:行号 50
+   在 AC.Service.Impl.LiCai.BillService.Create(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\BillService.cs:行号 18
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.FastSave(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 46
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:54e95d7d-1fd0-47d5-9402-06b3a125c9b7
+--------------------end---------------------
+
+System.Data.SqlClient.SqlException (0x80131904): 必须声明标量变量 "@Category"。
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, CommandType commandType, String commandText, Int32 timeoutInSeconds, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 485
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, String commandText, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 417
+   在 AC.Dao.LiCai.BillDao.Insert(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\BillDao.cs:行号 50
+   在 AC.Service.Impl.LiCai.BillService.Create(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\BillService.cs:行号 18
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.FastSave(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 46
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:54e95d7d-1fd0-47d5-9402-06b3a125c9b7
+2015-10-22 20:33:50,048 [29] ERROR ErrorLog [(null)] - 
+-----------------start----------------------
+2015/10/22 20:33:50
+异常发生地址:http://mywww2.wychuan.com/api/bill/save
+请求类型:POST
+异常:System.Data.SqlClient.SqlException (0x80131904): 不能将值 NULL 插入列 'SecondCategory'，表 'WYC.dbo.LC_BillDetails'；列不允许有 Null 值。INSERT 失败。
+语句已终止。
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, CommandType commandType, String commandText, Int32 timeoutInSeconds, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 485
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, String commandText, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 417
+   在 AC.Dao.LiCai.BillDao.Insert(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\BillDao.cs:行号 48
+   在 AC.Service.Impl.LiCai.BillService.Create(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\BillService.cs:行号 18
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.Save(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 30
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:fde3f072-e371-4af4-95b1-97a056b62b60
+--------------------end---------------------
+
+System.Data.SqlClient.SqlException (0x80131904): 不能将值 NULL 插入列 'SecondCategory'，表 'WYC.dbo.LC_BillDetails'；列不允许有 Null 值。INSERT 失败。
+语句已终止。
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, CommandType commandType, String commandText, Int32 timeoutInSeconds, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 485
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, String commandText, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 417
+   在 AC.Dao.LiCai.BillDao.Insert(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\BillDao.cs:行号 48
+   在 AC.Service.Impl.LiCai.BillService.Create(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\BillService.cs:行号 18
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.Save(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 30
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:fde3f072-e371-4af4-95b1-97a056b62b60

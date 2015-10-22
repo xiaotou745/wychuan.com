@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LiCai\BillTemplateService.cs" />
     <Compile Include="LiCai\AccountService.cs" />
     <Compile Include="LiCai\BillService.cs" />
     <Compile Include="LiCai\CategoryService.cs" />
