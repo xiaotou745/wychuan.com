@@ -16,6 +16,20 @@
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
     <link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />
+    <style type="text/css">
+        /*.bill-item-list {
+            
+        }
+        .bill-dayinfo {
+            
+        }*/
+        /*.bill-item {
+            display: block;
+        }
+        .bill-item h4,h5 {
+            
+        }*/
+    </style>
 }
 <div class="row">
     <div class="col-lg-12">
@@ -77,92 +91,16 @@
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab1">
-                        @*<div class="well well-sm">
-                                <form class="form-inline">
-                                    <div class="form-group">
-                                        <div class="input-daterange input-group" id="datepicker">
-                                            <input type="text" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
-                                            <span class="input-group-addon">to</span>
-                                            <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
-                                            </span>
-                                        </div>
-                                        <br />
-                                        <div class="input-group">
-                                            @{
-                                                var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
-                                                var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
-                                            }
-                                            <select class="input-sm form-control">
-                                                @foreach (var first in lstFirsts)
-                                                {
-                                                    <option value="@first.Id">@first.Name</option>
-                                                }
-                                            </select>
-                                            <span class="input-group-addon">-</span>
-                                            <select class="input-sm form-control" name="selCategory">
-                                                @foreach (var first in lstSeconds)
-                                                {
-                                                    <option value="@first.Id">@first.Name</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only"></label>
-                                            <select class="form-control">
-                                                <option value="">选择账户</option>
-                                                @foreach (var account in Model.Accounts)
-                                                {
-                                                    <option value="@account.Id">@account.Name</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only"></label>
-                                            <select class="form-control">
-                                                <option value="">选择项目</option>
-                                                @foreach (var project in lstProjects)
-                                                {
-                                                    <option value="@project.Id">@project.Name</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only"></label>
-                                            <select class="form-control">
-                                                <option value="">选择成员</option>
-                                                @foreach (var member in lstMembers)
-                                                {
-                                                    <option value="@member.Id">@member.Name</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only"></label>
-                                            <select class="form-control">
-                                                <option>选择商家</option>
-                                                @foreach (var business in lstBusiness)
-                                                {
-                                                    <option value="@business.Id">@business.Name</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only"></label>
-                                            <select class="form-control">
-                                                <option>是否报销</option>
-                                                <option value="0">非报销</option>
-                                                <option value="1">可报销</option>
-                                                <option value="2">已报销</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>*@
+                        
                         <div class="ibox">
                             <div class="ibox-title">
                                 <h4>查询条件</h4>
+                                <div class="ibox-tools">
+                                    <span class="label label-primary">支:￥80.00 收:￥2.00</span>
+                                    <a class="collapse-link ui-sortable">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
                             </div>
                             <div class="ibox-content">
                                 <form class="form-inline">
@@ -250,7 +188,13 @@
                         </div>
                         <div class="ibox">
                             <div class="ibox-title">
-                                <h4>result</h4>
+                                <h4>2015-10-22</h4>
+                                <div class="ibox-tools">
+                                    <span class="label label-primary">支:￥80.00 收:￥2.00</span>
+                                    <a class="collapse-link ui-sortable">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
                             </div>
                             <div class="ibox-content">
                                 <table class="table table-bordered table-condensed table-striped">

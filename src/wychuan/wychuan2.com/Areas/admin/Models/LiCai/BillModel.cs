@@ -11,16 +11,6 @@ namespace wychuan2.com.Areas.admin.Models.LiCai
         public IList<ItemDTO> Items { get; set; }
 
         /// <summary>
-        /// 账本
-        /// </summary>
-        //public IList<BillBooksDTO> Books { get; set; }
-
-        /// <summary>
-        /// 成员
-        /// </summary>
-        //public IList<MemberDTO> Members { get; set; }
-
-        /// <summary>
         /// 账户列表
         /// </summary>
         public IList<AccountDTO> Accounts { get; set; }
@@ -32,14 +22,6 @@ namespace wychuan2.com.Areas.admin.Models.LiCai
 
         public IList<BillTemplateDTO> Templates { get; set; }
 
-        /// <summary>
-        /// 商家列表
-        /// </summary>
-        //public IList<BusinessDTO> Business { get; set; }
-
-        /// <summary>
-        /// 项目列表
-        /// </summary>
-        //public IList<ProjectDTO> Projects { get; set; }
+        public IList<BillDTO> Details { get; set; }
     }
 }

@@ -1,0 +1,157 @@
+﻿@using AC.Service.DTO.LiCai
+@model wychuan2.com.Areas.admin.Models.LiCai.BillModel
+
+@{
+    List<ItemDTO> lstBooks = Model.Items.Where(m => m.Type == ItemType.BillBook).ToList();
+    List<ItemDTO> lstProjects = Model.Items.Where(m => m.Type == ItemType.Project).ToList();
+    List<ItemDTO> lstMembers = Model.Items.Where(m => m.Type == ItemType.Member).ToList();
+    List<ItemDTO> lstBusiness = Model.Items.Where(m => m.Type == ItemType.Business).ToList();
+    var lstExpends = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
+    var lstExpendsChilds = Model.Categories.Where(c => c.ParentId == lstExpends.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
+
+    var lstIncomes = Model.Categories.Where(c => c.InOutType == CategoryType.Income && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
+    var lstIncomesChilds = Model.Categories.Where(c => c.ParentId == lstIncomes.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
+}
+
+@if (Model.Details != null)
+{
+    IEnumerable<IGrouping<DateTime, BillDTO>> lstDetails = Model.Details.GroupBy(b => b.ConsumeTime.Date);
+    foreach (var item in lstDetails)
+    {
+        DateTime currentDay = item.Key;
+        List<BillDTO> lstBills = item.ToList();
+
+        decimal sumOfExpendsPrice = lstBills.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode()).Sum(b => b.Price);
+        decimal sumOfIncomePrice = lstBills.Where(b => b.DetailType == BillDetailType.Income.GetHashCode()).Sum(b => b.Price);
+
+        <div class="ibox float-e-margins" style="margin-bottom: 5px;">
+            <div class="ibox-title ibox-title-bill" style="padding-top: 0px; padding-bottom: 0px; min-height: 20px; height: 20px;">
+                <h5>@currentDay.ToString("yyyy-MM-dd")</h5>
+                <div class="ibox-tools">
+                    <span class="label label-primary">支：¥@sumOfExpendsPrice 收：¥@sumOfIncomePrice</span>
+                    <a class="collapse-link ui-sortable">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content" style="display: block; padding-top: 5px; padding-bottom: 5px;">
+                <div class="bill-item-list">
+                    @foreach (var bill in lstBills)
+                    {
+                        <div class="bill-item">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <small class="pull-right bill-item-price">@bill.Price</small>
+                                    <a data-toggle="collapse" href="#@bill.ID">@bill.SecondCategory</a>
+                                    <small><i class="fa fa-clock-o"></i>@bill.ConsumeTime.ToString("HH:mm")  <strong>@bill.Remark</strong> </small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;">
+                                    <div id="@bill.ID" class="panel-collapse faq-answer collapse" aria-expanded="false">
+                                        <form class="form-horizontal">
+                                            <input type="hidden" name="Id" value="@bill.ID" />
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-xxs">
+                                                        @*<label class="col-md-1 sr-only control-label">金额</label>*@
+                                                        <div class="col-md-offset-1 col-md-11">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">￥</span>
+                                                                <input name="txtPrice" type="text" value="@bill.Price" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-xxs">
+                                                        @*<label class="col-sm-1 control-label">时间</label>*@
+                                                        <div class="col-sm-12">
+                                                            <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@bill.ConsumeTime" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-xxs">
+                                                        @*<label class="col-sm-1 control-label">备注</label>*@
+                                                        <div class="col-md-offset-1 col-md-11">
+                                                            <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" value="@bill.Remark" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-xxs">
+                                                        @*<label class="sr-only control-label">类别</label>*@
+
+                                                        <div class="col-md-12">
+                                                            <div class="input-group">
+                                                                <select class="input-sm form-control" name="selFirstCategory">
+                                                                    @foreach (var first in lstExpends)
+                                                                    {
+                                                                        <option @(first.Id == bill.FirstCategoryId ? "selected" : "") value="@first.Id">@first.Name</option>
+                                                                    }
+                                                                </select>
+                                                                <span class="input-group-addon">-</span>
+                                                                <select class="input-sm form-control" name="selCategory">
+                                                                    @{
+                                                                        var lstSeconds = Model.Categories.Where(c => c.ParentId == bill.FirstCategoryId).OrderByDescending(c => c.IsCommonUse);
+                                                                    }
+                                                                    @foreach (var second in lstSeconds)
+                                                                    {
+                                                                        <option @(second.Id == bill.SecondCategoryId ? "selected" : "") value="@second.Id">@second.Name</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group col-md-offset-1 m-b-xxs">
+                                                        <select class="input-sm" name="selAccount">
+                                                            @foreach (var account in Model.Accounts)
+                                                            {
+                                                                <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                            }
+                                                        </select>
+                                                        <select class="input-sm" name="selBusiness">
+                                                            <option value="0">商家</option>
+                                                            @foreach (var business in lstBusiness)
+                                                            {
+                                                                <option @(business.Id == bill.BusinessId ? "selected" : "") value="@business.Id">@business.Name</option>
+                                                            }
+                                                        </select>
+                                                        <select class="input-sm" name="selMember">
+                                                            @foreach (var member in lstMembers)
+                                                            {
+                                                                <option @(member.Id == bill.MemberId ? "selected" : "") value="@member.Id">@member.Name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="m-sm" />
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group m-b-sm">
+                                                        <div class="col-md-offset-1 col-md-11">
+                                                            <button name="btnSave" class="btn btn-primary" type="button"><strong>保存</strong></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

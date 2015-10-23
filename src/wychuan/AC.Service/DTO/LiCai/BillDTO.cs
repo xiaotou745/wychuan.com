@@ -118,4 +118,27 @@ namespace AC.Service.DTO.LiCai
         /// </summary>
         public int BaoXiao { get; set; }
     }
+
+    public class BillQueryInfo
+    {
+        public int UserId { get; set; }
+
+        public DateTime? StartTime { get; set; }
+
+        public DateTime? EndTime { get; set; }
+
+        public int FirstCategoryId { get; set; }
+
+        public int SecondCategoryId { get; set; }
+
+        public int AccountId { get; set; }
+
+        public int ProjectId { get; set; }
+
+        public int MemberId { get; set; }
+
+        public int BusinessId { get; set; }
+
+        public int? BaoXiao { get; set; }
+    }
 }

@@ -17,6 +17,7 @@ namespace wychuan2.com.Areas.admin.Controllers
         private readonly IItemsService itemService = new ItemsService();
         private readonly ICategoryService categoryService = new CategoryService();
         private readonly IBillTemplateService billTemplateService = new BillTemplateService();
+        private readonly IBillService billService = new BillService();
 
         #region 账户
         /// <summary>
@@ -184,13 +185,20 @@ namespace wychuan2.com.Areas.admin.Controllers
 
         public ActionResult TongJi()
         {
-            IList<ItemDTO> lstItems = itemService.GetByUserId(ApplicationUser.Current.UserId);
-            ViewBag.Items = lstItems;
+            var model = new BillModel();
 
-            IList<CategoryDTO> lstCategories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
-            ViewBag.Categories = lstCategories;
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Details =
+                billService.Query(new BillQueryInfo()
+                {
+                    StartTime = DateTime.Now.Date.AddDays(-7),
+                    EndTime = DateTime.Now,
+                    UserId = ApplicationUser.Current.UserId
+                });
 
-            return View();
+            return View(model);
         }
         #endregion
     }
