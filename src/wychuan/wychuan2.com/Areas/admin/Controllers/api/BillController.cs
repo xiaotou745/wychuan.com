@@ -14,6 +14,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
 {
     public class BillController : ApiController
     {
+        private readonly IAccountService accountService = new AccountService();
         private readonly IBillService billService = new BillService();
         private readonly IBillTemplateService billTemplateService = new BillTemplateService();
 
@@ -27,7 +28,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
             if (bill.ID == 0)
             {
                 bill.UserId = ApplicationUser.Current.UserId;
-                bill.ID = billService.Create(bill);
+                bill.ID = billService.Create(bill);//添加账单流水
             }
 
             return AjaxResult.Success(bill.ID);

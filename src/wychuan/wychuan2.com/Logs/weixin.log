@@ -18,3 +18,19 @@
 2015-07-23 17:08:45,698 [7] INFO  WeixinLog [(null)] - 
 2015-07-23 17:12:14,848 [18] INFO  WeixinLog [(null)] - 
 2015-07-23 17:12:23,363 [9] INFO  WeixinLog [(null)] - 
+2015-10-26 14:29:15,335 [8] ERROR WeixinLog [(null)] - 
+select  lbd.ID, lbd.UserId, lbd.BookId, lbd.Price, lbd.FirstCategoryId, lbd.FirstCategory, lbd.SecondCategoryId,
+        lbd.SecondCategory, lbd.AccountId, lbd.ToAccountId, lbd.ConsumeTime, lbd.Remark, lbd.DetailType, lbd.BusinessId,
+        lbd.Business, lbd.MemberId, lbd.Member, lbd.ProjectId, lbd.Project, lbd.RefundNotice, lbd.RefundTime,
+        lbd.BaoXiao
+from    LC_BillDetails lbd ( nolock )
+where lbd.UserId=@UserId and lbd.ConsumeTime>=@StartTime and lbd.ConsumeTime<=@EndTime order by lbd.ConsumeTime desc
+2015-10-26 14:29:15,363 [8] ERROR WeixinLog [(null)] - {"UserId":0,"StartTime":"\/Date(1445184000000)\/","EndTime":"\/Date(1445840955329)\/","FirstCategoryId":0,"SecondCategoryId":0,"AccountId":0,"ProjectId":0,"MemberId":0,"BusinessId":0,"BaoXiao":null}
+2015-10-28 13:34:23,399 [8] ERROR WeixinLog [(null)] - 
+select  lbd.ID, lbd.UserId, lbd.BookId, lbd.Price, lbd.FirstCategoryId, lbd.FirstCategory, lbd.SecondCategoryId,
+        lbd.SecondCategory, lbd.AccountId, lbd.ToAccountId, lbd.ConsumeTime, lbd.Remark, lbd.DetailType, lbd.BusinessId,
+        lbd.Business, lbd.MemberId, lbd.Member, lbd.ProjectId, lbd.Project, lbd.RefundNotice, lbd.RefundTime,
+        lbd.BaoXiao
+from    LC_BillDetails lbd ( nolock )
+where lbd.UserId=@UserId and lbd.ConsumeTime>=@StartTime and lbd.ConsumeTime<=@EndTime order by lbd.ConsumeTime desc
+2015-10-28 13:34:23,550 [8] ERROR WeixinLog [(null)] - {"UserId":1,"StartTime":"\/Date(1445356800000)\/","EndTime":"\/Date(1446010463375)\/","FirstCategoryId":0,"SecondCategoryId":0,"AccountId":0,"ProjectId":0,"MemberId":0,"BusinessId":0,"BaoXiao":null}

@@ -38,10 +38,19 @@
                 <div class="bill-item-list">
                     @foreach (var bill in lstBills)
                     {
+                        string priceColor = "";
+                        if (bill.DetailType == BillDetailType.Expend.GetHashCode())
+                        {
+                            priceColor = "text-danger";
+                        }
+                        else if (bill.DetailType == BillDetailType.Income.GetHashCode())
+                        {
+                            priceColor = "text-navy";
+                        }
                         <div class="bill-item">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <small class="pull-right bill-item-price">@bill.Price</small>
+                                    <small class="pull-right bill-item-price @priceColor">@bill.Price</small>
                                     <a data-toggle="collapse" href="#@bill.ID">@bill.SecondCategory</a>
                                     <small><i class="fa fa-clock-o"></i>@bill.ConsumeTime.ToString("HH:mm")  <strong>@bill.Remark</strong> </small>
                                 </div>

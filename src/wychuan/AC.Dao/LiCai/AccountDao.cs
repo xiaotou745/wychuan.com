@@ -95,6 +95,19 @@ where   Id = @Id ";
         }
         #endregion
 
+        public void AdjustBalance(int id, decimal adjustPrice)
+        {
+            const string sqlText = @"update LC_Account set Balance=Balance+@AdjustPrice where Id=@Id";
+
+            var dbParameters = DbHelper.CreateDbParameters();
+
+            dbParameters.Add("Id", DbType.Int32, 4).Value = id;
+            dbParameters.Add("AdjustPrice", DbType.Decimal).Value = adjustPrice;
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, sqlText, dbParameters);
+        }
+
+
         #region GetById
 
         public AccountDTO GetById(int id)

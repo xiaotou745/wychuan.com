@@ -24,6 +24,12 @@ namespace AC.Service.LiCai
 
         void Modify(AccountDTO account);
 
+        /// <summary>
+        /// 调整余额
+        /// </summary>
+        /// <param name="bill"></param>
+        void AdjustBalance(BillDTO bill);
+
         void Remove(int id);
 
         Dictionary<int, int> GetTypeCounts(int userId);

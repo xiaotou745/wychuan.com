@@ -11,7 +11,6 @@ namespace AC.Service.Impl.LiCai
     public class AccountService : IAccountService
     {
         private readonly AccountDao accountDao;
-
         public AccountService()
         {
             accountDao = new AccountDao();
@@ -52,6 +51,48 @@ namespace AC.Service.Impl.LiCai
             AssertUtils.Greater(account.UserId, 0);
 
             accountDao.Update(account);
+        }
+
+        public void AdjustBalance(BillDTO bill)
+        {
+            AssertUtils.ArgumentNotNull(bill, "bill");
+           
+
+            var billDetailType = (BillDetailType) Enum.Parse(typeof (BillDetailType), bill.DetailType.ToString());
+            switch (billDetailType)
+            {
+                case BillDetailType.Income:
+                    accountDao.AdjustBalance(bill.AccountId, bill.Price);
+                    break;
+                case BillDetailType.Expend:
+                    accountDao.AdjustBalance(bill.AccountId, bill.Price*-1);
+                    break;
+                    //借贷分两种,一种是自己借出,一种是借入;
+                case BillDetailType.Creditor:
+                    if (bill.CreditType == CreditType.JieChu.GetHashCode() ||
+                        bill.CreditType == CreditType.HuanKuan.GetHashCode())
+                    {
+                        accountDao.AdjustBalance(bill.AccountId, -1*bill.Price);
+                    }
+                    else
+                    {
+                        accountDao.AdjustBalance(bill.AccountId, bill.Price);
+                    }
+                    break;
+                case BillDetailType.Transfer://转账
+                    TransferPrice(bill.AccountId, bill.ToAccountId, bill.Price);
+                    break;
+            }
+        }
+
+
+        public void TransferPrice(int fromAccountId, int toAccountId, decimal transferPrice)
+        {
+            AssertUtils.Greater(fromAccountId, 0);
+            AssertUtils.Greater(toAccountId, 0);
+
+            accountDao.AdjustBalance(fromAccountId, -1*transferPrice);
+            accountDao.AdjustBalance(toAccountId, transferPrice);
         }
 
         public void Remove(int id)

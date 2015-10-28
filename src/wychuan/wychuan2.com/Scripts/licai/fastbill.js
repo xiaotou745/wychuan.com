@@ -170,7 +170,10 @@ function setBill(model) {
     form.find("[name=BaoXiao]").val(model.BaoXiao);
     form.find("[name=ProjectId]").val(model.ProjectId);
     form.find("[name=Project]").val(model.Project);
-
+    var curDate = new Date();
+    var curDateTime = curDate.getFullYear() + "/" + curDate.getMonth() + "/" + curDate.getDay() + " " + curDate.getHours() + ":" + curDate.getMinutes();
+    form.find("[name=txtConsumeTime]").val(curDateTime),
+    
     form.find("[name=selFirstCategory]").val(model.FirstCategoryId);
     form.find("[name=selFirstCategory]").trigger("change");
     form.find("[name=selCategory]").val(model.SecondCategoryId);

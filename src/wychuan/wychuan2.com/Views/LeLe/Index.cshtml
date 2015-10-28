@@ -1,0 +1,71 @@
+﻿@using wychuan2.com.Controllers
+@{
+    Layout = null;
+    var tasks = ViewBag.Tasks as List<string>;
+    var taskInfos = ViewBag.TaskInfos as List<TaskInfo>;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乐乐专用管理</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/style.css" />
+    <style type="text/css">
+        .widget {
+  border-radius: 5px;
+  padding: 5px 5px;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+.widget.style1 h4 {
+  font-size: 20px;
+}
+    </style>
+</head>
+<body>
+    @*<div id="wrapper">
+        @foreach (var task in tasks)
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="widget style1 red-bg">
+                        <div class="row vertical-align">
+                            <div class="col-lg-12">
+                                <h4 class="font-bold">@task</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>*@
+    
+    <div class="ibox-content">
+        <ul class="todo-list m-t ui-sortable">
+            @foreach (var task in taskInfos)
+            {
+                string taskType = "每日任务";
+                if (task.Type == 3)
+                {
+                    taskType = "每周任务";
+                }else if (task.Type == 4)
+                {
+                    taskType = "每月任务";
+                }else if (task.Type == 5)
+                {
+                    taskType = "每季任务";
+                }
+                <li>
+                    <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" value="" name="" class="i-checks" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
+                    <span class="m-l-xs">@task.TaskName</span>
+                    <small class="label label-primary"><i class="fa fa-clock-o"></i> @taskType</small>
+                </li>
+            }
+        </ul>
+    </div>
+</body>
+</html>

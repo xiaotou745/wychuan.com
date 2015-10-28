@@ -22,8 +22,8 @@ namespace AC.Dao.LiCai
         public int Insert(BillDTO bill)
         {
             const string insertSql = @"
-insert into LC_BillDetails(UserId,BookId,Price,FirstCategoryId,FirstCategory,SecondCategoryId,SecondCategory,AccountId,ToAccountId,ConsumeTime,Remark,DetailType,BusinessId,Business,MemberId,Member,ProjectId,Project,RefundNotice,RefundTime,BaoXiao)
-values(@UserId,@BookId,@Price,@FirstCategoryId,@FirstCategory,@SecondCategoryId,@SecondCategory,@AccountId,@ToAccountId,@ConsumeTime,@Remark,@DetailType,@BusinessId,@Business,@MemberId,@Member,@ProjectId,@Project,@RefundNotice,@RefundTime,@BaoXiao)
+insert into LC_BillDetails(UserId,BookId,Price,FirstCategoryId,FirstCategory,SecondCategoryId,SecondCategory,AccountId,ToAccountId,ConsumeTime,Remark,DetailType,BusinessId,Business,MemberId,Member,ProjectId,Project,RefundNotice,RefundTime,BaoXiao,CreditorType,IsBalanceAdjust)
+values(@UserId,@BookId,@Price,@FirstCategoryId,@FirstCategory,@SecondCategoryId,@SecondCategory,@AccountId,@ToAccountId,@ConsumeTime,@Remark,@DetailType,@BusinessId,@Business,@MemberId,@Member,@ProjectId,@Project,@RefundNotice,@RefundTime,@BaoXiao,@CreditorType,@IsBalanceAdjust)
 
 select @@IDENTITY";
 
@@ -49,6 +49,8 @@ select @@IDENTITY";
             dbParameters.AddWithValue("RefundNotice", bill.RefundNotice);
             dbParameters.AddWithValue("RefundTime", bill.RefundTime);
             dbParameters.AddWithValue("BaoXiao", bill.BaoXiao);
+            dbParameters.AddWithValue("CreditorType", bill.CreditType);
+            dbParameters.AddWithValue("IsBalanceAdjust", bill.IsBalanceAdjust);
 
             object result = DbHelper.ExecuteScalar(ConnStringOfAchuan, insertSql, dbParameters);
             if (result == null)
@@ -61,6 +63,26 @@ select @@IDENTITY";
 
         #endregion
 
+        #region HasBalanceAdjust
+
+        public bool HasBalanceAdjust(int userId, DateTime startTime)
+        {
+            const string sqlText = @"
+select count(1)
+from LC_BillDetails lbd(nolock)
+where lbd.UserId=@UserId
+	and lbd.ConsumeTime>@StartTime";
+
+            var dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.Add("UserId", DbType.Int32, 4).Value = userId;
+            dbParameters.Add("StartTime", DbType.DateTime).Value = startTime;
+
+            var executeScalar = DbHelper.ExecuteScalar(ConnStringOfAchuan, sqlText, dbParameters);
+            var count = ParseHelper.ToInt(executeScalar);
+            return count > 0;
+        }
+        #endregion
+
         #region Query
         public IList<BillDTO> Query(BillQueryInfo queryInfo)
         {
@@ -71,11 +93,9 @@ select @@IDENTITY";
 select  lbd.ID, lbd.UserId, lbd.BookId, lbd.Price, lbd.FirstCategoryId, lbd.FirstCategory, lbd.SecondCategoryId,
         lbd.SecondCategory, lbd.AccountId, lbd.ToAccountId, lbd.ConsumeTime, lbd.Remark, lbd.DetailType, lbd.BusinessId,
         lbd.Business, lbd.MemberId, lbd.Member, lbd.ProjectId, lbd.Project, lbd.RefundNotice, lbd.RefundTime,
-        lbd.BaoXiao
+        lbd.BaoXiao,lbd.CreditorType
 from    LC_BillDetails lbd ( nolock )
 where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
-            logger.Error(querySql);
-            logger.Error(JsonHelper.ToJson(queryInfo));
             return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, dbParamaters, new BillRowMapper());
         }
 
@@ -232,7 +252,11 @@ where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
                 {
                     result.BaoXiao = int.Parse(obj.ToString());
                 }
-
+                obj = dataReader["CreditorType"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    result.CreditType = int.Parse(obj.ToString());
+                }
                 return result;
             }
         }

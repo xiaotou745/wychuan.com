@@ -168,6 +168,13 @@ namespace wychuan2.com.Areas.admin.Controllers
             model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
             model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
             model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Details =
+                billService.Query(new BillQueryInfo()
+                {
+                    StartTime = DateTime.Now.Date.AddDays(-7),
+                    EndTime = DateTime.Now,
+                    UserId = ApplicationUser.Current.UserId
+                });
 
             return View(model);
         }
@@ -199,6 +206,14 @@ namespace wychuan2.com.Areas.admin.Controllers
                 });
 
             return View(model);
+        }
+        #endregion
+
+        #region P2P理财
+
+        public ActionResult P2P()
+        {
+            return View();
         }
         #endregion
     }

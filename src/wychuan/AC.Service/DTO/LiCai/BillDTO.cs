@@ -23,8 +23,24 @@ namespace AC.Service.DTO.LiCai
         [Description("转账")]
         Transfer=3,
 
+        /// <summary>
+        /// 借贷
+        /// </summary>
         [Description("借贷")]
         Creditor=4,
+    }
+
+    public enum CreditType
+    {
+        //借贷类型(1借入 2 借出 3收款 4还款)
+        [Description("借入")]
+        JieRu = 1,
+        [Description("借出")]
+        JieChu = 2,
+        [Description("收款")]
+        ShouKuan = 3,
+        [Description("还款")]
+        HuanKuan = 4,
     }
 
     public class BillDTO
@@ -106,6 +122,10 @@ namespace AC.Service.DTO.LiCai
         /// </summary>
         public string Project { get; set; }
         /// <summary>
+        /// 借贷类型
+        /// </summary>
+        public int CreditType { get; set; }
+        /// <summary>
         /// 还款是否需要提醒
         /// </summary>
         public string RefundNotice { get; set; }
@@ -113,6 +133,12 @@ namespace AC.Service.DTO.LiCai
         /// 还款日期
         /// </summary>
         public DateTime? RefundTime { get; set; }
+
+        /// <summary>
+        /// 是否是调整余额记录
+        /// </summary>
+        public bool IsBalanceAdjust { get; set; }
+
         /// <summary>
         /// 报销状态（0 不报销 1 待报销 2 已报销)
         /// </summary>

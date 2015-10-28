@@ -10,6 +10,7 @@
     List<ItemDTO> lstProjects = Model.Items.Where(m => m.Type == ItemType.Project).ToList();
     List<ItemDTO> lstMembers = Model.Items.Where(m => m.Type == ItemType.Member).ToList();
     List<ItemDTO> lstBusiness = Model.Items.Where(m => m.Type == ItemType.Business).ToList();
+    string strCategories = AC.Util.JsonHelper.ToJson(Model.Categories);
 }
 
 @section styles{
@@ -17,18 +18,40 @@
     <link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
     <link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />
     <style type="text/css">
-        /*.bill-item-list {
-            
+        .ibox-bill {
+            margin-bottom: 10px;
         }
-        .bill-dayinfo {
-            
-        }*/
-        /*.bill-item {
+
+        .ibox-title-bill {
+            border-top: none !important;
+        }
+
+        .bill-item-day {
+        }
+
+        .bill-item-list {
+        }
+
+        .bill-item {
             display: block;
+            padding: 0px;
+            margin-bottom: 2px;
+            background: #fff;
+            border-bottom: 1px solid #f1f1f1;
         }
-        .bill-item h4,h5 {
-            
-        }*/
+
+            .bill-item a {
+                font-size: 14px;
+                font-weight: 600;
+                color: #1ab394;
+                display: block;
+            }
+
+        .bill-item-price {
+            font-size: 17px;
+            line-height: 18px;
+            font-weight: 200;
+        }
     </style>
 }
 <div class="row">
@@ -45,58 +68,15 @@
 
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tabAll">
-                        <div class="well well-sm">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <div class="input-daterange input-group" id="datepicker">
-                                        <input type="text" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
-                                        <span class="input-group-addon">to</span>
-                                        <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
-                                        </span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option value="">选择账户</option>
-                                            @foreach (var account in Model.Accounts)
-                                            {
-                                                <option value="@account.Id">@account.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option value="">选择项目</option>
-                                            @foreach (var project in lstProjects)
-                                            {
-                                                <option value="@project.Id">@project.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option value="">选择成员</option>
-                                            @foreach (var member in lstMembers)
-                                            {
-                                                <option value="@member.Id">@member.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tab1">
-                        
-                        <div class="ibox">
-                            <div class="ibox-title">
-                                <h4>查询条件</h4>
+                        <div class="ibox float-e-margins J_hide">
+                            <div class="ibox-title ibox-title-bill">
+                                <h5 class="text-danger">查询条件</h5>
                                 <div class="ibox-tools">
-                                    <span class="label label-primary">支:￥80.00 收:￥2.00</span>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-xs btn-white active">最近一周</button>
+                                        <button type="button" class="btn btn-xs btn-white">最近一月</button>
+                                    </div>
+
                                     <a class="collapse-link ui-sortable">
                                         <i class="fa fa-chevron-up"></i>
                                     </a>
@@ -112,26 +92,6 @@
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
                                             </span>
-                                        </div>
-                                        <br />
-                                        <div class="input-group">
-                                            @{
-                                                var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
-                                                var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
-                                            }
-                                            <select class="input-sm form-control">
-                                                @foreach (var first in lstFirsts)
-                                                {
-                                                    <option value="@first.Id">@first.Name</option>
-                                                }
-                                            </select>
-                                            <span class="input-group-addon">-</span>
-                                            <select class="input-sm form-control" name="selCategory">
-                                                @foreach (var first in lstSeconds)
-                                                {
-                                                    <option value="@first.Id">@first.Name</option>
-                                                }
-                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label class="sr-only"></label>
@@ -163,32 +123,121 @@
                                                 }
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="sr-only"></label>
-                                            <select class="form-control">
-                                                <option>选择商家</option>
-                                                @foreach (var business in lstBusiness)
-                                                {
-                                                    <option value="@business.Id">@business.Name</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only"></label>
-                                            <select class="form-control">
-                                                <option>是否报销</option>
-                                                <option value="0">非报销</option>
-                                                <option value="1">可报销</option>
-                                                <option value="2">已报销</option>
-                                            </select>
-                                        </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="ibox">
-                            <div class="ibox-title">
-                                <h4>2015-10-22</h4>
+                        <div id="billAll">
+                            @Html.Partial("_BillList", Model)
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tab1">
+                        <div class="ibox float-e-margins J_hide" style="margin-bottom:5px;">
+                            <div class="ibox-title ibox-title-bill">
+                                <h5>查询</h5>
+
+                                <div class="ibox-tools">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-xs btn-white active">最近一周</button>
+                                        <button type="button" class="btn btn-xs btn-white">最近一月</button>
+                                    </div>
+
+                                    <a class="collapse-link ui-sortable">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <div class="input-daterange input-group" id="datepicker">
+                                            <input type="text" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-addon">to</span>
+                                            <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="input-group">
+                                        @{
+                                            var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
+                                            var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
+                                        }
+                                        <select class="input-sm form-control">
+                                            <option value="0">一级类目</option>
+                                            @foreach (var first in lstFirsts)
+                                            {
+                                                <option value="@first.Id">@first.Name</option>
+                                            }
+                                        </select>
+                                        <span class="input-group-addon input-sm">-</span>
+                                        <select class="input-sm form-control" name="selCategory">
+                                            <option value="0">二级类目</option>
+                                            @foreach (var first in lstSeconds)
+                                            {
+                                                <option value="@first.Id">@first.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only"></label>
+                                        <select class="form-control">
+                                            <option value="">选择账户</option>
+                                            @foreach (var account in Model.Accounts)
+                                            {
+                                                <option value="@account.Id">@account.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only"></label>
+                                        <select class="form-control">
+                                            <option value="">选择项目</option>
+                                            @foreach (var project in lstProjects)
+                                            {
+                                                <option value="@project.Id">@project.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only"></label>
+                                        <select class="form-control">
+                                            <option value="">选择成员</option>
+                                            @foreach (var member in lstMembers)
+                                            {
+                                                <option value="@member.Id">@member.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only"></label>
+                                        <select class="form-control">
+                                            <option>选择商家</option>
+                                            @foreach (var business in lstBusiness)
+                                            {
+                                                <option value="@business.Id">@business.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only"></label>
+                                        <select class="form-control">
+                                            <option>是否报销</option>
+                                            <option value="0">非报销</option>
+                                            <option value="1">可报销</option>
+                                            <option value="2">已报销</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="ibox float-e-margins" style="margin-bottom:5px;">
+                            <div class="ibox-title ibox-title-bill" style="padding-top: 0px;padding-bottom: 0px;min-height:20px;height:20px;">
+                                <h5>2015-10-22</h5>
                                 <div class="ibox-tools">
                                     <span class="label label-primary">支:￥80.00 收:￥2.00</span>
                                     <a class="collapse-link ui-sortable">
@@ -196,282 +245,161 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="ibox-content">
-                                <table class="table table-bordered table-condensed table-striped">
-                                    <tr>
-                                        <th>时间</th>
-                                        <th>金额</th>
-                                        <th>类别</th>
-                                        <th>商家</th>
-                                        <th>备注</th>
-                                    </tr>
-                                    <tr>
-                                        <td>@DateTime.Now</td>
-                                        <td>12.00</td>
-                                        <td>test</td>
-                                        <td>商家</td>
-                                        <td>备注</td>
-                                    </tr>
-                                </table>
+                            <div class="ibox-content" style="display: block;padding-top: 5px;padding-bottom: 5px;">
+                                <div class="bill-item-list">
+                                    <div class="bill-item">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <small class="pull-right bill-item-price">10.99</small>
+                                                <a data-toggle="collapse" href="#test1">早餐</a>
+                                                <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="padding-left: 0px;padding-right: 0px;">
+                                                <div id="test1" class="panel-collapse faq-answer collapse" aria-expanded="false">
+                                                    <form class="form-horizontal">
+                                                        <input type="hidden" name="templateId" value="0" />
+                                                        <input type="hidden" name="BookId" value="0" />
+                                                        <input type="hidden" name="BaoXiao" value="0" />
+                                                        <input type="hidden" name="ProjectId" value="0" />
+                                                        <input type="hidden" name="Project" value="" />
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group m-b-xxs">
+                                                                    @*<label class="col-md-1 sr-only control-label">金额</label>*@
+                                                                    <div class="col-md-offset-1 col-md-11">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">￥</span>
+                                                                            <input name="txtPrice" type="text" value="0" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group m-b-xxs">
+                                                                    @*<label class="col-sm-1 control-label">时间</label>*@
+                                                                    <div class="col-sm-12">
+                                                                        <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@DateTime.Now.ToString("yyyy/MM/dd HH:mm")" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group m-b-xxs">
+                                                                    @*<label class="col-sm-1 control-label">备注</label>*@
+                                                                    <div class="col-md-offset-1 col-md-11">
+                                                                        <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group m-b-xxs">
+                                                                    @*<label class="sr-only control-label">类别</label>*@
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="input-group">
+                                                                            <select class="input-sm form-control" name="selFirstCategory">
+                                                                                @foreach (var first in lstFirsts)
+                                                                                {
+                                                                                    <option value="@first.Id">@first.Name</option>
+                                                                                }
+                                                                            </select>
+                                                                            <span class="input-group-addon">-</span>
+                                                                            <select class="input-sm form-control" name="selCategory">
+                                                                                @foreach (var first in lstSeconds)
+                                                                                {
+                                                                                    <option value="@first.Id">@first.Name</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="input-group col-md-offset-1 m-b-xxs">
+                                                                    <select class="input-sm" name="selAccount">
+                                                                        @foreach (var account in Model.Accounts)
+                                                                        {
+                                                                            <option value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                                        }
+                                                                    </select>
+                                                                    <select class="input-sm" name="selBusiness">
+                                                                        <option value="0">商家</option>
+                                                                        @foreach (var business in lstBusiness)
+                                                                        {
+                                                                            <option value="@business.Id">@business.Name</option>
+                                                                        }
+                                                                    </select>
+                                                                    <select class="input-sm" name="selMember">
+                                                                        @foreach (var member in lstMembers)
+                                                                        {
+                                                                            <option value="@member.Id">@member.Name</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr class="m-sm" />
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group m-b-sm">
+                                                                    <div class="col-md-offset-1 col-md-11">
+                                                                        <button name="btnSave" class="btn btn-primary" data-clear="false" data-type="@BillDetailType.Expend.GetHashCode()" type="button"><strong>保存</strong></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bill-item">
+                                        <small class="pull-right bill-item-price">10.99</small>
+                                        <a>早餐</a>
+                                        <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
+                                    </div>
+                                    <div class="bill-item">
+                                        <small class="pull-right bill-item-price">10.99</small>
+                                        <a>早餐</a>
+                                        <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
+                                    </div>
+                                    <div class="bill-item">
+                                        <small class="pull-right bill-item-price">10.99</small>
+                                        <a>早餐</a>
+                                        <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
+                        <div class="ibox ibox-bill float-e-margins" style="margin-bottom:5px;">
+                            <div class="ibox-title ibox-title-bill" style="padding-top: 0px;padding-bottom: 0px;min-height:20px;height:20px;">
+                                <h5>2015-10-21</h5>
+                                <div class="ibox-tools">
+                                    <span class="label label-primary">支:￥80.00 收:￥2.00</span>
+                                    <a class="collapse-link ui-sortable">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="display: block;padding-top: 5px;padding-bottom: 5px;">
+                                sdfsdf
+                            </div>
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab2">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <form class="form-horizontal" role="form" id="form1" novalidate="novalidate">
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">账本</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">金额</label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">￥</span>
-                                                <input type="text" value="0.0" class="form-control" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">类别</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>option1111</option>
-                                                <option>option1111</option>
-                                                <option>option1111</option>
-                                                <option>option1111</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">付款方</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>1111</option>
-                                                <option>1111</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">账户</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>sdfsdfds</option>
-                                                <option>sdfsdfds</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">时间</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control datetimepicker" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">项目</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>sdfsdfds</option>
-                                                <option>sdfsdfds</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">成员</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>sdfsdfds</option>
-                                                <option>sdfsdfds</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">备注</label>
-                                        <div class="col-sm-5">
-                                            <textarea cols="10" rows="3" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-4 col-sm-offset-1">
-                                            <button class="btn btn-primary" type="submit"><strong>保存</strong></button>
-                                            <button class="btn btn-danger" type="submit"><strong>保存后再记</strong></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        sdfsdf
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab3">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <form class="form-horizontal" role="form" id="form1" novalidate="novalidate">
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">账本</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">账户</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>sdfsdfds</option>
-                                                <option>sdfsdfds</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-1">></div>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>sdfsdfds</option>
-                                                <option>sdfsdfds</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">金额</label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">￥</span>
-                                                <input type="text" value="0.0" class="form-control" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">时间</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control datetimepicker" />
-                                        </div>
-                                    </div>
-
-                                    <hr />
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">备注</label>
-                                        <div class="col-sm-5">
-                                            <textarea cols="10" rows="3" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-4 col-sm-offset-1">
-                                            <button class="btn btn-primary" type="submit"><strong>保存</strong></button>
-                                            <button class="btn btn-danger" type="submit"><strong>保存后再记</strong></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        fff
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tab4">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <form class="form-horizontal" role="form" id="form4" novalidate="novalidate">
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">账本</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                                <option>option11</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">类别</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>借入</option>
-                                                <option>借出</option>
-                                                <option>收款</option>
-                                                <option>还款</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">金额</label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">￥</span>
-                                                <input type="text" value="0.0" class="form-control" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">债权人</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>1111</option>
-                                                <option>1111</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">借入账户</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>sdfsdfds</option>
-                                                <option>sdfsdfds</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">时间</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control datetimepicker" />
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">还款日</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>sdfsdfds</option>
-                                                <option>sdfsdfds</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">还款提醒</label>
-                                        <div class="col-sm-3">
-                                            <select class="form-control">
-                                                <option>无需提醒</option>
-                                                <option>提醒一次</option>
-                                                <option>每月提醒</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">备注</label>
-                                        <div class="col-sm-5">
-                                            <textarea cols="10" rows="3" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-4 col-sm-offset-1">
-                                            <button class="btn btn-primary" type="submit"><strong>保存</strong></button>
-                                            <button class="btn btn-danger" type="submit"><strong>保存后再记</strong></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        fdsfsd
                     </div>
                 </div>
             </div>
@@ -487,17 +415,29 @@
     <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
     <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script>
-        $(function() {
+        $(function () {
+            window.categories=@Html.Raw(strCategories);
+            $(".J_hide .collapse-link").trigger("click");
             $(".datetimepicker").datetimepicker({
-                lang: "ch",
-                mask: true
+                lang: "ch"
             });
 
             $('.input-daterange').datepicker({
                 format: "yyyy-mm-dd",
                 language: "zh-CN"
             });
+            $("[name=selFirstCategory]").bind("change", function () {
+                var $second = $(this).next().next();
+                var firstId = $(this).val();
+                var seconds = $.grep(window.categories, function (item, index) {
+                    return item.ParentId == firstId;
+                });
+                $second.html("");
+                $.each(seconds, function (i, category) {
+                    $second.append("<option value='" + category.Id + "'>" + category.Name + "</option>");
+                });
+            });
         })
-
+        
     </script>
 }

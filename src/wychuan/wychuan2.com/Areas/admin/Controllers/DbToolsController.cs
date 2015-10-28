@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using wychuan2.com.Areas.admin.Models;
 using wychuan2.com.Areas.admin.Models.DbTools;
 using wychuan2.com.Areas.admin.Models.HtmlTable;
+using wychuan2.com.Models;
 
 namespace wychuan2.com.Areas.admin.Controllers
 {
@@ -122,6 +123,10 @@ namespace wychuan2.com.Areas.admin.Controllers
         {
             IDbObject dbObject = DbSetting.CreateDbObject(dbServer);
             List<TableInfo> lstTables = dbObject.GetTablesInfo(dbName);
+            if (dbName.ToLower().Equals("qds122275398_db") && ApplicationUser.Current.UserName.ToLower()!="wangyuchuan")
+            {
+                lstTables = lstTables.Where(t => t.TabName.ToLower().Equals("userdemo")).ToList();
+            }
             var htmlTable = new HtmlTableInfo
             {
                 UseSection = false,
