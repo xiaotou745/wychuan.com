@@ -11,8 +11,8 @@ namespace wychuan2.com.Controllers
         // GET: LeLe
         public ActionResult Index()
         {
-            var tasks = LeLeTasks.GetTasks();
-            ViewBag.Tasks = tasks;
+            //var tasks = LeLeTasks.GetTasks();
+            //ViewBag.Tasks = tasks;
             var taskInfos = LeLeTasks.GetTaskInfo();
             ViewBag.TaskInfos = taskInfos;
             return View();
@@ -33,6 +33,7 @@ namespace wychuan2.com.Controllers
             return new TaskInfo {Type = type, TaskName = taskName};
         }
     }
+
     public class LeLeTasks
     {
         public static IList<string> GetTasks()

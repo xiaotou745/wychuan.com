@@ -28,7 +28,11 @@ namespace wychuan2.com.Areas.admin.Controllers.api
             if (bill.ID == 0)
             {
                 bill.UserId = ApplicationUser.Current.UserId;
-                bill.ID = billService.Create(bill);//添加账单流水
+                bill.ID = billService.Create(bill); //添加账单流水
+            }
+            else
+            {
+                billService.Modify(bill);
             }
 
             return AjaxResult.Success(bill.ID);

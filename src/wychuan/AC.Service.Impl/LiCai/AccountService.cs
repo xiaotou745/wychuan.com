@@ -69,8 +69,8 @@ namespace AC.Service.Impl.LiCai
                     break;
                     //借贷分两种,一种是自己借出,一种是借入;
                 case BillDetailType.Creditor:
-                    if (bill.CreditType == CreditType.JieChu.GetHashCode() ||
-                        bill.CreditType == CreditType.HuanKuan.GetHashCode())
+                    if (bill.CreditorType == CreditType.JieChu.GetHashCode() ||
+                        bill.CreditorType == CreditType.HuanKuan.GetHashCode())
                     {
                         accountDao.AdjustBalance(bill.AccountId, -1*bill.Price);
                     }
@@ -85,6 +85,26 @@ namespace AC.Service.Impl.LiCai
             }
         }
 
+        public void AdjustBalance(BillDTO bill, decimal price)
+        {
+            AssertUtils.ArgumentNotNull(bill, "bill");
+
+            decimal adjustPrice = price;
+            var billDetailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), bill.DetailType.ToString());
+            switch (billDetailType)
+            {
+                case BillDetailType.Income:
+                case BillDetailType.Expend:
+                //借贷分两种,一种是自己借出,一种是借入;
+                case BillDetailType.Creditor:
+                    accountDao.AdjustBalance(bill.AccountId, adjustPrice);
+                    break;
+                case BillDetailType.Transfer://转账
+                    accountDao.AdjustBalance(bill.AccountId, adjustPrice);
+                    accountDao.AdjustBalance(bill.ToAccountId, adjustPrice*-1);
+                    break;
+            }
+        }
 
         public void TransferPrice(int fromAccountId, int toAccountId, decimal transferPrice)
         {

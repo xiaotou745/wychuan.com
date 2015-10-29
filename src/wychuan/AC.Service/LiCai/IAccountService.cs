@@ -30,6 +30,8 @@ namespace AC.Service.LiCai
         /// <param name="bill"></param>
         void AdjustBalance(BillDTO bill);
 
+        void AdjustBalance(BillDTO bill, decimal price);
+
         void Remove(int id);
 
         Dictionary<int, int> GetTypeCounts(int userId);

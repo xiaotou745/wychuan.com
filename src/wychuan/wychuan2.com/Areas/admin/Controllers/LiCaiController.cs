@@ -172,12 +172,58 @@ namespace wychuan2.com.Areas.admin.Controllers
                 billService.Query(new BillQueryInfo()
                 {
                     StartTime = DateTime.Now.Date.AddDays(-7),
-                    EndTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(1).Date,
                     UserId = ApplicationUser.Current.UserId
                 });
 
             return View(model);
         }
+
+        public ActionResult QueryDetails(BillQueryInfo queryInfo)
+        {
+            var model = new BillModel();
+
+            if (queryInfo == null)
+            {
+                queryInfo = new BillQueryInfo();
+            }
+            if (queryInfo.TimeZone == 1)
+            {
+                queryInfo.EndTime = DateTime.Now.AddDays(1).Date;
+                queryInfo.StartTime = DateTime.Now.AddDays(-7).Date;
+            }
+            else if (queryInfo.TimeZone == 2)
+            {
+                queryInfo.EndTime = DateTime.Now.AddDays(1).Date;
+                queryInfo.StartTime = DateTime.Now.AddDays(-30).Date;
+            }
+            else
+            {
+                queryInfo.EndTime = queryInfo.EndTime.Value.AddDays(1).Date;
+            }
+            queryInfo.UserId = ApplicationUser.Current.UserId;
+
+            model.Details = billService.Query(queryInfo);
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
+
+            return View("_BillList", model);
+        }
+
+        public ActionResult BillItem(int id)
+        {
+            var model = new BillModel
+            {
+                Accounts = accountService.Query(new AccountQueryInfo {UserId = ApplicationUser.Current.UserId}),
+                Items = itemService.GetByUserId(ApplicationUser.Current.UserId),
+                Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId),
+                Details = new List<BillDTO> {billService.GetById(id)}
+            };
+
+            return View("_BillItem", model);
+        }
+
         #endregion
 
         #region 预算

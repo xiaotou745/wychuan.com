@@ -79,7 +79,7 @@ function getModel(form, sender) {
         Project: form.find("[name=selProject] option:selected").text(),
         RefundTime: form.find("[name=txtRefundTime]").val(),
         RefundNotice: form.find("[name=selRefundNotice]").val(),
-        CreditorType: form.find("[name=selCreditorType] option:selected").text(),
+        CreditorType: form.find("[name=selCreditorType]").val(),
         BaoXiao: isBaoXiao
     };
 

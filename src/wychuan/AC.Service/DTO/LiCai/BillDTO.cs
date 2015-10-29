@@ -81,6 +81,7 @@ namespace AC.Service.DTO.LiCai
         /// 账户ID/借入账户/借出账户
         /// </summary>
         public int AccountId { get; set; }
+
         /// <summary>
         /// 转账使用，目标账户ID
         /// </summary>
@@ -122,9 +123,9 @@ namespace AC.Service.DTO.LiCai
         /// </summary>
         public string Project { get; set; }
         /// <summary>
-        /// 借贷类型
+        /// 借贷类型(1借入 2 借出 3收款 4还款)
         /// </summary>
-        public int CreditType { get; set; }
+        public int CreditorType { get; set; }
         /// <summary>
         /// 还款是否需要提醒
         /// </summary>
@@ -147,6 +148,15 @@ namespace AC.Service.DTO.LiCai
 
     public class BillQueryInfo
     {
+        /// <summary>
+        /// 没什么卵用 1表示最近一周 2表示最近一月，如果设置了此值，则starttime和endtime以此为准。
+        /// </summary>
+        public int TimeZone { get; set; }
+        /// <summary>
+        /// 如果为0，则查全部，否则查指定类型
+        /// </summary>
+        public int DetailType { get; set; }
+
         public int UserId { get; set; }
 
         public DateTime? StartTime { get; set; }
@@ -159,6 +169,8 @@ namespace AC.Service.DTO.LiCai
 
         public int AccountId { get; set; }
 
+        public int AccountToId { get; set; }
+
         public int ProjectId { get; set; }
 
         public int MemberId { get; set; }
@@ -166,5 +178,7 @@ namespace AC.Service.DTO.LiCai
         public int BusinessId { get; set; }
 
         public int? BaoXiao { get; set; }
+
+        public int? CreditorType { get; set; }
     }
 }

@@ -11,6 +11,12 @@
     List<ItemDTO> lstMembers = Model.Items.Where(m => m.Type == ItemType.Member).ToList();
     List<ItemDTO> lstBusiness = Model.Items.Where(m => m.Type == ItemType.Business).ToList();
     string strCategories = AC.Util.JsonHelper.ToJson(Model.Categories);
+    
+    var lstExpends = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
+    var lstExpendsChilds = Model.Categories.Where(c => c.ParentId == lstExpends.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
+
+    var lstIncomes = Model.Categories.Where(c => c.InOutType == CategoryType.Income && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
+    var lstIncomesChilds = Model.Categories.Where(c => c.ParentId == lstIncomes.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
 }
 
 @section styles{
@@ -43,7 +49,7 @@
             .bill-item a {
                 font-size: 14px;
                 font-weight: 600;
-                color: #1ab394;
+                /*color: #1ab394;*/
                 display: block;
             }
 
@@ -67,14 +73,14 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="tabAll">
+                    <div role="tabpanel" class="tab-pane active J_Tab" data-billtype="0" id="tabAll">
                         <div class="ibox float-e-margins J_hide">
                             <div class="ibox-title ibox-title-bill">
                                 <h5 class="text-danger">查询条件</h5>
                                 <div class="ibox-tools">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-xs btn-white active">最近一周</button>
-                                        <button type="button" class="btn btn-xs btn-white">最近一月</button>
+                                        <button name="btnLastedWeek" data-querytype="1" type="button" class="btn btn-xs btn-white active">最近一周</button>
+                                        <button name="btnLastedMonth" data-querytype="2" type="button" class="btn btn-xs btn-white">最近一月</button>
                                     </div>
 
                                     <a class="collapse-link ui-sortable">
@@ -90,12 +96,12 @@
                                             <span class="input-group-addon">to</span>
                                             <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
+                                                <button name="btnDateQuery" type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
                                             </span>
                                         </div>
                                         <div class="form-group">
                                             <label class="sr-only"></label>
-                                            <select class="form-control">
+                                            <select class="form-control" name="selAccountQuery">
                                                 <option value="">选择账户</option>
                                                 @foreach (var account in Model.Accounts)
                                                 {
@@ -105,7 +111,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="sr-only"></label>
-                                            <select class="form-control">
+                                            <select class="form-control" name="selProjectQuery">
                                                 <option value="">选择项目</option>
                                                 @foreach (var project in lstProjects)
                                                 {
@@ -115,7 +121,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="sr-only"></label>
-                                            <select class="form-control">
+                                            <select class="form-control" name="selMemberQuery">
                                                 <option value="">选择成员</option>
                                                 @foreach (var member in lstMembers)
                                                 {
@@ -127,20 +133,18 @@
                                 </form>
                             </div>
                         </div>
-                        <div id="billAll">
+                        <div id="billAll" name="billlist">
                             @Html.Partial("_BillList", Model)
                         </div>
-
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab1">
-                        <div class="ibox float-e-margins J_hide" style="margin-bottom:5px;">
+                    <div role="tabpanel" class="tab-pane J_Tab" data-billtype="@BillDetailType.Expend.GetHashCode()" id="tab1">
+                        <div class="ibox float-e-margins J_hide">
                             <div class="ibox-title ibox-title-bill">
-                                <h5>查询</h5>
-
+                                <h5 class="text-danger">查询条件</h5>
                                 <div class="ibox-tools">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-xs btn-white active">最近一周</button>
-                                        <button type="button" class="btn btn-xs btn-white">最近一月</button>
+                                        <button name="btnLastedWeek" data-querytype="1" type="button" class="btn btn-xs btn-white active">最近一周</button>
+                                        <button name="btnLastedMonth" data-querytype="2" type="button" class="btn btn-xs btn-white">最近一月</button>
                                     </div>
 
                                     <a class="collapse-link ui-sortable">
@@ -156,250 +160,253 @@
                                             <span class="input-group-addon">to</span>
                                             <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
+                                                <button name="btnDateQuery" type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
                                             </span>
                                         </div>
-                                    </div>
-                                    <br />
-                                    <div class="input-group">
-                                        @{
-                                            var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
-                                            var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
-                                        }
-                                        <select class="input-sm form-control">
-                                            <option value="0">一级类目</option>
-                                            @foreach (var first in lstFirsts)
-                                            {
-                                                <option value="@first.Id">@first.Name</option>
-                                            }
-                                        </select>
-                                        <span class="input-group-addon input-sm">-</span>
-                                        <select class="input-sm form-control" name="selCategory">
-                                            <option value="0">二级类目</option>
-                                            @foreach (var first in lstSeconds)
-                                            {
-                                                <option value="@first.Id">@first.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option value="">选择账户</option>
-                                            @foreach (var account in Model.Accounts)
-                                            {
-                                                <option value="@account.Id">@account.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option value="">选择项目</option>
-                                            @foreach (var project in lstProjects)
-                                            {
-                                                <option value="@project.Id">@project.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option value="">选择成员</option>
-                                            @foreach (var member in lstMembers)
-                                            {
-                                                <option value="@member.Id">@member.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option>选择商家</option>
-                                            @foreach (var business in lstBusiness)
-                                            {
-                                                <option value="@business.Id">@business.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only"></label>
-                                        <select class="form-control">
-                                            <option>是否报销</option>
-                                            <option value="0">非报销</option>
-                                            <option value="1">可报销</option>
-                                            <option value="2">已报销</option>
-                                        </select>
+                                        <div class="input-group">
+                                            <select class="input-sm form-control" name="selFirstCategoryQuery">
+                                                <option value="0">一级类别</option>
+                                                @foreach (var first in lstExpends)
+                                                {
+                                                    <option value="@first.Id">@first.Name</option>
+                                                }
+                                            </select>
+                                            <span class="input-group-addon">-</span>
+                                            <select class="input-sm form-control" name="selCategoryQuery">
+                                                <option value="0">二级类别</option>
+                                                @{
+                                                    var lstSeconds = Model.Categories.Where(c => c.ParentId == lstExpends.First().Id).OrderByDescending(c => c.IsCommonUse);
+                                                }
+                                                @foreach (var second in lstSeconds)
+                                                {
+                                                    <option value="@second.Id">@second.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selAccountQuery">
+                                                <option value="">选择账户</option>
+                                                @foreach (var account in Model.Accounts)
+                                                {
+                                                    <option value="@account.Id">@account.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selProjectQuery">
+                                                <option value="">选择项目</option>
+                                                @foreach (var project in lstProjects)
+                                                {
+                                                    <option value="@project.Id">@project.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selMemberQuery">
+                                                <option value="">选择成员</option>
+                                                @foreach (var member in lstMembers)
+                                                {
+                                                    <option value="@member.Id">@member.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selBaoXiao">
+                                                <option value="">选择报销</option>
+                                                <option value="0">非报销</option>
+                                                <option value="1">待报销</option>
+                                                <option value="2">已报销</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-
-                        <div class="ibox float-e-margins" style="margin-bottom:5px;">
-                            <div class="ibox-title ibox-title-bill" style="padding-top: 0px;padding-bottom: 0px;min-height:20px;height:20px;">
-                                <h5>2015-10-22</h5>
+                        
+                        <div name="billlist">
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane J_Tab" data-billtype="@BillDetailType.Income.GetHashCode()" id="tab2">
+                        <div class="ibox float-e-margins J_hide">
+                            <div class="ibox-title ibox-title-bill">
+                                <h5 class="text-danger">查询条件</h5>
                                 <div class="ibox-tools">
-                                    <span class="label label-primary">支:￥80.00 收:￥2.00</span>
+                                    <div class="btn-group">
+                                        <button name="btnLastedWeek" data-querytype="1" type="button" class="btn btn-xs btn-white active">最近一周</button>
+                                        <button name="btnLastedMonth" data-querytype="2" type="button" class="btn btn-xs btn-white">最近一月</button>
+                                    </div>
+
                                     <a class="collapse-link ui-sortable">
                                         <i class="fa fa-chevron-up"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div class="ibox-content" style="display: block;padding-top: 5px;padding-bottom: 5px;">
-                                <div class="bill-item-list">
-                                    <div class="bill-item">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <small class="pull-right bill-item-price">10.99</small>
-                                                <a data-toggle="collapse" href="#test1">早餐</a>
-                                                <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
-                                            </div>
+                            <div class="ibox-content">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <div class="input-daterange input-group" id="datepicker">
+                                            <input type="text" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-addon">to</span>
+                                            <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-btn">
+                                                <button name="btnDateQuery" type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
+                                            </span>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12" style="padding-left: 0px;padding-right: 0px;">
-                                                <div id="test1" class="panel-collapse faq-answer collapse" aria-expanded="false">
-                                                    <form class="form-horizontal">
-                                                        <input type="hidden" name="templateId" value="0" />
-                                                        <input type="hidden" name="BookId" value="0" />
-                                                        <input type="hidden" name="BaoXiao" value="0" />
-                                                        <input type="hidden" name="ProjectId" value="0" />
-                                                        <input type="hidden" name="Project" value="" />
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group m-b-xxs">
-                                                                    @*<label class="col-md-1 sr-only control-label">金额</label>*@
-                                                                    <div class="col-md-offset-1 col-md-11">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">￥</span>
-                                                                            <input name="txtPrice" type="text" value="0" class="form-control" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group m-b-xxs">
-                                                                    @*<label class="col-sm-1 control-label">时间</label>*@
-                                                                    <div class="col-sm-12">
-                                                                        <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@DateTime.Now.ToString("yyyy/MM/dd HH:mm")" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group m-b-xxs">
-                                                                    @*<label class="col-sm-1 control-label">备注</label>*@
-                                                                    <div class="col-md-offset-1 col-md-11">
-                                                                        <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group m-b-xxs">
-                                                                    @*<label class="sr-only control-label">类别</label>*@
-
-                                                                    <div class="col-md-12">
-                                                                        <div class="input-group">
-                                                                            <select class="input-sm form-control" name="selFirstCategory">
-                                                                                @foreach (var first in lstFirsts)
-                                                                                {
-                                                                                    <option value="@first.Id">@first.Name</option>
-                                                                                }
-                                                                            </select>
-                                                                            <span class="input-group-addon">-</span>
-                                                                            <select class="input-sm form-control" name="selCategory">
-                                                                                @foreach (var first in lstSeconds)
-                                                                                {
-                                                                                    <option value="@first.Id">@first.Name</option>
-                                                                                }
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="input-group col-md-offset-1 m-b-xxs">
-                                                                    <select class="input-sm" name="selAccount">
-                                                                        @foreach (var account in Model.Accounts)
-                                                                        {
-                                                                            <option value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
-                                                                        }
-                                                                    </select>
-                                                                    <select class="input-sm" name="selBusiness">
-                                                                        <option value="0">商家</option>
-                                                                        @foreach (var business in lstBusiness)
-                                                                        {
-                                                                            <option value="@business.Id">@business.Name</option>
-                                                                        }
-                                                                    </select>
-                                                                    <select class="input-sm" name="selMember">
-                                                                        @foreach (var member in lstMembers)
-                                                                        {
-                                                                            <option value="@member.Id">@member.Name</option>
-                                                                        }
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr class="m-sm" />
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group m-b-sm">
-                                                                    <div class="col-md-offset-1 col-md-11">
-                                                                        <button name="btnSave" class="btn btn-primary" data-clear="false" data-type="@BillDetailType.Expend.GetHashCode()" type="button"><strong>保存</strong></button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </form>
-                                                </div>
-                                            </div>
+                                        <div class="input-group">
+                                            <select class="input-sm form-control" name="selFirstCategoryQuery">
+                                                <option value="0">一级类别</option>
+                                                @foreach (var first in lstIncomes)
+                                                {
+                                                    <option value="@first.Id">@first.Name</option>
+                                                }
+                                            </select>
+                                            <span class="input-group-addon">-</span>
+                                            <select class="input-sm form-control" name="selCategoryQuery">
+                                                <option value="0">二级类别</option>
+                                                @{
+                                                    var lstChildsIncome = Model.Categories.Where(c => c.ParentId == lstIncomes.First().Id).OrderByDescending(c => c.IsCommonUse);
+                                                }
+                                                @foreach (var second in lstChildsIncome)
+                                                {
+                                                    <option value="@second.Id">@second.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selAccountQuery">
+                                                <option value="">选择账户</option>
+                                                @foreach (var account in Model.Accounts)
+                                                {
+                                                    <option value="@account.Id">@account.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selProjectQuery">
+                                                <option value="">选择项目</option>
+                                                @foreach (var project in lstProjects)
+                                                {
+                                                    <option value="@project.Id">@project.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selMemberQuery">
+                                                <option value="">选择成员</option>
+                                                @foreach (var member in lstMembers)
+                                                {
+                                                    <option value="@member.Id">@member.Name</option>
+                                                }
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="bill-item">
-                                        <small class="pull-right bill-item-price">10.99</small>
-                                        <a>早餐</a>
-                                        <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
-                                    </div>
-                                    <div class="bill-item">
-                                        <small class="pull-right bill-item-price">10.99</small>
-                                        <a>早餐</a>
-                                        <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
-                                    </div>
-                                    <div class="bill-item">
-                                        <small class="pull-right bill-item-price">10.99</small>
-                                        <a>早餐</a>
-                                        <small><i class="fa fa-clock-o"></i>15:34  <strong>全时包子</strong> </small>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="ibox ibox-bill float-e-margins" style="margin-bottom:5px;">
-                            <div class="ibox-title ibox-title-bill" style="padding-top: 0px;padding-bottom: 0px;min-height:20px;height:20px;">
-                                <h5>2015-10-21</h5>
+                        <div name="billlist">
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane J_Tab" data-billtype="@BillDetailType.Transfer.GetHashCode()" id="tab3">
+                        <div class="ibox float-e-margins J_hide">
+                            <div class="ibox-title ibox-title-bill">
+                                <h5 class="text-danger">查询条件</h5>
                                 <div class="ibox-tools">
-                                    <span class="label label-primary">支:￥80.00 收:￥2.00</span>
+                                    <div class="btn-group">
+                                        <button name="btnLastedWeek" data-querytype="1" type="button" class="btn btn-xs btn-white active">最近一周</button>
+                                        <button name="btnLastedMonth" data-querytype="2" type="button" class="btn btn-xs btn-white">最近一月</button>
+                                    </div>
+
                                     <a class="collapse-link ui-sortable">
                                         <i class="fa fa-chevron-up"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div class="ibox-content" style="display: block;padding-top: 5px;padding-bottom: 5px;">
-                                sdfsdf
+                            <div class="ibox-content">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <div class="input-daterange input-group" id="datepicker">
+                                            <input type="text" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-addon">to</span>
+                                            <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-btn">
+                                                <button name="btnDateQuery" type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                        <div class="input-group">
+                                            <select class="input-sm form-control" name="selAccountQuery">
+                                                <option value="0">转出账户</option>
+                                                @foreach (var account in Model.Accounts)
+                                                {
+                                                    <option value="@account.Id">@account.Name</option>
+                                                }
+                                            </select>
+                                            <span class="input-group-addon">-</span>
+                                            <select class="input-sm form-control" name="selAccountToQuery">
+                                                <option value="0">转入账户</option>
+                                                @foreach (var account in Model.Accounts)
+                                                {
+                                                    <option value="@account.Id">@account.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                        <div name="billlist">
+                        </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab2">
-                        sdfsdf
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tab3">
-                        fff
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="tab4">
-                        fdsfsd
+                    <div role="tabpanel" class="tab-pane J_Tab" data-billtype="@BillDetailType.Creditor.GetHashCode()" id="tab4">
+                        <div class="ibox float-e-margins J_hide">
+                            <div class="ibox-title ibox-title-bill">
+                                <h5 class="text-danger">查询条件</h5>
+                                <div class="ibox-tools">
+                                    <div class="btn-group">
+                                        <button name="btnLastedWeek" data-querytype="1" type="button" class="btn btn-xs btn-white active">最近一周</button>
+                                        <button name="btnLastedMonth" data-querytype="2" type="button" class="btn btn-xs btn-white">最近一月</button>
+                                    </div>
+
+                                    <a class="collapse-link ui-sortable">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <div class="input-daterange input-group" id="datepicker">
+                                            <input type="text" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-addon">to</span>
+                                            <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                            <span class="input-group-btn">
+                                                <button name="btnDateQuery" type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="sr-only"></label>
+                                            <select class="form-control" name="selCreditorTypeQuery">
+                                                <option value="1">借贷类型</option>
+                                                <option value="1">借入</option>
+                                                <option value="2">借出</option>
+                                                <option value="3">收款</option>
+                                                <option value="4">还款</option>
+                                            </select>
+                                        </div>
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div name="billlist">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -415,29 +422,7 @@
     <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
     <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script>
-        $(function () {
-            window.categories=@Html.Raw(strCategories);
-            $(".J_hide .collapse-link").trigger("click");
-            $(".datetimepicker").datetimepicker({
-                lang: "ch"
-            });
-
-            $('.input-daterange').datepicker({
-                format: "yyyy-mm-dd",
-                language: "zh-CN"
-            });
-            $("[name=selFirstCategory]").bind("change", function () {
-                var $second = $(this).next().next();
-                var firstId = $(this).val();
-                var seconds = $.grep(window.categories, function (item, index) {
-                    return item.ParentId == firstId;
-                });
-                $second.html("");
-                $.each(seconds, function (i, category) {
-                    $second.append("<option value='" + category.Id + "'>" + category.Name + "</option>");
-                });
-            });
-        })
-        
+        window.categories = @Html.Raw(strCategories);
     </script>
+    <script src="~/Scripts/licai/detail.js"></script>
 }

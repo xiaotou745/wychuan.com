@@ -439,6 +439,7 @@
     <Content Include="Areas\admin\Views\LiCai\_FastBillList.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\_BillList.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\P2P.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\_BillItem.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />
@@ -464,6 +465,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\licai\account.js" />
     <Content Include="Scripts\licai\bill.js" />
+    <Content Include="Scripts\licai\detail.js" />
     <Content Include="Scripts\licai\fastbill.js" />
     <Content Include="Scripts\licai\settings.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />

@@ -187,6 +187,7 @@ function setBill(model) {
 }
 function getBill() {
     var form = $("#modalBill").find("form");
+    
     var bill = {
         BookId: form.find("[name=BookId]").val(),
         Price: form.find("[name=txtPrice]").val(),

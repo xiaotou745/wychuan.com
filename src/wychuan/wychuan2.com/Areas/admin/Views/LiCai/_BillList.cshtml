@@ -6,6 +6,8 @@
     List<ItemDTO> lstProjects = Model.Items.Where(m => m.Type == ItemType.Project).ToList();
     List<ItemDTO> lstMembers = Model.Items.Where(m => m.Type == ItemType.Member).ToList();
     List<ItemDTO> lstBusiness = Model.Items.Where(m => m.Type == ItemType.Business).ToList();
+    List<ItemDTO> lstPaymentPersons = Model.Items.Where(m => m.Type == ItemType.PaymentPerson).ToList();
+    
     var lstExpends = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
     var lstExpendsChilds = Model.Categories.Where(c => c.ParentId == lstExpends.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
 
@@ -13,7 +15,7 @@
     var lstIncomesChilds = Model.Categories.Where(c => c.ParentId == lstIncomes.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
 }
 
-@if (Model.Details != null)
+@if (Model.Details != null && Model.Details.Count() > 0)
 {
     IEnumerable<IGrouping<DateTime, BillDTO>> lstDetails = Model.Details.GroupBy(b => b.ConsumeTime.Date);
     foreach (var item in lstDetails)
@@ -21,7 +23,7 @@
         DateTime currentDay = item.Key;
         List<BillDTO> lstBills = item.ToList();
 
-        decimal sumOfExpendsPrice = lstBills.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode()).Sum(b => b.Price);
+        decimal sumOfExpendsPrice = lstBills.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode() && b.BaoXiao != 0).Sum(b => b.Price);
         decimal sumOfIncomePrice = lstBills.Where(b => b.DetailType == BillDetailType.Income.GetHashCode()).Sum(b => b.Price);
 
         <div class="ibox float-e-margins" style="margin-bottom: 5px;">
@@ -39,121 +41,335 @@
                     @foreach (var bill in lstBills)
                     {
                         string priceColor = "";
+                        string textColor = "text-navy";
+                        string text = bill.SecondCategory;
+                        string checkedStr = "";
                         if (bill.DetailType == BillDetailType.Expend.GetHashCode())
                         {
                             priceColor = "text-danger";
+                            if (bill.BaoXiao == 1)
+                            {
+                                textColor = "text-danger";
+                                checkedStr = "checked='checked'";
+                            }
                         }
                         else if (bill.DetailType == BillDetailType.Income.GetHashCode())
                         {
                             priceColor = "text-navy";
                         }
-                        <div class="bill-item">
+                        else if (bill.DetailType == BillDetailType.Transfer.GetHashCode())
+                        {
+                            var accountFrom = Model.Accounts.First(a => a.Id == bill.AccountId);
+                            var accountTo = Model.Accounts.First(a => a.Id == bill.ToAccountId);
+                            text = string.Format("{0} 转 {1}", accountFrom.Name, accountTo.Name);
+                            textColor = "text-warning";
+                        }
+                        else if (bill.DetailType == BillDetailType.Creditor.GetHashCode())
+                        {
+                            if (bill.CreditorType == CreditType.JieRu.GetHashCode())
+                            {
+                                text = string.Format("从 {0} 借入", bill.Business);
+                            }
+                            else if (bill.CreditorType == CreditType.JieChu.GetHashCode())
+                            {
+                                text = string.Format("借出给 {0}", bill.Business);
+                            }
+                            else if (bill.CreditorType == CreditType.ShouKuan.GetHashCode())
+                            {
+                                text = string.Format("从 {0} 收债", bill.Business);
+                            }
+                            else
+                            {
+                                text = string.Format("还款给 {0}", bill.Business);
+                            }
+                            textColor = "text-warning";
+                        }
+
+                        
+                        <div class="bill-item" id="@("item"+bill.ID)">
                             <div class="row">
                                 <div class="col-md-12">
                                     <small class="pull-right bill-item-price @priceColor">@bill.Price</small>
-                                    <a data-toggle="collapse" href="#@bill.ID">@bill.SecondCategory</a>
+                                    <a data-toggle="collapse" class="@textColor" href="#@bill.ID">@text</a>
                                     <small><i class="fa fa-clock-o"></i>@bill.ConsumeTime.ToString("HH:mm")  <strong>@bill.Remark</strong> </small>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12" style="padding-left: 0px; padding-right: 0px;">
                                     <div id="@bill.ID" class="panel-collapse faq-answer collapse" aria-expanded="false">
-                                        <form class="form-horizontal">
-                                            <input type="hidden" name="Id" value="@bill.ID" />
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group m-b-xxs">
-                                                        @*<label class="col-md-1 sr-only control-label">金额</label>*@
-                                                        <div class="col-md-offset-1 col-md-11">
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon">￥</span>
-                                                                <input name="txtPrice" type="text" value="@bill.Price" class="form-control" />
+                                        @if (bill.DetailType == BillDetailType.Income.GetHashCode() || bill.DetailType == BillDetailType.Expend.GetHashCode())
+                                        {
+                                            var businessLabel = bill.DetailType == BillDetailType.Expend.GetHashCode() ? "商家" : "付款方";
+                                            var lstFirst = lstExpends;
+                                            var businessLst = lstBusiness;
+                                            if (bill.DetailType == BillDetailType.Income.GetHashCode())
+                                            {
+                                                lstFirst = lstIncomes;
+                                                businessLst = lstPaymentPersons;
+                                            }
+                                            <form class="form-horizontal" name="billEditForm">
+                                                <input type="hidden" name="Id" value="@bill.ID" />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-md-1 sr-only control-label">金额</label>*@
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">￥</span>
+                                                                    <input name="txtPrice" type="text" value="@bill.Price" class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-sm-1 control-label">时间</label>*@
+                                                            <div class="col-sm-12">
+                                                                <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@bill.ConsumeTime" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group m-b-xxs">
-                                                        @*<label class="col-sm-1 control-label">时间</label>*@
-                                                        <div class="col-sm-12">
-                                                            <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@bill.ConsumeTime" />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-sm-1 control-label">备注</label>*@
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" value="@bill.Remark" />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group m-b-xxs">
-                                                        @*<label class="col-sm-1 control-label">备注</label>*@
-                                                        <div class="col-md-offset-1 col-md-11">
-                                                            <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" value="@bill.Remark" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group m-b-xxs">
-                                                        @*<label class="sr-only control-label">类别</label>*@
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="sr-only control-label">类别</label>*@
 
-                                                        <div class="col-md-12">
-                                                            <div class="input-group">
-                                                                <select class="input-sm form-control" name="selFirstCategory">
-                                                                    @foreach (var first in lstExpends)
-                                                                    {
-                                                                        <option @(first.Id == bill.FirstCategoryId ? "selected" : "") value="@first.Id">@first.Name</option>
-                                                                    }
-                                                                </select>
-                                                                <span class="input-group-addon">-</span>
-                                                                <select class="input-sm form-control" name="selCategory">
-                                                                    @{
-                                                                        var lstSeconds = Model.Categories.Where(c => c.ParentId == bill.FirstCategoryId).OrderByDescending(c => c.IsCommonUse);
-                                                                    }
-                                                                    @foreach (var second in lstSeconds)
-                                                                    {
-                                                                        <option @(second.Id == bill.SecondCategoryId ? "selected" : "") value="@second.Id">@second.Name</option>
-                                                                    }
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                    <select class="input-sm form-control" name="selFirstCategory">
+                                                                        @foreach (var first in lstFirst)
+                                                                        {
+                                                                            <option @(first.Id == bill.FirstCategoryId ? "selected" : "") value="@first.Id">@first.Name</option>
+                                                                        }
+                                                                    </select>
+                                                                    <span class="input-group-addon">-</span>
+                                                                    <select class="input-sm form-control" name="selCategory">
+                                                                        @{
+                                            var lstSeconds = Model.Categories.Where(c => c.ParentId == bill.FirstCategoryId).OrderByDescending(c => c.IsCommonUse);
+                                                                        }
+                                                                        @foreach (var second in lstSeconds)
+                                                                        {
+                                                                            <option @(second.Id == bill.SecondCategoryId ? "selected" : "") value="@second.Id">@second.Name</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group col-md-offset-1 m-b-xxs">
+                                                            <select class="input-sm" name="selAccount">
+                                                                @foreach (var account in Model.Accounts)
+                                                                {
+                                                                    <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                                }
+                                                            </select>
+                                                            <select class="input-sm" name="selBusiness">
+                                                                <option value="0">@businessLabel</option>
+                                                                @foreach (var business in businessLst)
+                                                                {
+                                                                    <option @(business.Id == bill.BusinessId ? "selected" : "") value="@business.Id">@business.Name</option>
+                                                                }
+                                                            </select>
+                                                            <select class="input-sm" name="selMember">
+                                                                @foreach (var member in lstMembers)
+                                                                {
+                                                                    <option @(member.Id == bill.MemberId ? "selected" : "") value="@member.Id">@member.Name</option>
+                                                                }
+                                                            </select>
+                                                            <select class="input-sm" name="selProject">
+                                                                @foreach (var project in lstProjects)
+                                                                {
+                                                                    <option @(project.Id == bill.ProjectId ? "selected" : "") value="@project.Id">@project.Name</option>
+                                                                }
+                                                            </select>
+                                                            @if (bill.DetailType == BillDetailType.Expend.GetHashCode())
+                                                            {
+                                                                <label> <input type="checkbox" name="chkBaoXiao" class="i-checks" @checkedStr /> 可报销 </label>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="m-sm" />
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group m-b-sm">
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <button name="btnSave" class="btn btn-primary" type="button"><strong>保存</strong></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                        else if (bill.DetailType == BillDetailType.Transfer.GetHashCode())
+                                        {
+                                            <form class="form-horizontal" name="billEditForm">
+                                                <input type="hidden" name="Id" value="@bill.ID" />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-md-1 sr-only control-label">金额</label>*@
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">￥</span>
+                                                                    <input name="txtPrice" type="text" value="@bill.Price" class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-sm-1 control-label">时间</label>*@
+                                                            <div class="col-sm-12">
+                                                                <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@bill.ConsumeTime" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-sm-1 control-label">备注</label>*@
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" value="@bill.Remark" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="sr-only control-label">账户</label>*@
+
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                    <select class="input-sm form-control" name="selAccount">
+                                                                        @foreach (var account in Model.Accounts)
+                                                                        {
+                                                                        <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                                        }
+                                                                    </select>
+                                                                    <span class="input-group-addon">-</span>
+                                                                    <select class="input-sm form-control" name="selAccountTo">
+                                                                        @foreach (var account in Model.Accounts)
+                                                                        {
+                                                                        <option @(account.Id == bill.ToAccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="m-sm" />
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group m-b-sm">
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <button name="btnSave" class="btn btn-primary" type="button"><strong>保存</strong></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                        else if (bill.DetailType == BillDetailType.Creditor.GetHashCode())
+                                        {
+                                            <form class="form-horizontal" name="billEditForm">
+                                                <input type="hidden" name="Id" value="@bill.ID" />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-md-1 sr-only control-label">金额</label>*@
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">￥</span>
+                                                                    <input name="txtPrice" type="text" value="@bill.Price" class="form-control" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-sm-1 control-label">时间</label>*@
+                                                            <div class="col-sm-12">
+                                                                <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@bill.ConsumeTime" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="col-sm-1 control-label">备注</label>*@
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <input type="text" name="txtRemark" class="form-control" placeholder="备注信息" value="@bill.Remark" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group m-b-xxs">
+                                                            @*<label class="sr-only control-label">类别</label>*@
+                                                            <div class="col-md-12">
+                                                                <select class="form-control" name="selCreditorType">
+                                                                    <option @(1 == bill.CreditorType ? "selected" : "") value="1">借入</option>
+                                                                    <option @(2 == bill.CreditorType ? "selected" : "") value="2">借出</option>
+                                                                    <option @(3 == bill.CreditorType ? "selected" : "") value="3">收款</option>
+                                                                    <option @(4 == bill.CreditorType ? "selected" : "") value="4">还款</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="input-group col-md-offset-1 m-b-xxs">
-                                                        <select class="input-sm" name="selAccount">
-                                                            @foreach (var account in Model.Accounts)
-                                                            {
-                                                                <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
-                                                            }
-                                                        </select>
-                                                        <select class="input-sm" name="selBusiness">
-                                                            <option value="0">商家</option>
-                                                            @foreach (var business in lstBusiness)
-                                                            {
-                                                                <option @(business.Id == bill.BusinessId ? "selected" : "") value="@business.Id">@business.Name</option>
-                                                            }
-                                                        </select>
-                                                        <select class="input-sm" name="selMember">
-                                                            @foreach (var member in lstMembers)
-                                                            {
-                                                                <option @(member.Id == bill.MemberId ? "selected" : "") value="@member.Id">@member.Name</option>
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr class="m-sm" />
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group m-b-sm">
-                                                        <div class="col-md-offset-1 col-md-11">
-                                                            <button name="btnSave" class="btn btn-primary" type="button"><strong>保存</strong></button>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group col-md-offset-1 m-b-xxs">
+                                                            <select class="input-sm" name="selBusiness">
+                                                                <option value="0">债权人</option>
+                                                                @foreach (var creditor in Model.Items.Where(m => m.Type == ItemType.Creditor))
+                                                                {
+                                                                    <option @(creditor.Id == bill.BusinessId ? "selected" : "") value="@creditor.Id">@creditor.Name</option>
+                                                                }
+                                                            </select>
+                                                            <select class="input-sm" name="selAccount">
+                                                                @foreach (var account in Model.Accounts)
+                                                                {
+                                                                    <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                                }
+                                                            </select>
+
+                                                            <input name="txtRefundTime" type="text" class="input-sm datetimepicker" value="@bill.RefundTime" placeholder="还款时间" />
+
+                                                            <select class="input-sm" name="selRefundNotice">
+                                                                <option @(bill.RefundNotice.Equals("无需提醒") ? "selected" : "")>无需提醒</option>
+                                                                <option @(bill.RefundNotice.Equals("提醒一次") ? "selected" : "")>提醒一次</option>
+                                                                <option @(bill.RefundNotice.Equals("每月提醒") ? "selected" : "")>每月提醒</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                        </form>
+                                                <hr class="m-sm" />
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group m-b-sm">
+                                                            <div class="col-md-offset-1 col-md-11">
+                                                                <button name="btnSave" class="btn btn-primary" type="button"><strong>保存</strong></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -163,4 +379,10 @@
             </div>
         </div>
     }
+}
+else
+{
+    <div class="ibox-content">
+        暂时没有账单明细。
+    </div>
 }

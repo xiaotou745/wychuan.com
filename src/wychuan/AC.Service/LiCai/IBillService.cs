@@ -20,5 +20,17 @@ namespace AC.Service.LiCai
         /// </summary>
         /// <returns></returns>
         IList<BillDTO> Query(BillQueryInfo queryInfo);
+
+        /// <summary>
+        /// 修改账单
+        /// </summary>
+        /// <param name="bill"></param>
+        void Modify(BillDTO bill);
+
+        /// <summary>
+        /// 获取指定ID的账单详情
+        /// </summary>
+        /// <param name="id"></param>
+        BillDTO GetById(int id);
     }
 }

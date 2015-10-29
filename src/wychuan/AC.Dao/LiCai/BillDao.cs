@@ -49,7 +49,7 @@ select @@IDENTITY";
             dbParameters.AddWithValue("RefundNotice", bill.RefundNotice);
             dbParameters.AddWithValue("RefundTime", bill.RefundTime);
             dbParameters.AddWithValue("BaoXiao", bill.BaoXiao);
-            dbParameters.AddWithValue("CreditorType", bill.CreditType);
+            dbParameters.AddWithValue("CreditorType", bill.CreditorType);
             dbParameters.AddWithValue("IsBalanceAdjust", bill.IsBalanceAdjust);
 
             object result = DbHelper.ExecuteScalar(ConnStringOfAchuan, insertSql, dbParameters);
@@ -61,6 +61,51 @@ select @@IDENTITY";
 
         }
 
+        #endregion
+
+        #region Update
+        /// <summary>
+        /// 更新一条记录
+        /// </summary>
+        public void Update(BillDTO bill)
+        {
+            const string updateSql = @"
+update  LC_BillDetails
+set  UserId=@UserId,BookId=@BookId,Price=@Price,FirstCategoryId=@FirstCategoryId,FirstCategory=@FirstCategory,
+    SecondCategoryId=@SecondCategoryId,SecondCategory=@SecondCategory,AccountId=@AccountId,ToAccountId=@ToAccountId,
+    ConsumeTime=@ConsumeTime,Remark=@Remark,DetailType=@DetailType,BusinessId=@BusinessId,Business=@Business,
+    MemberId=@MemberId,Member=@Member,ProjectId=@ProjectId,Project=@Project,RefundNotice=@RefundNotice,
+    RefundTime=@RefundTime,BaoXiao=@BaoXiao,CreditorType=@CreditorType,IsBalanceAdjust=@IsBalanceAdjust
+where  ID=@ID ";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.AddWithValue("ID", bill.ID);
+            dbParameters.AddWithValue("UserId", bill.UserId);
+            dbParameters.AddWithValue("BookId", bill.BookId);
+            dbParameters.AddWithValue("Price", bill.Price);
+            dbParameters.AddWithValue("FirstCategoryId", bill.FirstCategoryId);
+            dbParameters.AddWithValue("FirstCategory", bill.FirstCategory);
+            dbParameters.AddWithValue("SecondCategoryId", bill.SecondCategoryId);
+            dbParameters.AddWithValue("SecondCategory", bill.SecondCategory);
+            dbParameters.AddWithValue("AccountId", bill.AccountId);
+            dbParameters.AddWithValue("ToAccountId", bill.ToAccountId);
+            dbParameters.AddWithValue("ConsumeTime", bill.ConsumeTime);
+            dbParameters.AddWithValue("Remark", bill.Remark);
+            dbParameters.AddWithValue("DetailType", bill.DetailType);
+            dbParameters.AddWithValue("BusinessId", bill.BusinessId);
+            dbParameters.AddWithValue("Business", bill.Business);
+            dbParameters.AddWithValue("MemberId", bill.MemberId);
+            dbParameters.AddWithValue("Member", bill.Member);
+            dbParameters.AddWithValue("ProjectId", bill.ProjectId);
+            dbParameters.AddWithValue("Project", bill.Project);
+            dbParameters.AddWithValue("RefundNotice", bill.RefundNotice);
+            dbParameters.AddWithValue("RefundTime", bill.RefundTime);
+            dbParameters.AddWithValue("BaoXiao", bill.BaoXiao);
+            dbParameters.AddWithValue("CreditorType", bill.CreditorType);
+            dbParameters.AddWithValue("IsBalanceAdjust", bill.IsBalanceAdjust);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, updateSql, dbParameters);
+        }
         #endregion
 
         #region HasBalanceAdjust
@@ -80,6 +125,23 @@ where lbd.UserId=@UserId
             var executeScalar = DbHelper.ExecuteScalar(ConnStringOfAchuan, sqlText, dbParameters);
             var count = ParseHelper.ToInt(executeScalar);
             return count > 0;
+        }
+        #endregion
+
+        #region GetById
+        /// <summary>
+        /// 根据ID获取对象
+        /// </summary>
+        public BillDTO GetById(int id)
+        {
+            const string getbyidSql = @"
+select  ID,UserId,BookId,Price,FirstCategoryId,FirstCategory,SecondCategoryId,SecondCategory,AccountId,ToAccountId,ConsumeTime,Remark,DetailType,BusinessId,Business,MemberId,Member,ProjectId,Project,RefundNotice,RefundTime,BaoXiao,CreditorType,IsBalanceAdjust
+from  LC_BillDetails (nolock)
+where  ID=@ID ";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("ID", DbType.Int32, 4, id);
+
+            return DbHelper.QueryForObject(ConnStringOfAchuan, getbyidSql, dbParameters, new BillRowMapper());
         }
         #endregion
 
@@ -110,6 +172,11 @@ where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
                 return stringBuilder.ToString();
             }
 
+            if (queryInfo.DetailType != 0)
+            {
+                stringBuilder.AppendFormat(" and lbd.DetailType=@DetailType");
+                dbParamaters.Add("DetailType", DbType.Int32, 4).Value = queryInfo.DetailType;
+            }
             if (queryInfo.StartTime.HasValue)
             {
                 stringBuilder.AppendFormat(" and lbd.ConsumeTime>=@StartTime");
@@ -135,6 +202,11 @@ where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
                 stringBuilder.AppendFormat(" and lbd.AccountId=@AccountId");
                 dbParamaters.Add("AccountId", DbType.Int32, 4).Value = queryInfo.AccountId;
             }
+            if (queryInfo.AccountToId > 0)
+            {
+                stringBuilder.AppendFormat(" and lbd.ToAccountId=@ToAccountId");
+                dbParamaters.Add("ToAccountId", DbType.Int32, 4).Value = queryInfo.AccountToId;
+            }
             if (queryInfo.ProjectId > 0)
             {
                 stringBuilder.AppendFormat(" and lbd.ProjectId=@ProjectId");
@@ -154,6 +226,11 @@ where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
             {
                 stringBuilder.AppendFormat(" and lbd.BaoXiao=@BaoXiao");
                 dbParamaters.Add("BaoXiao", DbType.Int32, 4).Value = queryInfo.BaoXiao.Value;
+            }
+            if (queryInfo.CreditorType.HasValue && queryInfo.CreditorType.Value>0)
+            {
+                stringBuilder.AppendFormat(" and lbd.CreditorType=@CreditorType");
+                dbParamaters.Add("CreditorType", DbType.Int32, 4).Value = queryInfo.CreditorType.Value;
             }
             return stringBuilder.ToString();
         }
@@ -255,7 +332,7 @@ where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
                 obj = dataReader["CreditorType"];
                 if (obj != null && obj != DBNull.Value)
                 {
-                    result.CreditType = int.Parse(obj.ToString());
+                    result.CreditorType = int.Parse(obj.ToString());
                 }
                 return result;
             }
