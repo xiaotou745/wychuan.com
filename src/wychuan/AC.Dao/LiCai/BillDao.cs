@@ -116,6 +116,7 @@ where  ID=@ID ";
 select count(1)
 from LC_BillDetails lbd(nolock)
 where lbd.UserId=@UserId
+    and lbd.IsBalanceAdjust=1
 	and lbd.ConsumeTime>@StartTime";
 
             var dbParameters = DbHelper.CreateDbParameters();

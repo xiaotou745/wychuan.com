@@ -13,17 +13,107 @@
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Content/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="~/Content/style.css" />
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
     <style type="text/css">
         .widget {
-  border-radius: 5px;
-  padding: 5px 5px;
-  margin-bottom: 10px;
-  margin-top: 0px;
-}
-.widget.style1 h4 {
-  font-size: 20px;
-}
+            border-radius: 5px;
+            padding: 5px 5px;
+            margin-bottom: 10px;
+            margin-top: 0px;
+        }
+        .widget.style1 h4 {
+            font-size: 20px;
+        }
     </style>
+    <script type="text/javascript">
+        String.prototype.format = function () {
+
+            if (arguments.length <= 0) return this;
+
+            var ref = this;
+
+            for (var i = 0; i < arguments.length; i++) {
+                ref = ref.replace(new RegExp("\\{" + i + "\\}", "gm"), arguments[i]);
+            }
+
+            return ref;
+        };
+        var tasks = new Array();
+        tasks.push({ Type: "每日任务", TaskName: "接班后试声、光信号一次" });
+        tasks.push({ Type: "每日任务", TaskName: "活动油位计一次并校验就地与CRT油位数值" });
+        tasks.push({ Type: "每日任务", TaskName: "核对就地与表盘水位计一次" });
+        tasks.push({ Type: "每日任务", TaskName: "机组测振动一次（接班后两小时）" });
+        tasks.push({ Type: "每日任务", TaskName: "未投抽气逆止门前疏水两次（接班后、接班前2小时）" });
+        tasks.push({ Type: "每日任务", TaskName: "泵坑、阀门坑排水一次" });
+        tasks.push({ Type: "每日任务", TaskName: "检查运行及备用油箱、泵组油位" });
+        tasks.push({ Type: "每日任务", TaskName: "每日夜班试机电联系型号" });
+        tasks.push({ Type: "每日任务", TaskName: "每日白班活动自动主汽门一次" });
+        tasks.push({ Type: "每日任务", TaskName: "每日白班胶球清洗" });
+
+        var currentDay = new Date();
+        switch(currentDay.getDay()) {
+        case 1:
+            tasks.push({ Type: "每周任务", TaskName: "试验倒换循环水泵、消防泵、稳压泵" });
+            break;
+        case 2:
+            tasks.push({ Type: "每周任务", TaskName: "试验倒换给水泵、稀油泵" });
+            break;
+        case 3:
+            tasks.push({ Type: "每周任务", TaskName: "试验倒换凝结水泵、低加疏水泵" });
+            break; 
+        case 4:
+            tasks.push({ Type: "每周任务", TaskName: "试验倒换射水泵及抽气器" });
+            break;
+        case 5:
+            tasks.push({ Type: "每周任务", TaskName: "试验启动油泵、交流润滑油泵、直流润滑油泵、顶轴油泵" });
+            break;
+        case 6:
+            break;
+        }
+        if (currentDay.getDate() == 6 || currentDay.getDate() == 21) {
+            tasks.push({ Type: "每月任务", TaskName: "活动三抽快关阀" });
+        }
+        if (currentDay.getDate() == 8) {
+            tasks.push({ Type: "每月任务", TaskName: "检修清理冷油器疏水网，清理水塔出口滤水网" });
+        }
+        if (currentDay.getDate() == 9 || currentDay.getDate() == 24) {
+            tasks.push({ Type: "每月任务", TaskName: "试验高压电磁阀" });
+        }
+        if (currentDay.getDate() == 10 || currentDay.getDate() == 25) {
+            tasks.push({ Type: "每月任务", TaskName: "变动负荷" });
+        }
+        if (currentDay.getDate() == 12 || currentDay.getDate() == 27) {
+            tasks.push({ Type: "每月任务", TaskName: "疏水箱、低位水箱放水冲洗水位计" });
+        }
+        if (currentDay.getDate() == 13 || currentDay.getDate() == 28) {
+            tasks.push({ Type: "每月任务", TaskName: "试验抽气电磁阀，抽气逆止门逐个试验" });
+        }
+        if (currentDay.getDate() == 15) {
+            tasks.push({ Type: "每月任务", TaskName: "真空严密性试验" });
+        }
+        if (currentDay.getDate() == 18) {
+            tasks.push({ Type: "每月任务", TaskName: "由检修往主、辅油箱补油至正常，泵组定期加、换油" });
+        }
+        
+        if ((currentDay.getMonth() + 1) % 3 == 1 && currentDay.getDate() == 15) {
+            tasks.push({ Type: "每季任务", TaskName: "除氧器安全门手动排气一次" });
+        }
+        if ((currentDay.getMonth() + 1) % 3 == 2 && currentDay.getDate() == 15) {
+            tasks.push({ Type: "每季任务", TaskName: "汽机三抽安全门手动排气一次" });
+        }
+        function taskItem(task) {
+            var temp = '<li><div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" value="" name="" class="i-checks" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div><span class="m-l-xs">{0}</span><small class="label label-primary"><i class="fa fa-clock-o"></i> {1}</small></li>';
+            return temp.format(task.TaskName, task.Type);
+        }
+        
+        $(document).ready(function() {
+            var arr = new Array();
+            $.each(tasks, function(i, task) {
+                arr.push(taskItem(task));
+            });
+            $("#container").html(arr.join(" "));
+        });
+    </script>
 </head>
 <body>
     <div class="ibox-content">
@@ -48,6 +138,7 @@
                 </li>
             }
         </ul>
+        <ul class="todo-list m-t ui-sortable" id="container"></ul>
     </div>
 </body>
 </html>

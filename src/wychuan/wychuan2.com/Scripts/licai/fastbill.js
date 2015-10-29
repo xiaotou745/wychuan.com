@@ -171,7 +171,7 @@ function setBill(model) {
     form.find("[name=ProjectId]").val(model.ProjectId);
     form.find("[name=Project]").val(model.Project);
     var curDate = new Date();
-    var curDateTime = curDate.getFullYear() + "/" + curDate.getMonth() + "/" + curDate.getDay() + " " + curDate.getHours() + ":" + curDate.getMinutes();
+    var curDateTime = curDate.getFullYear() + "/" + pad(curDate.getMonth()+1,2) + "/" + pad(curDate.getDate(),2) + " " + pad(curDate.getHours(),2) + ":" + pad(curDate.getMinutes(),2);
     form.find("[name=txtConsumeTime]").val(curDateTime),
     
     form.find("[name=selFirstCategory]").val(model.FirstCategoryId);
@@ -221,4 +221,14 @@ function saveBill() {
             }
         }
     });
+}
+
+/* 质朴长存法  by lifesinger */
+function pad(num, n) {
+    var len = num.toString().length;
+    while (len < n) {
+        num = "0" + num;
+        len++;
+    }
+    return num;
 }
