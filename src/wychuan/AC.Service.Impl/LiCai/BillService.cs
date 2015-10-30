@@ -50,6 +50,11 @@ namespace AC.Service.Impl.LiCai
             billDao.Update(bill);
         }
 
+        public void Remove(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public BillDTO GetById(int id)
         {
             return billDao.GetById(id);

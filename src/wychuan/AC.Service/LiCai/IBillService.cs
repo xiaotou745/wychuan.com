@@ -28,6 +28,12 @@ namespace AC.Service.LiCai
         void Modify(BillDTO bill);
 
         /// <summary>
+        /// 删除一个账单
+        /// </summary>
+        /// <param name="id"></param>
+        void Remove(int id);
+
+        /// <summary>
         /// 获取指定ID的账单详情
         /// </summary>
         /// <param name="id"></param>

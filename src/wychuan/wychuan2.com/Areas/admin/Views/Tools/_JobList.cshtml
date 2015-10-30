@@ -14,10 +14,9 @@
             </div>
 
             <ul id="toDoTasks" data-status="1" class="sortable-list connectList agile-list ui-sortable">
-                @foreach (var task in Model.MyTasks.Where(t => t.Status == 1))
+                @foreach (var task in Model.MyTasks.Where(t => t.Status == 1).OrderByDescending(t=>t.PriorityLevel))
                 {
-                    <li class="@(string.IsNullOrEmpty(task.Class) ? "danger-element" : task.Class)">
-                        <input name="id" type="hidden" value="@task.Id" />
+                    <li data-status="@task.Status" data-priority="@task.PriorityLevel" data-id="@task.Id" class="@(string.IsNullOrEmpty(task.Class) ? "danger-element" : task.Class)">
                         <h3>@task.Title</h3>
                         <span>@task.Content</span>
                         <div class="agile-detail">
@@ -37,10 +36,9 @@
             <h3>进行中</h3>
             <p class="small"><i class="fa fa-hand-o-up"></i> 真的可以拖拽啊.</p>
             <ul data-status="2" class="sortable-list connectList agile-list ui-sortable">
-                @foreach (var task in Model.MyTasks.Where(t => t.Status == 2))
+                @foreach (var task in Model.MyTasks.Where(t => t.Status == 2).OrderByDescending(t=>t.PriorityLevel))
                 {
-                    <li class="@(string.IsNullOrEmpty(task.Class) ? "warning-element" : task.Class)">
-                        <input name="id" type="hidden" value="@task.Id" />
+                    <li data-status="@task.Status" data-priority="@task.PriorityLevel" data-id="@task.Id" class="@(string.IsNullOrEmpty(task.Class) ? "warning-element" : task.Class)">
                         <h3>@task.Title</h3>
                         <span>@task.Content</span>
                         <div class="agile-detail">
@@ -60,10 +58,9 @@
             <h3>已完成</h3>
             <p class="small"><i class="fa fa-hand-o-up"></i> 确实可以拖拽.</p>
             <ul data-status="3" class="sortable-list connectList agile-list ui-sortable">
-                @foreach (var task in Model.MyTasks.Where(t => t.Status == 3))
+                @foreach (var task in Model.MyTasks.Where(t => t.Status == 3).OrderBy(t=>t.CompleteTime))
                 {
-                    <li class="@(string.IsNullOrEmpty(task.Class) ? "success-element" : task.Class)">
-                        <input name="id" type="hidden" value="@task.Id" />
+                    <li data-status="@task.Status" data-priority="@task.PriorityLevel" data-id="@task.Id" class="@(string.IsNullOrEmpty(task.Class) ? "success-element" : task.Class)">
                         <h3>@task.Title</h3>
                         <span>@task.Content</span>
                         <div class="agile-detail">

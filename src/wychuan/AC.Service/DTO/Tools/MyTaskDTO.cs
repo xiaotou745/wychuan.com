@@ -1,17 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AC.Service.DTO.Tools
 {
+    /// <summary>
+    /// 任务状态
+    /// </summary>
     public enum TaskStatus
     {
         ToDo=1,
         InProcess=2,
         Completed=3,
     }
+    /// <summary>
+    /// 任务优先级
+    /// </summary>
+    public enum TaskPriorityLevel
+    {
+        /// <summary>
+        /// 普通
+        /// </summary>
+        [Description("普通")]
+        Normal=0,
+        /// <summary>
+        /// 中级
+        /// </summary>
+        [Description("中级")]
+        Middle = 1,
+        /// <summary>
+        /// 高级
+        /// </summary>
+        [Description("高级")]
+        Senior = 2,
+    }
+
     public class MyTaskDTO
     {
         /// <summary>
@@ -52,6 +78,16 @@ namespace AC.Service.DTO.Tools
         public string Class { get; set; }
 
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 完成时间
+        /// </summary>
+        public DateTime CompleteTime { get; set; }
+
+        /// <summary>
+        /// 优先级级别
+        /// </summary>
+        public int PriorityLevel { get; set; }
     }
 
     /// <summary>
@@ -70,5 +106,10 @@ namespace AC.Service.DTO.Tools
         /// 结束日期
         /// </summary>
         public DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int? Status { get; set; }
     }
 }

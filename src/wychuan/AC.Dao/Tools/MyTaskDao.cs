@@ -20,8 +20,8 @@ namespace AC.Dao.Tools
         public int Insert(MyTaskDTO myTasksDTO)
         {
             const string insertSql = @"
-insert into MyTasks(UserId,Title,Content)
-values(@UserId,@Title,@Content)
+insert into MyTasks(UserId,Title,Content,PriorityLevel)
+values(@UserId,@Title,@Content,@PriorityLevel)
 
 select @@IDENTITY";
 
@@ -29,6 +29,7 @@ select @@IDENTITY";
             dbParameters.AddWithValue("UserId", myTasksDTO.UserId);
             dbParameters.AddWithValue("Title", myTasksDTO.Title);
             dbParameters.AddWithValue("Content", myTasksDTO.Content);
+            dbParameters.AddWithValue("PriorityLevel", myTasksDTO.PriorityLevel);
 
             object result = DbHelper.ExecuteScalar(ConnStringOfAchuan, insertSql, dbParameters);
             if (result == null)
@@ -43,10 +44,11 @@ select @@IDENTITY";
         public IList<MyTaskDTO> GetMyTask(MyTaskQueryInfo queryInfo)
         {
             const string getSql = @"
-select  mt.Id, mt.UserId, mt.Status, mt.PubTime, mt.Title, mt.Content, mt.IsEnable, 
-        mt.Class, mt.Remark
+select  mt.Id, mt.UserId, mt.Status, mt.PubTime, mt.Title, mt.Content, mt.IsEnable, mt.Class, mt.Remark, mt.IsShow,
+        mt.PriorityLevel, mt.CompleteTime
 from    MyTasks mt ( nolock )
-where   mt.IsEnable = 1 and mt.IsShow=1 {0}";
+where   mt.IsEnable = 1
+        and mt.IsShow = 1 {0} order by mt.PriorityLevel desc";
 
             IDbParameters dbParameters = DbHelper.CreateDbParameters();
 
@@ -63,7 +65,11 @@ where   mt.IsEnable = 1 and mt.IsShow=1 {0}";
 
         public void UpdateStatus(int id, int targetStatus)
         {
-            const string strSql = @"update MyTasks set Status=@Status where Id=@Id";
+            string strSql = @"update MyTasks set Status=@Status where Id=@Id";
+            if (targetStatus == TaskPriorityLevel.Senior.GetHashCode())
+            {
+                strSql = @"update MyTasks set Status=@Status,CompleteTime=getdate() where Id=@Id";
+            }
 
             IDbParameters dbParameters = DbHelper.CreateDbParameters();
             dbParameters.Add("Id", DbType.Int32, 4).Value = id;
@@ -107,7 +113,17 @@ where   mt.IsEnable = 1 and mt.IsShow=1 {0}";
                 result.Content = dataReader["Content"].ToString();
                 result.Class = dataReader["Class"].ToString();
                 result.Remark = dataReader["Remark"].ToString();
-                
+                obj = dataReader["PriorityLevel"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    result.PriorityLevel = int.Parse(obj.ToString());
+                }
+                obj = dataReader["CompleteTime"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    result.CompleteTime= DateTime.Parse(obj.ToString());
+                }
+
                 return result;
             }
         }
@@ -146,6 +162,12 @@ where   mt.IsEnable = 1 and mt.IsShow=1 {0}";
                 dbParameters.Add("EndTime", DbType.DateTime).Value = queryInfo.EndDate.Value;
             }
 
+            if (queryInfo.Status.HasValue)
+            {
+                stringBuilder.Append(" and mt.Status=@Status");
+                dbParameters.Add("Status", DbType.Int32, 4).Value = queryInfo.Status.Value;
+            }
+
             return stringBuilder.ToString();
         }
 
@@ -156,13 +178,14 @@ where   mt.IsEnable = 1 and mt.IsShow=1 {0}";
         {
             const string updateSql = @"
 update  MyTasks
-set  Title=@Title,Content=@Content
+set  Title=@Title,Content=@Content,PriorityLevel=@PriorityLevel
 where  Id=@Id ";
 
             IDbParameters dbParameters = DbHelper.CreateDbParameters();
             dbParameters.AddWithValue("Id", myTasksDTO.Id);
             dbParameters.AddWithValue("Title", myTasksDTO.Title);
             dbParameters.AddWithValue("Content", myTasksDTO.Content);
+            dbParameters.AddWithValue("PriorityLevel", myTasksDTO.PriorityLevel);
 
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, updateSql, dbParameters);
         }

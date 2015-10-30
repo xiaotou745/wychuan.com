@@ -1,4 +1,8 @@
 ﻿$(function () {
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
     $("#frmTask").validate({
         rules: {
             Content: {
@@ -29,12 +33,14 @@
             modal.find("#Content").val("");
         } else if (operateType == 2) { //编辑
             var $li = button.parents("li");
-            var id = $li.find("[name=id]").val();
+            var id = $li.data("id");
+            var priority = $li.data("priority");
             var title = $li.find("h3").text();
             var context = button.parent().prev().text();
             modal.find("#Id").val(id);
             modal.find("#Title").val(title);
             modal.find("#Content").val(context);
+            modal.find("#PriorityLevel").val(priority);
         }
     });
     
@@ -45,14 +51,14 @@
     initSortable();
 
     $("#jobs").delegate(".J_Hide", "click", function () {
-        var id = $(this).parents("li").find("[name=id]").val();
+        var id = $(this).parents("li").data("id");
         if (confirm("确定要隐藏此任务吗？")) {
             Hide(id);
         }
     });
 
     $("#jobs").delegate(".J_Remove", "click", function() {
-        var id = $(this).parents("li").find("[name=id]").val();
+        var id = $(this).parents("li").data("id");
         if (confirm("确定要删除此任务吗？")) {
             Remove(id);
         }
@@ -70,12 +76,15 @@ function initSortable() {
 
 function changeStatus(event, ui) {
     var targetStatus = $(ui.item[0]).parent().data("status");
-    var id = $(ui.item[0]).find("[name=id]").val();
+    var currentStatus = $(ui.item[0]).data("status");
+    if (currentStatus == targetStatus) {
+        return;
+    }
+    var id = $(ui.item[0]).data("id");
     var data = {
         id: id,
         status: targetStatus
     };
-
     $.ajax({
         url: "/api/tasks/modifystatus",
         type: "get",
@@ -91,11 +100,13 @@ function save() {
     var id = $("#Id").val();
     var title = $("#Title").val();
     var content = $("#Content").val();
+    var priority = $("#PriorityLevel").val();
 
     var task = {
         Id: id,
         Title: title,
-        Content: content
+        Content: content,
+        PriorityLevel: priority
     };
     $.ajax({
         url: "/api/tasks/save",
@@ -103,7 +114,6 @@ function save() {
         dataType: "json",
         data: task,
         success: function (resp) {
-            console && console.log(resp);
             if (!resp.iserror) {
                 refresh();
                 $("#modalTask").modal("hide");

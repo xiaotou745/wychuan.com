@@ -27,7 +27,6 @@ namespace wychuan2.com.Areas.admin.Controllers
         // GET: admin/Tools
         public ActionResult Jobs()
         {
-            ViewBag.ShowTopNav = false;
             var model = new MyTaskModel();
 
             var queryInfo = new MyTaskQueryInfo
