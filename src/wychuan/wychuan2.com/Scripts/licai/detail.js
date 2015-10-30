@@ -68,6 +68,9 @@
     $(document).delegate("[name=btnSave]", "click", function () {
         modifybill($(this));
     });
+    $(document).delegate("[name=btnDelete]", "click", function () {
+        removebill($(this));
+    });
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var btnLastedWeek = $($(e.target).attr("href")).find("[name=btnLastedWeek]");
         btnLastedWeek.removeClass("active");
@@ -140,6 +143,23 @@ function modifybill(sender) {
         BaoXiao: isBaoXiao
     };
     saveBill(billInfo);
+}
+
+function removebill(sender) {
+    var form = sender.parents("[name=billEditForm]");
+    var id = form.find("[name=Id]").val();
+    
+    $.ajax({
+        url: "/api/bill/remove",
+        type: "get",
+        data: { id: id },
+        dataType: "json",
+        success: function (resp) {
+            if (!resp.iserror) {
+                $("#item" + id).remove();
+            }
+        }
+    });
 }
 
 function saveBill(bill) {

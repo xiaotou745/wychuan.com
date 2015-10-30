@@ -82,5 +82,14 @@ namespace wychuan2.com.Areas.admin.Controllers.api
         }
         #endregion
 
+        #region Remove
+        [HttpPost]
+        [HttpGet]
+        public AjaxResult Remove(int id)
+        {
+            billService.Remove(id);
+            return AjaxResult.Success();
+        }
+        #endregion
     }
 }

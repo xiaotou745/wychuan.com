@@ -32,6 +32,8 @@ namespace AC.Service.LiCai
 
         void AdjustBalance(BillDTO bill, decimal price);
 
+        void AdjustBalance(int accountId, decimal price);
+
         void Remove(int id);
 
         Dictionary<int, int> GetTypeCounts(int userId);

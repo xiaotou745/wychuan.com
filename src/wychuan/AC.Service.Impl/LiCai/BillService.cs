@@ -19,10 +19,19 @@ namespace AC.Service.Impl.LiCai
         public int Create(BillDTO bill)
         {
             //此之后是否有余额调整,如果此时间之后调整过余额，则账户余额不变，否则，账户余额更改；
-            var hasBalanceAdjust = billDao.HasBalanceAdjust(bill.UserId, bill.ConsumeTime);
+            var hasBalanceAdjust = billDao.HasBalanceAdjust(bill.AccountId, bill.ConsumeTime);
             if (!hasBalanceAdjust)
             {
-                accountService.AdjustBalance(bill);
+                var detailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), bill.DetailType.ToString());
+                var creditType = CreditType.JieChu;
+                if (detailType == BillDetailType.Creditor)
+                {
+                    creditType = (CreditType)Enum.Parse(typeof(CreditType), bill.CreditorType.ToString());
+                }
+
+                AdjustBalanceProvider
+                    .Builder(detailType, bill.Price, bill.AccountId, bill.ToAccountId, creditType)
+                    .Adjust();
             }
             return billDao.Insert(bill);
         }
@@ -40,7 +49,16 @@ namespace AC.Service.Impl.LiCai
             if (!hasBalanceAdjust)
             {
                 decimal adjustPrice = billInfo.Price - bill.Price;
-                accountService.AdjustBalance(bill, adjustPrice);
+                var detailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), billInfo.DetailType.ToString());
+                var creditType = CreditType.JieChu;
+                if (detailType == BillDetailType.Creditor)
+                {
+                    creditType = (CreditType)Enum.Parse(typeof(CreditType), bill.CreditorType.ToString());
+                }
+
+                AdjustBalanceProvider
+                    .Builder(detailType, adjustPrice, bill.AccountId, bill.ToAccountId, creditType)
+                    .Adjust();
             }
             bill.UserId = billInfo.UserId;
             bill.BookId = billInfo.BookId;
@@ -50,9 +68,29 @@ namespace AC.Service.Impl.LiCai
             billDao.Update(bill);
         }
 
+        /// <summary>
+        /// 删除一条明细
+        /// </summary>
+        /// <param name="id"></param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var billInfo = billDao.GetById(id);
+            //此之后是否有余额调整,如果此时间之后调整过余额，则账户余额不变，否则，账户余额更改；
+            var hasBalanceAdjust = billDao.HasBalanceAdjust(billInfo.AccountId, billInfo.ConsumeTime);
+            if (!hasBalanceAdjust)//如果之后此账户没有调整过余额，则需要把余额进行一下调整
+            {
+                var detailType = (BillDetailType) Enum.Parse(typeof (BillDetailType), billInfo.DetailType.ToString());
+                var creditType = CreditType.JieChu;
+                if (detailType == BillDetailType.Creditor)
+                {
+                    creditType = (CreditType) Enum.Parse(typeof (CreditType), billInfo.CreditorType.ToString());
+                }
+
+                AdjustBalanceProvider
+                    .Builder(detailType, billInfo.Price, billInfo.AccountId, billInfo.ToAccountId, creditType)
+                    .AdjustReverse();
+            }
+            billDao.Delete(id);
         }
 
         public BillDTO GetById(int id)

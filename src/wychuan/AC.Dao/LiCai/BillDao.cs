@@ -109,18 +109,23 @@ where  ID=@ID ";
         #endregion
 
         #region HasBalanceAdjust
-
-        public bool HasBalanceAdjust(int userId, DateTime startTime)
+        /// <summary>
+        /// 账户是否调整过余额
+        /// </summary>
+        /// <param name="accountId">账户ID</param>
+        /// <param name="startTime">从什么时间开始</param>
+        /// <returns></returns>
+        public bool HasBalanceAdjust(int accountId, DateTime startTime)
         {
             const string sqlText = @"
 select count(1)
 from LC_BillDetails lbd(nolock)
-where lbd.UserId=@UserId
+where lbd.AccountId=@AccountId
     and lbd.IsBalanceAdjust=1
 	and lbd.ConsumeTime>@StartTime";
 
             var dbParameters = DbHelper.CreateDbParameters();
-            dbParameters.Add("UserId", DbType.Int32, 4).Value = userId;
+            dbParameters.Add("AccountId", DbType.Int32, 4).Value = accountId;
             dbParameters.Add("StartTime", DbType.DateTime).Value = startTime;
 
             var executeScalar = DbHelper.ExecuteScalar(ConnStringOfAchuan, sqlText, dbParameters);
@@ -339,6 +344,17 @@ where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
             }
         }
 
+        #endregion
+
+        #region Delete
+        public void Delete(int id)
+        {
+            const string deleteSql = @"delete from LC_BillDetails where ID=@ID ";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("ID", DbType.Int32, 4, id);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, deleteSql, dbParameters);
+        }
         #endregion
     }
 }

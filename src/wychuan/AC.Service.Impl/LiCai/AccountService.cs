@@ -106,6 +106,11 @@ namespace AC.Service.Impl.LiCai
             }
         }
 
+        public void AdjustBalance(int accountId, decimal price)
+        {
+            accountDao.AdjustBalance(accountId, price);
+        }
+
         public void TransferPrice(int fromAccountId, int toAccountId, decimal transferPrice)
         {
             AssertUtils.Greater(fromAccountId, 0);
