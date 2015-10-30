@@ -58,7 +58,7 @@
             <h3>已完成</h3>
             <p class="small"><i class="fa fa-hand-o-up"></i> 确实可以拖拽.</p>
             <ul data-status="3" class="sortable-list connectList agile-list ui-sortable">
-                @foreach (var task in Model.MyTasks.Where(t => t.Status == 3).OrderBy(t=>t.CompleteTime))
+                @foreach (var task in Model.MyTasks.Where(t => t.Status == 3).OrderByDescending(t=>t.CompleteTime))
                 {
                     <li data-status="@task.Status" data-priority="@task.PriorityLevel" data-id="@task.Id" class="@(string.IsNullOrEmpty(task.Class) ? "success-element" : task.Class)">
                         <h3>@task.Title</h3>

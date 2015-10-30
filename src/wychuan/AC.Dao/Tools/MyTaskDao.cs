@@ -66,7 +66,7 @@ where   mt.IsEnable = 1
         public void UpdateStatus(int id, int targetStatus)
         {
             string strSql = @"update MyTasks set Status=@Status where Id=@Id";
-            if (targetStatus == TaskPriorityLevel.Senior.GetHashCode())
+            if (targetStatus == AC.Service.DTO.Tools.TaskStatus.Completed.GetHashCode())
             {
                 strSql = @"update MyTasks set Status=@Status,CompleteTime=getdate() where Id=@Id";
             }
