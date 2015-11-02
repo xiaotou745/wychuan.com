@@ -1,7 +1,6 @@
-﻿@using AC.Service.DTO.LiCai
-@model wychuan2.com.Areas.admin.Models.LiCai.BillModel
+﻿@model wychuan2.com.Areas.admin.Models.LiCai.LiCaiModel
 @{
-    ViewBag.Title = "理财-P2P";
+    ViewBag.Title = "P2P理财";
     Layout = "../Shared/_Layout.cshtml";
 }
 
@@ -11,8 +10,7 @@
 @section styles{
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
-    <link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />
-    
+    @*<link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />*@
 }
 <div class="row">
     <div class="col-lg-12">
@@ -22,324 +20,22 @@
                 <div class="ibox-title">
                     <h5>所有项目</h5>
                     <div class="ibox-tools">
-                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html" class="btn btn-primary btn-xs">创建新项目</a>
+                        <a href="#modalP2pProject" data-toggle="modal" class="btn btn-primary btn-xs">新建理财项目</a>
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row m-b-sm m-t-sm">
-                        <div class="col-md-1">
-                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> 刷新</button>
-                        </div>
-                        <div class="col-md-11">
+                        <div class="col-md-12">
                             <div class="input-group">
-                                <input type="text" placeholder="请输入项目名称" class="input-sm form-control"> <span class="input-group-btn">
+                                <input type="text" placeholder="请输入项目名称" class="input-sm form-control"> 
+                                <span class="input-group-btn">
                                     <button type="button" class="btn btn-sm btn-primary"> 搜索</button>
                                 </span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="project-list">
-
-                        <table class="table table-hover">
-                            <tbody>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">LIKE－一款能够让用户快速获得认同感的兴趣社交应用</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 48%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 48%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a1.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a1.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a2.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a2.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a4.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a4.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a5.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a5.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">米莫说｜MiMO Show</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 28%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 28%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a7.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a7.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a6.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a6.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-default">
-                                            已取消
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">商家与购物用户的交互试衣应用</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 8%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 8%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a5.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a5.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">天狼---智能硬件项目</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 83%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 83%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a2.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a2.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a1.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a1.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a7.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a7.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">乐活未来</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 97%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 97%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a4.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a4.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">【私人医生项目】</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 48%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 48%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a1.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a1.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a2.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a2.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a4.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a4.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a5.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a5.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">快狗家居</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 28%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 28%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a7.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a7.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a6.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a6.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-default">
-                                            已取消
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">线下超市+线上商城+物流配送互联系统</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 8%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 8%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a5.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a5.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">P司机汽车省钱专家</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 83%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 83%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a2.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a2.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a1.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a1.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">左左 靠谱男同交友</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 97%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 97%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a4.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a4.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="project-status">
-                                        <span class="label label-primary">
-                                            进行中
-                                        </span>
-                                    </td>
-                                    <td class="project-title">
-                                        <a href="project_detail.html" tppabs="http://www.zi-han.net/theme/hplus/project_detail.html">程序员私活圈</a>
-                                        <br>
-                                        <small>创建于 2014.08.15</small>
-                                    </td>
-                                    <td class="project-completion">
-                                        <small>当前进度： 28%</small>
-                                        <div class="progress progress-mini">
-                                            <div style="width: 28%;" class="progress-bar"></div>
-                                        </div>
-                                    </td>
-                                    <td class="project-people">
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a7.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a7.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a6.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a6.jpg"></a>
-                                        <a href="projects.html" tppabs="http://www.zi-han.net/theme/hplus/projects.html"><img alt="image" class="img-circle" src="img/a3.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a3.jpg"></a>
-                                    </td>
-                                    <td class="project-actions">
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
-                                        <a href="projects.html#" tppabs="http://www.zi-han.net/theme/hplus/projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="row" id="tblContainer">
+                        @Html.Partial("_P2PList",Model)
                     </div>
                 </div>
             </div>
@@ -348,10 +44,143 @@
 
 </div>
 
+<div id="modalP2pProject" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblCategory">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblCategory">添加理财项目</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="Id" value="0" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <input type="text" name="txtPrice" class="form-control input-sm" placeholder="买入金额" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <select class="form-control input-sm" name="selAccount">
+                                        @foreach (var account in Model.Accounts)
+                                        {
+                                            <option value="@account.Id">@account.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="control-label col-sm-2 sr-only">购买日期</label>*@
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    <input type="text" name="txtBuyDay" class="form-control input-sm datetimepicker" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" name="txtTimes" class="form-control input-sm" />
+                                <div class="input-group-btn" style="width:auto;">
+                                    <select name="selTimeUnit" class="form-control input-sm">
+                                        <option>天</option>
+                                        <option>月</option>
+                                        <option>年</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*<label class="col-md-2 control-label sr-only"></label>*@
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    <input type="text" name="txtExpireDay" class="form-control input-sm datetimepicker" placeholder="到期时间" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="text" name="txtInterestRate" class="form-control input-sm" placeholder="输入年息率">
+                                        <span class="input-group-addon input-sm">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @*<label class="col-md-1 control-label sr-only">项目描述</label>*@
+                                <div class="col-md-11 col-md-offset-1">
+                                    <input type="text" name="txtProject" class="form-control" placeholder="输入项目描述" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSave" class="btn btn-primary">保存项目</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
-    <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
+    @*<script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>*@
     <script>
+        $(function() {
+            $(".datetimepicker").datetimepicker({
+                lang: "ch",
+                format: "Y-m-d",
+                formatDate: "Y-m-d",
+                timepicker: false
+            });
+
+            $("#btnSave").bind("click", function() {
+                var detail = getModel();
+
+                $.ajax({
+                    url: "/admin/licai/createp2p",
+                    type: "post",
+                    data: detail,
+                    dataType: "text",
+                    success: function(resp) {
+                        if (resp != "error") {
+                            $("#tblContainer").html(resp);
+                            $("#modalP2pProject").modal("hide");
+                        }
+                    }
+                });
+            });
+        });
         
+        function getModel() {
+            var form = modalP2pProject.find("form");
+            var detail = {
+                Id: form.find("[name=Id]").val(),
+                AccountId: form.find("[name=selAccount]").val(),
+                Project: form.find("[name=txtProject]").val(),
+                BuyDay: form.find("[name=txtBuyDay]").val(),
+                Times: form.find("[name=txtTimes]").val(),
+                TimeUnit: form.find("[name=selTimeUnit]").val(),
+                Price: form.find("[name=txtPrice]").val(),
+                InterestRate: form.find("[name=txtInterestRate]").val(),
+                ExpireDay: form.find("[name=txtExpireDay]").val()
+            };
+            return detail;
+        }
     </script>
 }

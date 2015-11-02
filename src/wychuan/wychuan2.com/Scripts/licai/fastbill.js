@@ -62,6 +62,13 @@
     $("#modalBill").bind("shown.bs.modal", function (event) {
         $("#modalBill").find("form").find("[name=txtPrice]").select();
         $("#modalBill").find("form").find("[name=txtPrice]").focus();
+        $("#modalBill").find("form").find("[name=txtPrice]").trigger("click");
+        //$("#modalBill").find("form").find("[name=txtPrice]").keyboard({
+        //    layout: 'num',
+        //    restrictInput: true, // Prevent keys not in the displayed keyboard from being typed in
+        //    preventPaste: true,  // prevent ctrl-v and right click
+        //    autoAccept: true
+        //}).addTyping();
     });
 });
 function dateformat(sender) {

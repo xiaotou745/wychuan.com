@@ -196,6 +196,7 @@
     <Compile Include="Areas\admin\Models\CompanyModel.cs" />
     <Compile Include="Areas\admin\Models\HtmlTable\LinkItem.cs" />
     <Compile Include="Areas\admin\Models\LiCai\BillModel.cs" />
+    <Compile Include="Areas\admin\Models\LiCai\LiCaiModel.cs" />
     <Compile Include="Areas\admin\Models\MyTaskModel.cs" />
     <Compile Include="Areas\admin\Models\HtmlTable\HtmlTableTrItem.cs" />
     <Compile Include="Areas\admin\Models\HtmlTable\HtmlTableTdItem.cs" />
@@ -321,6 +322,9 @@
     <Content Include="Content\plugins\jsTree\default\throbber.gif" />
     <Content Include="Content\plugins\jsTree\style.min.css" />
     <Content Include="Content\plugins\jsTree\throbber.gif" />
+    <Content Include="Content\plugins\keyboard\keyboard-basic.min.css" />
+    <Content Include="Content\plugins\keyboard\keyboard-previewkeyset.min.css" />
+    <Content Include="Content\plugins\keyboard\keyboard.min.css" />
     <Content Include="Content\plugins\mobiscroll\mobiscroll.custom-2.5.2.min.css" />
     <Content Include="Content\plugins\mobiscroll\wp_icons.png" />
     <Content Include="Content\plugins\mobiscroll\wp_icons_light.png" />
@@ -443,6 +447,7 @@
     <Content Include="Areas\admin\Views\LiCai\_BillList.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\P2P.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\_BillItem.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\_P2PList.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />
@@ -545,6 +550,9 @@
     <Content Include="Scripts\plugins\jsTree\jstree.min.js" />
     <Content Include="Scripts\plugins\jvectormap\jquery-jvectormap-1.2.2.min.js" />
     <Content Include="Scripts\plugins\jvectormap\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="Scripts\plugins\keyboard\jquery.keyboard.extension-typing.min.js" />
+    <Content Include="Scripts\plugins\keyboard\jquery.keyboard.min.js" />
+    <Content Include="Scripts\plugins\keyboard\jquery.mousewheel.min.js" />
     <Content Include="Scripts\plugins\metisMenu\jquery.metisMenu.js" />
     <Content Include="Scripts\plugins\mobiscroll\mobiscroll.core-2.5.2-zh.js" />
     <Content Include="Scripts\plugins\mobiscroll\mobiscroll.core-2.5.2.js" />

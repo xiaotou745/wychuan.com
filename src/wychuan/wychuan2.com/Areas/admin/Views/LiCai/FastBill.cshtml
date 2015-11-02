@@ -15,6 +15,7 @@
 @section styles{
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="~/Content/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.css" rel="stylesheet" />
+    @*<link href="~/Content/plugins/keyboard/keyboard-basic.min.css" rel="stylesheet" />*@
     <style type="text/css">
         .bill {
             border-radius: 5px;
@@ -49,6 +50,7 @@
         .dw { z-index: 5001; }
 
         .dw-persp, .dwo { z-index: 5001; }
+        /*.ui-keyboard{z-index:10000;}*/
     </style>
 }
 
@@ -239,7 +241,7 @@
                                 <div class="col-md-offset-1 col-md-11">
                                     <div class="input-group">
                                         <span class="input-group-addon">￥</span>
-                                        <input name="txtPrice" type="text" value="0" class="form-control" />
+                                        <input name="txtPrice" type="text" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -327,6 +329,9 @@
     <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.js"></script>
     <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.datetime-2.5.1.js"></script>
     <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.datetime-2.5.1-zh.js"></script>
+    
+    @*<script type="text/javascript" src="~/Scripts/plugins/keyboard/jquery.keyboard.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/keyboard/jquery.keyboard.extension-typing.min.js"></script>*@
     <script type="text/javascript">
         window.categories=@Html.Raw(strCategories);
     </script>

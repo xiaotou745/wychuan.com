@@ -257,9 +257,28 @@ namespace wychuan2.com.Areas.admin.Controllers
 
         #region P2P理财
 
+        private readonly ILiCaiDetailService liCaiService = new LiCaiDetailService();
+
         public ActionResult P2P()
         {
-            return View();
+            var model = new LiCaiModel();
+
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.LiCaiDetails = liCaiService.GetByUserId(ApplicationUser.Current.UserId);
+            
+            return View(model);
+        }
+
+        public ActionResult CreateP2p(LiCaiDetailsDTO detail)
+        {
+            detail.UserId = ApplicationUser.Current.UserId;
+            var id = liCaiService.Create(detail);
+            var lstDetails = liCaiService.GetByUserId(ApplicationUser.Current.UserId);
+            var model = new LiCaiModel()
+            {
+                LiCaiDetails = lstDetails,
+            };
+            return View("_P2PList", model);
         }
         #endregion
     }

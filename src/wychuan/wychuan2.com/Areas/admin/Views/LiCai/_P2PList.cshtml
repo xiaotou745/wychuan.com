@@ -1,0 +1,26 @@
+﻿@model wychuan2.com.Areas.admin.Models.LiCai.LiCaiModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>账户</th>
+            <th>金额</th>
+            <th>到期时间</th>
+            <th>预期收益</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model.LiCaiDetails.OrderByDescending(d=>d.ExpireDay))
+        {
+            <tr>
+                <td>@detail.Account<br /><small class="text-info"><i class="fa fa-clock-o"></i>@detail.BuyDay.ToString("yyyy-MM-dd")</small></td>
+                <td class="text-danger">@detail.Price</td>
+                <td>@(detail.ExpireDay.HasValue?detail.ExpireDay.Value.ToString("yyyy-MM-dd"):"无期限")</td>
+                <td>@detail.ExpirePrice.ToString("0.00")<br /><small>年化收益:@detail.InterestRate%  @(detail.Times+"("+detail.TimeUnit+")")</small></td>
+                <td></td>
+            </tr>
+        }
+        
+    </tbody>
+</table>

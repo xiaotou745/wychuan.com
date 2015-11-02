@@ -29,7 +29,7 @@
 
         if (operateType == 1) { //新增
             modal.find("#Id").val(0);
-            modal.find("#Title").val("");
+            modal.find("#Title").val($("#txtMyJobTitle").val());
             modal.find("#Content").val("");
         } else if (operateType == 2) { //编辑
             var $li = button.parents("li");

@@ -58,6 +58,7 @@
     <Compile Include="DTO\LiCai\CategoryDTO.cs" />
     <Compile Include="DTO\LiCai\ItemDTO.cs" />
     <Compile Include="DTO\LiCai\BillTemplateDTO.cs" />
+    <Compile Include="DTO\LiCai\LiCaiDetailsDTO.cs" />
     <Compile Include="DTO\Tools\CompanyDTO.cs" />
     <Compile Include="DTO\Tools\CompanyTimelineDTO.cs" />
     <Compile Include="DTO\Tools\MyNotesDTO.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="LiCai\IBillTemplateService.cs" />
     <Compile Include="LiCai\ICategoryService.cs" />
     <Compile Include="LiCai\IItemsService.cs" />
+    <Compile Include="LiCai\ILiCaiDetailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DTO\User\UserDTO.cs" />
     <Compile Include="Tools\ICompanyService.cs" />
