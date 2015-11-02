@@ -1,155 +1,75 @@
-﻿@using AC.Service.DTO.LiCai
-@model wychuan2.com.Areas.admin.Models.LiCai.BillModel
-@{
+﻿@{
     ViewBag.Title = "算法大全";
     Layout = "../Shared/_Layout.cshtml";
 }
 
 @{
-    List<ItemDTO> lstBooks = Model.Items.Where(m => m.Type == ItemType.BillBook).ToList();
-    List<ItemDTO> lstProjects = Model.Items.Where(m => m.Type == ItemType.Project).ToList();
-    List<ItemDTO> lstMembers = Model.Items.Where(m => m.Type == ItemType.Member).ToList();
-    List<ItemDTO> lstBusiness = Model.Items.Where(m => m.Type == ItemType.Business).ToList();
+    
 }
 
 @section styles{
-    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
-    <link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />
+    <link href="~/Content/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.css" rel="stylesheet" />
 }
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         <div class="ibox">
             <div class="ibox-title">
                 <h4>查询条件</h4>
             </div>
             <div class="ibox-content">
-                <form class="form-inline">
+                <form>
                     <div class="form-group">
-                        <div class="input-daterange input-group" id="datepicker">
-                            <input type="text" class="input-sm form-control" name="start" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" />
-                            <span class="input-group-addon">to</span>
-                            <input type="text" class="input-sm form-control" name="end" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-sm "><i class="fa fa-search"></i></button>
-                            </span>
+                        <label class="control-label col-sm-3" for="appDate">日期</label>
+                        <div class="col-sm-9">
+                            <input id="appDate" type="text" class="form-control" />
                         </div>
-                        <br />
-                        <div class="input-group">
-                            @{
-                                var lstFirsts = Model.Categories.Where(c => c.InOutType == CategoryType.Expend && c.ParentId == 0).OrderByDescending(c => c.IsCommonUse);
-                                var lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.FirstOrDefault().Id).OrderByDescending(c => c.IsCommonUse);
-                            }
-                            <select class="input-sm form-control">
-                                @foreach (var first in lstFirsts)
-                                {
-                                    <option value="@first.Id">@first.Name</option>
-                                }
-                            </select>
-                            <span class="input-group-addon">-</span>
-                            <select class="input-sm form-control" name="selCategory">
-                                @foreach (var first in lstSeconds)
-                                {
-                                    <option value="@first.Id">@first.Name</option>
-                                }
-                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">日期时间</label>
+                        <div class="col-sm-9">
+                            <input id="appDateTime" type="text" class="form-control" />
                         </div>
-                        <div class="form-group">
-                            <label class="sr-only"></label>
-                            <select class="form-control">
-                                <option value="">选择账户</option>
-                                @foreach (var account in Model.Accounts)
-                                {
-                                    <option value="@account.Id">@account.Name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only"></label>
-                            <select class="form-control">
-                                <option value="">选择项目</option>
-                                @foreach (var project in lstProjects)
-                                {
-                                    <option value="@project.Id">@project.Name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only"></label>
-                            <select class="form-control">
-                                <option value="">选择成员</option>
-                                @foreach (var member in lstMembers)
-                                {
-                                    <option value="@member.Id">@member.Name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only"></label>
-                            <select class="form-control">
-                                <option>选择商家</option>
-                                @foreach (var business in lstBusiness)
-                                {
-                                    <option value="@business.Id">@business.Name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="sr-only"></label>
-                            <select class="form-control">
-                                <option>是否报销</option>
-                                <option value="0">非报销</option>
-                                <option value="1">可报销</option>
-                                <option value="2">已报销</option>
-                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">时间</label>
+                        <div class="col-sm-9">
+                            <input id="appTime" type="text" class="form-control" />
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-        <div class="ibox">
-            <div class="ibox-title">
-                <h4>result</h4>
-            </div>
-            <div class="ibox-content">
-                <table class="table table-bordered table-condensed table-striped">
-                    <tr>
-                        <th>时间</th>
-                        <th>金额</th>
-                        <th>类别</th>
-                        <th>商家</th>
-                        <th>备注</th>
-                    </tr>
-                    <tr>
-                        <td>@DateTime.Now</td>
-                        <td>12.00</td>
-                        <td>test</td>
-                        <td>商家</td>
-                        <td>备注</td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>
 </div>
 
 @section scripts{
-    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
-    <script src="~/Scripts/plugins/validate/messages_zh.js"></script>
-    <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
-    <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.core-2.5.2-zh.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.datetime-2.5.1.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.datetime-2.5.1-zh.js"></script>
     <script>
         $(function() {
-            $(".datetimepicker").datetimepicker({
-                lang: "ch",
-                mask: true
-            });
+            var currYear = (new Date()).getFullYear();
+            var opt = {};
+            opt.date = { preset: 'date' };
+            //opt.datetime = { preset : 'datetime', minDate: new Date(2012,3,10,9,22), maxDate: new Date(2014,7,30,15,44), stepMinute: 5  };
+            opt.datetime = { preset: 'datetime' };
+            opt.time = { preset: 'time' };
+            opt.default = {
+                theme: 'android-ics light', //皮肤样式
+                display: 'modal', //显示方式 
+                mode: 'scroller', //日期选择模式
+                lang: 'zh',
+                startYear: currYear - 10, //开始年份
+                endYear: currYear + 10 //结束年份
+            };
 
-            $('.input-daterange').datepicker({
-                format: "yyyy-mm-dd",
-                language: "zh-CN"
-            });
+            $("#appDate").val('').scroller('destroy').scroller($.extend(opt['date'], opt['default']));
+            var optDateTime = $.extend(opt['datetime'], opt['default']);
+            var optTime = $.extend(opt['time'], opt['default']);
+            $("#appDateTime").mobiscroll(optDateTime).datetime(optDateTime);
+            $("#appTime").mobiscroll(optTime).time(optTime);
+
         })
 
     </script>

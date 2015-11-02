@@ -2659,3 +2659,73 @@ ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Da
 2015-10-30 15:45:42,396 [18] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
 ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
 
+2015-11-02 11:54:07,697 [7] INFO  ConnectionStringLog [(null)] - ConnectionStringUtil not be initional, init it.
+2015-11-02 11:54:07,759 [7] INFO  ConnectionStringLog [(null)] - 第1次获取连接字符串开始...
+2015-11-02 11:54:07,759 [7] INFO  ConnectionStringLog [(null)] - [ConnectionStringFactory] Create ConnectionStrings by Creator:AC.Data.ConnString.Config.ConnStringCreatorOfConfig
+2015-11-02 11:54:07,759 [7] INFO  ConnectionStringLog [(null)] - 配置文件的[connectionStrings]配置节中共有字符串数量：2.
+ConfigConnString:ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 11:54:07,775 [7] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 12:30:51,480 [10] INFO  ConnectionStringLog [(null)] - ConnectionStringUtil not be initional, init it.
+2015-11-02 12:30:51,629 [10] INFO  ConnectionStringLog [(null)] - 第1次获取连接字符串开始...
+2015-11-02 12:30:51,638 [10] INFO  ConnectionStringLog [(null)] - [ConnectionStringFactory] Create ConnectionStrings by Creator:AC.Data.ConnString.Config.ConnStringCreatorOfConfig
+2015-11-02 12:30:51,647 [10] INFO  ConnectionStringLog [(null)] - 配置文件的[connectionStrings]配置节中共有字符串数量：2.
+ConfigConnString:ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 12:30:51,648 [10] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 14:10:19,204 [36] INFO  ConnectionStringLog [(null)] - ConnectionStringUtil not be initional, init it.
+2015-11-02 14:10:19,266 [36] INFO  ConnectionStringLog [(null)] - 第1次获取连接字符串开始...
+2015-11-02 14:10:19,270 [36] INFO  ConnectionStringLog [(null)] - [ConnectionStringFactory] Create ConnectionStrings by Creator:AC.Data.ConnString.Config.ConnStringCreatorOfConfig
+2015-11-02 14:10:19,274 [36] INFO  ConnectionStringLog [(null)] - 配置文件的[connectionStrings]配置节中共有字符串数量：2.
+ConfigConnString:ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 14:10:19,274 [36] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 15:23:54,216 [52] INFO  ConnectionStringLog [(null)] - ConnectionStringUtil not be initional, init it.
+2015-11-02 15:23:54,297 [52] INFO  ConnectionStringLog [(null)] - 第1次获取连接字符串开始...
+2015-11-02 15:23:54,302 [52] INFO  ConnectionStringLog [(null)] - [ConnectionStringFactory] Create ConnectionStrings by Creator:AC.Data.ConnString.Config.ConnStringCreatorOfConfig
+2015-11-02 15:23:54,306 [52] INFO  ConnectionStringLog [(null)] - 配置文件的[connectionStrings]配置节中共有字符串数量：2.
+ConfigConnString:ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 15:23:54,307 [52] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 15:49:43,796 [29] INFO  ConnectionStringLog [(null)] - ConnectionStringUtil not be initional, init it.
+2015-11-02 15:49:43,841 [29] INFO  ConnectionStringLog [(null)] - 第1次获取连接字符串开始...
+2015-11-02 15:49:43,848 [29] INFO  ConnectionStringLog [(null)] - [ConnectionStringFactory] Create ConnectionStrings by Creator:AC.Data.ConnString.Config.ConnStringCreatorOfConfig
+2015-11-02 15:49:43,852 [29] INFO  ConnectionStringLog [(null)] - 配置文件的[connectionStrings]配置节中共有字符串数量：2.
+ConfigConnString:ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 15:49:43,852 [29] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 16:27:26,198 [22] INFO  ConnectionStringLog [(null)] - ConnectionStringUtil not be initional, init it.
+2015-11-02 16:27:26,248 [22] INFO  ConnectionStringLog [(null)] - 第1次获取连接字符串开始...
+2015-11-02 16:27:26,254 [22] INFO  ConnectionStringLog [(null)] - [ConnectionStringFactory] Create ConnectionStrings by Creator:AC.Data.ConnString.Config.ConnStringCreatorOfConfig
+2015-11-02 16:27:26,257 [22] INFO  ConnectionStringLog [(null)] - 配置文件的[connectionStrings]配置节中共有字符串数量：2.
+ConfigConnString:ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 16:27:26,258 [22] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 17:16:09,379 [44] INFO  ConnectionStringLog [(null)] - ConnectionStringUtil not be initional, init it.
+2015-11-02 17:16:09,429 [44] INFO  ConnectionStringLog [(null)] - 第1次获取连接字符串开始...
+2015-11-02 17:16:09,434 [44] INFO  ConnectionStringLog [(null)] - [ConnectionStringFactory] Create ConnectionStrings by Creator:AC.Data.ConnString.Config.ConnStringCreatorOfConfig
+2015-11-02 17:16:09,437 [44] INFO  ConnectionStringLog [(null)] - 配置文件的[connectionStrings]配置节中共有字符串数量：2.
+ConfigConnString:ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+
+2015-11-02 17:16:09,438 [44] INFO  ConnectionStringLog [(null)] - ConnectionString初始化完成，共有数据库连接字符串：2个ConfigConnString:[Name:LocalSqlServer]-[ConnectionString:data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|aspnetdb.mdf;User Instance=true]-[ProviderName:System.Data.SqlClient]
+ConfigConnString:[Name:ConnStringOfAchuan]-[ConnectionString:Data Source=127.0.0.1;Initial Catalog=WYC;uid=sa;pwd=Vancl@123;Pooling=true;Max Pool Size=600;Connection Timeout=120]-[ProviderName:]
+

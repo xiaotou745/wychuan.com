@@ -13,8 +13,8 @@
     string strCategories = JsonHelper.ToJson(Model.Categories);
 }
 @section styles{
-<link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
-<link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="~/Content/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.css" rel="stylesheet" />
     <style type="text/css">
         .bill {
             border-radius: 5px;
@@ -45,6 +45,10 @@
             bottom: 10px;
             color: inherit;
         }
+
+        .dw { z-index: 5001; }
+
+        .dw-persp, .dwo { z-index: 5001; }
     </style>
 }
 
@@ -244,7 +248,7 @@
                             <div class="form-group">
                                 @*<label class="col-sm-1 control-label">时间</label>*@
                                 <div class="col-sm-12">
-                                    <input name="txtConsumeTime" type="text" class="form-control datetimepicker" value="@DateTime.Now.ToString("yyyy/MM/dd HH:mm")" />
+                                    <input name="txtConsumeTime" type="text" class="form-control datetimepicker" />
                                 </div>
                             </div>
                         </div>
@@ -320,7 +324,9 @@
 
 @section scripts{
     <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.custom-2.5.2.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.datetime-2.5.1.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/mobiscroll/mobiscroll.datetime-2.5.1-zh.js"></script>
     <script type="text/javascript">
         window.categories=@Html.Raw(strCategories);
     </script>

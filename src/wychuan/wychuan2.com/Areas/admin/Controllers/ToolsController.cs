@@ -150,13 +150,7 @@ namespace wychuan2.com.Areas.admin.Controllers
         private readonly ICategoryService categoryService = new CategoryService();
         public ActionResult Algorithm()
         {
-            var model = new BillModel();
-
-            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
-            model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
-            model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
-
-            return View(model);
+            return View();
         }
         #endregion
 

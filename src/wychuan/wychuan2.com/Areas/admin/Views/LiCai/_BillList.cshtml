@@ -23,14 +23,16 @@
         DateTime currentDay = item.Key;
         List<BillDTO> lstBills = item.ToList();
 
-        decimal sumOfExpendsPrice = lstBills.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode() && b.BaoXiao != 0).Sum(b => b.Price);
+        decimal sumOfExpendsPrice = lstBills.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode() && b.BaoXiao == 0).Sum(b => b.Price);
         decimal sumOfIncomePrice = lstBills.Where(b => b.DetailType == BillDetailType.Income.GetHashCode()).Sum(b => b.Price);
 
         <div class="ibox float-e-margins" style="margin-bottom: 5px;">
             <div class="ibox-title ibox-title-bill" style="padding-top: 0px; padding-bottom: 0px; min-height: 20px; height: 20px;">
                 <h5>@currentDay.ToString("yyyy-MM-dd")</h5>
                 <div class="ibox-tools">
-                    <span class="label label-primary">支：¥@sumOfExpendsPrice 收：¥@sumOfIncomePrice</span>
+                    <span class="label label-primary">支：¥@sumOfExpendsPrice.ToString("0.00")</span>
+                    <span class="label label-danger">收：¥@sumOfIncomePrice.ToString("0.00")</span>
+
                     <a class="collapse-link ui-sortable">
                         <i class="fa fa-chevron-up"></i>
                     </a>

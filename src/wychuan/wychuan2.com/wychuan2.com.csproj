@@ -321,6 +321,9 @@
     <Content Include="Content\plugins\jsTree\default\throbber.gif" />
     <Content Include="Content\plugins\jsTree\style.min.css" />
     <Content Include="Content\plugins\jsTree\throbber.gif" />
+    <Content Include="Content\plugins\mobiscroll\mobiscroll.custom-2.5.2.min.css" />
+    <Content Include="Content\plugins\mobiscroll\wp_icons.png" />
+    <Content Include="Content\plugins\mobiscroll\wp_icons_light.png" />
     <Content Include="Content\plugins\morris\morris-0.4.3.min.css" />
     <Content Include="Content\plugins\nouslider\jquery.nouislider.css" />
     <Content Include="Content\plugins\steps\jquery.steps.css" />
@@ -543,6 +546,11 @@
     <Content Include="Scripts\plugins\jvectormap\jquery-jvectormap-1.2.2.min.js" />
     <Content Include="Scripts\plugins\jvectormap\jquery-jvectormap-world-mill-en.js" />
     <Content Include="Scripts\plugins\metisMenu\jquery.metisMenu.js" />
+    <Content Include="Scripts\plugins\mobiscroll\mobiscroll.core-2.5.2-zh.js" />
+    <Content Include="Scripts\plugins\mobiscroll\mobiscroll.core-2.5.2.js" />
+    <Content Include="Scripts\plugins\mobiscroll\mobiscroll.custom-2.5.2.min.js" />
+    <Content Include="Scripts\plugins\mobiscroll\mobiscroll.datetime-2.5.1-zh.js" />
+    <Content Include="Scripts\plugins\mobiscroll\mobiscroll.datetime-2.5.1.js" />
     <Content Include="Scripts\plugins\morris\morris.js" />
     <Content Include="Scripts\plugins\morris\raphael-2.1.0.min.js" />
     <Content Include="Scripts\plugins\nestable\jquery.nestable.js" />

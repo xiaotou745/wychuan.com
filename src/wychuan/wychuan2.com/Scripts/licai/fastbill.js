@@ -1,7 +1,9 @@
 ﻿$(function () {
-    $(".datetimepicker").datetimepicker({
-        lang: "ch"
-    });
+    //$(".datetimepicker").datetimepicker({
+    //    lang: "ch"
+    //});
+    dateformat($("#modalBill").find("[name=txtConsumeTime]"));
+    
     $('.i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',
         radioClass: 'iradio_square-green',
@@ -52,6 +54,7 @@
     $("#btnSaveBill").bind("click", function () {
         saveBill();
     });
+    
     $("#modalExpendTemplate").bind("shown.bs.modal", function(event) {
         $("#modalExpendTemplate").find("form").find("[name=txtName]").select();
         $("#modalExpendTemplate").find("form").find("[name=txtName]").focus();
@@ -61,7 +64,22 @@
         $("#modalBill").find("form").find("[name=txtPrice]").focus();
     });
 });
-
+function dateformat(sender) {
+    var curDate = new Date();
+    var currYear = curDate.getFullYear();
+    var opt = {
+        preset: 'datetime',
+        //theme: 'android-ics light', //皮肤样式
+        //display: 'modal', //显示方式 
+        //mode: 'scroller', //日期选择模式
+        showNow: true,
+        lang: 'zh',
+        startYear: currYear - 2, //开始年份
+        endYear: currYear + 2 //结束年份
+    };
+    sender.mobiscroll(opt).datetime(opt);;
+}
+//删除模板
 function remove(id) {
     $.ajax({
         url: "/api/bill/removetemplate",
@@ -75,7 +93,7 @@ function remove(id) {
         }
     });
 }
-
+//保存模板
 function save() {
     var billTemplate = getModel();
     if (billTemplate == null) {
@@ -92,7 +110,7 @@ function save() {
         }
     });
 }
-
+//获取模板信息
 function getModel() {
     var form = $("#modalExpendTemplate").find("form");
     if (form.find("[name=txtName]").val() == "") {
@@ -129,7 +147,7 @@ function getModel() {
     }
     return bill;
 }
-
+//设置模板信息
 function setModel(model) {
     var form = $("#modalExpendTemplate").find("form");
 
@@ -162,6 +180,8 @@ function refresh() {
         }
     });
 }
+
+//账单
 function setBill(model) {
     var form = $("#modalBill").find("form");
 
@@ -170,9 +190,8 @@ function setBill(model) {
     form.find("[name=BaoXiao]").val(model.BaoXiao);
     form.find("[name=ProjectId]").val(model.ProjectId);
     form.find("[name=Project]").val(model.Project);
-    var curDate = new Date();
-    var curDateTime = curDate.getFullYear() + "/" + pad(curDate.getMonth()+1,2) + "/" + pad(curDate.getDate(),2) + " " + pad(curDate.getHours(),2) + ":" + pad(curDate.getMinutes(),2);
-    form.find("[name=txtConsumeTime]").val(curDateTime),
+    
+    form.find("[name=txtConsumeTime]").mobiscroll('setDate', new Date(), true);
     
     form.find("[name=selFirstCategory]").val(model.FirstCategoryId);
     form.find("[name=selFirstCategory]").trigger("change");
@@ -210,6 +229,8 @@ function getBill() {
 }
 function saveBill() {
     var bill = getBill();
+    console.log(bill);
+    return;
     $.ajax({
         url: "/api/bill/fastsave",
         type: "post",
