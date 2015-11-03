@@ -42,14 +42,14 @@ namespace AC.Service.Impl.LiCai
                     provider.adjustPrice = -1*absPrice;
                     break;
                 case BillDetailType.Creditor: //借贷需要根据类型来决定是加还是减
-                    //借出、还款都是给他人钱，所以是减
+                    //借出、还款都是给他人钱，所以属于自己的净资产，应该加
                     if (creditType == CreditType.JieChu || creditType == CreditType.HuanKuan)
                     {
-                        provider.adjustPrice = -1*absPrice;
-                    }
-                    else
-                    {
                         provider.adjustPrice = absPrice;
+                    }
+                    else//借入是自己的负资产，所以是减；收款表示别人还回了自己钱，
+                    {
+                        provider.adjustPrice = -1 * absPrice;
                     }
                     break;
             }

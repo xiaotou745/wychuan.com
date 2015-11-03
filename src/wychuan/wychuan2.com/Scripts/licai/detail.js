@@ -10,6 +10,17 @@
         format: "yyyy-mm-dd",
         language: "zh-CN"
     });
+
+    $(document).delegate(".J_z", "click", function() {
+        $(".J_BillItem").trigger("click");
+        $(".J_s").removeAttr("disabled");
+        $(".J_z").attr("disabled", "disabled");
+    });
+    $(document).delegate(".J_s", "click", function () {
+        $(".J_BillItem").trigger("click");
+        $(".J_z").removeAttr("disabled");
+        $(".J_s").attr("disabled", "disabled");
+    });
     //类别联动
     $(document).delegate("[name=selFirstCategory]", "change", function () {
         var $second = $(this).next().next();

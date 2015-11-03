@@ -175,6 +175,7 @@ namespace wychuan2.com.Areas.admin.Controllers
                     EndTime = DateTime.Now.AddDays(1).Date,
                     UserId = ApplicationUser.Current.UserId
                 });
+            model.DetailType = 0;//全部
 
             return View(model);
         }
@@ -207,6 +208,7 @@ namespace wychuan2.com.Areas.admin.Controllers
             model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
             model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
             model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
+            model.DetailType = queryInfo.DetailType;
 
             return View("_BillList", model);
         }

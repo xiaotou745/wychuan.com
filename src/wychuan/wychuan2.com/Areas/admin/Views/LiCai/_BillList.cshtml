@@ -17,6 +17,26 @@
 
 @if (Model.Details != null && Model.Details.Count() > 0)
 {
+    
+    <div class="alert alert-info">
+        @if (Model.DetailType != BillDetailType.Creditor.GetHashCode())
+        {
+            var totalExpendPrice = Model.Details.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode() && b.BaoXiao == 0).Sum(b => b.Price);
+            var totalIncomePrice = Model.Details.Where(b => b.DetailType == BillDetailType.Income.GetHashCode()).Sum(b => b.Price);
+        <span class="label label-primary">共支出：¥@totalExpendPrice.ToString("0.00")</span>
+        <span class="label label-danger">共收入：¥@totalIncomePrice.ToString("0.00")</span>
+        }
+        else
+        {
+            var sumOfJieChu = Model.Details.Where(b => b.CreditorType == CreditType.JieChu.GetHashCode() || b.CreditorType == CreditType.ShouKuan.GetHashCode()).Sum(b => b.Price);
+            var sumOfJieRu = Model.Details.Where(b => b.CreditorType == CreditType.JieRu.GetHashCode() || b.CreditorType == CreditType.HuanKuan.GetHashCode()).Sum(b => b.Price);
+            <span class="label label-primary">他人借你：¥@sumOfJieChu.ToString("0.00")</span>
+            <span class="label label-danger">你借他人：¥@sumOfJieRu.ToString("0.00")</span>
+        }
+        <a class="btn btn-white J_s">收起所有</a>
+        <a class="btn btn-white J_z" disabled="disabled">展开所有</a>
+    </div>
+
     IEnumerable<IGrouping<DateTime, BillDTO>> lstDetails = Model.Details.GroupBy(b => b.ConsumeTime.Date);
     foreach (var item in lstDetails)
     {
@@ -33,7 +53,7 @@
                     <span class="label label-primary">支：¥@sumOfExpendsPrice.ToString("0.00")</span>
                     <span class="label label-danger">收：¥@sumOfIncomePrice.ToString("0.00")</span>
 
-                    <a class="collapse-link ui-sortable">
+                    <a class="collapse-link ui-sortable J_BillItem">
                         <i class="fa fa-chevron-up"></i>
                     </a>
                 </div>
@@ -156,7 +176,7 @@
                                                                     <span class="input-group-addon">-</span>
                                                                     <select class="input-sm form-control" name="selCategory">
                                                                         @{
-                                            var lstSeconds = Model.Categories.Where(c => c.ParentId == bill.FirstCategoryId).OrderByDescending(c => c.IsCommonUse);
+                                                                            var lstSeconds = Model.Categories.Where(c => c.ParentId == bill.FirstCategoryId).OrderByDescending(c => c.IsCommonUse);
                                                                         }
                                                                         @foreach (var second in lstSeconds)
                                                                         {
@@ -259,14 +279,14 @@
                                                                     <select class="input-sm form-control" name="selAccount">
                                                                         @foreach (var account in Model.Accounts)
                                                                         {
-                                                                        <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                                            <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
                                                                         }
                                                                     </select>
                                                                     <span class="input-group-addon">-</span>
                                                                     <select class="input-sm form-control" name="selAccountTo">
                                                                         @foreach (var account in Model.Accounts)
                                                                         {
-                                                                        <option @(account.Id == bill.ToAccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
+                                                                            <option @(account.Id == bill.ToAccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
                                                                         }
                                                                     </select>
                                                                 </div>

@@ -23,5 +23,7 @@ namespace wychuan2.com.Areas.admin.Models.LiCai
         public IList<BillTemplateDTO> Templates { get; set; }
 
         public IList<BillDTO> Details { get; set; }
+
+        public int DetailType { get; set; }
     }
 }

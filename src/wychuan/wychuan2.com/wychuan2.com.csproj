@@ -476,6 +476,7 @@
     <Content Include="Scripts\licai\bill.js" />
     <Content Include="Scripts\licai\detail.js" />
     <Content Include="Scripts\licai\fastbill.js" />
+    <Content Include="Scripts\licai\p2p.js" />
     <Content Include="Scripts\licai\settings.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\npm.js" />
