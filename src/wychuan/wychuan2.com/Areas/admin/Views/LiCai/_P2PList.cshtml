@@ -15,12 +15,14 @@
         {
             <tr>
                 <td>@detail.Account<br /><small class="text-info"><i class="fa fa-clock-o"></i>@detail.BuyDay.ToString("yyyy-MM-dd")</small></td>
-                <td class="text-danger">@detail.Price</td>
+                <td class="text-danger"><i class="fa fa-jpy"></i>@detail.Price</td>
                 <td>@(detail.ExpireDay.HasValue?detail.ExpireDay.Value.ToString("yyyy-MM-dd"):"无期限")</td>
-                <td>@detail.ExpirePrice.ToString("0.00")<br /><small>年化收益:@detail.InterestRate%  @(detail.Times+"("+detail.TimeUnit+")")</small></td>
+                <td><i class="fa fa-jpy"></i>@detail.ExpirePrice.ToString("0.00")<br /><small>年化收益:@detail.InterestRate%  </small><small><strong>@(detail.Times + "(" + detail.TimeUnit + ")")</strong></small></td>
                 <td></td>
             </tr>
         }
-        
+        <tr>
+            <td colspan="5">理财总金额：<small class="text-danger"><i class="fa fa-jpy"></i>@Model.LiCaiDetails.Sum(d => d.Price)</small> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预期总收益：<span class="text-danger"><i class="fa fa-jpy"></i>@Model.LiCaiDetails.Sum(d => d.ExpirePrice).ToString("0.00")</span></td>
+        </tr>
     </tbody>
 </table>
