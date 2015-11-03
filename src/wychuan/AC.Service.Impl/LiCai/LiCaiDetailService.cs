@@ -24,5 +24,20 @@ namespace AC.Service.Impl.LiCai
         {
             return licaiDao.GetByUserId(userId);
         }
+
+        public void Remove(int id)
+        {
+            licaiDao.Delete(id);
+        }
+
+        public LiCaiDetailsDTO GetById(int id)
+        {
+            return licaiDao.GetById(id);
+        }
+
+        public void Modify(LiCaiDetailsDTO detail)
+        {
+            licaiDao.Update(detail);
+        }
     }
 }

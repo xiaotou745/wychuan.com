@@ -166,19 +166,33 @@ namespace AC.Service.DTO.LiCai
         public int FirstCategoryId { get; set; }
 
         public int SecondCategoryId { get; set; }
-
+        /// <summary>
+        /// 账户
+        /// </summary>
         public int AccountId { get; set; }
-
+        /// <summary>
+        /// 目标账户
+        /// </summary>
         public int AccountToId { get; set; }
-
+        /// <summary>
+        /// 项目
+        /// </summary>
         public int ProjectId { get; set; }
-
+        /// <summary>
+        /// 成员
+        /// </summary>
         public int MemberId { get; set; }
-
+        /// <summary>
+        /// 商家
+        /// </summary>
         public int BusinessId { get; set; }
-
+        /// <summary>
+        /// 是否报销
+        /// </summary>
         public int? BaoXiao { get; set; }
-
+        /// <summary>
+        /// 借贷类型
+        /// </summary>
         public int? CreditorType { get; set; }
     }
 }

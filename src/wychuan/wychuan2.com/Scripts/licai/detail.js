@@ -1,15 +1,16 @@
 ﻿$(function () {
     initCheck();
     $(".J_hide .collapse-link").trigger("click");
-    $(".datetimepicker").datetimepicker({
-        lang: "ch"
-    });
-
+    //$(".datetimepicker").datetimepicker({
+    //    lang: "ch"
+    //});
+    dateformat($(".datetimepicker"));
+    
     $('.input-daterange').datepicker({
         format: "yyyy-mm-dd",
         language: "zh-CN"
     });
-
+    //类别联动
     $(document).delegate("[name=selFirstCategory]", "change", function () {
         var $second = $(this).next().next();
         var firstId = $(this).val();
@@ -21,6 +22,7 @@
             $second.append("<option value='" + category.Id + "'>" + category.Name + "</option>");
         });
     });
+    //类别联动
     $(document).delegate("[name=selFirstCategoryQuery]", "change", function () {
         var $second = $(this).next().next();
         var firstId = $(this).val();
@@ -37,6 +39,7 @@
         });
     });
 
+    //最近一周
     $(document).delegate("[name=btnLastedWeek]", "click", function () {
         if ($(this).hasClass("active")) {
             return;
@@ -45,6 +48,7 @@
         $(this).siblings("button").removeClass("active");
         $(this).addClass("active");
     });
+    //最近一月
     $(document).delegate("[name=btnLastedMonth]", "click", function () {
         if ($(this).hasClass("active")) {
             return;
@@ -53,24 +57,35 @@
         $(this).siblings("button").removeClass("active");
         $(this).addClass("active");
     });
+    //日期范围查询
     $(document).delegate("[name=btnDateQuery]", "click", function () {
         query($(this));
     });
+    //项目列表查询
     $(document).delegate("[name=selProjectQuery]", "change", function () {
         query($(this));
     });
+    //成员查询
     $(document).delegate("[name=selMemberQuery]", "change", function () {
         query($(this));
     });
+    //账户查询
     $(document).delegate("[name=selAccountQuery]", "change", function () {
         query($(this));
     });
+    //借贷类型查询
+    $(document).delegate("[name=selCreditorTypeQuery]", "change", function() {
+        query($(this));
+    });
+    //保存按钮单击事件，修改一个账单
     $(document).delegate("[name=btnSave]", "click", function () {
         modifybill($(this));
     });
+    //删除按钮单击事件，删除一个账单
     $(document).delegate("[name=btnDelete]", "click", function () {
         removebill($(this));
     });
+    //标签切换事件
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var btnLastedWeek = $($(e.target).attr("href")).find("[name=btnLastedWeek]");
         btnLastedWeek.removeClass("active");
@@ -78,13 +93,32 @@
     });
 });
 
+function dateformat(sender) {
+    var curDate = new Date();
+    var currYear = curDate.getFullYear();
+    var thisDate = sender.val();
+    var object = new Date(thisDate);
+    
+    var opt = {
+        preset: 'datetime',
+        //theme: 'android-ics light', //皮肤样式
+        //display: 'modal', //显示方式 
+        //mode: 'scroller', //日期选择模式
+        showNow: true,
+        lang: 'zh',
+        startYear: currYear - 2, //开始年份
+        endYear: currYear + 2 //结束年份
+    };
+    sender.mobiscroll(opt).datetime(opt);;
+}
+
 function initCheck() {
     $('.i-checks').iCheck({
         checkboxClass: 'icheckbox_square-green',
         radioClass: 'iradio_square-green',
     });
 }
-
+//查询
 function query(sender) {
     var tab = sender.parents(".J_Tab");
     var billtype = tab.data("billtype");
@@ -109,6 +143,7 @@ function query(sender) {
     $.get("/admin/licai/querydetails", queryInfo, function (resp) {
         $("[name=billlist]").html("");
         tab.find("[name=billlist]").html(resp);
+        dateformat(tab.find("[name=billlist]").find(".datetimepicker"));
     });
 }
 
@@ -181,5 +216,6 @@ function refreshBillItem(id) {
     $.get("/admin/licai/billitem", { id: id },
         function (resp) {
             $("#item" + id).html(resp);
+            dateformat($("#item" + id).find(".datetimepicker"));
         });
 }

@@ -197,7 +197,7 @@ namespace wychuan2.com.Areas.admin.Controllers
                 queryInfo.EndTime = DateTime.Now.AddDays(1).Date;
                 queryInfo.StartTime = DateTime.Now.AddDays(-30).Date;
             }
-            else
+            else if(queryInfo.EndTime.HasValue)
             {
                 queryInfo.EndTime = queryInfo.EndTime.Value.AddDays(1).Date;
             }
@@ -272,7 +272,14 @@ namespace wychuan2.com.Areas.admin.Controllers
         public ActionResult CreateP2p(LiCaiDetailsDTO detail)
         {
             detail.UserId = ApplicationUser.Current.UserId;
-            var id = liCaiService.Create(detail);
+            if (detail.Id == 0)
+            {
+                detail.Id = liCaiService.Create(detail);
+            }
+            else
+            {
+                liCaiService.Modify(detail);
+            }
             var lstDetails = liCaiService.GetByUserId(ApplicationUser.Current.UserId);
             var model = new LiCaiModel()
             {
@@ -280,6 +287,29 @@ namespace wychuan2.com.Areas.admin.Controllers
             };
             return View("_P2PList", model);
         }
+
+        public ActionResult DeleteP2p(int id)
+        {
+            liCaiService.Remove(id);
+            var lstDetails = liCaiService.GetByUserId(ApplicationUser.Current.UserId);
+            var model = new LiCaiModel()
+            {
+                LiCaiDetails = lstDetails,
+            };
+            return View("_P2PList", model);
+        }
+
+        public ActionResult GetLiCaiById(int id)
+        {
+            var model = new LiCaiModel();
+            var liCaiDetailsDTO = liCaiService.GetById(id);
+
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.LiCaiDetails = new List<LiCaiDetailsDTO>() { liCaiDetailsDTO };
+
+            return View("_ModalP2PItem", model);
+        }
+
         #endregion
     }
 }

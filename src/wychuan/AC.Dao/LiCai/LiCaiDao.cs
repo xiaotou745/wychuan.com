@@ -123,5 +123,50 @@ where llcd.IsEnable=1 and llcd.UserId=@UserId";
             }
         }
         #endregion
+
+        public void Delete(int id)
+        {
+            const string DELETE_SQL = @"update LC_LiCaiDetails set IsEnable=0 where Id=@Id";
+
+            var dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, DELETE_SQL, dbParameters);
+        }
+
+        public LiCaiDetailsDTO GetById(int id)
+        {
+            const string GET_BY_ID_SQL = @"
+select  llcd.Id, llcd.UserId, llcd.AccountId, llcd.Project, llcd.BuyDay, llcd.Times, llcd.TimeUnit, llcd.Price,
+        llcd.InterestRate, llcd.ExpireDay, llcd.RedeemDay, llcd.RedeemPrice, la.Name
+from LC_LiCaiDetails llcd(nolock)
+    join LC_Account la(nolock) on llcd.AccountId=la.Id
+where llcd.Id=@Id";
+
+            var dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+
+            return DbHelper.QueryForObject(ConnStringOfAchuan, GET_BY_ID_SQL, dbParameters, new LiCaiDetailsRowMapper());
+        }
+
+        public void Update(LiCaiDetailsDTO detail)
+        {
+            const string UPDATE_SQL = @"
+update  LC_LiCaiDetails
+set  AccountId=@AccountId,Project=@Project,BuyDay=@BuyDay,Times=@Times,TimeUnit=@TimeUnit,
+    Price=@Price,InterestRate=@InterestRate,ExpireDay=@ExpireDay
+where  Id=@Id ";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.AddWithValue("Id", detail.Id);
+            dbParameters.AddWithValue("AccountId", detail.AccountId);
+            dbParameters.AddWithValue("Project", detail.Project);
+            dbParameters.AddWithValue("BuyDay", detail.BuyDay);
+            dbParameters.AddWithValue("Times", detail.Times);
+            dbParameters.AddWithValue("TimeUnit", detail.TimeUnit);
+            dbParameters.AddWithValue("Price", detail.Price);
+            dbParameters.AddWithValue("InterestRate", detail.InterestRate);
+            dbParameters.AddWithValue("ExpireDay", detail.ExpireDay);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, UPDATE_SQL, dbParameters);
+        }
     }
 }

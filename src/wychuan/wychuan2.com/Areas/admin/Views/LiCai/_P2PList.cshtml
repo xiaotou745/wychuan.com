@@ -11,14 +11,20 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var detail in Model.LiCaiDetails.OrderByDescending(d=>d.ExpireDay))
+        @foreach (var detail in Model.LiCaiDetails.OrderBy(d=>d.ExpireDay))
         {
             <tr>
-                <td>@detail.Account<br /><small class="text-info"><i class="fa fa-clock-o"></i>@detail.BuyDay.ToString("yyyy-MM-dd")</small></td>
+                <td>
+                    <input type="hidden" name="Id" value="@detail.Id" />
+                    @detail.Account<br /><small class="text-info"><i class="fa fa-clock-o"></i>@detail.BuyDay.ToString("yyyy-MM-dd")</small>
+                </td>
                 <td class="text-danger"><i class="fa fa-jpy"></i>@detail.Price</td>
                 <td>@(detail.ExpireDay.HasValue?detail.ExpireDay.Value.ToString("yyyy-MM-dd"):"无期限")</td>
                 <td><i class="fa fa-jpy"></i>@detail.ExpirePrice.ToString("0.00")<br /><small>年化收益:@detail.InterestRate%  </small><small><strong>@(detail.Times + "(" + detail.TimeUnit + ")")</strong></small></td>
-                <td></td>
+                <td>
+                    <a class="btn btn-white J_Edit">编辑</a>
+                    <a class="btn btn-white J_Delete">删除</a>
+                </td>
             </tr>
         }
         <tr>

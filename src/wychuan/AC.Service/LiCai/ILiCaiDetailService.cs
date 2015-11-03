@@ -11,5 +11,9 @@ namespace AC.Service.LiCai
         int Create(LiCaiDetailsDTO licaiDetail);
 
         IList<LiCaiDetailsDTO> GetByUserId(int userId);
+
+        void Remove(int id);
+        LiCaiDetailsDTO GetById(int id);
+        void Modify(LiCaiDetailsDTO detail);
     }
 }

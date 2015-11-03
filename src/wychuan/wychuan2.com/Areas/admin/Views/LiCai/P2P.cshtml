@@ -9,8 +9,8 @@
 
 @section styles{
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
-    @*<link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />*@
+    @*<link href="~/Content/plugins/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />*@
+    <link href="~/Content/plugins/datapicker/datepicker3.css" rel="stylesheet" />
 }
 <div class="row">
     <div class="col-lg-12">
@@ -54,39 +54,37 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <input type="hidden" name="Id" value="0" />
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="col-md-10 col-md-offset-2">
-                                    <input type="text" name="txtPrice" class="form-control input-sm" placeholder="买入金额" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <select class="form-control input-sm" name="selAccount">
-                                        @foreach (var account in Model.Accounts)
-                                        {
-                                            <option value="@account.Id">@account.Name</option>
-                                        }
-                                    </select>
-                                </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">买入金额</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon">¥</span>
+                                <input type="text" name="txtPrice" class="form-control input-sm" placeholder="买入金额" />
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @*<label class="control-label col-sm-2 sr-only">购买日期</label>*@
-                                <div class="col-sm-10 col-sm-offset-2">
-                                    <input type="text" name="txtBuyDay" class="form-control input-sm datetimepicker" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">购买账户</label>
+                        <div class="col-sm-10">
+                            <select class="form-control input-sm" name="selAccount">
+                                @foreach (var account in Model.Accounts)
+                                {
+                                    <option value="@account.Id">@account.Name</option>
+                                }
+                            </select>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">购买日期</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtBuyDay" class="form-control input-sm datetimepicker" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">购买周期</label>
+                        <div class="col-sm-10">
                             <div class="input-group">
-                                <input type="text" name="txtTimes" class="form-control input-sm" />
+                                <input type="text" name="txtTimes" class="form-control input-sm text-right" placeholder="输入周期" />
                                 <div class="input-group-btn" style="width:auto;">
                                     <select name="selTimeUnit" class="form-control input-sm">
                                         <option>天</option>
@@ -97,34 +95,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @*<label class="col-md-2 control-label sr-only"></label>*@
-                                <div class="col-sm-10 col-sm-offset-2">
-                                    <input type="text" name="txtExpireDay" class="form-control input-sm datetimepicker" placeholder="到期时间" />
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">到期时间</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtExpireDay" class="form-control input-sm datetimepicker" placeholder="到期时间" />
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="input-group">
-                                        <input type="text" name="txtInterestRate" class="form-control input-sm" placeholder="输入年息率">
-                                        <span class="input-group-addon input-sm">%</span>
-                                    </div>
-                                </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">年息率</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="text" name="txtInterestRate" class="form-control input-sm text-right" placeholder="输入年息率">
+                                <span class="input-group-addon input-sm">%</span>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                @*<label class="col-md-1 control-label sr-only">项目描述</label>*@
-                                <div class="col-md-11 col-md-offset-1">
-                                    <input type="text" name="txtProject" class="form-control" placeholder="输入项目描述" />
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">项目描述</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtProject" class="form-control" placeholder="输入项目描述" />
                         </div>
                     </div>
                 </form>
@@ -138,17 +127,19 @@
 </div>
 
 @section scripts{
-    <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
-    @*<script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>*@
+    @*<script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>*@
+    <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script>
         $(function() {
-            $(".datetimepicker").datetimepicker({
-                lang: "ch",
-                format: "Y-m-d",
-                formatDate: "Y-m-d",
-                timepicker: false
+            //$(".datetimepicker").datetimepicker({
+            //    lang: "ch",
+            //    format: "Y-m-d",
+            //    formatDate: "Y-m-d",
+            //    timepicker: false
+            //});
+            $('.datetimepicker').datepicker({
+                format: "yyyy-mm-dd"
             });
-
             $("#btnSave").bind("click", function() {
                 var detail = getModel();
 
@@ -165,9 +156,50 @@
                     }
                 });
             });
+
+            $(document).delegate(".J_Edit", "click", function() {
+                var id = $(this).parents("tr").find("[name=Id]").val();
+                $.get("/admin/licai/getlicaibyid", { id: id }, function (resp) {
+                    $("#modalP2pProject").find(".modal-body").html(resp);
+                    $("#modalP2pProject").find('.datetimepicker').datepicker({
+                        format: "yyyy-mm-dd"
+                    });
+                    $("#modalP2pProject").modal("show");
+                });
+            });
+
+            $(document).delegate(".J_Delete", "click", function() {
+                var id = $(this).parents("tr").find("[name=Id]").val();
+                $.get("/admin/licai/deletep2p", { id: id }, function(resp) {
+                    $("#tblContainer").html(resp);
+                });
+            });
         });
-        
+
+        function setModel(id) {
+            $.post("/admin/licai/getlicaibyid", { id: id }, function (resp) {
+                if (resp.iserror) {
+                    return;
+                }
+                var model = resp.data;
+                console.log(resp, new Date(model.BuyDay));
+                var form = $("#modalP2pProject").find("form");
+                form.find("[name=Id]").val(model.Id);
+                form.find("[name=selAccount]").val(model.AccountId);
+                form.find("[name=txtProject]").val(model.Project);
+                form.find("[name=txtBuyDay]").val(model.BuyDay),
+                form.find("[name=txtTimes]").val(model.Times);
+                form.find("[name=selTimeUnit]").val(model.TimeUnit);
+                form.find("[name=txtPrice]").val(model.Price);
+                form.find("[name=txtInterestRate]").val(model.InterestRate);
+                form.find("[name=txtExpireDay]").val(model.ExpireDay);
+
+                $("#modalP2pProject").modal("show");
+            });
+        }
+
         function getModel() {
+            
             var form = $("#modalP2pProject").find("form");
             var detail = {
                 Id: form.find("[name=Id]").val(),

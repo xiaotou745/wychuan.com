@@ -2996,7 +2996,7 @@ video {
   position: relative;
 }
 .modal-dialog {
-  z-index: 1200;
+  z-index: 2050;
 }
 .modal-body {
   padding: 20px 30px 30px 30px;
