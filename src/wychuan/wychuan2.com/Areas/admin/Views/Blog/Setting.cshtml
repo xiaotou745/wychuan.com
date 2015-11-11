@@ -1,0 +1,103 @@
+﻿@model wychuan2.com.Areas.admin.Models.Blog.BlogSettingModel
+@{
+    ViewBag.Title = "随笔设置";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/plugins/jsTree/default/style.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>随笔分类</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="alert alert-warning alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    右键可以添加、删除、重命名分类列表哦。
+                </div>
+                <div id="treeItems">
+                    <ul>
+                        <li id="-1" cid="0" parentid="-1" class="jstree-open">
+                            Root
+                            @{
+                                var rootCategories = Model.Categories.Where(c => c.ParentId == 0);
+                                if (rootCategories.Count() > 0)
+                                {
+                                    <ul>
+                                        @foreach (var root in rootCategories)
+                                        {
+                                        <li id="@root.Id" cid="@root.Id" parentid="@root.ParentId" class="jstree-open">@root.Name
+                                            @{
+                                                var secondCategories = Model.Categories.Where(c => c.ParentId == root.Id);
+                                                if (secondCategories.Count() > 0)
+                                                {
+                                                    <ul>
+                                                        @foreach (var child in secondCategories)
+                                                        {
+                                                            <li id="@child.Id" cid="@child.Id" parentid="@child.ParentId">@child.Name</li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            }
+                                        </li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>随笔标签</h5>
+                <div class="ibox-tools">
+                    <a href="#modalTags" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-plus"></i> 添加标签</a>
+                </div>
+            </div>
+            <div class="ibox-content" id="tagContainer">
+                @foreach (var tag in Model.Tags)
+                {
+                <button type="button" class="btn btn-outline btn-default">@tag.TagName</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalTags" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblTags">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblTags">新建标签</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">标签名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" placeholder="标签名称" id="txtTagsName" class="form-control" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSaveTags" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/plugins/jsTree/jstree.js"> </script>
+    <script src="~/Scripts/blog/setting.js"></script>
+}

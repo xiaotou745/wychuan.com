@@ -50,8 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppLogger.cs" />
+    <Compile Include="Blog\IBlogCategoryService.cs" />
+    <Compile Include="Blog\IBlogsService.cs" />
+    <Compile Include="Blog\IBlogTagsService.cs" />
     <Compile Include="Config\CategoryConfigInfo.cs" />
     <Compile Include="Config\ICategoryService.cs" />
+    <Compile Include="DTO\Blog\BlogCategoryDTO.cs" />
+    <Compile Include="DTO\Blog\BlogsDTO.cs" />
+    <Compile Include="DTO\Blog\BlogTagsDTO.cs" />
     <Compile Include="DTO\LiCai\AccountDTO.cs" />
     <Compile Include="DTO\LiCai\AccountType.cs" />
     <Compile Include="DTO\LiCai\BillDTO.cs" />

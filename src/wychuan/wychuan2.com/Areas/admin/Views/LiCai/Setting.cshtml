@@ -8,13 +8,9 @@
 
 @{
     IList<KeyValuePair<string, string>> lstCategoryType = EnumUtils.GetEnumDescriptions(typeof(CategoryType));
-
     IList<KeyValuePair<string, string>> lstItemTypes = EnumUtils.GetEnumDescriptions(typeof(ItemType));
-
     IList<ItemDTO> lstItems = (List<ItemDTO>)ViewBag.Items;
-
     var lstCategories = (List<CategoryDTO>)ViewBag.Categories;
-
 }
 
 @section styles{

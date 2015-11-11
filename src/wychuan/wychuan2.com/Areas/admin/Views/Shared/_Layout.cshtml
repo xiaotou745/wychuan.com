@@ -11,7 +11,7 @@
     @RenderSection("styles", required: false)
     <link rel="stylesheet" href="~/Content/animate.css" />
     <link rel="stylesheet" href="~/Content/style.css" />
-    <script src="~/Scripts/jquery-2.1.1.js"></script>
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
 </head>
 <body>
         <div id="wrapper">
@@ -54,16 +54,16 @@
         </div>
 
         <!-- Mainly scripts -->
-        <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
-        <script src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <!-- jQuery UI -->
+        <script src="~/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+        
 
         <!-- Custom and plugin javascript -->
         <script src="~/Scripts/inspinia.js"></script>
 
-        <!-- jQuery UI -->
-        <script src="~/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
-
+        <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

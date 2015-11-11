@@ -77,13 +77,12 @@
                     <li><a href="">菜单管理</a></li>
                 </ul>
             </li>
-            <li class="">
-                <a href=""><i class="fa fa-sitemap"></i> <span class="nav-label">文章管理</span><span class="fa arrow"></span></a>
+            <li class="@("blog".Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">
+                <a href=""><i class="fa fa-sitemap"></i> <span class="nav-label">随笔管理</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="">发布文章</a></li>
-                    <li><a href="">文章类型</a></li>
-                    <li><a href="">标签管理</a></li>
-                    <li><a href="">文章列表</a></li>
+                    <li class="@("index".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/blog">发布随笔</a></li>
+                    <li class="@("list".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/blog/list">随笔管理</a></li>
+                    <li class="@("setting".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/blog/setting">设置</a></li>
                 </ul>
             </li>
         </ul>

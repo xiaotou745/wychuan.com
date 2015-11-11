@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blog\BlogCategoryDao.cs" />
+    <Compile Include="Blog\BlogDao.cs" />
+    <Compile Include="Blog\BlogTagsDao.cs" />
     <Compile Include="DaoBase.cs" />
     <Compile Include="LiCai\AccountDao.cs" />
     <Compile Include="LiCai\BillDao.cs" />
