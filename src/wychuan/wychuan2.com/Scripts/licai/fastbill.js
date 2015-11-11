@@ -52,9 +52,11 @@
         $("#modalBill").modal("show");
     });
     $("#btnSaveBill").bind("click", function () {
-        saveBill();
+        saveBill(true);
     });
-    
+    $("#btnSaveThanContinue").bind("click", function() {
+        saveBill(false);
+    });
     $("#modalExpendTemplate").bind("shown.bs.modal", function(event) {
         $("#modalExpendTemplate").find("form").find("[name=txtName]").select();
         $("#modalExpendTemplate").find("form").find("[name=txtName]").focus();
@@ -234,10 +236,8 @@ function getBill() {
     };
     return bill;
 }
-function saveBill() {
+function saveBill(showdetail) {
     var bill = getBill();
-    console.log(bill);
-    return;
     $.ajax({
         url: "/api/bill/fastsave",
         type: "post",
@@ -245,7 +245,11 @@ function saveBill() {
         dataType: "json",
         success: function (resp) {
             if (!resp.iserror) {
-                $("#modalBill").modal("hide");
+                if (showdetail) {
+                    location.href = "/admin/licai/details";
+                } else {
+                    $("#modalBill").modal("hide");
+                }
             }
         }
     });

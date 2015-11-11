@@ -29,12 +29,16 @@ $(function () {
         $($(e.target).attr("href")).find("[name=txtPrice]").focus();
     });
 
-    $("form").delegate("[name=btnSave]", "click", saveBill);
-    $("form").delegate("[name=btnSaveContinue]", "click", saveBill);
+    $("form").delegate("[name=btnSave]", "click", function(e) {
+        saveBill(e, true);
+    });
+    $("form").delegate("[name=btnSaveContinue]", "click", function(e) {
+        saveBill(e, false);
+    });
 
 });
 
-function saveBill(e) {
+function saveBill(e, showdetails) {
     var form = $(e.delegateTarget);
     var btn = $(e.currentTarget);
     var bill = getModel(form, btn);
@@ -47,6 +51,9 @@ function saveBill(e) {
         success: function (resp) {
             if (!resp.iserror) {
                 alert("保存成功.");
+                if (showdetails) {
+                    location.href = "/admin/licai/details";
+                }
             }
         }
     });
