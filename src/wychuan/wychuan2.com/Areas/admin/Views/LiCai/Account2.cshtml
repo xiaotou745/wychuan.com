@@ -1,0 +1,112 @@
+﻿@model wychuan2.com.Models.LiCaiAccount
+@{
+    ViewBag.Title = "理财-账户";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
+}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>所有账户</h5>
+                <div class="ibox-tools">
+                    <a href="#accountModal" data-toggle="modal" data-type="1" data-whatever="添加账户" class="btn btn-primary btn-xs">创建账户</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row m-b-sm m-t-sm">
+                    <div class="col-md-1">
+                        <button type="button" id="btnRefresh" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> 刷新</button>
+                    </div>
+                    <div class="col-md-11">
+                        <div class="input-group">
+                            <input type="text" placeholder="请输入账户名称" class="input-sm form-control"> <span class="input-group-btn"><button type="button" class="btn btn-sm btn-primary"> 搜索</button></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="content">
+                    @Html.Partial("_AccountDetails", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--账户对话框-->
+<div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="accountModalLabel">创建账户</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frmAccount">
+                    <input type="hidden" value="0" id="Id" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Type">类型</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="Type">
+                                @foreach (var accountType in Model.AccountTypes)
+                                {
+                                    if (accountType.Id > 0)
+                                    {
+                                        <option value="@accountType.Id">@accountType.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Name">名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder="账户名称" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">余额</label>
+                        <div class="col-sm-3">
+                            <select class="form-control" id="Currency">
+                                <option value="1">人民币</option>
+                            </select>
+                        </div>
+                        <div class="input-group col-sm-7">
+                            <span class="input-group-addon">￥</span>
+                            <input id="Balance" name="Balance" type="text" class="form-control" value="0.00" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <label class="checkbox-inline i-checks"> <input type="checkbox" class="form-control">记入净资产 </label>
+                            @*<div class="checkbox">
+                                    <label>
+                                        <input id="InNetAssets" type="checkbox" class="form-control i-checks"> 记入净资产
+                                    </label>
+                                </div>*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">备注</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" id="Remark" placeholder="请填写备注信息"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSave" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"> </script>
+    <script src="~/Scripts/plugins/validate/jquery.validate.min.js"> </script>
+    <script src="~/Scripts/plugins/validate/messages_zh.js"> </script>
+    <script src="~/Scripts/licai/account2.js"> </script>
+}

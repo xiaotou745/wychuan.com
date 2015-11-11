@@ -463,6 +463,8 @@
     <Content Include="Areas\admin\Views\Blog\Index.cshtml" />
     <Content Include="Areas\admin\Views\Blog\List.cshtml" />
     <Content Include="Areas\admin\Views\Blog\Setting.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\_AccountDetails.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\Account2.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />
@@ -501,6 +503,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\licai\account2.js" />
     <Content Include="Scripts\licai\account.js" />
     <Content Include="Scripts\licai\bill.js" />
     <Content Include="Scripts\licai\detail.js" />

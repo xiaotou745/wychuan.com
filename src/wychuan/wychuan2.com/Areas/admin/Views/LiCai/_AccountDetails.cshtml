@@ -1,0 +1,107 @@
+﻿@model wychuan2.com.Models.LiCaiAccount
+
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>账户</th>
+            <th>余额</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Accounts.Count > 0)
+        {
+            foreach (var account in Model.Accounts)
+            {
+                <tr>
+                    <input name="Id" type="hidden" value="@account.Id" />
+                    <input name="InNetAssets" type="hidden" value="@account.InNetAssets" />
+                    <input name="Type" type="hidden" value="@account.Type" />
+                    <input name="Currency" type="hidden" value="@account.Currency" />
+                    <input name="Remark" type="hidden" value="@account.Remark" />
+                    <td name="Name">
+                        @account.Name
+                    </td>
+                    <td name="Balance"><a href="#">@account.Balance</a></td>
+                    <td>
+                        <a class="btn btn-sm btn-white J_EditBalance">余额编辑</a>
+                        <a class="btn btn-sm btn-white btn-sm" href="#accountModal" data-toggle="modal" data-type="2" data-whatever="编辑账户"><i class="fa fa-folder"></i> 编辑 </a>
+                        <a href="javascript:;" class="btn btn-white btn-sm J_Remove"><i class="fa fa-trash-o"></i> 删除 </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="3">
+                    暂时没有账单明细
+                </td></tr>
+        }
+            
+    </tbody>
+</table>
+
+
+
+@*@if (Model.Accounts.Count > 0)
+{
+    foreach (var accountType in Model.AccountTypes)
+    {
+        var lstAccounts = Model.Accounts.Where(a => a.Type == accountType.Id);
+        if (!lstAccounts.Any())
+        {
+            continue;
+        }
+
+        <div class="ibox float-e-margins" style="margin-bottom: 5px;">
+            <div class="ibox-title" style="border-top: none !important;padding-top: 0px; padding-bottom: 0px; min-height: 20px; height: 20px;">
+                <h5>@accountType.Name</h5>
+                <div class="ibox-tools">
+                    <span class="label label-primary">账户数量：@lstAccounts.Count()</span>
+
+                    <a class="collapse-link ui-sortable J_BillItem">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content" style="display: block; padding-top: 5px; padding-bottom: 5px;">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>账户</th>
+                            <th>余额</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var account in lstAccounts)
+                        {
+                            <tr>
+                                <input name="Id" type="hidden" value="@account.Id" />
+                                <input name="InNetAssets" type="hidden" value="@account.InNetAssets" />
+                                <input name="Type" type="hidden" value="@account.Type" />
+                                <input name="Currency" type="hidden" value="@account.Currency" />
+                                <input name="Remark" type="hidden" value="@account.Remark" />
+                                <td name="Name">
+                                    @account.Name
+                                </td>
+                                <td name="Balance"><a href="#">@account.Balance</a></td>
+                                <td>
+                                    <a class="btn btn-sm btn-white J_EditBalance">余额编辑</a>
+                                    <a class="btn btn-sm btn-white btn-sm" href="#accountModal" data-toggle="modal" data-type="2" data-whatever="编辑账户"><i class="fa fa-folder"></i> 编辑 </a>
+                                    <a href="javascript:;" class="btn btn-white btn-sm J_Remove"><i class="fa fa-trash-o"></i> 删除 </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    }
+}
+else
+{
+    <h3>没有任务账户</h3>
+}*@

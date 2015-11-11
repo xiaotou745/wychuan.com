@@ -18,12 +18,12 @@ namespace wychuan2.com.Areas.admin.Controllers
         private readonly ICategoryService categoryService = new CategoryService();
         private readonly IBillTemplateService billTemplateService = new BillTemplateService();
         private readonly IBillService billService = new BillService();
+        private readonly IAccountService accountService = new AccountService();
 
         #region 账户
         /// <summary>
         /// 理财账户Service
         /// </summary>
-        private readonly IAccountService accountService = new AccountService();
         public ActionResult Account(int type = 0)
         {
             var model = new LiCaiAccount();
@@ -49,7 +49,36 @@ namespace wychuan2.com.Areas.admin.Controllers
             model.Accounts = lstAccounts;
             return View(model);
         }
+        #endregion
+        #region 账户2
+        /// <summary>
+        /// 理财账户Service
+        /// </summary>
+        public ActionResult Account2(int type = 0)
+        {
+            var model = new LiCaiAccount();
 
+            List<AccountType> accountTypes = AccountType.Create().GetAccountTypes();
+
+            //账户类型s
+            model.AccountTypes = accountTypes;
+
+            Dictionary<int, int> typeCounts = accountService.GetTypeCounts(ApplicationUser.Current.UserId);
+            accountTypes.ForEach(t => t.Count = typeCounts.ContainsKey(t.Id) ? typeCounts[t.Id] : 0);
+
+            //当前类型
+            model.CurrentType = accountTypes.FirstOrDefault(a => a.Id == type);
+
+            var queryInfo = new AccountQueryInfo { UserId = ApplicationUser.Current.UserId };
+            if (type > 0)
+            {
+                queryInfo.AccountTypeId = type;
+            }
+            //查询账户列表
+            IList<AccountDTO> lstAccounts = accountService.Query(queryInfo);
+            model.Accounts = lstAccounts;
+            return View(model);
+        }
         [HttpPost]
         public AjaxResult SaveAccount(AccountDTO account)
         {
@@ -81,6 +110,31 @@ namespace wychuan2.com.Areas.admin.Controllers
             return AjaxResult.Success();
         }
 
+        public ActionResult AccountDetails(int type = 0)
+        {
+            var model = new LiCaiAccount();
+
+            List<AccountType> accountTypes = AccountType.Create().GetAccountTypes();
+
+            //账户类型s
+            model.AccountTypes = accountTypes;
+
+            Dictionary<int, int> typeCounts = accountService.GetTypeCounts(ApplicationUser.Current.UserId);
+            accountTypes.ForEach(t => t.Count = typeCounts.ContainsKey(t.Id) ? typeCounts[t.Id] : 0);
+
+            //当前类型
+            model.CurrentType = accountTypes.FirstOrDefault(a => a.Id == type);
+
+            var queryInfo = new AccountQueryInfo { UserId = ApplicationUser.Current.UserId };
+            if (type > 0)
+            {
+                queryInfo.AccountTypeId = type;
+            }
+            //查询账户列表
+            IList<AccountDTO> lstAccounts = accountService.Query(queryInfo);
+            model.Accounts = lstAccounts;
+            return View("_AccountDetails", model);
+        }
         public ActionResult AccountList(int type = 0)
         {
             var model = new LiCaiAccount();
