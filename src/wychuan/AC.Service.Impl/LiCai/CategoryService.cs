@@ -43,6 +43,11 @@ namespace AC.Service.Impl.LiCai
             return categoryDao.GetByUserId(userId);
         }
 
+        public CategoryDTO GetByName(int userId, int type, string name)
+        {
+            return categoryDao.GetByName(userId, type, name);
+        }
+
         public void Remove(int id)
         {
             AssertUtils.Greater(id, 0);

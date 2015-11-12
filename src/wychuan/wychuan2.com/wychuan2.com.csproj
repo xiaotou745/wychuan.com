@@ -199,6 +199,7 @@
     <Compile Include="Areas\admin\Models\HtmlTable\HtmlTableInfo.cs" />
     <Compile Include="Areas\admin\Models\CompanyModel.cs" />
     <Compile Include="Areas\admin\Models\HtmlTable\LinkItem.cs" />
+    <Compile Include="Areas\admin\Models\LiCai\AccountBalanceAdjustModel.cs" />
     <Compile Include="Areas\admin\Models\LiCai\BillModel.cs" />
     <Compile Include="Areas\admin\Models\LiCai\LiCaiModel.cs" />
     <Compile Include="Areas\admin\Models\MyTaskModel.cs" />

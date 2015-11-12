@@ -32,7 +32,14 @@ $(document).ready(function() {
             modal.find("#Remark").val($tr.find("[name=Remark]").text());
         }
     });
-
+    $('#accountBalanceModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var modal = $(this);
+        var $tr = button.parents("tr");
+        modal.find("[name=Id]").val($tr.find("[name=Id]").val());
+        modal.find("[name=Name]").html($tr.find("[name=Name]").text());
+        modal.find("[name=Balance]").val($tr.find("[name=Balance] a").text());
+    });
     $("#frmAccount").validate({
         rules: {
             Name: {
@@ -56,10 +63,13 @@ $(document).ready(function() {
     $("#btnSave").bind("click", function() {
         $("#frmAccount").trigger("submit");
     });
-    
-    $("#btnRefresh").bind("click",function() {
+    $("#btnSaveBalance").bind("click", function() {
+        adjustBalance();
+    });
+
+    $("#btnRefresh").bind("click", function() {
         refresh();
-    })
+    });
 
     $(document).delegate(".J_Remove", "click", function () {
         if (confirm("确定要删除吗？")) {
@@ -98,10 +108,30 @@ function save() {
         dataType: "json",
         data: account,
         success: function(resp) {
-            console && console.log(resp);
+            //console && console.log(resp);
             if (!resp.iserror) {
                 refresh();
                 $("#accountModal").modal("hide");
+            }
+        }
+    });
+}
+
+function adjustBalance() {
+    var modal = $("#accountBalanceModal");
+    var adjustParam = {
+        Id: modal.find("[name=Id]").val(),
+        Balance: modal.find("[name=Balance]").val()
+    };
+    $.ajax({
+        url: "/api/bill/adjustbalance",
+        type: "post",
+        dataType: "json",
+        data: adjustParam,
+        success: function (resp) {
+            if (!resp.iserror) {
+                refresh();
+                modal.modal("hide");
             }
         }
     });

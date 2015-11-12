@@ -137,5 +137,23 @@ where   lc.IsEnable = 1
 
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, sqlText, dbParameters);
         }
+
+        public CategoryDTO GetByName(int userId, int type, string name)
+        {
+            const string SQL_TEXT = @"
+select  lc.ID, lc.UserId, lc.ParentId, lc.Name, lc.InOutType, lc.InitKey, lc.IsCommonUse, lc.OrderBy, lc.IsEnable
+from    LC_Category lc ( nolock )
+where   lc.IsEnable = 1
+        and lc.UserId = @UserId
+        and lc.InOutType = @InOutType
+        and lc.Name = @Name";
+
+            var dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.Add("UserId", DbType.Int32, 4).Value = userId;
+            dbParameters.Add("InOutType", DbType.Int32, 4).Value = type;
+            dbParameters.Add("Name", DbType.String, 50).Value = name;
+
+            return DbHelper.QueryForObject(ConnStringOfAchuan, SQL_TEXT, dbParameters, new CategoryRowMapper());
+        }
     }
 }

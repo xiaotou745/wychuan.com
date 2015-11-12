@@ -903,3 +903,121 @@ System.Data.SqlTypes.SqlTypeException: SqlDateTime 溢出。必须介于 1/1/1753 12:00
    在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
    在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+2015-11-12 20:14:33,205 [23] ERROR ErrorLog [(null)] - 
+-----------------start----------------------
+2015/11/12 20:14:33
+异常发生地址:http://mywww2.wychuan.com/api/bill/adjustbalance
+请求类型:POST
+异常:System.Data.SqlClient.SqlException (0x80131904): 列名 'IsBalanceAdjust' 无效。
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, CommandType commandType, String commandText, Int32 timeOutInSeconds, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 391
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, String commandText, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 321
+   在 AC.Dao.LiCai.AccountDao.ChangeBalance(Int32 id, Decimal balance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\AccountDao.cs:行号 118
+   在 AC.Service.Impl.LiCai.AccountService.ChangeBalance(Int32 accountId, Decimal balance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\AccountService.cs:行号 116
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.AdjustBalance(AccountBalanceAdjustModel adjustParam) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 101
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:e0a09389-6874-4e5d-9baf-c4f0d6adc0f9
+--------------------end---------------------
+
+System.Data.SqlClient.SqlException (0x80131904): 列名 'IsBalanceAdjust' 无效。
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, CommandType commandType, String commandText, Int32 timeOutInSeconds, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 391
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, String commandText, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 321
+   在 AC.Dao.LiCai.AccountDao.ChangeBalance(Int32 id, Decimal balance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\AccountDao.cs:行号 118
+   在 AC.Service.Impl.LiCai.AccountService.ChangeBalance(Int32 accountId, Decimal balance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\AccountService.cs:行号 116
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.AdjustBalance(AccountBalanceAdjustModel adjustParam) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 101
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:e0a09389-6874-4e5d-9baf-c4f0d6adc0f9
+2015-11-12 20:38:38,222 [8] ERROR ErrorLog [(null)] - 
+-----------------start----------------------
+2015/11/12 20:38:38
+异常发生地址:http://mywww2.wychuan.com/api/bill/adjustbalance
+请求类型:POST
+异常:System.Data.SqlClient.SqlException (0x80131904): 列名 'IsBalanceAdjust' 无效。
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, CommandType commandType, String commandText, Int32 timeOutInSeconds, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 391
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, String commandText, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 321
+   在 AC.Dao.LiCai.AccountDao.AdjustBalance(Int32 id, Decimal adjustPrice, Boolean isAdjustBalance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\AccountDao.cs:行号 108
+   在 AC.Service.Impl.LiCai.AccountService.AdjustBalance(Int32 accountId, Decimal price, Boolean isAdjustBalance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\AccountService.cs:行号 111
+   在 AC.Service.Impl.LiCai.AdjustBalanceProvider.Adjust() 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\AdjustBalanceProvider.cs:行号 74
+   在 AC.Service.Impl.LiCai.BillService.Create(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\BillService.cs:行号 32
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.AdjustBalance(AccountBalanceAdjustModel adjustParam) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 114
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:5040551f-5aed-413e-bbdb-971fcacc2a69
+--------------------end---------------------
+
+System.Data.SqlClient.SqlException (0x80131904): 列名 'IsBalanceAdjust' 无效。
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, CommandType commandType, String commandText, Int32 timeOutInSeconds, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 391
+   在 AC.Data.DbHelper.ExecuteNonQuery(String connString, String commandText, IDbParameters parameters) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 321
+   在 AC.Dao.LiCai.AccountDao.AdjustBalance(Int32 id, Decimal adjustPrice, Boolean isAdjustBalance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\LiCai\AccountDao.cs:行号 108
+   在 AC.Service.Impl.LiCai.AccountService.AdjustBalance(Int32 accountId, Decimal price, Boolean isAdjustBalance) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\AccountService.cs:行号 111
+   在 AC.Service.Impl.LiCai.AdjustBalanceProvider.Adjust() 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\AdjustBalanceProvider.cs:行号 74
+   在 AC.Service.Impl.LiCai.BillService.Create(BillDTO bill) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\LiCai\BillService.cs:行号 32
+   在 wychuan2.com.Areas.admin.Controllers.api.BillController.AdjustBalance(AccountBalanceAdjustModel adjustParam) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\BillController.cs:行号 114
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:5040551f-5aed-413e-bbdb-971fcacc2a69

@@ -24,18 +24,19 @@ namespace AC.Service.LiCai
 
         void Modify(AccountDTO account);
 
-        /// <summary>
-        /// 调整余额
-        /// </summary>
-        /// <param name="bill"></param>
-        void AdjustBalance(BillDTO bill);
+        ///// <summary>
+        ///// 调整余额
+        ///// </summary>
+        ///// <param name="bill"></param>
+        //void AdjustBalance(BillDTO bill);
 
-        void AdjustBalance(BillDTO bill, decimal price);
+        //void AdjustBalance(BillDTO bill, decimal price);
 
         void AdjustBalance(int accountId, decimal price);
 
         void Remove(int id);
 
         Dictionary<int, int> GetTypeCounts(int userId);
+        AccountDTO GetById(int id);
     }
 }

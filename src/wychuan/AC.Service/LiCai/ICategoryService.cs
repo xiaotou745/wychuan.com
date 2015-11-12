@@ -15,6 +15,9 @@ namespace AC.Service.LiCai
         void InitUser(int userId);
 
         IList<CategoryDTO> GetByUserId(int userId);
+
+        CategoryDTO GetByName(int userId, int type, string name);
+
         void Remove(int id);
     }
 }

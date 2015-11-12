@@ -8,12 +8,14 @@ using AC.Service.DTO.LiCai;
 using AC.Service.Impl.LiCai;
 using AC.Service.LiCai;
 using AC.Web;
+using wychuan2.com.Areas.admin.Models.LiCai;
 using wychuan2.com.Models;
 
 namespace wychuan2.com.Areas.admin.Controllers.api
 {
     public class BillController : ApiController
     {
+        private readonly ICategoryService categoryService = new CategoryService();
         private readonly IAccountService accountService = new AccountService();
         private readonly IBillService billService = new BillService();
         private readonly IBillTemplateService billTemplateService = new BillTemplateService();
@@ -88,6 +90,36 @@ namespace wychuan2.com.Areas.admin.Controllers.api
         public AjaxResult Remove(int id)
         {
             billService.Remove(id);
+            return AjaxResult.Success();
+        }
+        #endregion
+
+        #region AdjustBalance
+        [HttpPost]
+        [HttpGet]
+        public AjaxResult AdjustBalance(AccountBalanceAdjustModel adjustParam)
+        {
+            var accountDTO = accountService.GetById(adjustParam.Id);
+            var adjustPrice = adjustParam.Balance - accountDTO.Balance;
+            var categoryInfo = categoryService.GetByName(ApplicationUser.Current.UserId,
+                adjustPrice >= 0 ? CategoryType.Income.GetHashCode() : CategoryType.Expend.GetHashCode(),
+                "漏记款");
+            var bill = new BillDTO
+            {
+                IsBalanceAdjust = true,
+                Price = adjustPrice,
+                UserId = ApplicationUser.Current.UserId,
+                AccountId = adjustParam.Id,
+                ConsumeTime = DateTime.Now,
+                DetailType =
+                    adjustPrice >= 0 ? BillDetailType.Income.GetHashCode() : BillDetailType.Expend.GetHashCode(),
+                BookId = 0,
+                Remark = "陈年烂账引发的余额调整",
+                SecondCategoryId = categoryInfo == null ? 0 : categoryInfo.Id,
+                SecondCategory = categoryInfo == null ? string.Empty : categoryInfo.Name,
+                FirstCategoryId = categoryInfo == null ? 0 : categoryInfo.ParentId,
+            };
+            billService.Create(bill);
             return AjaxResult.Success();
         }
         #endregion
