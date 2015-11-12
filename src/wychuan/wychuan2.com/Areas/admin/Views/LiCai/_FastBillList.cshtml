@@ -2,6 +2,15 @@
 @using AC.Util
 @model wychuan2.com.Areas.admin.Models.LiCai.BillModel
 
+<div class="row">
+    <div class="col-lg-12">
+        <div class="alert alert-info alert-dismissable">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            <a href="/admin/licai/bill" class="btn btn-white">详细记账</a>
+            <a href="/admin/licai/details" class="btn btn-white">查看明细</a>
+        </div>
+    </div>
+</div>
 @if (Model.Templates != null)
 {
     string templates = JsonHelper.ToJson(Model.Templates);

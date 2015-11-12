@@ -23,18 +23,27 @@
         {
             var totalExpendPrice = Model.Details.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode() && b.BaoXiao == 0).Sum(b => b.Price);
             var totalIncomePrice = Model.Details.Where(b => b.DetailType == BillDetailType.Income.GetHashCode()).Sum(b => b.Price);
+            if (Model.DetailType != BillDetailType.Income.GetHashCode() && Model.DetailType != BillDetailType.Transfer.GetHashCode())
+            {
         <span class="label label-primary">共支出：¥@totalExpendPrice.ToString("0.00")</span>
+            }
+            if (Model.DetailType != BillDetailType.Expend.GetHashCode() && Model.DetailType != BillDetailType.Transfer.GetHashCode())
+            {
         <span class="label label-danger">共收入：¥@totalIncomePrice.ToString("0.00")</span>
+            }
         }
         else
         {
-            var sumOfJieChu = Model.Details.Where(b => b.CreditorType == CreditType.JieChu.GetHashCode() || b.CreditorType == CreditType.ShouKuan.GetHashCode()).Sum(b => b.Price);
-            var sumOfJieRu = Model.Details.Where(b => b.CreditorType == CreditType.JieRu.GetHashCode() || b.CreditorType == CreditType.HuanKuan.GetHashCode()).Sum(b => b.Price);
-            <span class="label label-primary">他人借你：¥@sumOfJieChu.ToString("0.00")</span>
-            <span class="label label-danger">你借他人：¥@sumOfJieRu.ToString("0.00")</span>
+            var sumOfShouKuan = Model.Details.Where(b => b.CreditorType == CreditType.ShouKuan.GetHashCode()).Sum(b => b.Price);
+            var sumOfJieChu = Model.Details.Where(b => b.CreditorType == CreditType.JieChu.GetHashCode()).Sum(b => b.Price);
+            var sumOfHuanKuan = Model.Details.Where(b => b.CreditorType == CreditType.HuanKuan.GetHashCode()).Sum(b => b.Price);
+            var sumOfJieRu = Model.Details.Where(b => b.CreditorType == CreditType.JieRu.GetHashCode()).Sum(b => b.Price);
+            <span class="label label-primary">他人借你：¥@((sumOfJieChu-sumOfShouKuan).ToString("0.00"))</span>
+            <span class="label label-danger">你借他人：¥@((sumOfJieRu-sumOfHuanKuan).ToString("0.00"))</span>
         }
-        <a class="btn btn-white J_s">收起所有</a>
-        <a class="btn btn-white J_z" disabled="disabled">展开所有</a>
+        <a class="btn btn-white J_s">收起</a>
+        <a class="btn btn-white J_z" disabled="disabled">展开</a>
+        <a class="btn btn-white" href="/admin/licai/fastbill">去记账</a>
     </div>
 
     IEnumerable<IGrouping<DateTime, BillDTO>> lstDetails = Model.Details.GroupBy(b => b.ConsumeTime.Date);
