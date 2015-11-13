@@ -100,6 +100,11 @@
                         </div>
                     }
                 </div>
+                <div class="alert alert-info">
+                    <a class="btn btn-white J_s">收起</a>
+                    <a class="btn btn-white J_z" disabled="disabled">展开</a>
+                    <a class="btn btn-white" href="/admin/licai/fastbill">去记账</a>
+                </div>
                 <hr />
                 @if (Model.Details.Count > 0)
                 {
@@ -112,7 +117,7 @@
                                     DateTime currentDay = item.Key;
                                     List<BillDTO> lstBills = item.ToList();
 
-                                    decimal sumOfExpendsPrice = lstBills.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode() && b.BaoXiao == 0).Sum(b => b.Price);
+                                    decimal sumOfExpendsPrice = lstBills.Where(b => b.DetailType == BillDetailType.Expend.GetHashCode()).Sum(b => b.Price);
                                     decimal sumOfIncomePrice = lstBills.Where(b => b.DetailType == BillDetailType.Income.GetHashCode()).Sum(b => b.Price);
 
                                     <div class="ibox float-e-margins" style="margin-bottom: 5px;">
