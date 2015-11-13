@@ -17,10 +17,12 @@ $(document).ready(function() {
             modal.find("#Balance").val("0.00");
             modal.find("#InNetAssets").iCheck("uncheck");
             modal.find("#Remark").val("");
+            $("#Type").trigger("change");
         } else if (operateType == 2) { //编辑
             var $tr = button.parents("tr");
             modal.find("#Id").val($tr.find("[name=Id]").val());
             modal.find("#Type").val($tr.find("[name=Type]").val());
+            $("#Type").trigger("change");
             modal.find("#Name").val($tr.find("[name=Name]").text());
             modal.find("#Balance").val($tr.find("[name=Balance] a").text());
             var inNetAssets = $tr.find("[name=InNetAssets]").val();
@@ -30,6 +32,9 @@ $(document).ready(function() {
                 modal.find("#InNetAssets").iCheck("uncheck");
             }
             modal.find("#Remark").val($tr.find("[name=Remark]").text());
+            $("#StatementDate").val($tr.find("[name=StatementDate]").val());
+            $("#RepaymentDate").val($tr.find("[name=RepaymentDate]").val());
+            $("#AccountLimit").val($tr.find("[name=AccountLimit]").val());
         }
     });
     $('#accountBalanceModal').on('show.bs.modal', function (event) {
@@ -81,6 +86,18 @@ $(document).ready(function() {
         var typeId = $(this).data("type");
         refresh(typeId);
     });
+
+    $("#selAccountType").bind("change", function() {
+        refresh();
+    });
+    $("#Type").bind("change", function() {
+        var type = $(this).val();
+        if (type == 3) {
+            $(".J_XinYong").show();
+        } else {
+            $(".J_XinYong").hide();
+        }
+    });
 });
 
 //复选框
@@ -99,7 +116,10 @@ function save() {
         Balance: $("#Balance").val(),
         Remark: $("#Remark").val(),
         InNetAssets: $("#InNetAssets").is(":checked"),
-        Currency: $("#Currency option:selected").text()
+        Currency: $("#Currency option:selected").text(),
+        StatementDate: $("#StatementDate").val(),
+        RepaymentDate: $("#RepaymentDate").val(),
+        AccountLimit: $("#AccountLimit").val()
     };
 
     $.ajax({
@@ -153,10 +173,11 @@ function remove(id) {
     });
 }
 
-function refresh(type) {
+function refresh() {
+    var accountType = $("#selAccountType").val();
     var params = {};
-    if (type != undefined) {
-        params.type = type;
+    if (accountType != 0) {
+        params.type = accountType;
     }
     $.ajax({
         url: "/admin/licai/accountdetails",

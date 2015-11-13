@@ -18,13 +18,13 @@
             </div>
             <div class="ibox-content">
                 <div class="row m-b-sm m-t-sm">
-                    <div class="col-md-1">
-                        <button type="button" id="btnRefresh" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> 刷新</button>
-                    </div>
-                    <div class="col-md-11">
-                        <div class="input-group">
-                            <input type="text" placeholder="请输入账户名称" class="input-sm form-control"> <span class="input-group-btn"><button type="button" class="btn btn-sm btn-primary"> 搜索</button></span>
-                        </div>
+                    <div class="col-md-12">
+                        <select class="form-control" id="selAccountType">
+                            @foreach (var type in Model.AccountTypes)
+                            {
+                                <option value="@type.Id">@type.Name</option>
+                            }
+                        </select>
                     </div>
                 </div>
                 <div id="content">
@@ -66,6 +66,24 @@
                             <input type="text" class="form-control" id="Name" name="Name" placeholder="账户名称" required />
                         </div>
                     </div>
+                    <div class="form-group J_XinYong">
+                        <label class="control-label col-sm-2" for="StatementDate">账单日</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="StatementDate" name="StatementDate" placeholder="账单日" required />
+                        </div>
+                    </div>
+                    <div class="form-group J_XinYong">
+                        <label class="control-label col-sm-2" for="RepaymentDate">还款日</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="RepaymentDate" name="RepaymentDate" placeholder="还款日" required />
+                        </div>
+                    </div>
+                    <div class="form-group J_XinYong">
+                        <label class="control-label col-sm-2" for="AccountLimit">信用额度</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="AccountLimit" name="AccountLimit" placeholder="信用额度" required />
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">余额</label>
                         <div class="col-sm-3">
@@ -103,7 +121,7 @@
         </div>
     </div>
 </div>
-
+<!--余额调整-->
 <div class="modal fade" id="accountBalanceModal" tabindex="-1" role="dialog" aria-labelledby="accountBalanceModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

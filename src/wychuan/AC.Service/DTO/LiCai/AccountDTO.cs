@@ -24,6 +24,19 @@ namespace AC.Service.DTO.LiCai
 
     public class AccountQueryInfo
     {
+        private bool? isEnable = true;
+        public bool? IsEnable
+        {
+            get
+            {
+                return isEnable;
+            }
+            set
+            {
+                isEnable = value;
+            }
+        }
+
         public int? UserId { get; set; }
 
         public int? AccountTypeId { get; set; }
@@ -87,5 +100,19 @@ namespace AC.Service.DTO.LiCai
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 账单日
+        /// </summary>
+        public int StatementDate { get; set; }
+
+        /// <summary>
+        /// 还款日
+        /// </summary>
+        public int RepaymentDate { get; set; }
+
+        public decimal AccountLimit { get; set; }
+
+        public bool IsEnable { get; set; }
     }
 }

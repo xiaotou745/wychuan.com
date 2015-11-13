@@ -12,22 +12,39 @@
     <tbody>
         @if (Model.Accounts.Count > 0)
         {
-            foreach (var account in Model.Accounts)
+            foreach (var accountType in Model.AccountTypes)
             {
+                var lstAccounts = Model.Accounts.Where(a => a.Type == accountType.Id);
+                if (!lstAccounts.Any())
+                {
+                    continue;
+                }
+                
                 <tr>
-                    <input name="Id" type="hidden" value="@account.Id" />
-                    <input name="InNetAssets" type="hidden" value="@account.InNetAssets" />
-                    <input name="Type" type="hidden" value="@account.Type" />
-                    <input name="Currency" type="hidden" value="@account.Currency" />
-                    <input name="Remark" type="hidden" value="@account.Remark" />
-                    <td name="Name">@account.Name</td>
-                    <td name="Balance"><a href="#">@account.Balance</a></td>
-                    <td>
-                        <a class="btn btn-sm btn-white" href="#accountBalanceModal" data-toggle="modal">余额调整</a>
-                        <a class="btn btn-sm btn-white btn-sm" href="#accountModal" data-toggle="modal" data-type="2" data-whatever="编辑账户"><i class="fa fa-folder"></i> 编辑 </a>
-                        <a href="javascript:;" class="btn btn-white btn-sm J_Remove" ><i class="fa fa-trash-o"></i> 删除 </a>
-                    </td>
+                    <td><span class="text-navy"><strong>@accountType.Name</strong></span></td>
+                    <td colspan ="2">总资产：<span class="text-danger">@lstAccounts.Sum(a => a.Balance).ToString("0.00")</span></td>
                 </tr>
+
+                foreach (var account in lstAccounts)
+                {
+                    <tr>
+                        <input name="Id" type="hidden" value="@account.Id" />
+                        <input name="InNetAssets" type="hidden" value="@account.InNetAssets" />
+                        <input name="Type" type="hidden" value="@account.Type" />
+                        <input name="Currency" type="hidden" value="@account.Currency" />
+                        <input name="Remark" type="hidden" value="@account.Remark" />
+                        <input name="RepaymentDate" type="hidden" value="@account.RepaymentDate" />
+                        <input name="StatementDate" type="hidden" value="@account.StatementDate" />
+                        <input name="AccountLimit" type="hidden" value="@account.AccountLimit" />
+                        <td name="Name">@account.Name</td>
+                        <td name="Balance"><a href="/admin/licai/details?id=@account.Id">@account.Balance</a></td>
+                        <td>
+                            <a class="btn btn-sm btn-white" href="#accountBalanceModal" data-toggle="modal">余额调整</a>
+                            <a class="btn btn-sm btn-white btn-sm" href="#accountModal" data-toggle="modal" data-type="2" data-whatever="编辑账户"><i class="fa fa-folder"></i> 编辑 </a>
+                            <a href="javascript:;" class="btn btn-white btn-sm J_Remove"><i class="fa fa-trash-o"></i> 删除 </a>
+                        </td>
+                    </tr>
+                }
             }
         }
         else

@@ -82,11 +82,6 @@ namespace wychuan2.com.Areas.admin.Controllers
         [HttpPost]
         public AjaxResult SaveAccount(AccountDTO account)
         {
-            if (!ApplicationUser.IsLogin())
-            {
-                Redirect("/admin");
-                return null;
-            }
             account.UserId = ApplicationUser.Current.UserId;
             if (account.Id == 0)
             {
@@ -125,7 +120,10 @@ namespace wychuan2.com.Areas.admin.Controllers
             //当前类型
             model.CurrentType = accountTypes.FirstOrDefault(a => a.Id == type);
 
-            var queryInfo = new AccountQueryInfo { UserId = ApplicationUser.Current.UserId };
+            var queryInfo = new AccountQueryInfo
+            {
+                UserId = ApplicationUser.Current.UserId,IsEnable=null
+            };
             if (type > 0)
             {
                 queryInfo.AccountTypeId = type;
@@ -215,22 +213,28 @@ namespace wychuan2.com.Areas.admin.Controllers
 
         #region 明细
 
-        public ActionResult Details()
+        public ActionResult Details(int? id)
         {
             var model = new BillModel();
 
-            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.CurrentAccountId = id ?? 0;
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId,IsEnable=null });
             model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
             model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
             model.Details =
                 billService.Query(new BillQueryInfo()
                 {
-                    StartTime = DateTime.Now.Date.AddDays(-7),
+                    AccountId = id??0,
+                    StartTime = DateTime.Now.Date.AddDays(-30),
                     EndTime = DateTime.Now.AddDays(1).Date,
                     UserId = ApplicationUser.Current.UserId
                 });
             model.DetailType = 0;//全部
 
+            if (id.HasValue && id.Value > 0)
+            {
+                return View("DetailsOfAccount", model);
+            }
             return View(model);
         }
 
@@ -259,7 +263,7 @@ namespace wychuan2.com.Areas.admin.Controllers
             queryInfo.UserId = ApplicationUser.Current.UserId;
 
             model.Details = billService.Query(queryInfo);
-            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId });
+            model.Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId, IsEnable = null });
             model.Items = itemService.GetByUserId(ApplicationUser.Current.UserId);
             model.Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId);
             model.DetailType = queryInfo.DetailType;
@@ -271,7 +275,7 @@ namespace wychuan2.com.Areas.admin.Controllers
         {
             var model = new BillModel
             {
-                Accounts = accountService.Query(new AccountQueryInfo {UserId = ApplicationUser.Current.UserId}),
+                Accounts = accountService.Query(new AccountQueryInfo { UserId = ApplicationUser.Current.UserId, IsEnable = null }),
                 Items = itemService.GetByUserId(ApplicationUser.Current.UserId),
                 Categories = categoryService.GetByUserId(ApplicationUser.Current.UserId),
                 Details = new List<BillDTO> {billService.GetById(id)}

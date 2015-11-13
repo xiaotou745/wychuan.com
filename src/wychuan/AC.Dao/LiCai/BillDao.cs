@@ -205,8 +205,17 @@ where lbd.UserId=@UserId" + condition + " order by lbd.ConsumeTime desc";
             }
             if (queryInfo.AccountId > 0)
             {
-                stringBuilder.AppendFormat(" and lbd.AccountId=@AccountId");
-                dbParamaters.Add("AccountId", DbType.Int32, 4).Value = queryInfo.AccountId;
+                if (queryInfo.AccountToId != 0)
+                {
+                    stringBuilder.AppendFormat(" and lbd.AccountId=@AccountId");
+                    dbParamaters.Add("AccountId", DbType.Int32, 4).Value = queryInfo.AccountId;
+                }
+                else
+                {
+                    stringBuilder.AppendFormat(" and (lbd.AccountId=@AccountId or lbd.ToAccountId=@ToAccountId)");
+                    dbParamaters.Add("AccountId", DbType.Int32, 4).Value = queryInfo.AccountId;
+                    dbParamaters.Add("ToAccountId", DbType.Int32, 4).Value = queryInfo.AccountId;
+                }
             }
             if (queryInfo.AccountToId > 0)
             {

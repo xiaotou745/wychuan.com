@@ -19,8 +19,8 @@ namespace AC.Dao.LiCai
         public int Insert(AccountDTO lcAccountInfo)
         {
             const string insertSql = @"
-insert into lc_account(UserId,Name,Type,Balance,Currency,InNetAssets,Remark,CreateBy,CreateTime)
-values(@UserId,@Name,@Type,@Balance,@Currency,@InNetAssets,@Remark,@CreateBy,getdate())
+insert into lc_account(UserId,Name,Type,Balance,Currency,InNetAssets,Remark,CreateBy,CreateTime,StatementDate,RepaymentDate,AccountLimit)
+values(@UserId,@Name,@Type,@Balance,@Currency,@InNetAssets,@Remark,@CreateBy,getdate(),@StatementDate,@RepaymentDate,@AccountLimit)
 
 select @@IDENTITY";
 
@@ -33,6 +33,9 @@ select @@IDENTITY";
             dbParameters.AddWithValue("InNetAssets", lcAccountInfo.InNetAssets);
             dbParameters.AddWithValue("Remark", lcAccountInfo.Remark);
             dbParameters.AddWithValue("CreateBy", lcAccountInfo.CreateBy);
+            dbParameters.AddWithValue("StatementDate", lcAccountInfo.StatementDate);
+            dbParameters.AddWithValue("RepaymentDate", lcAccountInfo.RepaymentDate);
+            dbParameters.AddWithValue("AccountLimit", lcAccountInfo.AccountLimit);
 
             object result = DbHelper.ExecuteScalar(ConnStringOfAchuan, insertSql, dbParameters);
             if (result == null)
@@ -54,7 +57,7 @@ select @@IDENTITY";
             string condition = BindQueryCriteria(queryInfo, dbParameters);
             string querySql = @"
 select  la.Id, la.UserId, la.Name, la.Type, la.Balance, la.Currency, la.InNetAssets, la.Remark, la.CreateBy,
-        la.CreateTime
+        la.CreateTime,la.StatementDate,la.RepaymentDate,la.IsEnable,la.AccountLimit
 from    LC_Account la ( nolock )" + condition;
             return dbParameters.Count > 0
                 ? DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, dbParameters, new AccountRowMapper())
@@ -76,10 +79,11 @@ from    LC_Account la ( nolock )" + condition;
 
         public void Update(AccountDTO account)
         {
-            const string updateSql = @"
+            const string UPDATE_SQL = @"
 update  LC_Account
 set     Name = @Name, Type = @Type, Balance = @Balance, Currency = @Currency,
-        InNetAssets = @InNetAssets, Remark = @Remark
+        InNetAssets = @InNetAssets, Remark = @Remark,StatementDate=@StatementDate,
+        RepaymentDate=@RepaymentDate,AccountLimit=@AccountLimit
 where   Id = @Id ";
 
             IDbParameters dbParameters = DbHelper.CreateDbParameters();
@@ -90,21 +94,24 @@ where   Id = @Id ";
             dbParameters.AddWithValue("Currency", account.Currency);
             dbParameters.AddWithValue("InNetAssets", account.InNetAssets);
             dbParameters.AddWithValue("Remark", account.Remark);
+            dbParameters.AddWithValue("StatementDate", account.StatementDate);
+            dbParameters.AddWithValue("RepaymentDate", account.RepaymentDate);
+            dbParameters.AddWithValue("AccountLimit", account.AccountLimit);
 
-            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, updateSql, dbParameters);
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, UPDATE_SQL, dbParameters);
         }
         #endregion
 
         public void AdjustBalance(int id, decimal adjustPrice)
         {
-            const string sqlText = @"update LC_Account set Balance=Balance+@AdjustPrice where Id=@Id";
+            const string SQL_TEXT = @"update LC_Account set Balance=Balance+@AdjustPrice where Id=@Id";
 
             var dbParameters = DbHelper.CreateDbParameters();
 
             dbParameters.Add("Id", DbType.Int32, 4).Value = id;
             dbParameters.Add("AdjustPrice", DbType.Decimal).Value = adjustPrice;
 
-            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, sqlText, dbParameters);
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, SQL_TEXT, dbParameters);
         }
 
 
@@ -114,13 +121,13 @@ where   Id = @Id ";
         {
             IDbParameters dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
 
-            const string getByIdSql = @"
+            const string GET_BY_ID_SQL = @"
 select  la.Id, la.UserId, la.Name, la.Type, la.Balance, la.Currency, la.InNetAssets, la.Remark, la.CreateBy,
-        la.CreateTime
+        la.CreateTime,la.StatementDate,la.RepaymentDate,la.AccountLimit,la.IsEnable
 from    LC_Account la ( nolock )
 where   la.Id=@Id";
 
-            return DbHelper.QueryForObject(ConnStringOfAchuan, getByIdSql, dbParameters, new AccountRowMapper());
+            return DbHelper.QueryForObject(ConnStringOfAchuan, GET_BY_ID_SQL, dbParameters, new AccountRowMapper());
         }
         #endregion
 
@@ -131,12 +138,16 @@ where   la.Id=@Id";
         /// </summary>
         public static string BindQueryCriteria(AccountQueryInfo queryInfo, IDbParameters dbParameters)
         {
-            var stringBuilder = new StringBuilder(" where la.IsEnable = 1");
+            var stringBuilder = new StringBuilder(" where 1=1");
             if (queryInfo == null)
             {
                 return stringBuilder.ToString();
             }
-
+            if (queryInfo.IsEnable.HasValue)
+            {
+                stringBuilder.AppendFormat(" and la.IsEnable=@IsEnable");
+                dbParameters.Add("IsEnable", DbType.Boolean).Value = queryInfo.IsEnable.Value;
+            }
             //TODO:在此加入查询条件构建代码
             if (queryInfo.UserId.HasValue)
             {
@@ -198,6 +209,18 @@ where   la.Id=@Id";
                         result.InNetAssets = false;
                     }
                 }
+                obj = dataReader["IsEnable"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    if (obj.ToString() == 1.ToString() || obj.ToString().ToLower() == "true")
+                    {
+                        result.IsEnable = true;
+                    }
+                    else
+                    {
+                        result.IsEnable = false;
+                    }
+                }
                 result.Remark = dataReader["Remark"].ToString();
                 result.CreateBy = dataReader["CreateBy"].ToString();
                 obj = dataReader["CreateTime"];
@@ -205,7 +228,17 @@ where   la.Id=@Id";
                 {
                     result.CreateTime = DateTime.Parse(obj.ToString());
                 }
-
+                obj = dataReader["StatementDate"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    result.StatementDate = ParseHelper.ToInt(obj);
+                }
+                obj = dataReader["RepaymentDate"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    result.RepaymentDate = ParseHelper.ToInt(obj);
+                }
+                result.AccountLimit = ParseHelper.ToDecimal(dataReader["AccountLimit"]);
                 return result;
             }
         }

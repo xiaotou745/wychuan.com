@@ -466,6 +466,7 @@
     <Content Include="Areas\admin\Views\Blog\Setting.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\_AccountDetails.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\Account2.cshtml" />
+    <Content Include="Areas\admin\Views\LiCai\DetailsOfAccount.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />

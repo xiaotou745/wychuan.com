@@ -145,7 +145,7 @@
                             <div class="col-md-12">
                                 <div class="input-group col-md-offset-1 m-b-xxs">
                                     <select class="input-sm" name="selAccount">
-                                        @foreach (var account in Model.Accounts)
+                                        @foreach (var account in Model.Accounts.Where(a => a.IsEnable))
                                         {
                                             <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
                                         }
@@ -230,14 +230,14 @@
                                     <div class="col-md-12">
                                         <div class="input-group">
                                             <select class="input-sm form-control" name="selAccount">
-                                                @foreach (var account in Model.Accounts)
+                                                @foreach (var account in Model.Accounts.Where(a => a.IsEnable))
                                                 {
                                                     <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
                                                 }
                                             </select>
                                             <span class="input-group-addon">-</span>
                                             <select class="input-sm form-control" name="selAccountTo">
-                                                @foreach (var account in Model.Accounts)
+                                                @foreach (var account in Model.Accounts.Where(a => a.IsEnable))
                                                 {
                                                     <option @(account.Id == bill.ToAccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
                                                 }
@@ -319,7 +319,7 @@
                                         }
                                     </select>
                                     <select class="input-sm" name="selAccount">
-                                        @foreach (var account in Model.Accounts)
+                                        @foreach (var account in Model.Accounts.Where(a => a.IsEnable))
                                         {
                                             <option @(account.Id == bill.AccountId ? "selected" : "") value="@account.Id">@(account.Name + "(" + account.Currency + ")")</option>
                                         }
