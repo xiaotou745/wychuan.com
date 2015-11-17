@@ -13,6 +13,23 @@
     
 }
 <div class="row">
+    <div class="col-lg-12">
+        <div class="well">
+            <h3>2015年11月账单</h3>
+            <span class="text-navy">2015/11/01-2015/11/30<small> | 币种：人民币</small></span>
+        </div>
+    </div>
+</div>
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <canvas id="canvas" height="200px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-lg-4">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
@@ -52,35 +69,42 @@
 </div>
 
 @section scripts{
-    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
-    <script src="~/Scripts/plugins/validate/messages_zh.js"></script>
-    <script src="~/Scripts/plugins/datetimepicker/jquery.datetimepicker.js"></script>
-    <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/chartJs/Chart.js"></script>
     <script>
-        $(function () {
-            window.categories=@Html.Raw(strCategories);
-            $(".J_hide .collapse-link").trigger("click");
-            $(".datetimepicker").datetimepicker({
-                lang: "ch"
-            });
+        var randomScalingFactor = function () { return Math.round(Math.random() * 100) };
+        var lineChartData = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+				{
+				    label: "My First dataset",
+				    fillColor: "rgba(220,220,220,0.2)",
+				    strokeColor: "rgba(220,220,220,1)",
+				    pointColor: "rgba(220,220,220,1)",
+				    pointStrokeColor: "#fff",
+				    pointHighlightFill: "#fff",
+				    pointHighlightStroke: "rgba(220,220,220,1)",
+				    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+				},
+				{
+				    label: "My Second dataset",
+				    fillColor: "rgba(151,187,205,0.2)",
+				    strokeColor: "rgba(151,187,205,1)",
+				    pointColor: "rgba(151,187,205,1)",
+				    pointStrokeColor: "#fff",
+				    pointHighlightFill: "#fff",
+				    pointHighlightStroke: "rgba(151,187,205,1)",
+				    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+				}
+            ]
 
-            $('.input-daterange').datepicker({
-                format: "yyyy-mm-dd",
-                language: "zh-CN"
+        }
+
+        window.onload = function () {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myLine = new Chart(ctx).Line(lineChartData, {
+                responsive: true
             });
-            $("[name=selFirstCategory]").bind("change", function () {
-                var $second = $(this).next().next();
-                var firstId = $(this).val();
-                var seconds = $.grep(window.categories, function (item, index) {
-                    return item.ParentId == firstId;
-                });
-                $second.html("");
-                $.each(seconds, function (i, category) {
-                    $second.append("<option value='" + category.Id + "'>" + category.Name + "</option>");
-                });
-            });
-        })
+        }
 
     </script>
 }

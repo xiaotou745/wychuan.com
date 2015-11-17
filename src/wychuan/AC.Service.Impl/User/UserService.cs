@@ -35,7 +35,6 @@ namespace AC.Service.Impl.User
         }
 
         #region 登录
-
         public LoginResult Login(UserDTO user)
         {
             if (user == null || string.IsNullOrEmpty(user.LoginName))
@@ -51,6 +50,10 @@ namespace AC.Service.Impl.User
             {
                 return LoginResult.UserNotExists;
             }
+            if (userDTO.IsDisable)
+            {
+                return LoginResult.UserIsDisable;
+            }
             string encrypt = MD5.Encrypt(user.LoginPassword);
             if (!encrypt.Equals(userDTO.LoginPassword))
             {
@@ -59,7 +62,6 @@ namespace AC.Service.Impl.User
             user.Id = userDTO.Id;
             return LoginResult.Success;
         }
-
         #endregion
 
         #region 注册
@@ -81,20 +83,34 @@ namespace AC.Service.Impl.User
             //初始化默认数据
             itemsService.InitUserItems(user.Id);
 
-            ////添加默认账本
-            //bookService.InitUserBooks(user.Id);
-
-            ////添加默认成员
-            //memberService.InitUserMember(user.Id);
-
-            ////添加默认项目
-            //projectService.InitUserProject(user.Id);
-
             //初始化默认收支分类
             categoryService.InitUser(user.Id);
 
             return RegisterResult.Success;
         }
+        #endregion
+
+        #region GetAll
+        public IList<UserDTO> GetAll()
+        {
+            return userDao.GetAll();
+        }
+
+        public void Disable(int userId, bool isDisable)
+        {
+            userDao.Disable(userId, isDisable);
+        }
+
+        public void Remove(int userId)
+        {
+            userDao.Delete(userId);
+        }
+
+        public void SetRoles(int userId, string roleIds)
+        {
+            userDao.SetRoles(userId, roleIds);
+        }
+
         #endregion
     }
 }

@@ -1,0 +1,41 @@
+﻿@model wychuan2.com.Areas.admin.Models.User.UserModel
+
+<table class="table table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>用户</th>
+            <th>注册时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Users.Count > 0)
+        {
+            foreach (var user in Model.Users.OrderByDescending(u=>u.Id))
+            {
+                <tr data-id="@user.Id" data-roles="@user.RoleIds">
+                    <td>@user.LoginName
+                    @foreach (var role in user.Roles)
+                    {
+                        <br /><code>@role</code>
+                    }
+                    </td>
+                    <td>@user.RegisterTime.ToString("yyyy/MM/dd HH:mm")</td>
+                    <td>
+                        <a class="btn btn-sm btn-white J_Remove">删除</a>
+                        <a class="btn btn-sm btn-white J_Disable" data-disable="@user.IsDisable.ToString().ToLower()">@(user.IsDisable?"解禁":"禁用")</a>
+                        <a class="btn btn-sm btn-white" data-toggle="modal" href="#modalRoles">角色</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">
+                    暂时没有用户明细
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

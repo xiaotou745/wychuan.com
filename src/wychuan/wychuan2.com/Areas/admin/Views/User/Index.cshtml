@@ -1,0 +1,182 @@
+﻿@model wychuan2.com.Areas.admin.Models.User.UserModel
+@{
+    ViewBag.Title = "用户管理";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@{
+}
+
+@section styles{
+<link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>所有用户</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <input type="text" placeholder="请输入用户名称" class="input-sm form-control">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary">搜索</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tblContainer">
+                        @Html.Partial("_UserList", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalRoles" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblRoles">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblRoles">用户所属角色</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" value="0" name="Id" />
+                    @{
+                        for (var index = 0; index < Model.Roles.Count; index++)
+                        {
+                            var role = Model.Roles[index];
+                            if (index%3 == 0)
+                            {
+                                @Html.Raw("<div class=\"row\">")
+                            }
+                            <div class="col-sm-4">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="i-checks" value="@role.Id"> @role.Name
+                                </label>
+                            </div>
+                            if (index % 3 == 2 || index==Model.Roles.Count-1)
+                            {
+                                @Html.Raw("</div>")
+                            }
+                        }
+                    }
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSaveRole" class="btn btn-primary">保存用户角色</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/extension.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+            $("#tblContainer").delegate(".J_Remove", "click", function() {
+                if (!confirm("确定要删除此用户吗?此操作不可恢复.")) {
+                    return;
+                }
+                var id = $(this).parents("tr").data("id");
+                var $this = $(this);
+                $.ajax({
+                    url: "/api/account/remove",
+                    type: "get",
+                    data: { userId: id },
+                    dataType: "json",
+                    success: function(resp) {
+                        if (!resp.iserror) {
+                            $this.parents("tr").remove();
+                        }
+                    }
+                });
+            });
+            $("#tblContainer").delegate(".J_Disable", "click", function() {
+                if (!confirm("确定要" + $(this).text() + "此用户吗?此操作不可恢复.")) {
+                    return;
+                }
+                var id = $(this).parents("tr").data("id");
+                var currentDisable = $(this).data("disable");
+                var targetDisable = currentDisable ? false : true;
+                var $this = $(this);
+                $.ajax({
+                    url: "/api/account/disable",
+                    type: "get",
+                    data: { userId: id, disable: targetDisable },
+                    dataType: "json",
+                    success: function(resp) {
+                        if (!resp.iserror) {
+                            $this.data("disable", targetDisable);
+                            $this.html(targetDisable ? "解禁" : "禁用");
+                        }
+                    }
+                });
+            });
+            $('#modalRoles').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var modal = $(this);
+                setRoles(modal, button);
+            });
+            $("#btnSaveRole").bind("click", saveRoles);
+        });
+        function saveRoles() {
+            var arrRoleIds = [];
+            $("#modalRoles").find(":checkbox").each(function(i, item) {
+                if ($(item).is(':checked')) {
+                    arrRoleIds.push($(item).val());
+                }
+            });
+            var params= {
+                UserId: $("#modalRoles").find("[name=Id]").val(),
+                RoleIds:arrRoleIds.join(",")
+            };
+            $.ajax({
+                url: "/api/account/setroles",
+                type: "post",
+                data: params,
+                dataType: "json",
+                success: function(resp) {
+                    if (!resp.iserror) {
+                        refresh();
+                        $("#modalRoles").modal("hide");
+                    }
+                }
+            });
+        }
+        function setRoles(modal, button) {
+            var $tr = button.parents("tr");
+            modal.find("[name=Id]").val($tr.data("id"));
+            var roleIds = $tr.data("roles").toString();
+            if (roleIds == undefined) {
+                roleIds = "";
+            }
+            var arrRoleIds = roleIds.split(",").delete("");
+            modal.find(":checkbox").each(function(i, item) {
+                if (arrRoleIds.contain($(item).val())) {
+                    $(item).iCheck("check");
+                }
+            });
+        }
+        
+        function refresh() {
+            $.ajax({
+                url: "/admin/user/refreshusers",
+                type: "get",
+                success: function(resp) {
+                    $("#tblContainer").html(resp);
+                }
+            });
+        }
+    </script>
+}

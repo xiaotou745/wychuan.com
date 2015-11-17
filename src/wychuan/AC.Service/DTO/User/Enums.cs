@@ -49,5 +49,8 @@ namespace AC.Service.DTO.User
         /// </summary>
         [Description("密码错误")]
         PasswordError = 4,
+
+        [Description("用户被禁用")]
+        UserIsDisable=5,
     }
 }

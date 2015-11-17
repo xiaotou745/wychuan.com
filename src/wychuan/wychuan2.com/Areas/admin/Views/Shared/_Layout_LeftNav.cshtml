@@ -60,13 +60,13 @@
                     <li class="@("setting".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/licai/setting">设置</a></li>
                 </ul>
             </li>
-            <li class="@(!Request.RawUrl.ToLower().Contains("licai") && "account".Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">
+            <li class="@("user".Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">
                 <a href=""><i class="fa fa-cog"></i> <span class="nav-label">个人中心</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                    <li class="@("index".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/user">用户管理</a></li>
+                    <li class="@("menu".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/user/menu">菜单管理</a></li>
+                    <li class="@("role".Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="/admin/user/role">角色管理</a></li>
                     <li><a href="">修改密码</a></li>
-                    <li><a href="">联系方式</a></li>
-                    <li><a href="">个人信息</a></li>
-                    <li><a href="">其它吧</a></li>
                 </ul>
             </li>
             <li class="">

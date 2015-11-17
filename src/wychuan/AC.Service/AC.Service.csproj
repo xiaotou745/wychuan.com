@@ -70,6 +70,8 @@
     <Compile Include="DTO\Tools\MyNotesDTO.cs" />
     <Compile Include="DTO\Tools\MyTaskDTO.cs" />
     <Compile Include="DTO\User\Enums.cs" />
+    <Compile Include="DTO\User\MenuDTO.cs" />
+    <Compile Include="DTO\User\RoleDTO.cs" />
     <Compile Include="LiCai\IAccountService.cs" />
     <Compile Include="LiCai\IBillService.cs" />
     <Compile Include="LiCai\IBillTemplateService.cs" />
@@ -82,6 +84,8 @@
     <Compile Include="Tools\ICompanyTimelineService.cs" />
     <Compile Include="Tools\IMyNotesService.cs" />
     <Compile Include="Tools\IMyTaskService.cs" />
+    <Compile Include="User\IMenuService.cs" />
+    <Compile Include="User\IRoleService.cs" />
     <Compile Include="User\IUserService.cs" />
     <Compile Include="WeiXin\AccessTokenService.cs" />
     <Compile Include="WeiXin\Common\MsgSerializer.cs" />

@@ -1,0 +1,50 @@
+﻿@model wychuan2.com.Areas.admin.Models.User.MenuModel
+
+<table class="table table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th></th>
+            <th>菜单名称</th>
+            <th>Url</th>
+            <th>Icon</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Menus.Count > 0)
+        {
+            var lstRootMenus = Model.Menus.Where(m => m.ParentId == 0).OrderBy(m => m.OrderBy);
+            foreach (var rootMenu in lstRootMenus)
+            {
+                var lstChildMenus = Model.Menus.Where(m => m.ParentId == rootMenu.Id).OrderBy(m => m.OrderBy);
+                <tr data-id="@rootMenu.Id" data-controller="@rootMenu.Controller" data-action="@rootMenu.Action" data-orderby="@rootMenu.OrderBy" data-parentid="@rootMenu.ParentId">
+                    <td width="10px"><a class="J_Toggle" data-show="true"><i class="fa fa-minus"></i></a></td>
+                    <td><a data-toggle="modal" data-type="2" href="#modalMenus"><strong class="text-navy" name="name">@rootMenu.Name</strong></a></td>
+                    <td name="url">@rootMenu.Url</td>
+                    <td><i class="@rootMenu.Icon"></i><code name="icon">@rootMenu.Icon</code></td>
+                    <td>
+                        <a class="btn btn-sm btn-white J_Remove">删除</a>
+                    </td>
+                </tr>
+                foreach (var child in lstChildMenus)
+                {
+                    <tr parentid="@rootMenu.Id" data-id="@child.Id" data-controller="@child.Controller" data-action="@child.Action" data-orderby="@child.OrderBy" data-parentid="@child.ParentId">
+                        <td></td>
+                        <td><a data-toggle="modal" href="#modalMenus" data-type="2" name="name">@child.Name</a></td>
+                        <td><code name="url">@child.Url</code></td>
+                        <td name="icon">@child.Icon</td>
+                        <td><a class="btn btn-sm btn-white J_Remove">删除</a></td>
+                    </tr>
+                }
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">
+                    暂时没有菜单明细
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

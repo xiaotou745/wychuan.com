@@ -54,6 +54,8 @@
     <Compile Include="Tools\CompanyTimelineService.cs" />
     <Compile Include="Tools\MyNotesService.cs" />
     <Compile Include="Tools\MyTaskService.cs" />
+    <Compile Include="User\MenuService.cs" />
+    <Compile Include="User\RoleService.cs" />
     <Compile Include="User\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

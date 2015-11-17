@@ -185,6 +185,7 @@
     <Compile Include="Areas\admin\Controllers\api\BillController.cs" />
     <Compile Include="Areas\admin\Controllers\api\BlogController.cs" />
     <Compile Include="Areas\admin\Controllers\api\ItemsController.cs" />
+    <Compile Include="Areas\admin\Controllers\api\MenuController.cs" />
     <Compile Include="Areas\admin\Controllers\api\TasksController.cs" />
     <Compile Include="Areas\admin\Controllers\api\CompanyController.cs" />
     <Compile Include="Areas\admin\Controllers\BlogController.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Areas\admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\admin\Controllers\LiCaiController.cs" />
     <Compile Include="Areas\admin\Controllers\ToolsController.cs" />
+    <Compile Include="Areas\admin\Controllers\UserController.cs" />
     <Compile Include="Areas\admin\Models\Blog\BlogModel.cs" />
     <Compile Include="Areas\admin\Models\Blog\BlogSettingModel.cs" />
     <Compile Include="Areas\admin\Models\DbTools\CodeResult.cs" />
@@ -202,10 +204,15 @@
     <Compile Include="Areas\admin\Models\LiCai\AccountBalanceAdjustModel.cs" />
     <Compile Include="Areas\admin\Models\LiCai\BillModel.cs" />
     <Compile Include="Areas\admin\Models\LiCai\LiCaiModel.cs" />
+    <Compile Include="Areas\admin\Models\User\MenuModel.cs" />
     <Compile Include="Areas\admin\Models\MyTaskModel.cs" />
     <Compile Include="Areas\admin\Models\HtmlTable\HtmlTableTrItem.cs" />
     <Compile Include="Areas\admin\Models\HtmlTable\HtmlTableTdItem.cs" />
     <Compile Include="Areas\admin\Models\DbTools\TableViewModel.cs" />
+    <Compile Include="Areas\admin\Models\User\RoleModel.cs" />
+    <Compile Include="Areas\admin\Models\User\RolePrivilegeParams.cs" />
+    <Compile Include="Areas\admin\Models\User\UserModel.cs" />
+    <Compile Include="Areas\admin\Models\User\UserRoleParams.cs" />
     <Compile Include="Areas\weixin\Controllers\AccountController.cs" />
     <Compile Include="Areas\weixin\Controllers\api\ProcessorController.cs" />
     <Compile Include="Areas\admin\Controllers\BaseController.cs" />
@@ -467,6 +474,13 @@
     <Content Include="Areas\admin\Views\LiCai\_AccountDetails.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\Account2.cshtml" />
     <Content Include="Areas\admin\Views\LiCai\DetailsOfAccount.cshtml" />
+    <Content Include="Areas\admin\Views\Tools\Upload.cshtml" />
+    <Content Include="Areas\admin\Views\User\Index.cshtml" />
+    <Content Include="Areas\admin\Views\User\_UserList.cshtml" />
+    <Content Include="Areas\admin\Views\User\_MenuList.cshtml" />
+    <Content Include="Areas\admin\Views\User\Menu.cshtml" />
+    <Content Include="Areas\admin\Views\User\Role.cshtml" />
+    <Content Include="Areas\admin\Views\User\_RolesList.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />
@@ -491,6 +505,7 @@
     <Content Include="Scripts\demo\peity-demo.js" />
     <Content Include="Scripts\demo\rickshaw-demo.js" />
     <Content Include="Scripts\demo\sparkline-demo.js" />
+    <Content Include="Scripts\extension.js" />
     <Content Include="Scripts\inspinia.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -517,6 +532,7 @@
     <Content Include="Scripts\plugins\blueimp\jquery.blueimp-gallery.min.js" />
     <Content Include="Scripts\plugins\bshoverdropdown\bootstrap-hover-dropdown.js" />
     <Content Include="Scripts\plugins\bshoverdropdown\bootstrap-hover-dropdown.min.js" />
+    <Content Include="Scripts\plugins\chartJs\Chart.js" />
     <Content Include="Scripts\plugins\chartJs\Chart.min.js" />
     <Content Include="Scripts\plugins\chosen\chosen.jquery.js" />
     <Content Include="Scripts\plugins\codemirror\codemirror.js" />
@@ -639,6 +655,7 @@
     <Content Include="Scripts\tools\formbuilder.js" />
     <Content Include="Scripts\tools\myjobs.js" />
     <Content Include="Scripts\tools\mynotes.js" />
+    <Content Include="Scripts\user\role.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

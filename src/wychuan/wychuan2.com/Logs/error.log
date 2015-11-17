@@ -1021,3 +1021,85 @@ System.Data.SqlClient.SqlException (0x80131904): 列名 'IsBalanceAdjust' 无效。
    在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
    在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
 ClientConnectionId:5040551f-5aed-413e-bbdb-971fcacc2a69
+2015-11-17 11:45:15,862 [6] ERROR ErrorLog [(null)] - 
+-----------------start----------------------
+2015/11/17 11:45:15
+异常发生地址:http://mywww2.wychuan.com/api/account/disable
+请求类型:POST
+异常:System.InvalidOperationException: 无法将多个参数(“userId”和“disable”)绑定到请求的内容。
+   在 System.Web.Http.Controllers.HttpActionBinding.ExecuteBindingAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+--------------------end---------------------
+
+System.InvalidOperationException: 无法将多个参数(“userId”和“disable”)绑定到请求的内容。
+   在 System.Web.Http.Controllers.HttpActionBinding.ExecuteBindingAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+2015-11-17 13:51:38,271 [27] ERROR ErrorLog [(null)] - 
+-----------------start----------------------
+2015/11/17 13:51:38
+异常发生地址:http://mywww2.wychuan.com/api/menu/save
+请求类型:POST
+异常:System.Data.SqlClient.SqlException (0x80131904): 不能将值 NULL 插入列 'Url'，表 'WYC.dbo.Menu'；列不允许有 Null 值。INSERT 失败。
+语句已终止。
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, CommandType commandType, String commandText, Int32 timeoutInSeconds, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 485
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, String commandText, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 417
+   在 AC.Dao.User.MenuDao.Insert(MenuDTO menuDTO) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\User\MenuDao.cs:行号 30
+   在 AC.Service.Impl.User.MenuService.Create(MenuDTO menuDTO) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\User\MenuService.cs:行号 22
+   在 wychuan2.com.Areas.admin.Controllers.api.MenuController.Save(MenuDTO menu) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\MenuController.cs:行号 23
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:92bff7b0-389b-4fbe-9455-2d626f809b07
+--------------------end---------------------
+
+System.Data.SqlClient.SqlException (0x80131904): 不能将值 NULL 插入列 'Url'，表 'WYC.dbo.Menu'；列不允许有 Null 值。INSERT 失败。
+语句已终止。
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, CommandType commandType, String commandText, Int32 timeoutInSeconds, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 485
+   在 AC.Data.DbHelper.ExecuteScalar(String connString, String commandText, IDbParameters parameterValues) 位置 e:\wyc\github\achuan.lib\net\net.libs\AC.Data\Data\DblHelper.cs:行号 417
+   在 AC.Dao.User.MenuDao.Insert(MenuDTO menuDTO) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Dao\User\MenuDao.cs:行号 30
+   在 AC.Service.Impl.User.MenuService.Create(MenuDTO menuDTO) 位置 e:\wyc\github\wychuan.com\src\wychuan\AC.Service.Impl\User\MenuService.cs:行号 22
+   在 wychuan2.com.Areas.admin.Controllers.api.MenuController.Save(MenuDTO menu) 位置 e:\wyc\github\wychuan.com\src\wychuan\wychuan2.com\Areas\admin\Controllers\api\MenuController.cs:行号 23
+   在 lambda_method(Closure , Object , Object[] )
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   在 System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()
+ClientConnectionId:92bff7b0-389b-4fbe-9455-2d626f809b07

@@ -169,5 +169,13 @@ namespace wychuan2.com.Areas.admin.Controllers
             return View();
         }
         #endregion
+
+        #region Image Upload
+
+        public ActionResult Upload()
+        {
+            return View();
+        }
+        #endregion
     }
 }

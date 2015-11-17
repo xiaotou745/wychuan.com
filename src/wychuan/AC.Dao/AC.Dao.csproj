@@ -58,7 +58,10 @@
     <Compile Include="Tools\CompanyTimelineDao.cs" />
     <Compile Include="Tools\MyNotesDao.cs" />
     <Compile Include="Tools\MyTaskDao.cs" />
+    <Compile Include="User\MenuDao.cs" />
+    <Compile Include="User\RoleDao.cs" />
     <Compile Include="User\UserDao.cs" />
+    <Compile Include="UtilOfWorkFactoryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\achuan.lib\net\net.libs\AC.Core\AC.Core.csproj">

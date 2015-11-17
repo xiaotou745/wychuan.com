@@ -1,0 +1,113 @@
+﻿@model wychuan2.com.Areas.admin.Models.User.RoleModel
+@{
+    ViewBag.Title = "角色管理";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@{
+}
+
+@section styles{
+    <link href="~/Content/plugins/jsTree/default/style.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>角色管理</h5>
+                    <div class="ibox-tools">
+                        <a href="#modalRoles" data-toggle="modal" data-type="1" class="btn btn-primary btn-xs">新建角色</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    角色列表
+                                </div>
+                                <div class="panel-body">
+                                    <div id="rolesContainer">
+                                        @Html.Partial("_RolesList", Model)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <a id="btnSaveRolePrivilege" class="btn btn-xs btn-primary pull-right" style="padding:0px 10px 0px 10px;">保存权限</a>
+                                    <div>角色权限(<small><strong id="lblRoleName" class="text-primary">管理员</strong></small>)</div>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="menusContainer">
+                                        @if (Model.Menus.Count > 0)
+                                        {
+                                            var lstRootMenus = Model.Menus.Where(m => m.ParentId == 0).OrderBy(m => m.OrderBy);
+                                            foreach (var rootMenu in lstRootMenus)
+                                            {
+                                                var lstChildMenus = Model.Menus.Where(m => m.ParentId == rootMenu.Id).OrderBy(m => m.OrderBy);
+                                                <ul>
+                                                    <li id="@rootMenu.Id" class="jstree-open">
+                                                        @rootMenu.Name
+                                                        @if (lstChildMenus.Any())
+                                                        {
+                                                            <ul>
+                                                                @foreach (var child in lstChildMenus)
+                                                                {
+                                                                    <li id="@child.Id">@child.Name</li>
+                                                                }
+                                                            </ul>
+                                                        }
+                                                    </li>
+                                                </ul>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a href="/admin/user/menu">去建立菜单吧，少年!</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="modalRoles" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblRoles">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblRoles">权限编辑</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="Id" value="0" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">权限名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtName" class="form-control input-sm" placeholder="权限名称" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSaveRole" class="btn btn-primary">保存权限</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/plugins/jsTree/jstree.js"> </script>
+    <script src="~/Scripts/user/role.js"></script>
+}

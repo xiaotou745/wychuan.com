@@ -11,6 +11,7 @@ using AC.Service.Impl.User;
 using AC.Service.LiCai;
 using AC.Service.User;
 using AC.Web;
+using wychuan2.com.Areas.admin.Models.User;
 using wychuan2.com.Models;
 
 namespace wychuan2.com.Areas.admin.Controllers.api
@@ -19,6 +20,7 @@ namespace wychuan2.com.Areas.admin.Controllers.api
     {
         private readonly IUserService userService = new UserService();
         private readonly ICategoryService categoryService = new CategoryService();
+        private readonly IRoleService roleService = new RoleService();
 
         #region 登录
 
@@ -71,6 +73,84 @@ namespace wychuan2.com.Areas.admin.Controllers.api
                 return AjaxResult.Success();
             }
             return AjaxResult.Error(EnumHelper.GetEnumDescription(registerResult));
+        }
+
+        #endregion
+
+        #region Remove
+
+        [HttpGet]
+        [HttpPost]
+        public AjaxResult Remove(int userId)
+        {
+            if (userId <= 0)
+            {
+                return AjaxResult.Error();
+            }
+            userService.Remove(userId);
+            return AjaxResult.Success();
+        }
+
+        #endregion
+
+        #region Disable
+
+        [HttpGet]
+        [HttpPost]
+        public AjaxResult Disable(int userId, bool disable)
+        {
+            if (userId <= 0)
+            {
+                return AjaxResult.Error("userId is <=0");
+            }
+            userService.Disable(userId, disable);
+            return AjaxResult.Success();
+        }
+
+        #endregion
+
+        #region SetRoles
+        
+        public AjaxResult SetRoles(UserRoleParams userRoleParams)
+        {
+            userService.SetRoles(userRoleParams.UserId, userRoleParams.RoleIds);
+            return AjaxResult.Success();
+        }
+        #endregion
+
+        #region CreateRole
+
+        public AjaxResult SaveRole(RoleDTO role)
+        {
+            if (role == null)
+            {
+                return AjaxResult.Error("role is null");
+            }
+            if (role.Id == 0)
+            {
+                role.Id = roleService.Create(role);
+            }
+            else
+            {
+                roleService.Modify(role);
+            }
+            return AjaxResult.Success(role.Id);
+        }
+
+        #endregion
+
+        #region Remove Role
+
+        [HttpGet]
+        [HttpPost]
+        public AjaxResult RemoveRole(int roleId)
+        {
+            if (roleId <= 0)
+            {
+                return AjaxResult.Error();
+            }
+            roleService.Remove(roleId);
+            return AjaxResult.Success();
         }
 
         #endregion

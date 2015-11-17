@@ -1,0 +1,15 @@
+﻿@model wychuan2.com.Areas.admin.Models.User.RoleModel
+
+@if (Model.Roles.Count > 0)
+{
+    <ul>
+        @foreach (var role in Model.Roles)
+        {
+            <li id="@("role"+role.Id)" data-id="@role.Id" data-jstree='{"opened":true,"selected":@(role.Id==Model.CurrentRole.Id?"true":"false")}'>@role.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>还没有角色，赶快添加吧.</p>
+}

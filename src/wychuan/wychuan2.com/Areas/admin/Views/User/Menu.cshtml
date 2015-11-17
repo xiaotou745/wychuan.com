@@ -1,0 +1,202 @@
+﻿@model wychuan2.com.Areas.admin.Models.User.MenuModel
+@{
+    ViewBag.Title = "菜单管理";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@{
+}
+
+@section styles{
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>菜单列表</h5>
+                    <div class="ibox-tools">
+                        <a href="#modalMenus" data-toggle="modal" data-type="1" class="btn btn-primary btn-xs">新建菜单</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="tblContainer">
+                        @Html.Partial("_MenuList", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="modalMenus" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblMenus">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblMenus">菜单编辑</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="Id" value="0" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">菜单名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtName" class="form-control input-sm" placeholder="菜单名称" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">菜单Url</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtUrl" class="form-control input-sm" placeholder="Url" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Icon</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="text" name="txtIcon" class="form-control input-sm" placeholder="输入Icon">
+                                <span class="input-group-addon input-sm"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">排序</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtOrderBy" class="form-control input-sm" placeholder="排序" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Controller</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtController" class="form-control input-sm" placeholder="Controller" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Action</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtAction" class="form-control input-sm" placeholder="Action" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">父菜单</label>
+                        <div class="col-sm-10">
+                            <select class="form-control input-sm" name="selParentId">
+                                <option value="0">请选择</option>
+                                @foreach (var menu in Model.Menus.Where(m => m.ParentId == 0).OrderBy(m => m.OrderBy))
+                                {
+                                    <option value="@menu.Id">@menu.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSave" class="btn btn-primary">保存菜单</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $("#btnSave").bind("click", function() {
+                var menu = getModel();
+
+                $.ajax({
+                    url: "/api/menu/save",
+                    type: "post",
+                    data: menu,
+                    dataType: "text",
+                    success: function(resp) {
+                        if (!resp.iserror) {
+                            refresh();
+                            $("#modalMenus").modal("hide");
+                        }
+                    }
+                });
+            });
+            $('#modalMenus').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var modal = $(this);
+                initModal(modal, button);
+            });
+            $("#tblContainer").delegate(".J_Toggle", "click", function() {
+                var id = $(this).parents("tr").data("id");
+                var currentShow = $(this).data("show");
+                if (currentShow) {
+                    $("[parentid=" + id + "]").hide();
+                    $(this).data("show", false);
+                    $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
+                } else {
+                    $("[parentid=" + id + "]").show();
+                    $(this).data("show", true);
+                    $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
+                }
+            });
+
+            $("#tblContainer").delegate(".J_Remove", "click", function() {
+                var id = $(this).parents("tr").data("id");
+                $.ajax({
+                    url: "/api/menu/remove",
+                    type: "get",
+                    data: { id: id },
+                    dataType: "json",
+                    success: function(resp) {
+                        if (!resp.iserror) {
+                            refresh();
+                        }
+                    }
+                });
+            });
+        });
+
+        function refresh() {
+            $.get("/admin/user/refreshmenu", null, function(resp) {
+                $("#tblContainer").html(resp);
+            });
+        }
+
+        function getModel() {
+
+            var form = $("#modalMenus").find("form");
+            var menu = {
+                Id: form.find("[name=Id]").val(),
+                Name: form.find("[name=txtName]").val(),
+                ParentId: form.find("[name=selParentId]").val(),
+                Url: form.find("[name=txtUrl]").val(),
+                Icon: form.find("[name=txtIcon]").val(),
+                OrderBy: form.find("[name=txtOrderBy]").val(),
+                Controller: form.find("[name=txtController]").val(),
+                Action: form.find("[name=txtAction]").val()
+            };
+            return menu;
+        }
+
+        function initModal(modal, button) {
+            var operateType = button.data("type");
+
+            if (operateType == 1) { //新增
+                modal.find("[name=Id]").val(0);
+                modal.find(":text").val("");
+                modal.find("[name=selParentId]").val(modal.find("[name=selParentId] option:first").val());
+            } else if (operateType == 2) { //编辑
+                var $tr = button.parents("tr");
+                modal.find("[name=Id]").val($tr.data("id"));
+                modal.find("[name=txtName]").val($tr.find("[name=name]").text());
+                modal.find("[name=txtController]").val($tr.data("controller"));
+                modal.find("[name=txtAction]").val($tr.data("action"));
+                modal.find("[name=selParentId]").val($tr.data("parentid"));
+                modal.find("[name=txtOrderBy]").val($tr.data("orderby"));
+                modal.find("[name=txtUrl]").val($tr.find("[name=url]").text());
+                modal.find("[name=txtIcon]").val($tr.find("[name=icon]").text());
+            }
+        }
+    </script>
+}
