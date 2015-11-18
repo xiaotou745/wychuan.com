@@ -1,4 +1,5 @@
 ﻿using AC.Helper;
+using AC.Security;
 using AC.Service.Impl.Cache;
 
 namespace wychuan2.com.Models
@@ -7,13 +8,13 @@ namespace wychuan2.com.Models
     public class ApplicationUser
     {
         public static readonly ApplicationUser Empty = new ApplicationUser();
-        private const string LOGIN_COOKIE_NAME = "loginuser";
+        private static readonly string loginCookieName = MD5.Encrypt("loginuser");
 
         public static ApplicationUser Current
         {
             get
             {
-                var applicationUser = CookieHelper.Get<ApplicationUser>(LOGIN_COOKIE_NAME);
+                var applicationUser = CookieHelper.Get<ApplicationUser>(loginCookieName);
                 if (applicationUser == null)
                 {
                     return Empty;
@@ -24,7 +25,7 @@ namespace wychuan2.com.Models
 
         public static void Login(ApplicationUser user)
         {
-            CookieHelper.Set(LOGIN_COOKIE_NAME, user);
+            CookieHelper.Set(loginCookieName, user);
         }
 
         public static void LogOff()
@@ -33,7 +34,7 @@ namespace wychuan2.com.Models
             {
                 UserCacheProvider.ClearUserInCache(Current.UserId);
             }
-            CookieHelper.Remove(LOGIN_COOKIE_NAME);
+            CookieHelper.Remove(loginCookieName);
         }
 
         public static bool IsLogin()
