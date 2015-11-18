@@ -1,15 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AC.Cache;
 using AC.Dao;
 using AC.Dao.User;
+using AC.Extension;
 using AC.Service.DTO.User;
+using AC.Service.Impl.Cache;
 using AC.Service.User;
 using AC.Transaction.Common;
+using Common.Logging;
 
 namespace AC.Service.Impl.User
 {
     public class RoleService : IRoleService
     {
+        //private ILog logger = LogManager.GetCurrentClassLogger();
+
         private readonly RoleDao roleDao;
 
         public RoleService()
@@ -37,27 +44,28 @@ namespace AC.Service.Impl.User
             return roleDao.GetAll();
         }
 
-        public void DeletePrivilege(int roleId)
-        {
-            roleDao.DeletePrivilege(roleId);
-        }
+        //public void DeletePrivilege(int roleId)
+        //{
+        //    roleDao.DeletePrivilege(roleId);
+        //}
 
         public void SavePrivilege(int roleId, int[] menuIds)
         {
-            using (IUnitOfWork unitOfWork = UtilOfWorkFactoryProvider.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = UnitOfWorkFactoryProvider.GetUnitOfWork())
             {
                 roleDao.DeletePrivilege(roleId);
                 foreach (int menuId in menuIds)
                 {
                     roleDao.SavePrivilege(roleId, menuId);
                 }
+                UserCacheProvider.RolePrivilegeChanged(roleId);
                 unitOfWork.Complete();
             }
         }
 
         public int[] GetPrivilege(int roleId)
         {
-            return roleDao.GetPrivilege(roleId).ToArray();
+            return UserCacheProvider.GetRolePrivilegeInCache(roleId).ToArray();
         }
     }
 }

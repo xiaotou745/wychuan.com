@@ -1,4 +1,5 @@
 ﻿using AC.Helper;
+using AC.Service.Impl.Cache;
 
 namespace wychuan2.com.Models
 {
@@ -28,6 +29,10 @@ namespace wychuan2.com.Models
 
         public static void LogOff()
         {
+            if (!Current.Equals(Empty))
+            {
+                UserCacheProvider.ClearUserInCache(Current.UserId);
+            }
             CookieHelper.Remove(LOGIN_COOKIE_NAME);
         }
 

@@ -61,7 +61,7 @@
     <Compile Include="User\MenuDao.cs" />
     <Compile Include="User\RoleDao.cs" />
     <Compile Include="User\UserDao.cs" />
-    <Compile Include="UtilOfWorkFactoryProvider.cs" />
+    <Compile Include="UnitOfWorkFactoryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\achuan.lib\net\net.libs\AC.Core\AC.Core.csproj">

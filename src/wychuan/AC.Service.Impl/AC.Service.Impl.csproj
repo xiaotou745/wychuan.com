@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,6 +46,8 @@
     <Compile Include="Blog\BlogCategoryService.cs" />
     <Compile Include="Blog\BlogsService.cs" />
     <Compile Include="Blog\BlogTagsService.cs" />
+    <Compile Include="Cache\UserCacheProvider.cs" />
+    <Compile Include="Cache\LiCaiCacheProvider.cs" />
     <Compile Include="LiCai\AdjustBalanceProvider.cs" />
     <Compile Include="LiCai\BillTemplateService.cs" />
     <Compile Include="LiCai\AccountService.cs" />
@@ -59,6 +65,10 @@
     <Compile Include="User\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\achuan.lib\net\net.libs\AC.Common\AC.Common.csproj">
+      <Project>{c4d5e6b0-aea1-4acc-babd-3ccfdfcb6bf2}</Project>
+      <Name>AC.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\achuan.lib\net\net.libs\AC.Core\AC.Core.csproj">
       <Project>{FDF6B367-6E74-4E7E-BEA8-FD53D6278C9A}</Project>
       <Name>AC.Core</Name>
@@ -82,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -32,6 +32,8 @@ select @@identity";
         }
 
         #endregion
+
+        #region GetByName
         public UserDTO GetByName(string userName)
         {
             const string sql = @"
@@ -49,6 +51,28 @@ where u.LoginName=@LoginName
 
             return DbHelper.QueryForObject(ConnStringOfAchuan, sql, dbParameters, new UserRowMapper());
         }
+        #endregion
+
+        #region GetById
+
+        public UserDTO GetById(int userId)
+        {
+            const string sql = @"
+select  u.Id ,
+        u.LoginName ,
+        u.LoginPwd ,
+        u.IsEnable ,
+        u.RegisterTime,
+        u.IsDisable,
+        u.RoleIds
+from [User] u(nolock)
+where u.Id=@Id
+	and u.IsEnable=1";
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, userId);
+
+            return DbHelper.QueryForObject(ConnStringOfAchuan, sql, dbParameters, new UserRowMapper());
+        }
+        #endregion
 
         #region GetAll
         public IList<UserDTO> GetAll()
@@ -139,5 +163,6 @@ where u.IsEnable=1";
         }
 
         #endregion
+
     }
 }

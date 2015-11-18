@@ -37,6 +37,7 @@ select @@IDENTITY";
         #endregion
 
         #region Update
+
         /// <summary>
         /// 更新一条记录
         /// </summary>
@@ -53,31 +54,30 @@ where  Id=@Id ";
 
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, UPDATE_SQL, dbParameters);
         }
+
+        #endregion
+
+        #region Delete
+
+        public void Delete(int id)
+        {
+            const string DELETE_SQL = "delete from Role where Id=@Id and CanRemove=1";
+
+            var dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, DELETE_SQL, dbParameters);
+        }
+
         #endregion
 
         #region GetAll
 
         public IList<RoleDTO> GetAll()
         {
-            const string sqlText = @"select Id, Name from [Role] r(nolock)";
-            return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, sqlText, new RoleRowMapper());
+            const string SQL_TEXT = @"select Id, Name, IsAdmin, CanRemove from [Role] r(nolock)";
+            return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, SQL_TEXT, new RoleRowMapper());
         }
-        #endregion
 
-        #region SavePrivilege
-
-        public void SavePrivilege(int roleId, int menuId)
-        {
-            const string SQL_TEXT = @"
-insert into RolePrivilege ( RoleId, MenuId )
-values  ( @RoleId, @MenuId)";
-
-            var dbParameters = DbHelper.CreateDbParameters();
-            dbParameters.Add("RoleId", DbType.Int32, 4).Value = roleId;
-            dbParameters.Add("MenuId", DbType.Int32, 4).Value = menuId;
-
-            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, SQL_TEXT, dbParameters);
-        }
         #endregion
 
         #region  Nested type: RoleRowMapper
@@ -96,13 +96,43 @@ values  ( @RoleId, @MenuId)";
                     result.Id = int.Parse(obj.ToString());
                 }
                 result.Name = dataReader["Name"].ToString();
-
+                obj = dataReader["IsAdmin"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    result.IsAdmin = bool.Parse(obj.ToString());
+                }
+                obj = dataReader["CanRemove"];
+                if (obj != null && obj != DBNull.Value)
+                {
+                    result.CanRemove = bool.Parse(obj.ToString());
+                }
                 return result;
             }
         }
 
         #endregion
+
+        #region Privilege methods
+
         #region SavePrivilege
+
+        public void SavePrivilege(int roleId, int menuId)
+        {
+            const string SQL_TEXT = @"
+insert into RolePrivilege ( RoleId, MenuId )
+values  ( @RoleId, @MenuId)";
+
+            var dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.Add("RoleId", DbType.Int32, 4).Value = roleId;
+            dbParameters.Add("MenuId", DbType.Int32, 4).Value = menuId;
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, SQL_TEXT, dbParameters);
+        }
+
+        #endregion
+
+        #region DeletePrivilege
+
         public void DeletePrivilege(int roleId)
         {
             const string SQL_TEXT = @"delete from RolePrivilege where RoleId=@RoleId";
@@ -111,27 +141,22 @@ values  ( @RoleId, @MenuId)";
 
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, SQL_TEXT, dbParameters);
         }
+
         #endregion
 
         #region GetPrivilege
 
         public IList<int> GetPrivilege(int roleId)
         {
-            const string sqlText =
+            const string SQL_TEXT =
                 "select  rp.Id, rp.RoleId, rp.MenuId from RolePrivilege rp(nolock) where rp.RoleId=@RoleId";
             var dbParameters = DbHelper.CreateDbParameters("RoleId", DbType.Int32, 4, roleId);
-            return DbHelper.QueryWithRowMapperDelegate(ConnStringOfAchuan, sqlText, dbParameters,
+            return DbHelper.QueryWithRowMapperDelegate(ConnStringOfAchuan, SQL_TEXT, dbParameters,
                 (row => ParseHelper.ToInt(row["MenuId"])));
         }
+
         #endregion
 
-        public void Delete(int id)
-        {
-            const string DELETE_SQL = "delete from Role where Id=@Id";
-
-            var dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
-
-            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, DELETE_SQL, dbParameters);
-        }
+        #endregion
     }
 }

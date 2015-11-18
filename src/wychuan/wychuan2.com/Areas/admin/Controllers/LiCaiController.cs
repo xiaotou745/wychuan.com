@@ -45,7 +45,7 @@ namespace wychuan2.com.Areas.admin.Controllers
                 queryInfo.AccountTypeId = type;
             }
             //查询账户列表
-            IList<AccountDTO> lstAccounts = accountService.Query(queryInfo);
+            IList<AccountDTO> lstAccounts = accountService.Search(queryInfo);
             model.Accounts = lstAccounts;
             return View(model);
         }
@@ -75,7 +75,7 @@ namespace wychuan2.com.Areas.admin.Controllers
                 queryInfo.AccountTypeId = type;
             }
             //查询账户列表
-            IList<AccountDTO> lstAccounts = accountService.Query(queryInfo);
+            IList<AccountDTO> lstAccounts = accountService.Search(queryInfo);
             model.Accounts = lstAccounts;
             return View(model);
         }
@@ -129,7 +129,7 @@ namespace wychuan2.com.Areas.admin.Controllers
                 queryInfo.AccountTypeId = type;
             }
             //查询账户列表
-            IList<AccountDTO> lstAccounts = accountService.Query(queryInfo);
+            IList<AccountDTO> lstAccounts = accountService.Search(queryInfo);
             model.Accounts = lstAccounts;
             return View("_AccountDetails", model);
         }
@@ -154,7 +154,7 @@ namespace wychuan2.com.Areas.admin.Controllers
                 queryInfo.AccountTypeId = type;
             }
             //查询账户列表
-            IList<AccountDTO> lstAccounts = accountService.Query(queryInfo);
+            IList<AccountDTO> lstAccounts = accountService.Search(queryInfo);
             model.Accounts = lstAccounts;
             return View("_AccountList", model);
         }

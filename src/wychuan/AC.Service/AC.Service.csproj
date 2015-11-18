@@ -55,6 +55,7 @@
     <Compile Include="Blog\IBlogTagsService.cs" />
     <Compile Include="Config\CategoryConfigInfo.cs" />
     <Compile Include="Config\ICategoryService.cs" />
+    <Compile Include="Consts.cs" />
     <Compile Include="DTO\Blog\BlogCategoryDTO.cs" />
     <Compile Include="DTO\Blog\BlogsDTO.cs" />
     <Compile Include="DTO\Blog\BlogTagsDTO.cs" />

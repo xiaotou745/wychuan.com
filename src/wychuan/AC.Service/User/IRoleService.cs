@@ -17,7 +17,7 @@ namespace AC.Service.User
 
         IList<RoleDTO> GetAll();
 
-        void DeletePrivilege(int roleId);
+        //void DeletePrivilege(int roleId);
 
         void SavePrivilege(int roleId, int[] menuIds);
 

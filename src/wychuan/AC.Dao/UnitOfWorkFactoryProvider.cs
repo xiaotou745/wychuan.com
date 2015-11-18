@@ -3,7 +3,7 @@ using AC.Transaction.Common;
 
 namespace AC.Dao
 {
-    public class UtilOfWorkFactoryProvider
+    public class UnitOfWorkFactoryProvider
     {
         public static IUnitOfWork GetUnitOfWork()
         {

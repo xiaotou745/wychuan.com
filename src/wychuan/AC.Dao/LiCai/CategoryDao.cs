@@ -155,5 +155,21 @@ where   lc.IsEnable = 1
 
             return DbHelper.QueryForObject(ConnStringOfAchuan, SQL_TEXT, dbParameters, new CategoryRowMapper());
         }
+
+        #region GetById
+        public CategoryDTO GetById(int id)
+        {
+            const string SQL_TEXT = @"
+select  lc.ID, lc.UserId, lc.ParentId, lc.Name, lc.InOutType, lc.InitKey, lc.IsCommonUse, lc.OrderBy, lc.IsEnable
+from    LC_Category lc ( nolock )
+where   lc.IsEnable = 1
+        and lc.ID = @ID";
+
+            var dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.Add("ID", DbType.Int32, 4).Value = id;
+
+            return DbHelper.QueryForObject(ConnStringOfAchuan, SQL_TEXT, dbParameters, new CategoryRowMapper());
+        }
+        #endregion
     }
 }

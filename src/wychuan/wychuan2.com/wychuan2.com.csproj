@@ -221,6 +221,7 @@
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeLeController.cs" />
+    <Compile Include="Areas\admin\AdminUtils.cs" />
     <Compile Include="Extensions\HtmlRequestHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -481,6 +482,7 @@
     <Content Include="Areas\admin\Views\User\Menu.cshtml" />
     <Content Include="Areas\admin\Views\User\Role.cshtml" />
     <Content Include="Areas\admin\Views\User\_RolesList.cshtml" />
+    <Content Include="Areas\admin\Views\Shared\_Layout_LeftMenus.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />

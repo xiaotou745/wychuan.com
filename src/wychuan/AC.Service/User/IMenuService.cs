@@ -32,11 +32,11 @@ namespace AC.Service.User
         /// </summary>
         IList<MenuDTO> GetAll();
 
-        /// <summary>
-        /// 获取指定角色的菜单权限
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        IList<MenuDTO> GetRolePrivilege(int roleId);
+        ///// <summary>
+        ///// 获取指定角色的菜单权限
+        ///// </summary>
+        ///// <param name="roleId"></param>
+        ///// <returns></returns>
+        //IList<MenuDTO> GetRolePrivilege(int roleId);
     }
 }

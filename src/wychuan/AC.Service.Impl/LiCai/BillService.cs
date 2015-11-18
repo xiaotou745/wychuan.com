@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using AC.Dao;
 using AC.Dao.LiCai;
 using AC.Service.DTO.LiCai;
 using AC.Service.LiCai;
+using AC.Transaction.Common;
 
 namespace AC.Service.Impl.LiCai
 {
@@ -20,20 +22,25 @@ namespace AC.Service.Impl.LiCai
         {
             //此之后是否有余额调整,如果此时间之后调整过余额，则账户余额不变，否则，账户余额更改；
             var hasBalanceAdjust = billDao.HasBalanceAdjust(bill.AccountId, bill.ConsumeTime);
-            if (!hasBalanceAdjust)
+            using (IUnitOfWork unitOfWork = UnitOfWorkFactoryProvider.GetUnitOfWork())
             {
-                var detailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), bill.DetailType.ToString());
-                var creditType = CreditType.JieChu;
-                if (detailType == BillDetailType.Creditor)
+                if (!hasBalanceAdjust)
                 {
-                    creditType = (CreditType)Enum.Parse(typeof(CreditType), bill.CreditorType.ToString());
-                }
+                    var detailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), bill.DetailType.ToString());
+                    var creditType = CreditType.JieChu;
+                    if (detailType == BillDetailType.Creditor)
+                    {
+                        creditType = (CreditType)Enum.Parse(typeof(CreditType), bill.CreditorType.ToString());
+                    }
 
-                AdjustBalanceProvider
-                    .Builder(detailType, bill.Price, bill.AccountId, bill.ToAccountId, creditType)
-                    .Adjust();
+                    AdjustBalanceProvider
+                        .Builder(detailType, bill.Price, bill.AccountId, bill.ToAccountId, creditType)
+                        .Adjust();
+                }
+                int id = billDao.Insert(bill);
+                unitOfWork.Complete();
+                return id;
             }
-            return billDao.Insert(bill);
         }
 
         public IList<BillDTO> Query(BillQueryInfo queryInfo)
@@ -46,26 +53,30 @@ namespace AC.Service.Impl.LiCai
             var billInfo = billDao.GetById(bill.ID);
             //此之后是否有余额调整,如果此时间之后调整过余额，则账户余额不变，否则，账户余额更改；
             var hasBalanceAdjust = billDao.HasBalanceAdjust(bill.UserId, bill.ConsumeTime);
-            if (!hasBalanceAdjust)
+            using (IUnitOfWork unitOfWork = UnitOfWorkFactoryProvider.GetUnitOfWork())
             {
-                decimal adjustPrice = billInfo.Price - bill.Price;
-                var detailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), billInfo.DetailType.ToString());
-                var creditType = CreditType.JieChu;
-                if (detailType == BillDetailType.Creditor)
+                if (!hasBalanceAdjust)
                 {
-                    creditType = (CreditType)Enum.Parse(typeof(CreditType), bill.CreditorType.ToString());
-                }
+                    decimal adjustPrice = billInfo.Price - bill.Price;
+                    var detailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), billInfo.DetailType.ToString());
+                    var creditType = CreditType.JieChu;
+                    if (detailType == BillDetailType.Creditor)
+                    {
+                        creditType = (CreditType)Enum.Parse(typeof(CreditType), bill.CreditorType.ToString());
+                    }
 
-                AdjustBalanceProvider
-                    .Builder(detailType, adjustPrice, bill.AccountId, bill.ToAccountId, creditType)
-                    .Adjust();
+                    AdjustBalanceProvider
+                        .Builder(detailType, adjustPrice, bill.AccountId, bill.ToAccountId, creditType)
+                        .Adjust();
+                }
+                bill.UserId = billInfo.UserId;
+                bill.BookId = billInfo.BookId;
+                bill.IsBalanceAdjust = billInfo.IsBalanceAdjust;
+                bill.DetailType = billInfo.DetailType;
+
+                billDao.Update(bill);
+                unitOfWork.Complete();
             }
-            bill.UserId = billInfo.UserId;
-            bill.BookId = billInfo.BookId;
-            bill.IsBalanceAdjust = billInfo.IsBalanceAdjust;
-            bill.DetailType = billInfo.DetailType;
-            
-            billDao.Update(bill);
         }
 
         /// <summary>
@@ -77,20 +88,24 @@ namespace AC.Service.Impl.LiCai
             var billInfo = billDao.GetById(id);
             //此之后是否有余额调整,如果此时间之后调整过余额，则账户余额不变，否则，账户余额更改；
             var hasBalanceAdjust = billDao.HasBalanceAdjust(billInfo.AccountId, billInfo.ConsumeTime);
-            if (!hasBalanceAdjust)//如果之后此账户没有调整过余额，则需要把余额进行一下调整
+            using (IUnitOfWork unitOfWork = UnitOfWorkFactoryProvider.GetUnitOfWork())
             {
-                var detailType = (BillDetailType) Enum.Parse(typeof (BillDetailType), billInfo.DetailType.ToString());
-                var creditType = CreditType.JieChu;
-                if (detailType == BillDetailType.Creditor)
+                if (!hasBalanceAdjust)//如果之后此账户没有调整过余额，则需要把余额进行一下调整
                 {
-                    creditType = (CreditType) Enum.Parse(typeof (CreditType), billInfo.CreditorType.ToString());
-                }
+                    var detailType = (BillDetailType)Enum.Parse(typeof(BillDetailType), billInfo.DetailType.ToString());
+                    var creditType = CreditType.JieChu;
+                    if (detailType == BillDetailType.Creditor)
+                    {
+                        creditType = (CreditType)Enum.Parse(typeof(CreditType), billInfo.CreditorType.ToString());
+                    }
 
-                AdjustBalanceProvider
-                    .Builder(detailType, billInfo.Price, billInfo.AccountId, billInfo.ToAccountId, creditType)
-                    .AdjustReverse();
+                    AdjustBalanceProvider
+                        .Builder(detailType, billInfo.Price, billInfo.AccountId, billInfo.ToAccountId, creditType)
+                        .AdjustReverse();
+                }
+                billDao.Delete(id);
+                unitOfWork.Complete();
             }
-            billDao.Delete(id);
         }
 
         public BillDTO GetById(int id)

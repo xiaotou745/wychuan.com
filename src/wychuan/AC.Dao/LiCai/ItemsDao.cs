@@ -71,6 +71,19 @@ select @@IDENTITY";
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, sqlText, dbParameters);
         }
 
+        public ItemDTO GetById(int id)
+        {
+            const string GET_BY_ID_SQL = @"
+select  li.Id, li.UserId, li.Type, li.Name, li.Level, li.IsDefault, li.LastUseTime, li.IsEnable
+from    LC_Items li ( nolock )
+where   li.IsEnable = 1
+        and li.Id = @Id";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+
+            return DbHelper.QueryForObject(ConnStringOfAchuan, GET_BY_ID_SQL, dbParameters, new ItemsRowMapper());
+        }
+
         /// <summary>
         /// 根据UserID获取对象
         /// </summary>
