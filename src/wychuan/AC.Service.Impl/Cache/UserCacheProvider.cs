@@ -72,6 +72,10 @@ namespace AC.Service.Impl.Cache
 
         public static IList<int> RefreshUserInCache(UserDTO user)
         {
+            if (user == null)
+            {
+                return new List<int>();
+            }
             return RefreshUserInCache(user.Id, user.RoleIds);
         }
 
@@ -227,8 +231,7 @@ namespace AC.Service.Impl.Cache
             var userMenuIds = DataCache.GetCache(Consts.UserPrivilegeCacheKey.format(userId)) as IList<int>;
             if (userMenuIds != null)
             {
-                DataCache.SetCacheSliding(Consts.UserPrivilegeCacheKey.format(userId), userMenuIds,
-                    TimeSpan.FromDays(-1));
+                DataCache.Remove(Consts.UserPrivilegeCacheKey.format(userId));
             }
         }
 

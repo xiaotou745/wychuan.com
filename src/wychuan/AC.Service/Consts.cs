@@ -20,7 +20,7 @@
         /// <summary>
         /// 每个用户的权限缓存KEY
         /// </summary>
-        public static string UserPrivilegeCacheKey = "RolePrivilegeCacheKey_{0}";
+        public static string UserPrivilegeCacheKey = "UserPrivilegeCacheKey_{0}";
         #endregion
 
         #region 理财相关
@@ -38,6 +38,9 @@
         /// </summary>
         public static string UserLiCaiAccountsCacheKey = "UserLiCaiAccountsCacheKey_{0}";
 
+        #endregion
+
+        #region Cookie
         #endregion
     }
 }

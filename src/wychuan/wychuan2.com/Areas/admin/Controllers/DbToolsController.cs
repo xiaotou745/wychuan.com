@@ -10,6 +10,9 @@ using AC.Code.DbObjects;
 using AC.Code.Helper;
 using AC.Code.IBuilder;
 using AC.Extension;
+using AC.Service;
+using AC.Util;
+using AC.Web;
 using Newtonsoft.Json;
 using wychuan2.com.Areas.admin.Models;
 using wychuan2.com.Areas.admin.Models.DbTools;
@@ -269,6 +272,11 @@ namespace wychuan2.com.Areas.admin.Controllers
 
         public ActionResult CodeGenerate()
         {
+            DbSettingModel dbSettingModel = DbSettingModel.Instance;
+            if (!dbSettingModel.HasSetting)
+            {
+                return RedirectToAction("Setting");
+            }
             var model = new TableViewModel();
             //服务器列表
             IList<string> dbServers = DbSetting.GetDbServers();
@@ -298,6 +306,13 @@ namespace wychuan2.com.Areas.admin.Controllers
         private CodeResult GenerateCode(string dbServer, string dbName, string tableName, string modelName,
             string callStyle, string daoStyle, string codeLayer, int codeType)
         {
+            DbSettingModel dbSettingModel = DbSettingModel.Instance;
+            if (!dbSettingModel.HasSetting)
+            {
+                Response.Redirect("/admin/dbtools/setting");
+                return null;
+            }
+
             var model = new CodeResult();
             model.Language = (CodeLanguage)Enum.Parse(typeof(CodeLanguage), codeType.ToString());
             //model.Codes.Add(new CodeFileItem { Id = "tabService", TabText = "ServiceCode", Code = "Service" });
@@ -310,8 +325,12 @@ namespace wychuan2.com.Areas.admin.Controllers
                 CodeLayerHashCode = codeLayer,
                 DaoStyleHashCode = daoStyle,
                 ModelName = modelName,
-                CodeType = (CodeType)Enum.Parse(typeof(CodeType), codeType.ToString())
+                CodeType = (CodeType)Enum.Parse(typeof(CodeType), codeType.ToString()),
+                Language = model.Language,
             };
+            codeGenerateConfig.CustomCodeName = model.Language == CodeLanguage.CSharp
+                ? dbSettingModel.CsharpTemplate
+                : dbSettingModel.JavaTemplate;
 
             IDbObject dbObj = DbSetting.CreateDbObject(dbServer);
 
@@ -322,13 +341,52 @@ namespace wychuan2.com.Areas.admin.Controllers
                                         where columnInfo.IsPK
                                         select columnInfo).ToList();
 
+
+            //Service DTO 代码生成
+            IBuilderDTO serviceDTOBuilder = DTOBuilder.Create(codeGenerateConfig, lstColumns).GetDTOCode();
+            string serviceDTOCode = serviceDTOBuilder.GetServiceDTOCode();
+            model.Codes.Add(new CodeFileItem
+            {
+                Id = "tabDTO",
+                TabText = model.Language == CodeLanguage.CSharp ? "DTOCode" : "domain",
+                Code = serviceDTOCode
+            });
+
             //Service  代码生成
             IBuilderService serviceBuilder = ServiceBuilder.Create()
                 .SetGenerateConfig(codeGenerateConfig)
                 .SetKeys(lstKeys)
                 .GetServiceBuilder();
             string serviceCode = serviceBuilder.GetServiceCode();
-            model.Codes.Add(new CodeFileItem { Id = "tabService", TabText = "ServiceCode", Code = serviceCode });
+            model.Codes.Add(new CodeFileItem
+            {
+                Id = "tabService",
+                TabText = model.Language == CodeLanguage.CSharp ? "ServiceCode" : "ServiceInter",
+                Code = serviceCode
+            });
+
+            //生成ServiceImpl层代码
+            if (model.Language == CodeLanguage.Java || codeGenerateConfig.CodeLayer == CodeLayer.ServiceLayerWithDomain ||
+                codeGenerateConfig.CodeLayer == CodeLayer.ServiceLayerWithoutDomain)
+            {
+                IBuilderServiceImpl builderServiceImpl =
+                    ServiceImplBuilder.Create(codeGenerateConfig, lstKeys).GetServiceImpl();
+                string serviceImplCode = builderServiceImpl.GetServiceImplCode();
+                model.Codes.Add(new CodeFileItem
+                {
+                    Id = "tabServiceImpl",
+                    TabText = model.Language == CodeLanguage.CSharp ? "ServiceImplCode" : "ServiceImpl",
+                    Code = serviceImplCode
+                });
+            }
+
+            //生成Domain层代码
+            if (model.Language == CodeLanguage.Java || codeGenerateConfig.CodeLayer == CodeLayer.ServiceLayerWithDomain)
+            {
+                IBuilderDomain builderDomain = DomainBuilder.Create(codeGenerateConfig, lstKeys).GetDomain();
+                string domainCode = builderDomain.GetDomainCode();
+                model.Codes.Add(new CodeFileItem { Id = "tabDomain", TabText = "DaoInter", Code = domainCode });
+            }
 
             //Dao 代码生成
             IBuilderDao daoBuilder = DaoBuilder.Create()
@@ -340,35 +398,21 @@ namespace wychuan2.com.Areas.admin.Controllers
                 .SetGenerateConfig(codeGenerateConfig)
                 .GetDaoBuilder();
             string daoCode = daoBuilder.GetDaoCode();
-            model.Codes.Add(new CodeFileItem { Id = "tabDao", TabText = "DaoCode", Code = daoCode });
+            model.Codes.Add(new CodeFileItem { Id = "tabDao", TabText = "Dao", Code = daoCode });
 
-            //Service DTO 代码生成
-            IBuilderDTO serviceDTOBuilder = DTOBuilder.Create(codeGenerateConfig, lstColumns).GetDTOCode();
-            string serviceDTOCode = serviceDTOBuilder.GetServiceDTOCode();
-            model.Codes.Add(new CodeFileItem { Id = "tabDTO", TabText = "DTOCode", Code = serviceDTOCode });
-
-            //如果是Service五层架构，则继续生成Domain和ServiceImpl层
-            if (codeGenerateConfig.CodeLayer == CodeLayer.ServiceLayerWithDomain)
+            if (model.Language == CodeLanguage.Java)
             {
-                //生成Domain层代码
-                IBuilderDomain builderDomain = new BuilderDomain(lstKeys, codeGenerateConfig);
-                string domainCode = builderDomain.GetDomainCode();
-                model.Codes.Add(new CodeFileItem { Id = "tabDomain", TabText = "DomainCode", Code = domainCode });
-
-                //生成ServiceImpl层代码
-                IBuilderServiceImpl builderServiceImpl = new BuilderServiceImpl(lstKeys, codeGenerateConfig);
-                string serviceImplCode = builderServiceImpl.GetServiceImplCode();
-                model.Codes.Add(new CodeFileItem { Id = "tabServiceImpl", TabText = "ServiceImplCode", Code = serviceImplCode });
+                IBuilderMyBatisMapper myBatisBuilder = MyBatisMapperBuilder.Create()
+                    .SetDbObj(dbObj)
+                    .SetDbName(dbName)
+                    .SetTableName(tableName)
+                    .SetColFields(lstColumns)
+                    .SetKeys(lstKeys)
+                    .SetGenerateConfig(codeGenerateConfig)
+                    .GetBulider();
+                string xml = myBatisBuilder.GetXml();
+                model.Codes.Add(new CodeFileItem {Id = "mybatis", TabText = "MyBatis", Code = xml});
             }
-            //如果是Service不带Domain层代码，只需要生成ServiceImpl层代码
-            else if (codeGenerateConfig.CodeLayer == CodeLayer.ServiceLayerWithoutDomain)
-            {
-                IBuilderServiceImpl builderServiceImpl = new BuilderServiceImpl(lstKeys, codeGenerateConfig);
-                string serviceImplCode = builderServiceImpl.GetServiceImplCode();
-                model.Codes.Add(new CodeFileItem { Id = "tabServiceImpl", TabText = "ServiceImplCode", Code = serviceImplCode });
-
-            }
-
             return model;
         }
         #endregion
@@ -378,6 +422,41 @@ namespace wychuan2.com.Areas.admin.Controllers
         public ActionResult CodeTemplate()
         {
             return View();
+        }
+        #endregion
+
+        #region Setting
+
+        public ActionResult Setting()
+        {
+            DbSettingModel model = DbSettingModel.Instance;
+            model.Templates = CodeSettingTemplate.Create().GetTemplates();
+            return View(model);
+        }
+
+        [HttpPost]
+        public AjaxResult SaveSetting(DbSaveModel model)
+        {
+            AppLogger.Logger.Info(JsonHelper.ToJson(model));
+            var tem = new LanguageTemplate
+            {
+                Author = model.Author,
+                ServiceInterNamespace = model.ServiceInterNamespace,
+                ServiceNamespace = model.ServiceNamespace,
+                DtoOrDomainNamespace = model.DtoOrDomainNamespace,
+                DaoNamespace = model.DaoNamespace,
+                DaoInterNamespace = model.DaoInterNamespace,
+                CommonNamespace = model.CommonNamespace,
+            };
+            if (model.Language == 1)
+            {
+                DbSettingModel.SetCsharpTemplate(tem);
+            }
+            else if (model.Language == 2)
+            {
+                DbSettingModel.SetJavaTemplate(tem);
+            }
+            return AjaxResult.Success();
         }
         #endregion
     }

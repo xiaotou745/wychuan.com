@@ -17,3 +17,16 @@ Array.prototype.delete = function (varElement) {
     }
     return this;
 };
+
+String.prototype.format = function () {
+
+    if (arguments.length <= 0) return this;
+
+    var ref = this;
+
+    for (var i = 0; i < arguments.length; i++) {
+        ref = ref.replace(new RegExp("\\{" + i + "\\}", "gm"), arguments[i]);
+    }
+
+    return ref;
+};

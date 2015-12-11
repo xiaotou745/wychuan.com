@@ -24,12 +24,24 @@ namespace wychuan2.com.Areas.admin.Models.DbTools
         public IList<CodeFileItem> Codes { get; set; } 
     }
 
+    /// <summary>
+    /// 代码类
+    /// </summary>
     public class CodeFileItem
     {
+        /// <summary>
+        /// Id主要用来作为tab的ID
+        /// </summary>
         public string Id { get; set; }
 
+        /// <summary>
+        /// tab标签显示的文本
+        /// </summary>
         public string TabText { get; set; }
 
+        /// <summary>
+        /// 代码
+        /// </summary>
         public string Code { get; set; }
     }
 }

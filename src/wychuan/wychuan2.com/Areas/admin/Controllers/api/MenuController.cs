@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 using AC.Service.DTO.User;
 using AC.Service.Impl.User;
 using AC.Service.User;
@@ -60,7 +62,10 @@ namespace wychuan2.com.Areas.admin.Controllers.api
         public AjaxResult GetPrivilege(int roleId)
         {
             var privilege = roleService.GetPrivilege(roleId);
-            return AjaxResult.Success(privilege);
+            List<int> childMenuIds = menuService.GetAll().Where(m => m.ParentId > 0).Select(m => m.Id).ToList();
+            List<int> childPrivileges = privilege.Where(childMenuIds.Contains).ToList();
+
+            return AjaxResult.Success(childPrivileges);
         }
         #endregion
     }

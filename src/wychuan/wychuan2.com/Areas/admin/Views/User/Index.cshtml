@@ -17,6 +17,9 @@
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>所有用户</h5>
+                    <div class="ibox-tools">
+                        <a href="#modalUsers" data-toggle="modal" data-type="1" class="btn btn-primary btn-xs">新建用户</a>
+                    </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row m-b-sm m-t-sm">
@@ -33,6 +36,44 @@
                         @Html.Partial("_UserList", Model)
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalUsers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblUsers">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="lblUsers">用户信息</h4>
+            </div>
+            <div class="modal-body" id="frmUser">
+                <form class="form-horizontal" id="form1">
+                    <input type="hidden" name="Id" value="0" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">登录账号</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtLoginName" class="form-control input-sm" placeholder="请输入登录账号" required="required" />
+                        </div>
+                    </div>
+                    <div class="form-group J_Second">
+                        <label class="control-label col-sm-2">登录密码</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtLoginPwd" class="form-control input-sm" placeholder="请输入密码" />
+                        </div>
+                    </div>
+
+                    <div class="form-group J_First">
+                        <label class="control-label col-sm-2">用户名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="txtUserName" class="form-control input-sm" placeholder="输入真实姓名吧">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnSaveUser" class="btn btn-primary">保存用户</button>
             </div>
         </div>
     </div>
@@ -128,6 +169,11 @@
                 var modal = $(this);
                 setRoles(modal, button);
             });
+            $('#modalUsers').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var modal = $(this);
+                setUserModal(modal, button);
+            });
             $("#btnSaveRole").bind("click", saveRoles);
         });
         function saveRoles() {
@@ -165,10 +211,51 @@
             modal.find(":checkbox").each(function(i, item) {
                 if (arrRoleIds.contain($(item).val())) {
                     $(item).iCheck("check");
+                } else {
+                    $(item).iCheck("uncheck");
                 }
             });
         }
-        
+        function saveUser() {
+            var user = getUserModel();
+
+            $.ajax({
+                url: "",
+                type: "post",
+                data: user,
+                dataType: "json",
+                success: function(resp) {
+                    if (!resp.iserror) {
+                        refresh();
+                        $("#modalUsers").modal("hide");
+                    }
+                }
+            });
+        }
+        function getUserModel() {
+            var form = $("#modalUsers").find("form");
+            var user = {
+                id: form.find("[name=Id]").val(),
+                loginName: form.find("[name=txtLoginName]").val(),
+                loginPwd: form.find("[name=txtLoginPwd]").val(),
+                userName: form.find("[name=txtUserName]").val()
+            };
+            return user;
+        }
+        function setUserModal(modal, button) {
+            var operateType = button.data("type");
+
+            if (operateType == 1) { //新增
+                modal.find("[name=Id]").val(0);
+                modal.find(":text").val("");
+            } else if (operateType == 2) { //编辑
+                var $tr = button.parents("tr");
+                modal.find("[name=Id]").val($tr.data("id"));
+                modal.find("[name=txtLoginName]").val($tr.find("[name=loginname]").text());
+                modal.find("[name=txtUserName]").val($tr.find("[name=username]").text());
+                modal.find("[name=txtLoginPwd]").val($tr.data("password"));
+            }
+        }
         function refresh() {
             $.ajax({
                 url: "/admin/user/refreshusers",

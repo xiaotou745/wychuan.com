@@ -21,12 +21,12 @@ namespace wychuan2.com.Areas.admin
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            context.MapRoute(
-                "licai_default",
-                "licai/{controller}/{action}/{id}",
-                new {controller = "Home", action = "Index", id = UrlParameter.Optional},
-                namespaces: new[] {"wychuan2.com.Areas.admin.Controllers.LiCai"}
-                );
+            //context.MapRoute(
+            //    "licai_default",
+            //    "licai/{controller}/{action}/{id}",
+            //    new {controller = "Home", action = "Index", id = UrlParameter.Optional},
+            //    namespaces: new[] {"wychuan2.com.Areas.admin.Controllers.LiCai"}
+            //    );
 
             context.MapRoute(
                 "admin_default",

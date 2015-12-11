@@ -50,6 +50,10 @@
                                 int tabindex = 1;
                                 foreach (var code in Model.Codes)
                                 {
+                                    if (code.Id == "mybatis")
+                                    {
+                                        preClass = "brush:xml";
+                                    }
                                     <div class="tab-pane @(tabindex++==1?"active":"")" id="@code.Id">
                                         <pre name="@code.Id" class="@preClass">@code.Code</pre>
                                     </div>
