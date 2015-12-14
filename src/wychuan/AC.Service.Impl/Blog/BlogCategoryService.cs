@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AC.Dao.Blog;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
+using AC.Service.Impl.Cache;
 using AC.Util;
 
 namespace AC.Service.Impl.Blog
@@ -19,7 +20,7 @@ namespace AC.Service.Impl.Blog
         public IList<BlogCategoryDTO> GetByUserId(int userId)
         {
             AssertUtils.Greater(userId, 0);
-            return blogCategoryDao.GetByUserId(userId);
+            return BlogCacheProvider.GetBlogCategoriesFromCache(userId);
         }
 
         public int Create(BlogCategoryDTO blogCategory)
@@ -27,7 +28,9 @@ namespace AC.Service.Impl.Blog
             AssertUtils.ArgumentNotNull(blogCategory, "blogCategory");
             AssertUtils.Greater(blogCategory.UserId, 0);
 
-            return blogCategoryDao.Insert(blogCategory);
+            int id = blogCategoryDao.Insert(blogCategory);
+            BlogCacheProvider.RefreshBlogCategoriesInCache(blogCategory.UserId);
+            return id;
         }
 
         public void Rename(int id, string name)
@@ -35,14 +38,21 @@ namespace AC.Service.Impl.Blog
             AssertUtils.Greater(id, 0);
             AssertUtils.StringNotNullOrEmpty(name, "name");
 
+            BlogCategoryDTO blogCategoryDTO = blogCategoryDao.GetById(id);
+            AssertUtils.ArgumentNotNull(blogCategoryDTO, "此category不存在");
+
             blogCategoryDao.Rename(id, name);
+            BlogCacheProvider.RefreshBlogCategoriesInCache(blogCategoryDTO.UserId);
         }
 
         public void Remove(int id)
         {
             AssertUtils.Greater(id, 0);
+            BlogCategoryDTO blogCategoryDTO = blogCategoryDao.GetById(id);
+            AssertUtils.ArgumentNotNull(blogCategoryDTO, "此category不存在");
 
             blogCategoryDao.Delete(id);
+            BlogCacheProvider.RefreshBlogCategoriesInCache(blogCategoryDTO.UserId);
         }
     }
 }

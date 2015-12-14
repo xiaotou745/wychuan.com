@@ -46,6 +46,8 @@
     <Compile Include="Blog\BlogCategoryService.cs" />
     <Compile Include="Blog\BlogsService.cs" />
     <Compile Include="Blog\BlogTagsService.cs" />
+    <Compile Include="Blog\SectionsService.cs" />
+    <Compile Include="Cache\BlogCacheProvider.cs" />
     <Compile Include="Cache\UserCacheProvider.cs" />
     <Compile Include="Cache\LiCaiCacheProvider.cs" />
     <Compile Include="LiCai\AdjustBalanceProvider.cs" />

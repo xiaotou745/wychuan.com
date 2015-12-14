@@ -45,6 +45,17 @@ where   bc.IsEnable = 1
             return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, QUERY_SQL, dbParameters, new BlogCategoryRowMapper());
         }
 
+        public BlogCategoryDTO GetById(int id)
+        {
+            const string SQL_TEXT = @"
+select  bc.Id, bc.UserId, bc.ParentId, bc.Name
+from    BlogCategory bc ( nolock )
+where   bc.IsEnable = 1
+        and bc.Id = @Id";
+            var dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+            return DbHelper.QueryForObject(ConnStringOfAchuan, SQL_TEXT, dbParameters, new BlogCategoryRowMapper());
+        }
+
         #region  Nested type: BlogCategoryRowMapper
 
         /// <summary>

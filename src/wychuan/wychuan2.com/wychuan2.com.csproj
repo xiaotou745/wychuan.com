@@ -189,6 +189,9 @@
     <Compile Include="Areas\admin\Controllers\api\TasksController.cs" />
     <Compile Include="Areas\admin\Controllers\api\CompanyController.cs" />
     <Compile Include="Areas\admin\Controllers\BlogController.cs" />
+    <Compile Include="Areas\admin\Controllers\SectionController.cs" />
+    <Compile Include="Areas\admin\Models\Blog\SectionListModel.cs" />
+    <Compile Include="Areas\admin\Models\Blog\SectionPublishModel.cs" />
     <Compile Include="Areas\admin\Models\DbTools\CodeSettingTemplate.cs" />
     <Compile Include="Areas\admin\Controllers\DbToolsController.cs" />
     <Compile Include="Areas\admin\Controllers\HomeController.cs" />
@@ -225,6 +228,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeLeController.cs" />
     <Compile Include="Areas\admin\AdminUtils.cs" />
+    <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Extensions\HtmlRequestHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -240,6 +244,7 @@
     <Content Include="500.html" />
     <Content Include="Areas\weixin\Data\menuOfWeixin.xml" />
     <Content Include="Content\animate.css" />
+    <Content Include="Content\blog2.css" />
     <Content Include="Content\blog.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -248,6 +253,7 @@
     <Content Include="Content\Data\dbservers.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\docs.min.css" />
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
@@ -360,6 +366,9 @@
     <Content Include="Content\rrssb.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\summernotepage.css" />
+    <Content Include="Content\w3bs\docs.min.css" />
+    <Content Include="Content\w3bs\docs.min.js" />
+    <Content Include="Content\w3bs\patch.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -487,6 +496,9 @@
     <Content Include="Areas\admin\Views\User\_RolesList.cshtml" />
     <Content Include="Areas\admin\Views\Shared\_Layout_LeftMenus.cshtml" />
     <Content Include="Areas\admin\Views\DbTools\Setting.cshtml" />
+    <Content Include="Areas\admin\Views\Section\Index.cshtml" />
+    <Content Include="Areas\admin\Views\Section\List.cshtml" />
+    <Content Include="Areas\admin\Views\Section\_SectionList.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />
@@ -664,6 +676,26 @@
     <Content Include="Scripts\tools\mynotes.js" />
     <Content Include="Scripts\user\role.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="UpImgs\20151110201721024.jpeg" />
+    <Content Include="UpImgs\20151110201910829.jpeg" />
+    <Content Include="UpImgs\20151110202112638.jpeg" />
+    <Content Include="UpImgs\20151110202317074.jpeg" />
+    <Content Include="UpImgs\20151110202617943.jpg" />
+    <Content Include="UpImgs\20151110202633866.jpg" />
+    <Content Include="UpImgs\20151110202728364.jpg" />
+    <Content Include="UpImgs\20151111142824370.jpg" />
+    <Content Include="UpImgs\20151111143305621.jpg" />
+    <Content Include="UpImgs\20151111143654857.jpg" />
+    <Content Include="UpImgs\20151111143856584.jpg" />
+    <Content Include="UpImgs\20151111145049555.jpg" />
+    <Content Include="UpImgs\20151111150200308.jpg" />
+    <Content Include="UpImgs\20151111151007321.jpg" />
+    <Content Include="UpImgs\20151111151112171.jpg" />
+    <Content Include="UpImgs\tomcat-setting\java.jpg" />
+    <Content Include="UpImgs\tomcat-setting\javac.jpg" />
+    <Content Include="UpImgs\tomcat-setting\localhost8080.jpg" />
+    <Content Include="UpImgs\tomcat-setting\tomcatstartup.jpg" />
+    <Content Include="UpImgs\tomcat-setting\tomcatstartuped.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -689,6 +721,11 @@
     <Content Include="Views\Blog\BlogItem.cshtml" />
     <Content Include="Views\Blog\PreView.cshtml" />
     <Content Include="Views\Blog\Item.cshtml" />
+    <Content Include="Views\Blog\Test.cshtml" />
+    <Content Include="Views\Shared\_LayoutBootstrap.cshtml" />
+    <Content Include="Views\Blog\Demo.cshtml" />
+    <Content Include="Views\Section\Preview.cshtml" />
+    <Content Include="Views\Section\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

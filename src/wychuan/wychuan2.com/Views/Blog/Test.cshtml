@@ -1,0 +1,67 @@
+﻿@model AC.Service.DTO.Blog.Sections
+@{
+    Layout = "../Shared/_LayoutBootstrap.cshtml";
+    ViewBag.Title = "Test";
+}
+
+@section styles{
+    <style type="text/css">
+        .content11 {
+            width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
+        }
+    </style>
+}
+<div class="bs-docs-header" id="content" tabindex="-1">
+    <div class="container">
+        <h1>@Model.Title</h1>
+        <p>@Model.Content</p>
+    </div>
+</div>
+
+<div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-md-9" role="main">
+            <div class="bs-docs-section">
+                <h1 id="@Model.SectionId" class="page-header">
+                    
+                </h1>
+                @Html.Raw(Model.Content)
+                @if (Model.Childs != null)
+                {
+                    foreach (var child in Model.Childs)
+                    {
+                        <h2 id="@child.SectionId">
+                            @*                            <a class="anchorjs-link " href="#tomcat-setting-tomcatstart" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>*@
+                            @child.Title
+                        </h2>
+                        @Html.Raw(child.Content)
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+                <ul class="nav bs-docs-sidenav">
+                    <li>
+                        <a href="#@Model.SectionId">@Model.Title</a>
+                        @if (Model.Childs != null)
+                        {
+                            <ul class="nav">
+                                @foreach (var child in Model.Childs)
+                                {
+                                    <li><a href="#@child.SectionId">@child.Title</a></li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                </ul>
+                <a class="back-to-top" href="#top">
+                    返回顶部
+                </a>
+                <a href="javascript:;" class="bs-docs-theme-toggle" role="button">
+                    主题预览
+                </a>
+            </nav>
+        </div>
+    </div>
+</div>

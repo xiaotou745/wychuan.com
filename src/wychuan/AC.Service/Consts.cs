@@ -42,5 +42,13 @@
 
         #region Cookie
         #endregion
+
+        #region Blogs
+
+        public const string ALL_BLOG_CATEGORIES_CACHE_KEY = "blog:allblogs_user{0}";
+
+        public const string ALL_BLOG_TAGS_CACHE_KEY = "blog:alltags_user{0}";
+
+        #endregion
     }
 }

@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>@ViewBag.Title - 码农阿川</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="~/Content/w3bs/patch.css" />
+    <link rel="stylesheet" href="~/Content/w3bs/docs.min.css" />
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">码农阿川</a>
+            </div>
+            <nav id="bs-navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="http://v3.bootcss.com/getting-started/">起步</a>
+                    </li>
+                    <li>
+                        <a href="http://v3.bootcss.com/css/">全局 CSS 样式</a>
+                    </li>
+                    <li class="active">
+                        <a href="">组件</a>
+                    </li>
+                    <li>
+                        <a href="http://v3.bootcss.com/javascript/">JavaScript 插件</a>
+                    </li>
+                    <li>
+                        <a href="http://v3.bootcss.com/customize/">定制</a>
+                    </li>
+                    <li><a href="http://expo.bootcss.com/">网站实例</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/blog">码农阿川随笔</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    @RenderBody()
+    <footer class="bs-docs-footer" role="contentinfo">
+        <div class="container">
+
+            <p>Designed and built with all the love in the world by <a href="https://twitter.com/mdo" target="_blank">mdo</a> and <a href="https://twitter.com/fat" target="_blank">fat</a>.</p>
+            <p>Maintained by the <a href="https://github.com/orgs/twbs/people">core team</a> with the help of <a href="https://github.com/twbs/bootstrap/graphs/contributors">our contributors</a>.</p>
+            <p>本项目源码受 <a rel="license" href="https://github.com/twbs/bootstrap/blob/master/LICENSE" target="_blank">MIT</a>开源协议保护，文档受 <a rel="license" href="https://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a> 开源协议保护。</p>
+            <ul class="bs-docs-footer-links text-muted">
+                <li>当前版本： v3.3.5</li>
+                <li>·</li>
+                <li><a href="https://github.com/twbs/bootstrap">GitHub 仓库</a></li>
+                <li>·</li>
+                <li><a href="http://v3.bootcss.com/getting-started/#examples">实例精选</a></li>
+                <li>·</li>
+                <li><a href="http://v2.bootcss.com/">v2.3.2 中文文档</a></li>
+                <li>·</li>
+                <li><a href="http://v3.bootcss.com/about/">关于</a></li>
+                <li>·</li>
+                <li><a href="http://expo.bootcss.com/">优站精选</a></li>
+                <li>·</li>
+                <li><a href="http://blog.getbootstrap.com/">官方博客</a></li>
+                <li>·</li>
+                <li><a href="https://github.com/twbs/bootstrap/issues">Issues</a></li>
+                <li>·</li>
+                <li><a href="https://github.com/twbs/bootstrap/releases">历史版本</a></li>
+            </ul>
+        </div>
+    </footer>
+    <script type="text/javascript" src="~/Scripts/jquery-1.11.3.min.js"> </script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"> </script>
+    <script type="text/javascript" src="~/Content/w3bs/docs.min.js"> </script>
+    @RenderSection("javascripts", required: false)
+</body>
+</html>

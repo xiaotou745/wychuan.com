@@ -1,17 +1,35 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewBag.Title = "随笔-列表";
+    Layout = "../Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>List</title>
-</head>
-<body>
-    <div> 
+@section styles{
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
+    <style type="text/css">
+        .content {
+            width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>所有账户</h5>
+                <div class="ibox-tools">
+                    <a href="/admin/blog" class="btn btn-primary btn-xs">发布随笔</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row m-b-sm m-t-sm">
+                    <div class="col-md-12">
+                        
+                    </div>
+                </div>
+                <div id="content">
+                   
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</div>

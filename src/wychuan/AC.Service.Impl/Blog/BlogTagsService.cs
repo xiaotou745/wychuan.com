@@ -2,6 +2,8 @@
 using AC.Dao.Blog;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
+using AC.Service.Impl.Cache;
+using AC.Util;
 
 namespace AC.Service.Impl.Blog
 {
@@ -16,12 +18,15 @@ namespace AC.Service.Impl.Blog
 
         public int Create(BlogTagsDTO tag)
         {
-            return blogTagsDao.Insert(tag);
+            int id = blogTagsDao.Insert(tag);
+            BlogCacheProvider.RefreshBlogTagsInCache(tag.UserId);
+            return id;
         }
 
         public IList<BlogTagsDTO> GetByUserId(int userId)
         {
-            return blogTagsDao.GetByUserId(userId);
+            AssertUtils.Greater(userId, 0);
+            return BlogCacheProvider.GetBlogTagsFromCache(userId);
         }
     }
 }

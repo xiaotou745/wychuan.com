@@ -1,0 +1,84 @@
+﻿@model wychuan2.com.Areas.admin.Models.Blog.SectionListModel
+@{
+    ViewBag.Title = "段落-列表";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@section styles{
+<style type="text/css">
+    .content11 {
+        width: 500px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>所有段落</h5>
+                <div class="ibox-tools">
+                    <a href="/admin/section" class="btn btn-primary btn-xs">发布段落</a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row m-b-sm m-t-sm">
+                    <div class="col-md-12">
+
+                    </div>
+                </div>
+                <div id="content">
+                    @Html.Partial("_SectionList",Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $("#content").delegate(".J_Toggle", "click", function() {
+                var id = $(this).parents("tr").data("id");
+                var currentShow = $(this).data("show");
+                if (currentShow) {
+                    $("[parentid=" + id + "]").hide();
+                    $(this).data("show", false);
+                    $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
+                } else {
+                    $("[parentid=" + id + "]").show();
+                    $(this).data("show", true);
+                    $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
+                }
+            });
+
+            $("#content").delegate(".J_Remove", "click", function () {
+                if (!confirm("确定要删除此段落吗？不可恢复。")) {
+                    return;
+                }
+                var id = $(this).parents("tr").data("id");
+                $.get("/admin/section/remove", { id: id }, function(resp) {
+                    console.log(resp);
+                    if (resp.iserror) {
+                        alert(resp.message);
+                        return;
+                    }
+                    refresh();
+                });
+            });
+        });
+        
+        function refresh() {
+            $.ajax({
+                url: "/admin/section/refresh",
+                type: "get",
+                data: null,
+                success: function(resp) {
+                    $("#content").html(resp);
+                }
+            });
+        }
+    </script>
+}

@@ -1,4 +1,6 @@
-﻿@using wychuan2.com.Areas.admin
+﻿@using System.Text
+@using AC.Service.DTO.User
+@using wychuan2.com.Areas.admin
 @using wychuan2.com.Extensions
 @using wychuan2.com.Models
 
@@ -41,7 +43,13 @@
                     continue;
                 }
                 var childs = allMenus.Where(m => m.ParentId == rootMenu.Id).OrderBy(m => m.OrderBy);
-                <li class="@(rootMenu.Controller.Equals(Html.Controller(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)">
+                string activeClass = "";
+                MenuDTO currentMenu = childs.Where(c => c.Url.ToLower().Equals(Request.Path.ToLower())).FirstOrDefault();
+                if (currentMenu != null)
+                {
+                    activeClass = "active";
+                }
+                <li class="@activeClass">
                     <a href="@rootMenu.Url"><i class="@rootMenu.Icon"></i> <span class="nav-label">@rootMenu.Name</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         @foreach (var child in childs)
@@ -50,7 +58,7 @@
                             {
                                 continue;
                             }
-                            <li class="@(child.Action.Equals(Html.Action(), StringComparison.InvariantCultureIgnoreCase) ? "active" : string.Empty)"><a href="@child.Url">@child.Name</a></li>
+                            <li class="@(child.Url.Equals(Request.Path.ToLower()) ? "active" : string.Empty)"><a href="@child.Url">@child.Name</a></li>
                         }
                     </ul>
                 </li>
