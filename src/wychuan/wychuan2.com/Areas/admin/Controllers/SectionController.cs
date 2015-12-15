@@ -32,18 +32,19 @@ namespace wychuan2.com.Areas.admin.Controllers
 
             model.Categories = blogCategoryService.GetByUserId(ApplicationUser.Current.UserId);
             model.Tags = blogTagsService.GetByUserId(ApplicationUser.Current.UserId);
-            model.ParentId = parentId.HasValue ? parentId.Value : 0;
-            model.CurrentId = id.HasValue ? id.Value : 0;
             if (id.HasValue)
             {
                 Sections currentSection = sectionService.GetById(id.Value);
+                model.CurrentId = id.Value;
                 model.CurrentSection = currentSection;
                 model.ParentId = currentSection.ParentId;
             }
-            if (parentId.HasValue)
+            else if (parentId.HasValue)
             {
                 Sections parentSection = sectionService.GetById(parentId.Value);
                 model.ParentSection = parentSection;
+                model.ParentId = parentId.Value;
+                model.CurrentId = 0;
             }
 
             return View(model);

@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Web;
 using AC.Dao;
 using AC.Dao.Blog;
+using AC.IO;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
 using AC.Transaction.Common;
+using AC.Util;
 
 namespace AC.Service.Impl.Blog
 {
@@ -51,9 +55,30 @@ namespace AC.Service.Impl.Blog
                         sectionTagDao.Insert(st);
                     }
                 }
+                SaveHtmlFile(sections);
                 unitOfWork.Complete();
                 return id;
             }
+        }
+
+        public void SaveHtmlFile(Sections section)
+        {
+            string basePath = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            string savePath = string.Empty;
+            if (section.ParentId == 0)
+            {
+                savePath = Path.Combine(basePath, "sections", section.SectionId, section.SectionId + ".html");
+            }
+            else
+            {
+                Sections parentSection = GetById(section.ParentId);
+                savePath = Path.Combine(basePath, "sections", parentSection.SectionId, section.SectionId + ".html");
+            }
+            FilesHelper.CreateFileDir(savePath);
+            FileIO.SaveTextFile(savePath, section.Content, System.Text.Encoding.UTF8);
+            //AppLogger.Logger.Info(System.AppDomain.CurrentDomain.BaseDirectory);
+            //AppLogger.Logger.Info(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase);
+            //AppLogger.Logger.Info(HttpContext.Current.Request.PhysicalApplicationPath);
         }
 
         /// <summary>
@@ -88,6 +113,7 @@ namespace AC.Service.Impl.Blog
                         sectionTagDao.Insert(st);
                     }
                 }
+                SaveHtmlFile(sections);
                 unitOfWork.Complete();
             }
         }
@@ -118,6 +144,7 @@ namespace AC.Service.Impl.Blog
             section.Tags = sectionTagDao.GetBySectionId(id);
             return section;
         }
+
 
         public Sections GetBySectionId(string sectionId)
         {

@@ -24,7 +24,7 @@
                     var childs = Model.Sections.Where(s => s.ParentId == root.Id).ToList();
                     <tr data-id="@root.Id" data-show="true">
                         <td width="10px">
-                            <a class="J_Toggle" data-show="true"><i class="fa fa-minus"></i></a>
+                            <a class="J_Toggle" data-show="false"><i class="fa fa-plus"></i></a>
                         </td>
                         <td><a class="J_Edit" href="/admin/section?id=@root.Id">
                                 <strong class="text-navy">@root.SectionId</strong>
@@ -40,7 +40,7 @@
                     </tr>
                     foreach (var child in childs)
                     {
-                        <tr data-id="@child.Id" parentid="@root.Id">
+                        <tr style="display:none;" data-id="@child.Id" parentid="@root.Id">
                             <td width="10px"></td>
                             <td><a href="/admin/section?id=@child.Id">@child.SectionId</a></td>
                             <td>@child.Title</td>

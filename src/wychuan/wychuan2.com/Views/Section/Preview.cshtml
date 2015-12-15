@@ -1,7 +1,7 @@
 ﻿@model AC.Service.DTO.Blog.Sections
 @{
     Layout = "../Shared/_LayoutBootstrap.cshtml";
-    ViewBag.Title = "Test";
+    ViewBag.Title = @Model.Title;
 }
 
 @section styles{
@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-md-9" role="main">
             <div class="bs-docs-section">
-                <h1 id="@Model.SectionId" class="page-header"></h1>
+                <h1 id="@Model.SectionId" class="page-header">@Model.Title</h1>
                 @Html.Raw(Model.Content)
                 @if (Model.Childs != null)
                 {
