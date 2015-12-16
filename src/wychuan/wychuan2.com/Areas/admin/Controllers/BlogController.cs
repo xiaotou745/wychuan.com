@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using AC.Cache;
+using AC.Extension;
+using AC.Service;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
 using AC.Service.Impl.Blog;
+using AC.Util;
 using AC.Web;
 using wychuan2.com.Areas.admin.Models.Blog;
 using wychuan2.com.Models;
@@ -16,16 +21,59 @@ namespace wychuan2.com.Areas.admin.Controllers
         private readonly IBlogCategoryService blogCategoryService = new BlogCategoryService();
         private readonly IBlogTagsService blogTagsService = new BlogTagsService();
         private readonly IBlogsService blogService = new BlogsService();
+        private readonly ISectionsService sectionService = new SectionsService();
+
+        #region QueryBlogSections
+
+        public ActionResult SearchSections(SectionsQueryInfo queryInfo)
+        {
+            if (queryInfo == null)
+            {
+                return View("_BlogSectionList", null);
+            }
+            queryInfo.UserId = ApplicationUser.Current.UserId;
+            queryInfo.ParentId = 0;
+            if (!string.IsNullOrEmpty(queryInfo.StrTagIds))
+            {
+                queryInfo.TagIds = queryInfo.StrTagIds.ToNumberList();
+            }
+            IList<Sections> allSections = sectionService.Query(queryInfo);
+            List<int> checkedSectionIds = queryInfo.CheckedSectionIds ?? new List<int>();
+            List<Sections> model = allSections.Where(s => !checkedSectionIds.Contains(s.Id)).Take(20).ToList();
+            return View("_BlogSectionList", model);
+        }
+        #endregion
 
         #region 创建随笔
 
         // GET: admin/Blog
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
             var model = new BlogModel();
 
             model.Categories = blogCategoryService.GetByUserId(ApplicationUser.Current.UserId);
             model.Tags = blogTagsService.GetByUserId(ApplicationUser.Current.UserId);
+
+            var lstSectionIds = new List<string>();
+            if (id.HasValue)
+            {
+                BlogsDTO currentBlogs = blogService.GetById(id.Value);
+                if (string.IsNullOrEmpty(currentBlogs.SectionIds))
+                {
+                    currentBlogs.BlogSections = new List<Sections>();
+                }
+                else
+                {
+                    lstSectionIds =
+                        currentBlogs.SectionIds.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    currentBlogs.BlogSections = sectionService.Query(new SectionsQueryInfo {SectionIds = lstSectionIds});
+                }
+                model.CurrentBlogs = currentBlogs;
+            }
+
+            var queryInfo = new SectionsQueryInfo {UserId = ApplicationUser.Current.UserId, ParentId = 0};
+            IList<Sections> allSections = sectionService.Query(queryInfo);
+            model.SectionsUnChecked = allSections.Where(s => !lstSectionIds.Contains(s.SectionId)).Take(20).ToList();
 
             return View(model);
         }
@@ -107,22 +155,46 @@ namespace wychuan2.com.Areas.admin.Controllers
         }
         #endregion
 
+        public ActionResult Pre(int id)
+        {
+            BlogsDTO currentBlog = blogService.GetByIdWithSections(id);
+            return View(currentBlog);
+        }
+
+        public ActionResult GetBlogPre(int id, string sectionIds)
+        {
+            BlogsDTO currentBlog = blogService.GetByIdWithSections(id, sectionIds);
+            return View("Pre", currentBlog);
+        }
+
         
         #region Save
         [HttpPost]
-        [ValidateInput(false)]
         public ActionResult Save(BlogsDTO blog)
         {
+            blog.AuthorId = ApplicationUser.Current.UserId;
             if (blog.Id == 0)
             {
-                blog.PostTime = DateTime.Now;
-                blog.AuthorId = ApplicationUser.Current.UserId;
                 blog.Author = ApplicationUser.Current.UserName;
 
                 blog.Id = blogService.Create(blog);
             }
+            else
+            {
+                blogService.Modify(blog);
+            }
 
             return Json(AjaxResult.Success(blog.Id));
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SaveSections(BlogsDTO blog)
+        {
+            AppLogger.LoggerOfWeiXin.Info(JsonHelper.ToJson(blog));
+            blogService.ModifySections(blog);
+
+            return Json(AjaxResult.Success());
         }
         #endregion
     }

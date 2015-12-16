@@ -1,36 +1,7 @@
-﻿@using wychuan2.com.Models
-@model AC.Service.DTO.Blog.BlogsDTO
+﻿@model AC.Service.DTO.Blog.BlogsDTO
 @{
-    Layout = "../Shared/_LayoutBootstrap.cshtml";
-    ViewBag.Title = @Model.Title;
+    Layout = null;
 }
-
-@{
-    if (!Model.IsPublic)
-    {
-        if (!ApplicationUser.IsLogin())
-        {
-            Response.Redirect("/admin");
-        }
-    }
-}
-
-@section styles{
-    <style type="text/css">
-        .content11 {
-            width: 300px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-    </style>
-}
-@if (!Model.IsPublic && ApplicationUser.Current.UserId != Model.AuthorId)
-{
-    <div class="text-center m-t-lg"><strong class="text-navy">你没有读此随笔的权限</strong></div>
-}
-else
-{
 <div class="bs-docs-header" id="content" tabindex="-1">
     <div class="container">
         <h1>@Model.Title</h1>
@@ -93,4 +64,3 @@ else
         </div>
     </div>
 </div>
-}

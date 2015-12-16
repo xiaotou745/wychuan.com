@@ -1,0 +1,11 @@
+﻿@model IList<AC.Service.DTO.Blog.Sections>
+
+@if (Model != null)
+{
+    foreach (var sectionUn in Model)
+    {
+        <li data-id="@sectionUn.Id" data-sectionid="@sectionUn.SectionId">
+            <h3>@sectionUn.Title<small>@(" - " + sectionUn.SectionId)</small></h3>
+        </li>
+    }
+}

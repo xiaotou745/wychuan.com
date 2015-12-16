@@ -59,6 +59,7 @@
     <Compile Include="Consts.cs" />
     <Compile Include="DTO\Blog\BlogCategoryDTO.cs" />
     <Compile Include="DTO\Blog\BlogsDTO.cs" />
+    <Compile Include="DTO\Blog\BlogSections.cs" />
     <Compile Include="DTO\Blog\BlogTagsDTO.cs" />
     <Compile Include="DTO\Blog\SectionsTags.cs" />
     <Compile Include="DTO\LiCai\AccountDTO.cs" />

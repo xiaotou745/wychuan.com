@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AC.Service;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
 using AC.Service.Impl.Blog;
+using AC.Util;
 using AC.Web;
 using wychuan2.com.Areas.admin.Models.Blog;
 using wychuan2.com.Models;
@@ -32,19 +34,27 @@ namespace wychuan2.com.Areas.admin.Controllers
 
             model.Categories = blogCategoryService.GetByUserId(ApplicationUser.Current.UserId);
             model.Tags = blogTagsService.GetByUserId(ApplicationUser.Current.UserId);
-            if (id.HasValue)
+
+            if (id.HasValue) //编辑
             {
-                Sections currentSection = sectionService.GetById(id.Value);
-                model.CurrentId = id.Value;
-                model.CurrentSection = currentSection;
-                model.ParentId = currentSection.ParentId;
+                model.CurrentSection = sectionService.GetById(id.Value);
+                if (model.CurrentSection.ParentId == 0)
+                {
+                    model.Operate = SectionOperate.ModifyParent;
+                }
+                else
+                {
+                    model.Operate = SectionOperate.ModifyChild;
+                }
             }
-            else if (parentId.HasValue)
+            else if (parentId.HasValue) //新增子段落
             {
-                Sections parentSection = sectionService.GetById(parentId.Value);
-                model.ParentSection = parentSection;
-                model.ParentId = parentId.Value;
-                model.CurrentId = 0;
+                model.ParentSection = sectionService.GetById(parentId.Value);
+                model.Operate = SectionOperate.CreateChild;
+            }
+            else //新增父段落
+            {
+                model.Operate = SectionOperate.CreateNew;
             }
 
             return View(model);
@@ -58,9 +68,9 @@ namespace wychuan2.com.Areas.admin.Controllers
         [ValidateInput(false)]
         public ActionResult Save(Sections section)
         {
+            section.UserId = ApplicationUser.Current.UserId;
             if (section.Id == 0)
             {
-                section.UserId = ApplicationUser.Current.UserId;
                 section.Id = sectionService.Create(section);
             }
             else

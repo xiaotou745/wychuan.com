@@ -43,5 +43,7 @@ namespace AC.Service.Blog
         /// 查询方法
         /// </summary>
         IList<Sections> Query(SectionsQueryInfo queryInfo);
+
+        IList<Sections> GetByBlogSectionIds(string blogSectionIds);
     }
 }

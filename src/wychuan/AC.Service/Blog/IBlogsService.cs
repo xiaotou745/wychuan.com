@@ -1,4 +1,5 @@
-﻿using AC.Service.DTO.Blog;
+﻿using System.Collections.Generic;
+using AC.Service.DTO.Blog;
 
 namespace AC.Service.Blog
 {
@@ -16,6 +17,8 @@ namespace AC.Service.Blog
         /// </summary>
         void Modify(BlogsDTO blog);
 
+        void ModifySections(BlogsDTO blog);
+
         /// <summary>
         /// 删除一条记录
         /// </summary>
@@ -25,5 +28,18 @@ namespace AC.Service.Blog
         /// 根据Id得到一个对象实体
         /// </summary>
         BlogsDTO GetById(int id);
+
+        /// <summary>
+        /// 查询方法
+        /// </summary>
+        /// <param name="queryInfo">查询条件</param>
+        /// <returns></returns>
+        IList<BlogsDTO> Query(BlogsQueryInfo queryInfo);
+
+        BlogsDTO GetByIdWithSections(int id);
+
+        BlogsDTO GetByBlogIdWithSections(string blogId);
+
+        BlogsDTO GetByIdWithSections(int id, string sectionIds);
     }
 }

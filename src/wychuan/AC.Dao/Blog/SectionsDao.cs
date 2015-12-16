@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using AC.Data.Core;
 using AC.Data.Generic;
+using AC.Extension;
 using AC.Service.DTO.Blog;
 using AC.Util;
 
@@ -73,6 +74,7 @@ where  Id=@Id ";
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, UPDATE_SQL, dbParameters);
         }
         #endregion
+
         /// <summary>
         /// 删除一条记录
         /// </summary>
@@ -105,6 +107,27 @@ from    Sections s ( nolock )
             return dbParameters.Count > 0
                 ? DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, dbParameters, new SectionsRowMapper())
                 : DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, new SectionsRowMapper());
+        }
+
+        public IList<Sections> GetByBlogSectionIds(string blogSectionIds)
+        {
+            const string QUERY_SQL = @"
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId
+from    Sections s ( nolock )
+where   s.SectionId in ( {0} )
+union all
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId
+from    Sections s ( nolock )
+        join Sections s2 ( nolock ) on s.ParentId = s2.Id
+where   s2.SectionId in ( {0} )";
+
+            string strParams;
+            List<string> sectionIds = blogSectionIds.ToList();
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.AddInParameters(sectionIds, DbType.String, 50, out strParams);
+
+            return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, QUERY_SQL.format(strParams), dbParameters,
+                new SectionsRowMapper());
         }
 
 
@@ -153,9 +176,6 @@ where   s.Id=@Id ";
                 {
                     result.CategoryId = int.Parse(obj.ToString());
                 }
-                result.CategoryName = dataReader["CategoryName"].ToString();
-                result.FirstCategoryId = ParseHelper.ToInt(dataReader["FirstCategoryId"], 0);
-                result.FirstCategoryName = dataReader["FirstCategoryName"].ToString();
                 obj = dataReader["ParentId"];
                 if (obj != null && obj != DBNull.Value)
                 {
@@ -167,6 +187,19 @@ where   s.Id=@Id ";
                     result.CreateTime = DateTime.Parse(obj.ToString());
                 }
 
+                if (dataReader.HasColumn("FirstCategoryId"))
+                {
+                    result.FirstCategoryId = ParseHelper.ToInt(dataReader["FirstCategoryId"], 0);
+                }
+                if (dataReader.HasColumn("FirstCategoryName"))
+                {
+                    result.FirstCategoryName = dataReader["FirstCategoryName"].ToString();
+                }
+                if (dataReader.HasColumn("CategoryName"))
+                {
+                    result.CategoryName = dataReader["CategoryName"].ToString();
+                } 
+                
                 return result;
             }
         }
@@ -187,20 +220,33 @@ where   s.Id=@Id ";
             }
             
             //TODO:在此加入查询条件构建代码
+            if (!string.IsNullOrEmpty(queryInfo.SectionId))
+            {
+                stringBuilder.Append(" and s.SectionId like '%{0}%'".format(queryInfo.SectionId));
+            }
             if (queryInfo.UserId > 0)
             {
                 stringBuilder.Append(" and s.UserId=@UserId");
                 dbParameters.Add("UserId", DbType.Int32, 4).Value = queryInfo.UserId;
             }
-            if (!string.IsNullOrEmpty(queryInfo.SectionId))
-            {
-                stringBuilder.Append(" and s.SectionId=@SectionId");
-                dbParameters.Add("SectionId", DbType.String, 50).Value = queryInfo.SectionId;
-            }
-            if (queryInfo.ParentId > 0)
+            if (queryInfo.ParentId.HasValue)
             {
                 stringBuilder.Append(" and s.ParentId=@ParentId");
-                dbParameters.Add("ParentId", DbType.Int32, 4).Value = queryInfo.ParentId;
+                dbParameters.Add("ParentId", DbType.Int32, 4).Value = queryInfo.ParentId.Value;
+            }
+            if (queryInfo.TagIds != null && queryInfo.TagIds.Count > 0)
+            {
+                string strTagIds;
+                dbParameters.AddInParameters(queryInfo.TagIds, DbType.Int32, 4, out strTagIds);
+                stringBuilder.Append(
+                    " and s.Id in (select st.SectionId from SectionsTags st(nolock) where st.TagId in ({0}))".format(
+                        strTagIds));
+            }
+            if (queryInfo.SectionIds != null && queryInfo.SectionIds.Count > 0)
+            {
+                string strSectionIds;
+                dbParameters.AddInParameters(queryInfo.SectionIds, DbType.String, 50, out strSectionIds);
+                stringBuilder.Append(" and s.SectionId in ({0})".format(strSectionIds));
             }
             return stringBuilder.ToString();
         }

@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Blog\BlogCategoryDao.cs" />
     <Compile Include="Blog\BlogDao.cs" />
+    <Compile Include="Blog\BlogSectionsDao.cs" />
+    <Compile Include="Blog\BlogTagRelationDao.cs" />
     <Compile Include="Blog\BlogTagsDao.cs" />
     <Compile Include="Blog\SectionsDao.cs" />
     <Compile Include="Blog\SectionTagsDao.cs" />

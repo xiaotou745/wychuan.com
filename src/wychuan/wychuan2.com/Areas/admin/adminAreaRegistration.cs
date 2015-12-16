@@ -28,6 +28,13 @@ namespace wychuan2.com.Areas.admin
             //    namespaces: new[] {"wychuan2.com.Areas.admin.Controllers.LiCai"}
             //    );
 
+            //context.MapRoute(
+            //    "admin_default1",
+            //    "admin/{controller}/{id}",
+            //    new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+            //    namespaces: new[] { "wychuan2.com.Areas.admin.Controllers" }
+            //);
+
             context.MapRoute(
                 "admin_default",
                 "admin/{controller}/{action}/{id}",

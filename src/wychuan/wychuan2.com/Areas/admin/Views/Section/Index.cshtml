@@ -1,6 +1,7 @@
 ﻿@using AC.Extension
 @using AC.Service.DTO.Blog
 @using AC.Util
+@using wychuan2.com.Areas.admin.Models.Blog
 @model wychuan2.com.Areas.admin.Models.Blog.SectionPublishModel
 @{
     ViewBag.Title = "发布段落";
@@ -15,38 +16,10 @@
     string strTags = JsonHelper.ToJson(Model.Tags);
     
     var lstFirsts = Model.Categories.Where(c => c.ParentId == 0).ToList();
-    var lstSeconds = new List<BlogCategoryDTO>();
-    int firstCategoryIdSelected = 0, secondCategoryIdSelected =0;
-    string sectionIdParent = string.Empty;
-    
-    if (Model.CurrentSection != null)
-    {
-        firstCategoryIdSelected = Model.CurrentSection.FirstCategoryId;
-        secondCategoryIdSelected = Model.CurrentSection.CategoryId;
-        sectionIdParent = Model.CurrentSection.SectionId;
-        lstSeconds = Model.Categories.Where(c => c.ParentId == Model.CurrentSection.FirstCategoryId).ToList();
-    }
-    else if (Model.ParentSection != null)
-    {
-        firstCategoryIdSelected = Model.ParentSection.FirstCategoryId;
-        secondCategoryIdSelected = Model.ParentSection.CategoryId;
-        sectionIdParent = Model.ParentSection.SectionId;
-        lstSeconds = Model.Categories.Where(c => c.ParentId == Model.ParentSection.FirstCategoryId).ToList();
-    }
-    else if(lstFirsts.Count > 0)
-    {
-        lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.First().Id).ToList();
-    }
-    
-    string currentTags = string.Empty;
-    if (Model.CurrentSection != null)
-    {
-        currentTags = Model.CurrentSection.Tags.Select(t => t.TagName).ToList().SplitString(',');
-    }
-    else if (Model.ParentSection != null)
-    {
-        currentTags = Model.ParentSection.Tags.Select(t => t.TagName).ToList().SplitString(',');
-    }
+
+    var lstSeconds = Model.Operate.Equals(SectionOperate.CreateNew) 
+        ? Model.Categories.Where(c => c.ParentId == lstFirsts.First().Id).ToList() 
+        : Model.Categories.Where(c => c.ParentId == Model.FirstCategoryIdSelected).ToList();
 }
 
 @section styles{
@@ -64,24 +37,24 @@
             <div class="ibox-content" id="sectionContainer">
                 <input type="hidden" id="parentId" value="@Model.ParentId" />
                 <input type="hidden" id="hidId" value="@Model.CurrentId"/>
-                <input type="hidden" id="hidContent" value="@(Model.CurrentId>0?Model.CurrentSection.Content:"")" />
+                <input type="hidden" id="hidContent" value="@Model.CurrentContext" />
                 <form class="form-horizontal">
                     <div class="form-group">
                         <label class="control-label col-sm-1">Parent</label>
                         <div class="col-sm-11">
-                            <p class="form-control-static">@(Model.ParentSection !=null ? Model.ParentSection.Title + "(" + Model.ParentSection.SectionId + ")" : "此即是父段落")</p>
+                            <p class="form-control-static">@Model.ParentText</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-1">SectionId</label>
                         <div class="col-sm-11">
-                            <input type="text" name="txtSectionId" value="@sectionIdParent" class="form-control" placeholder="请输入段落ID" />
+                            <input type="text" name="txtSectionId" value="@Model.SectionIdShow" class="form-control" placeholder="请输入段落ID" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-1">标题</label>
                         <div class="col-sm-11">
-                            <input type="text" name="txtTitle" class="form-control" value="@(Model.CurrentId>0?Model.CurrentSection.Title:"")" placeholder="请输入段落标题" />
+                            <input type="text" name="txtTitle" class="form-control" value="@Model.CurrentTitle" placeholder="请输入段落标题" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -90,36 +63,45 @@
                             <div id="divSummernote"></div>
                         </div>
                     </div>
-                    <hr />
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">分类</label>
-                        <div class="col-sm-11">
-                            <div class="input-group">
-                                <select class="form-control" name="selFirstCategory">
-                                    @foreach (var first in lstFirsts)
-                                    {
-                                        <option @(firstCategoryIdSelected > 0 && firstCategoryIdSelected == first.Id ? "selected" : "") value="@first.Id">@first.Name</option>
-                                    }
-                                </select>
-                                <span class="input-group-addon">-</span>
-                                <select class="form-control" name="selSecondCategory">
-                                    @foreach (var second in lstSeconds)
-                                    {
-                                        <option @(secondCategoryIdSelected > 0 && secondCategoryIdSelected == second.Id ? "selected" : "") value="@second.Id">@second.Name</option>
-                                    }
-                                </select>
+                    @if (Model.ShowCategoryAndTags)
+                    {
+                        <hr />
+                        <div class="form-group">
+                            <label class="control-label col-sm-1">分类</label>
+                            <div class="col-sm-11">
+                                <div class="input-group">
+                                    <select class="form-control" name="selFirstCategory">
+                                        @foreach (var first in lstFirsts)
+                                        {
+                                            <option @(Model.FirstCategoryIdSelected == first.Id ? "selected" : "") value="@first.Id">@first.Name</option>
+                                        }
+                                    </select>
+                                    <span class="input-group-addon">-</span>
+                                    <select class="form-control" name="selSecondCategory">
+                                        @foreach (var second in lstSeconds)
+                                        {
+                                            <option @(Model.CategoryIdSelected == second.Id ? "selected" : "") value="@second.Id">@second.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <a href="/admin/blog/setting">管理分类</a>
                             </div>
-                            <a href="/admin/blog/setting">管理分类</a>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">标签</label>
+                        <div class="form-group">
+                            <label class="control-label col-sm-1">标签</label>
 
-                        <div class="col-sm-9">
-                            <input type="text" id="txtTags" value="@currentTags" name="txtTags" class="form-control" placeholder="输入tab标签，多个之间用,号分隔，最多5个" />
-                            <a href="#modalTags" data-toggle="modal" class="">插入已有标签</a><span class="help-block m-b-none text-info">tab标签，多个之间用,号分隔，最多5个</span>
+                            <div class="col-sm-9">
+                                <input type="text" id="txtTags" value="@Model.TagText" name="txtTags" class="form-control" placeholder="输入tab标签，多个之间用,号分隔，最多5个" />
+                                <a href="#modalTags" data-toggle="modal" class="">插入已有标签</a><span class="help-block m-b-none text-info">tab标签，多个之间用,号分隔，最多5个</span>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" id="hidCategoryId" value="@Model.CategoryIdSelected" />
+                    }
+                    
+                    
                     <hr />
                     <div class="text-center">
                         <button type="button" id="btnSave" class="btn btn-primary btn-lg">保存</button>
@@ -131,31 +113,34 @@
     </div>
 </div>
 
-
-<div id="modalTags" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblTags">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="lblTags">选择标签</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger alert-dismissable">
-                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                    单击选择一个标签，再次单击取消选择.
+@if (Model.ShowCategoryAndTags)
+{
+    <div id="modalTags" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lblTags">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="lblTags">选择标签</h4>
                 </div>
-                @foreach (var tag in Model.Tags)
-                {
-                    <button type="button" name="btnTags" tag-id="@tag.Id" class="btn btn-outline btn-default">@tag.TagName</button>
-                }
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" id="btnSaveTags" class="btn btn-primary">确定</button>
+                <div class="modal-body">
+                    <div class="alert alert-danger alert-dismissable">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        单击选择一个标签，再次单击取消选择.
+                    </div>
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <button type="button" name="btnTags" tag-id="@tag.Id" class="btn btn-outline btn-default">@tag.TagName</button>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" id="btnSaveTags" class="btn btn-primary">确定</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+
 
 @section scripts{
     <link rel="stylesheet" href="~/Content/plugins/summernote/summernote.css" />
@@ -172,142 +157,12 @@
         }
     </style>
     <script type="text/javascript" src="~/Scripts/extension.js"></script>
+    <script type="text/javascript" src="~/Scripts/mvcParamMatch.js"></script>
     <script type="text/javascript">
 
-    window.categories = @Html.Raw(strCategories);
-    window.tags = @Html.Raw(strTags);
-
-    $(function() {
-        $("#divSummernote").summernote({
-            height: 300,                 // set editor height
-
-            minHeight: null,             // set minimum height of editor
-            maxHeight: null,             // set maximum height of editor
-
-            focus: true,                 // set focus to editable area after initializing summernote
-
-            lang: "zh-CN"
-        });
-        $("#divSummernote").code($("#hidContent").val());
-
-
-        $("#btnPreview").bind("click", function() {
-            var blog = getSection();
-            $.ajax({
-                url: "/admin/blog/preview",
-                type: "post",
-                data: blog,
-                dataType: "json",
-                success: function(resp) {
-                    if (!resp.iserror) {
-                        window.location.href = "/blog/preview";
-                    }
-                }
-            });
-        });
-        $("#btnSave").bind("click", function() {
-            var section = getSection();
-            $.ajax({
-                url: "/admin/section/save",
-                type: "post",
-                data: section,
-                dataType: "json",
-                success: function(resp) {
-                    if (!resp.iserror) {
-                        alert("保存成功.");
-                        location.href = "/admin/section/list";
-                    }
-                }
-            });
-        });
-        //类别一级菜单事件
-        $("[name=selFirstCategory]").bind("change", function() {
-            var $second = $(this).next().next();
-            var firstId = $(this).val();
-            var seconds = $.grep(window.categories, function(item, index) {
-                return item.ParentId == firstId;
-            });
-            $second.html("");
-            $.each(seconds, function(i, category) {
-                $second.append("<option value='" + category.Id + "'>" + category.Name + "</option>");
-            });
-        });
-
-        $("[name=btnTags]").bind("click", function() {
-            var $txtTags = $("[name=txtTags]");
-            var arrayTags = $txtTags.val().split(",").delete("");
-            //arrayTags.delete("");
-            var $this = $(this);
-            var selected = $this.text();
-            if ($this.hasClass("btn-default")) { //选中
-                arrayTags.push(selected);
-                $txtTags.val(arrayTags.join(","));
-                $this.removeClass("btn-default");
-                $this.addClass("btn-primary");
-            } else {
-                arrayTags.delete(selected);
-                $txtTags.val(arrayTags.join(","));
-                $this.removeClass("btn-primary");
-                $this.addClass("btn-default");
-            }
-        });
-
-        $("#modalTags").bind("show.bs.modal", function(event) {
-            var $txtTags = $("[name=txtTags]");
-            var arrayTags = $txtTags.val().split(",").delete("");
-            $("#modalTags").find("button[name=btnTags]").each(function(index, item) {
-                var text = $(item).text();
-                if (arrayTags.contain(text)) {
-                    $(item).removeClass("btn-default");
-                    $(item).addClass("btn-primary");
-                } else {
-                    $(item).removeClass("btn-primary");
-                    $(item).addClass("btn-default");
-                }
-            });
-        });
-    });
-
-    function getTags() {
-        var $container = $("#sectionContainer");
-        var selectedTags = $container.find("[name=txtTags]").val().split(",").delete("");
-        var tagIds = new Array();
-        var newTags = new Array();
-        $.each(selectedTags, function(i, item) {
-            var isNewTag = true;
-            for (var index = 0; index < window.tags.length; index++) {
-                var tag = window.tags[index];
-                if (tag.TagName == item) {
-                    isNewTag = false;
-                    tagIds.push(tag.Id);
-                    break;
-                }
-            }
-
-            if (isNewTag) {
-                newTags.push(item);
-            }
-        });
-        return {
-            TagIds: tagIds,
-            NewTags: newTags.join(",")
-        };
-    }
-    function getSection() {
-        var $container = $("#sectionContainer");
-        var tags = getTags();
-        var section = {
-            Id: $("#hidId").val(),
-            SectionId: $container.find("[name=txtSectionId]").val(),
-            Title: $container.find("[name=txtTitle]").val(),
-            Content: $("#divSummernote").code(),
-            ParentId: $("#parentId").val(),
-            CategoryId: $container.find("[name=selSecondCategory]").val(),
-            TagIds: tags.TagIds,
-            NewTags:tags.NewTags
-        };
-        return section;
-    }
-
+        window.categories = @Html.Raw(strCategories);
+        window.tags = @Html.Raw(strTags);
+        window.isParent = @Model.IsParent.ToString().ToLower();
     </script>
+    <script type="text/javascript" src="~/Scripts/blog/section.js"></script>
 }

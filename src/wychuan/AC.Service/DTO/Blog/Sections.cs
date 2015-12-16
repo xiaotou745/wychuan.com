@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using AC.Extension;
 
 namespace AC.Service.DTO.Blog
 {
     public class Sections
     {
-        /// <summary>
-        /// section对应的tagId
-        /// </summary>
-        public List<int> TagIds { get; set; }
-
-        /// <summary>
-        /// 创建section时新的tag名称列表，中间以逗号分隔
-        /// </summary>
-        public string NewTags { get; set; }
-
         /// <summary>
         /// 段落标签列表
         /// </summary>
@@ -102,6 +93,37 @@ namespace AC.Service.DTO.Blog
         /// <summary>
         /// parentId
         /// </summary>
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
+
+        /// <summary>
+        /// sectionId列表查询条件
+        /// </summary>
+        public List<string> SectionIds { get; set; }
+
+        /// <summary>
+        /// 标签列表查询条件
+        /// </summary>
+        public List<int> TagIds { get; set; }
+
+        public string StrTagIds { get; set; }
+
+        /// <summary>
+        /// 当前随笔已选择的段落ID列表
+        /// </summary>
+        public List<int> CheckedSectionIds {
+            get
+            {
+                if (string.IsNullOrEmpty(StrCheckedSectionIds))
+                {
+                    return new List<int>();
+                }
+                return StrCheckedSectionIds.ToNumberList();
+            } 
+        }
+
+        /// <summary>
+        /// 已选
+        /// </summary>
+        public string StrCheckedSectionIds { get; set; }
     }
 }

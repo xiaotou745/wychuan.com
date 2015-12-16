@@ -1,13 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AC.Service.DTO.Blog
 {
+    /// <summary>
+    /// 实体类BlogDTO 。(属性说明自动提取数据库字段的描述信息)
+    /// Generate By: wangyuchuan
+    /// Generate Time: 2015-12-16 11:20:38
+    /// </summary>
     public class BlogsDTO
     {
+        #region Fields
+
         /// <summary>
         /// 自增ID
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// 字符串ID
+        /// </summary>
+        public string BlogId { get; set; }
 
         /// <summary>
         /// 标题
@@ -25,24 +38,24 @@ namespace AC.Service.DTO.Blog
         public string ConverImgUrl { get; set; }
 
         /// <summary>
-        /// 正文
+        /// 二级分类ID
         /// </summary>
-        public string Content { get; set; }
+        public int CategoryId { get; set; }
 
         /// <summary>
-        /// 标签
+        /// 是否所有人可见
         /// </summary>
-        public string Tags { get; set; }
+        public bool IsPublic { get; set; }
 
         /// <summary>
-        /// 分类
+        ///
         /// </summary>
-        public string Category { get; set; }
+        public string SectionIds { get; set; }
 
         /// <summary>
         /// 发布人Id
         /// </summary>
-        public int? AuthorId { get; set; }
+        public int AuthorId { get; set; }
 
         /// <summary>
         /// 发布人
@@ -53,5 +66,27 @@ namespace AC.Service.DTO.Blog
         /// 发布时间
         /// </summary>
         public DateTime PostTime { get; set; }
+
+        #endregion
+
+        public string CategoryName { get; set; }
+
+        public int FirstCategoryId { get; set; }
+
+        public string FirstCategoryName { get; set; }
+
+        public IList<Sections> BlogSections { get; set; }
+
+        /// <summary>
+        /// 段落标签列表
+        /// </summary>
+        public IList<BlogTagRelation> Tags { get; set; }
+
+        public string Htmls { get; set; }
+    }
+
+    public class BlogsQueryInfo
+    {
+        
     }
 }

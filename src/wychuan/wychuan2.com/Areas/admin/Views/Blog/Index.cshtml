@@ -8,9 +8,15 @@
 
 @{
     string strCategories =  JsonHelper.ToJson(Model.Categories);
+    string strTags = JsonHelper.ToJson(Model.Tags);
+    
     var lstFirsts = Model.Categories.Where(c => c.ParentId == 0).ToList();
     var lstSeconds = new List<BlogCategoryDTO>();
-    if (lstFirsts.Count > 0)
+    if (Model.FirstCategoryId > 0)
+    {
+        lstSeconds = Model.Categories.Where(c => c.ParentId == Model.FirstCategoryId).ToList();
+    }
+    else if (lstFirsts.Count > 0)
     {
         lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.First().Id).ToList();
     }
@@ -18,10 +24,12 @@
 
 @section styles{
     
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="~/Content/plugins/chosen/chosen.css" rel="stylesheet" />
     <link href="~/Content/plugins/webuploader/webuploader.css" rel="stylesheet" />
 }
 
-
+<input type="hidden" id="preHtmlResult"/>
 <div class="row">
     <div class="col-md-12">
         <div class="ibox">
@@ -29,75 +37,152 @@
                 <h3>随笔发布</h3>
             </div>
             <div class="ibox-content" id="blogContainer">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">标题</label>
-                        <div class="col-sm-11">
-                            <input type="text" name="txtTitle" class="form-control" placeholder="请输入随笔标题" />
-                        </div>
+                <ul class="nav nav-tabs" role="tablist" id="taglist">
+                    <li class="active"><a href="#tab1" data-toggle="tab">基础信息</a></li>
+                    <li><a href="#tab2" data-toggle="tab">段落</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active m-t-md" id="tab1">
+                        <form class="form-horizontal">
+                            <input id="hidId" type="hidden" value="@(Model.CurrentBlogs==null?0:Model.CurrentBlogs.Id)" />
+                            <div class="form-group">
+                                <label class="control-label col-sm-1">Id</label>
+                                <div class="col-sm-11">
+                                    <input type="text" name="txtBlogId" value="@(Model.CurrentBlogs==null?string.Empty:Model.CurrentBlogs.BlogId)" class="form-control" placeholder="请输入随笔Id" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-1">标题</label>
+                                <div class="col-sm-11">
+                                    <input type="text" name="txtTitle" value="@(Model.CurrentBlogs==null?string.Empty:Model.CurrentBlogs.Title)" class="form-control" placeholder="请输入随笔标题" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-1">封面</label>
+                                <div class="col-sm-11">
+                                    <div id="uploader-demo">
+                                        <!--用来存放item-->
+                                        <div id="fileList" class="uploader-list"></div>
+                                        <div id="filePicker">选择图片</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-1">摘要</label>
+                                <div class="col-sm-11">
+                                    <textarea name="txtSummary" class="form-control"  rows="3" placeholder="请输入随笔摘要">@(Model.CurrentBlogs == null ? string.Empty : Model.CurrentBlogs.Summary)</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-1 col-sm-11">
+                                    <label class="checkbox-inline i-checks">
+                                        <input name="chkIsPublic" type="checkbox" checked="@(Model.IsPublic?"checked":"")" class="form-control">  公开
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label col-sm-1">分类</label>
+                                <div class="col-sm-11">
+                                    <div class="input-group">
+                                        <select class="form-control" name="selFirstCategory">
+                                            @foreach (var first in lstFirsts)
+                                            {
+                                                <option @(Model.FirstCategoryId == first.Id ? "selected" : "") value="@first.Id">@first.Name</option>
+                                            }
+                                        </select>
+                                        <span class="input-group-addon">-</span>
+                                        <select class="form-control" name="selSecondCategory">
+                                            @foreach (var second in lstSeconds)
+                                            {
+                                                <option @(Model.CategoryId == second.Id ? "selected" : "") value="@second.Id">@second.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <a href="/admin/blog/setting">管理分类</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-1">标签</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtTags" name="txtTags" value="@Model.TagText" class="form-control" placeholder="输入tab标签，多个之间用,号分隔，最多5个" />
+                                    <a href="#modalTags" data-toggle="modal" class="">插入已有标签</a><span class="help-block m-b-none text-info">tab标签，多个之间用,号分隔，最多5个</span>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="text-center">
+                                <button type="button" id="btnSave" class="btn btn-primary btn-lg">保存</button>
+                                <button type="button" id="btnPreview" class="btn btn-white btn-lg">预览</button>
+                            </div>
+                        </form>
                     </div>
-                    @*<div class="form-group">
-                        <label class="control-label">作者</label>
-                        <input type="text" class="form-control" placeholder="请输入随笔作者" />
-                    </div>*@
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">封面</label>
-                        <div class="col-sm-11">
-                            <div id="uploader-demo">
-                                <!--用来存放item-->
-                                <div id="fileList" class="uploader-list"></div>
-                                <div id="filePicker">选择图片</div>
+                    <div class="tab-pane m-t-md" id="tab2">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="ibox">
+                                    <div class="ibox-content">
+                                        <h3>已选随笔段落</h3>
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <button id="btnSaveBlogSections" class="btn btn-primary btn-block" type="button">保存随笔段落</button>
+                                            </div>
+                                        </form>
+                                        <hr />
+                                        <ul id="sectionsCheckedContainer" class="sortable-list connectList agile-list ui-sortable">
+                                            @if (Model.CurrentBlogs != null && Model.CurrentBlogs.BlogSections != null)
+                                            {
+                                                @Html.Partial("_BlogSectionList", Model.CurrentBlogs.BlogSections)
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-6">
+                                <div class="ibox">
+                                    <div class="ibox-content">
+                                        <h3>可选随笔段落</h3>
+                                        <p class="small"><i class="fa fa-hand-o-up"></i> 拖拽下面段落到左侧列表</p>
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-2">SectionId</label>
+                                                <div class="col-sm-10">
+                                                    <input id="txtSectionIdQ" type="text" class="form-control" placeholder="输入sectionId查询" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Tags</label>
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <select id="selTagsQ" data-placeholder="所有Tag" class="chosen-select" multiple>
+                                                            <option value="">请选择Tag</option>
+                                                            @foreach (var tag in Model.Tags)
+                                                            {
+                                                                <option value="@tag.Id" hassubinfo="true">@tag.TagName</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-2 col-sm-10">
+                                                    <button id="btnSearchSections" class="btn btn-primary" type="button">查询</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <hr />
+                                        <ul id="sectionsUnCheckedContainer" class="sortable-list connectList agile-list ui-sortable">
+                                            @Html.Partial("_BlogSectionList", Model.SectionsUnChecked)
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">摘要</label>
-                        <div class="col-sm-11">
-                            <textarea name="txtSummary" class="form-control" rows="3" placeholder="请输入随笔摘要"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">正文</label>
-                        <div class="col-sm-11">
-                            <div id="divSummernote"></div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">分类</label>
-                        <div class="col-sm-11">
-                            <div class="input-group">
-                                <select class="form-control" name="selFirstCategory">
-                                    @foreach (var first in lstFirsts)
-                                    {
-                                        <option value="@first.Id">@first.Name</option>
-                                    }
-                                </select>
-                                <span class="input-group-addon">-</span>
-                                <select class="form-control" name="selSecondCategory">
-                                    @foreach (var first in lstSeconds)
-                                    {
-                                        <option value="@first.Id">@first.Name</option>
-                                    }
-                                </select>
-                            </div>
-                            <a href="/admin/blog/setting">管理分类</a>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-1">标签</label>
-                        
-                        <div class="col-sm-9">
-                            <input type="text" id="txtTags" name="txtTags" class="form-control" placeholder="输入tab标签，多个之间用,号分隔，最多5个" />
-                            <a href="#modalTags" data-toggle="modal" class="">插入已有标签</a><span class="help-block m-b-none text-info">tab标签，多个之间用,号分隔，最多5个</span>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="text-center">
-                        <button type="button" id="btnSave" class="btn btn-primary btn-lg">保存</button>
-                        <button type="button" id="btnPreview" class="btn btn-white btn-lg">预览</button>
-                    </div>
-                </form>
+                </div>
+   
             </div>
         </div>
     </div>
@@ -130,11 +215,12 @@
 </div>
 
 @section scripts{
-    <link rel="stylesheet" href="~/Content/plugins/summernote/summernote.css" />
-    <link rel="stylesheet" href="~/Content/plugins/summernote/summernote-bs3.css" />
-    <script type="text/javascript" src="~/Scripts/plugins/summernote/summernote.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/plugins/summernote/summernote-zh-CN.js"></script>
     <script type="text/javascript" src="~/Scripts/plugins/webuploader/webuploader.min.js"></script>
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+    <script src="~/Scripts/extension.js"></script>
+    <script src="~/Scripts/mvcParamMatch.js"></script>
+
     <style type="text/css">
         .note-editor.fullscreen {
             position: fixed;
@@ -146,183 +232,7 @@
     </style>
     <script type="text/javascript">
         window.categories = @Html.Raw(strCategories);
-
-        $(function() {
-            $("#divSummernote").summernote({
-                height: 300,                 // set editor height
-
-                minHeight: null,             // set minimum height of editor
-                maxHeight: null,             // set maximum height of editor
-
-                focus: true,                 // set focus to editable area after initializing summernote
-
-                lang: "zh-CN"
-            });
-
-            var uploader = WebUploader.create({
-                // 选完文件后，是否自动上传。
-                auto: true,
-                // swf文件路径
-                swf: '/Content/plugins/webuploader/Uploader.swf',
-                // 文件接收服务端。
-                server: '/admin/blog/UploadFile',
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '#filePicker',
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                }
-            });
-            // 当有文件添加进来的时候
-            uploader.on('fileQueued', function(file) {
-                console.log("fileQueued");
-                var $li = $(
-                    '<div id="' + file.id + '" class="file-item thumbnail">' +
-                        '<img>' +
-                        '<div class="info">' + file.name + '</div>' +
-                        '<div class="error"></div>' +
-                        '</div>'
-                ),
-                    $img = $li.find('img');
-
-
-                // $list为容器jQuery实例
-                $("#fileList").append($li);
-
-                // 创建缩略图
-                // 如果为非图片文件，可以不用调用此方法。
-                // thumbnailWidth x thumbnailHeight 为 100 x 100
-                uploader.makeThumb(file, function(error, src) {
-                    if (error) {
-                        $img.replaceWith('<span>不能预览</span>');
-                        return;
-                    }
-
-                    $img.attr('src', src);
-                }, 200, 200);
-            });
-            uploader.on('uploadSuccess', function(file, resp) {
-                $('#fileList').attr("filepath", resp.message);
-                $('#' + file.id).find('.error').text('已上传');
-            });
-
-            uploader.on('uploadError', function(file, reason) {
-                $('#' + file.id).find('.error').text('上传出错');
-            });
-
-            uploader.on('uploadComplete', function(file) {
-                $('#' + file.id).find('.progress').fadeOut();
-            });
-
-            $("#btnPreview").bind("click", function() {
-                var blog = getBlog();
-                $.ajax({
-                    url: "/admin/blog/preview",
-                    type: "post",
-                    data: blog,
-                    dataType:"json",
-                    success: function(resp) {
-                        if (!resp.iserror) {
-                            window.location.href = "/blog/preview";
-                        }
-                    }
-                });
-            });
-            $("#btnSave").bind("click", function() {
-                var blog = getBlog();
-                $.ajax({
-                    url: "/admin/blog/save",
-                    type: "post",
-                    data: blog,
-                    dataType:"json",
-                    success: function(resp) {
-                        if (!resp.iserror) {
-                            window.location.href = "/blog/item/" + resp.data;
-                        }
-                    }
-                });
-            });
-            //类别一级菜单事件
-            $("[name=selFirstCategory]").bind("change", function() {
-                var $second = $(this).next().next();
-                var firstId = $(this).val();
-                var seconds = $.grep(window.categories, function(item, index) {
-                    return item.ParentId == firstId;
-                });
-                $second.html("");
-                $.each(seconds, function(i, category) {
-                    $second.append("<option value='" + category.Id + "'>" + category.Name + "</option>");
-                });
-            });
-
-            $("[name=btnTags]").bind("click", function() {
-                var $txtTags = $("[name=txtTags]");
-                var arrayTags = $txtTags.val().split(",").delete("");
-                //arrayTags.delete("");
-                var $this = $(this);
-                var selected = $this.text();
-                if ($this.hasClass("btn-default")) {
-                    arrayTags.push(selected);
-                    $txtTags.val(arrayTags.join(","));
-                    $this.removeClass("btn-default");
-                    $this.addClass("btn-primary");
-                } else {
-                    arrayTags.delete(selected);
-                    $txtTags.val(arrayTags.join(","));
-                    $this.removeClass("btn-primary");
-                    $this.addClass("btn-default");
-                }
-            });
-
-            $("#modalTags").bind("show.bs.modal", function(event) {
-                var $txtTags = $("[name=txtTags]");
-                var arrayTags = $txtTags.val().split(",").delete("");
-                $("#modalTags").find("button[name=btnTags]").each(function(index, item) {
-                    var text = $(item).text();
-                    if (arrayTags.contain(text)) {
-                        $(item).removeClass("btn-default");
-                        $(item).addClass("btn-primary");
-                    } else {
-                        $(item).removeClass("btn-primary");
-                        $(item).addClass("btn-default");
-                    }
-                });
-            });
-        });
-        
-        function getBlog() {
-            var $container = $("#blogContainer");
-            var blog = {
-                Title: $container.find("[name=txtTitle]").val(),
-                Summary: $container.find("[name=txtSummary]").val(),
-                ConverImgUrl: $('#fileList').attr("filepath"),
-                Content: $("#divSummernote").code(),
-                Tags: $container.find("[name=txtTags]").val(),
-                Category: $container.find("[name=selSecondCategory] option:selected").text()
-            };
-            return blog;
-        }
-        Array.prototype.contain = function(item) {
-            for (var i = 0; i < this.length; i++) {
-                // 严格比较，即类型与数值必须同时相等。
-                if (this[i] === item) {
-                    return true;
-                }
-            }
-            return false;
-        };
-        Array.prototype.delete = function(varElement) {
-            for (var i = 0; i < this.length; i++) {
-                // 严格比较，即类型与数值必须同时相等。
-                if (this[i] === varElement) {
-                    this.splice(i, 1);
-                    break;
-                }
-            }
-            return this;
-        };
+        window.tags = @Html.Raw(strTags);
     </script>
-    }
+    <script type="text/javascript" src="~/Scripts/blog/myblog.js"></script>
+}

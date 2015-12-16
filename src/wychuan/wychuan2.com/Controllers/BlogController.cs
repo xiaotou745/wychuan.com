@@ -25,9 +25,9 @@ namespace wychuan2.com.Controllers
             return View();
         }
 
-        public ActionResult Item(int id)
+        public ActionResult Item(string id)
         {
-            var blogsDTO = blogService.GetById(id);
+            var blogsDTO = blogService.GetByBlogIdWithSections(id);
 
             return View(blogsDTO);
         }
