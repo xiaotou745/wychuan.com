@@ -13,15 +13,10 @@ namespace wychuan2.com.Controllers
     public class BlogController : Controller
     {
         private readonly IBlogsService blogService = new BlogsService();
-        private readonly ISectionsService sectionService = new SectionsService();
 
         // GET: Blog
-        public ActionResult Index(int? id)
+        public ActionResult Index()
         {
-            if (id.HasValue && id != 0)
-            {
-                return View("BlogItem");
-            }
             return View();
         }
 
@@ -38,22 +33,22 @@ namespace wychuan2.com.Controllers
             return View();
         }
 
-        public ActionResult PreView()
-        {
-            var blog = DataCache.GetCache("preview_blog_key") as BlogsDTO;
+        //public ActionResult PreView()
+        //{
+        //    var blog = DataCache.GetCache("preview_blog_key") as BlogsDTO;
 
-            return View(blog);
-        }
+        //    return View(blog);
+        //}
 
-        public ActionResult Test(string id)
-        {
-            Sections section = sectionService.GetBySectionId(id);
-            if (section != null)
-            {
-                section.Childs = sectionService.Query(new SectionsQueryInfo {ParentId = section.Id});
-            }
-            return View(section);
-        }
+        //public ActionResult Test(string id)
+        //{
+        //    Sections section = sectionService.GetBySectionId(id);
+        //    if (section != null)
+        //    {
+        //        section.Childs = sectionService.Query(new SectionsQueryInfo {ParentId = section.Id});
+        //    }
+        //    return View(section);
+        //}
 
         public ActionResult Demo()
         {

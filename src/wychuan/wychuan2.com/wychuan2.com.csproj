@@ -726,10 +726,7 @@
     <Content Include="Views\LeLe\Index.cshtml" />
     <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Blog\Category.cshtml" />
-    <Content Include="Views\Blog\BlogItem.cshtml" />
-    <Content Include="Views\Blog\PreView.cshtml" />
     <Content Include="Views\Blog\Item.cshtml" />
-    <Content Include="Views\Blog\Test.cshtml" />
     <Content Include="Views\Shared\_LayoutBootstrap.cshtml" />
     <Content Include="Views\Blog\Demo.cshtml" />
     <Content Include="Views\Section\Preview.cshtml" />

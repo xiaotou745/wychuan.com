@@ -12,11 +12,11 @@ namespace wychuan2.com
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+           
             routes.MapRoute(
-                name: "Default1",
-                url: "{controller}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                name: "sectionitem",
+                url: "section/{id}",
+                defaults: new { controller = "Section", action = "Index", id = UrlParameter.Optional },
                 namespaces: new[] { "wychuan2.com.Controllers" }
             );
 

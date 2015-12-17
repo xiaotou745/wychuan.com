@@ -18,19 +18,19 @@ namespace wychuan2.com.Controllers
             Sections section = sectionService.GetBySectionId(id);
             if (section != null)
             {
-                section.Childs = sectionService.Query(new SectionsQueryInfo { ParentId = section.Id });
-            }
-            return View(section);
-        }
-
-        public ActionResult Preview(string id)
-        {
-            Sections section = sectionService.GetBySectionId(id);
-            if (section != null)
-            {
                 section.Childs = sectionService.Query(new SectionsQueryInfo {ParentId = section.Id});
             }
             return View(section);
         }
+
+        //public ActionResult Preview(string id)
+        //{
+        //    Sections section = sectionService.GetBySectionId(id);
+        //    if (section != null)
+        //    {
+        //        section.Childs = sectionService.Query(new SectionsQueryInfo {ParentId = section.Id});
+        //    }
+        //    return View(section);
+        //}
     }
 }
