@@ -4,6 +4,7 @@ using System.Linq;
 using AC.Dao;
 using AC.Dao.Blog;
 using AC.IO;
+using AC.Page;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
 using AC.Transaction.Common;
@@ -119,6 +120,11 @@ namespace AC.Service.Impl.Blog
             }
             blogsDTO.Tags = blogTagDao.GetByBlogId(id);
             return blogsDTO;
+        }
+
+        public IPagedList<BlogsDTO> QueryPaged(BlogsQueryInfo queryInfo)
+        {
+            return blogDao.QueryPaged(queryInfo);
         }
 
         public BlogsDTO GetByIdWithSections(int id)

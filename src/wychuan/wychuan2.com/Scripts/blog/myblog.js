@@ -250,8 +250,14 @@ function saveBlogSections() {
             type: "post",
             data: mvcParamMatch(params, "BlogSections"),
             dataType: "json",
-            success: function(response) {
-                console.log(response);
+            success: function (response) {
+                if (!response.iserror) {
+                    alert("保存成功");
+                    window.open("/blog/item/" + $("[name=txtBlogId]").val());
+                    location.href = "/admin/blog/list";
+                } else {
+                    alert("保存失败:" + response.message);
+                }
             }
         });
     });

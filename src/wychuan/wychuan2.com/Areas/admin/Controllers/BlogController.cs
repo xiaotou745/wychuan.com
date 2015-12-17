@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using AC.Cache;
 using AC.Extension;
+using AC.Page;
 using AC.Service;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
@@ -115,15 +116,32 @@ namespace wychuan2.com.Areas.admin.Controllers
 
         public ActionResult List()
         {
-            var model = new BlogModel();
+            var model = new BlogListModel();
 
             model.Categories = blogCategoryService.GetByUserId(ApplicationUser.Current.UserId);
             model.Tags = blogTagsService.GetByUserId(ApplicationUser.Current.UserId);
+
+            BlogsQueryInfo queryInfo = new BlogsQueryInfo
+            {
+                PageIndex=1,
+                UserId = ApplicationUser.Current.UserId
+            };
+            IPagedList<BlogsDTO> blogs = blogService.QueryPaged(queryInfo);
+            model.BlogsPaged = blogs;
 
             return View(model);
         }
 
         #endregion
+
+        public ActionResult Search(BlogsQueryInfo queryInfo)
+        {
+            var model = new BlogListModel();
+            queryInfo.UserId = ApplicationUser.Current.UserId;
+            IPagedList<BlogsDTO> blogs = blogService.QueryPaged(queryInfo);
+            model.BlogsPaged = blogs;
+            return View("_BlogList", model);
+        }
 
         #region 设置
 
@@ -167,6 +185,11 @@ namespace wychuan2.com.Areas.admin.Controllers
             return View("Pre", currentBlog);
         }
 
+        public AjaxResult Remove(int id)
+        {
+            blogService.Remove(id);
+            return AjaxResult.Success();
+        }
         
         #region Save
         [HttpPost]

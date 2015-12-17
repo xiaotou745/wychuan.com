@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AC.Page;
 
 namespace AC.Service.DTO.Blog
 {
@@ -85,8 +86,12 @@ namespace AC.Service.DTO.Blog
         public string Htmls { get; set; }
     }
 
-    public class BlogsQueryInfo
+    public class BlogsQueryInfo : Paginator
     {
-        
+        public int UserId { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        public List<int> TagIds { get; set; }
     }
 }

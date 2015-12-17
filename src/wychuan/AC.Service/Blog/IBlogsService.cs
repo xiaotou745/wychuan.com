@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AC.Page;
 using AC.Service.DTO.Blog;
 
 namespace AC.Service.Blog
@@ -35,6 +36,13 @@ namespace AC.Service.Blog
         /// <param name="queryInfo">查询条件</param>
         /// <returns></returns>
         IList<BlogsDTO> Query(BlogsQueryInfo queryInfo);
+
+        /// <summary>
+        /// 分页查询方法
+        /// </summary>
+        /// <param name="queryInfo"></param>
+        /// <returns></returns>
+        IPagedList<BlogsDTO> QueryPaged(BlogsQueryInfo queryInfo);
 
         BlogsDTO GetByIdWithSections(int id);
 

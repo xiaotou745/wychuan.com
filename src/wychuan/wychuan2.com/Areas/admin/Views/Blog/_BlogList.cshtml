@@ -1,0 +1,44 @@
+﻿@using AC.Service.DTO.Blog
+@model wychuan2.com.Areas.admin.Models.Blog.BlogListModel
+
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped" data-totalrecord="@Model.BlogsPaged.RecordCount">
+        <thead>
+            <tr>
+                <th>BlogId</th>
+                <th>标题</th>
+                <th>公开</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Blogs != null && Model.Blogs.Count > 0)
+            {
+                foreach (BlogsDTO blog in Model.Blogs)
+                {
+                    <tr data-id="@blog.Id">
+                        <td>
+                            <a href="/admin/blog?id=@blog.Id">
+                                <strong class="text-navy">@blog.BlogId</strong>
+                            </a>
+                        </td>
+                        <td>@blog.Title</td>
+                        <td><div>@blog.Summary</div></td>
+                        <td>
+                            <a class="J_Remove">删除</a>
+                            <a target="_blank" href="/blog/item/@blog.BlogId">预览</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td class="success text-center" colspan="4">
+                        暂时没有明细
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

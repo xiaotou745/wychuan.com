@@ -6,7 +6,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AC.Data;
+using AC.Data.Core;
+using AC.Data.Generic;
 using AC.Extension;
+using AC.Helper;
+using AC.Page;
+using AC.Service;
+using AC.Service.DTO.Blog;
 
 namespace AC.Dao
 {
@@ -146,6 +152,159 @@ namespace AC.Dao
                 }
             }
             return lstT;
+        }
+
+        public IPagedList<T> QueryPaged<T>(PagedQueryBuilder<T> queryInfo)
+        {
+            IDbParameters dbParameters = queryInfo.DbParameters;
+
+            object recordResult = DbHelper.ExecuteScalar(ConnStringOfAchuan, queryInfo.GetRecordCountSqlText(), dbParameters);
+            if (recordResult == null)
+            {
+                return new PagedList<T>(new List<T>(), 0, 0);
+            }
+            int recordCount = ParseHelper.ToInt(recordResult);
+            
+            int pageCount = recordCount % queryInfo.PageSize == 0
+                             ? recordCount / queryInfo.PageSize
+                             : recordCount / queryInfo.PageSize + 1;
+
+
+            var lstResult = dbParameters.Count > 0
+                ? DbHelper.QueryWithRowMapper(ConnStringOfAchuan, queryInfo.GetRecordResultSqlText(),
+                    dbParameters, queryInfo.RowMapper)
+                : DbHelper.QueryWithRowMapper(ConnStringOfAchuan, queryInfo.GetRecordResultSqlText(),
+                    queryInfo.RowMapper);
+            var result = new PagedList<T>(lstResult, recordCount, pageCount);
+            result.PageIndex = queryInfo.PageIndex;
+            result.PageSize = queryInfo.PageSize;
+            return result;
+        }
+    }
+
+    public class PagedQueryBuilder<T>
+    {
+        public Paginator Paginator { get; set; }
+
+        public PagedQueryBuilder<T> SetPaginator(Paginator paginator)
+        {
+            this.Paginator = paginator;
+            return this;
+        }
+        public IDbParameters DbParameters { get; set; }
+
+        public PagedQueryBuilder<T> SetDbParameters(IDbParameters dbParameters)
+        {
+            this.DbParameters = dbParameters;
+            return this;
+        }
+        public string OrderByColumn { get; set; }
+
+        public PagedQueryBuilder<T> SetOrderByColumn(string orderBy)
+        {
+            OrderByColumn = orderBy;
+            return this;
+        }
+        public string ColumnList { get; set; }
+
+        public PagedQueryBuilder<T> SetColumnList(string columnList)
+        {
+            ColumnList = columnList;
+            return this;
+        }
+        public string TableList { get; set; }
+
+        public PagedQueryBuilder<T> SetTableList(string tableList)
+        {
+            TableList = tableList;
+            return this;
+        }
+        public string Where { get; set; }
+
+        public PagedQueryBuilder<T> SetWhere(string where)
+        {
+            Where = where;
+            return this;
+        }
+
+        public string GroupBy { get; set; }
+
+        public PagedQueryBuilder<T> SetGroupBy(string groupBy)
+        {
+            this.GroupBy = groupBy;
+            return this;
+        }
+
+        public IDataTableRowMapper<T> RowMapper { get; set; }
+
+        public PagedQueryBuilder<T> SetRowMapper(IDataTableRowMapper<T> rowMapper)
+        {
+            this.RowMapper = rowMapper;
+            return this;
+        }
+
+        public int PageSize
+        {
+            get
+            {
+
+                int pageSize = Paginator.PageSize == 0 ? 10 : Paginator.PageSize;
+                return pageSize;
+            }
+        }
+
+        public int PageIndex
+        {
+            get
+            {
+                int pageIndex = Paginator.PageIndex == 0 ? 1 : Paginator.PageIndex;
+                return pageIndex;
+            }
+        }
+        
+        private PagedQueryBuilder() { }
+
+        public static PagedQueryBuilder<T> Create()
+        {
+            return new PagedQueryBuilder<T>();
+        }
+
+        public string GetRecordCountSqlText()
+        {
+            if (string.IsNullOrEmpty(GroupBy))
+            {
+                return @"select count(1) from {0} where {1}".format(TableList, Where);
+            }
+            return
+                @"select isnull(sum(t2.[no]),0) from ( select 1 as [no] from {0} where {1} group by {2}) as t2"
+                    .format(TableList, Where, GroupBy);
+        }
+
+        public string GetRecordResultSqlText()
+        {
+            int rowStart = (PageIndex - 1) * PageSize + 1;
+            int rowEnd = rowStart + PageSize - 1;
+            if (string.IsNullOrEmpty(GroupBy))
+            {
+                return @"
+with t as(
+select  row_number() over ( order by {2} desc ) as rowNo,
+        {3}
+from    {0}
+where   {1}
+)
+select * from t where t.rowNo between {4} and {5}".format(TableList, Where, OrderByColumn, ColumnList, rowStart, rowEnd);
+            }
+            return @"
+with t as(
+select  row_number() over ( order by {2} desc ) as rowNo,
+        {3}
+from    {0}
+where   {1}
+group by {6}
+)
+select * from t where t.rowNo between {4} and {5}"
+                .format(TableList, Where, OrderByColumn, ColumnList, rowStart, rowEnd, GroupBy);
         }
     }
 }

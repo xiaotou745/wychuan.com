@@ -190,6 +190,7 @@
     <Compile Include="Areas\admin\Controllers\api\CompanyController.cs" />
     <Compile Include="Areas\admin\Controllers\BlogController.cs" />
     <Compile Include="Areas\admin\Controllers\SectionController.cs" />
+    <Compile Include="Areas\admin\Models\Blog\BlogListModel.cs" />
     <Compile Include="Areas\admin\Models\Blog\SectionListModel.cs" />
     <Compile Include="Areas\admin\Models\Blog\SectionPublishModel.cs" />
     <Compile Include="Areas\admin\Models\DbTools\CodeSettingTemplate.cs" />
@@ -501,6 +502,7 @@
     <Content Include="Areas\admin\Views\Section\_SectionList.cshtml" />
     <Content Include="Areas\admin\Views\Blog\_BlogSectionList.cshtml" />
     <Content Include="Areas\admin\Views\Blog\Pre.cshtml" />
+    <Content Include="Areas\admin\Views\Blog\_BlogList.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />
@@ -518,6 +520,7 @@
     <Content Include="Scripts\blog\rrssb.min.js" />
     <Content Include="Scripts\blog\section.js" />
     <Content Include="Scripts\blog\setting.js" />
+    <Content Include="Scripts\bootstrap-paginator.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\dbtools\settings.js" />

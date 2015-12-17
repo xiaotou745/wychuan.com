@@ -5,6 +5,7 @@ using System.Text;
 using AC.Data.Core;
 using AC.Data.Generic;
 using AC.Extension;
+using AC.Page;
 using AC.Service.DTO.Blog;
 using AC.Util;
 
@@ -210,30 +211,56 @@ select  s.Id, s.BlogId, s.Title, s.Summary, s.ConverImgUrl, s.CategoryId, s.IsPu
         s.PostTime, bc.Name CategoryName, bc2.Id FirstCategoryId, bc2.Name FirstCategoryName
 from    MyBlogs s ( nolock )
         join BlogCategory bc ( nolock ) on bc.Id = s.CategoryId
-        join BlogCategory bc2 ( nolock ) on bc.ParentId = bc2.Id" + condition;
+        join BlogCategory bc2 ( nolock ) on bc.ParentId = bc2.Id where " + condition;
 
             return dbParameters.Count == 0
                 ? DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, new BlogsRowMapper())
                 : DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, dbParameters, new BlogsRowMapper());
         }
 
-
         /// <summary>
         /// 构造查询条件
         /// </summary>
         public static string BindQueryCriteria(BlogsQueryInfo queryInfo, IDbParameters dbParameters)
         {
-            var stringBuilder = new StringBuilder(" where 1=1 ");
+            var stringBuilder = new StringBuilder(" 1=1 ");
             if (queryInfo == null)
             {
                 return stringBuilder.ToString();
             }
 
             //TODO:在此加入查询条件构建代码
+            if (queryInfo.UserId > 0)
+            {
+                stringBuilder.Append(" and s.AuthorId=@UserId");
+                dbParameters.Add("@UserId", DbType.Int32, 4).Value = queryInfo.UserId;
+            }
 
             return stringBuilder.ToString();
         }
 
         #endregion
+
+        public IPagedList<BlogsDTO> QueryPaged(BlogsQueryInfo queryInfo)
+        {
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            string where = BindQueryCriteria(queryInfo, dbParameters);
+
+            PagedQueryBuilder<BlogsDTO> pageQuery = PagedQueryBuilder<BlogsDTO>.Create()
+                .SetColumnList(@"
+s.Id, s.BlogId, s.Title, s.Summary, s.ConverImgUrl, s.CategoryId, s.IsPublic, s.SectionIds, s.AuthorId, s.Author,
+s.PostTime, bc.Name CategoryName, bc2.Id FirstCategoryId, bc2.Name FirstCategoryName")
+                .SetOrderByColumn("s.Id")
+                .SetRowMapper(new BlogsRowMapper())
+                .SetTableList(@"
+MyBlogs s ( nolock )
+        join BlogCategory bc ( nolock ) on bc.Id = s.CategoryId
+        join BlogCategory bc2 ( nolock ) on bc.ParentId = bc2.Id")
+                .SetWhere(where)
+                .SetDbParameters(dbParameters)
+                .SetPaginator(queryInfo);
+
+            return QueryPaged<BlogsDTO>(pageQuery);
+        }
     }
 }

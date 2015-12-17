@@ -1,6 +1,10 @@
-﻿@{
+﻿@model wychuan2.com.Areas.admin.Models.Blog.BlogListModel
+@{
     ViewBag.Title = "随笔-列表";
     Layout = "../Shared/_Layout.cshtml";
+}
+
+@{
 }
 
 @section styles{
@@ -15,7 +19,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="ibox">
             <div class="ibox-title">
-                <h5>所有账户</h5>
+                <h5>随笔列表</h5>
                 <div class="ibox-tools">
                     <a href="/admin/blog" class="btn btn-primary btn-xs">发布随笔</a>
                 </div>
@@ -27,9 +31,76 @@
                     </div>
                 </div>
                 <div id="content">
-                   
+                    @Html.Partial("_BlogList",Model)
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div data-pagesize="@Model.BlogsPaged.PageSize" data-totalrecord="@Model.BlogsPaged.RecordCount" class="dataTables_info">
+                            显示 <span name="pageStart"></span> 到 <span name="pageEnd"></span> 项，共 <span name="pageTotal"></span> 项
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate">
+                            <ul class="pagination"></ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/bootstrap-paginator.js"></script>
+    <script type="text/javascript">
+        var pager = {
+            pageIndex: @Model.BlogsPaged.PageIndex,
+            pageSize: @Model.BlogsPaged.PageSize,
+            totalRecord: @Model.BlogsPaged.RecordCount,
+            totalPageCount: @Model.BlogsPaged.PageCount
+        };
+        $(function() {
+            pager.pageChanged = search;
+            page(pager);
+            refreshPager(1, pager.totalRecord);
+
+            $("#content").delegate(".J_Remove", "click", function() {
+                if (confirm("确定要删除此随笔吗？")) {
+                    var $tr = $(this).parents("tr");
+                    var id = $tr.data("id");
+
+                    $.get("/admin/blog/remove", { id: id }, function(resp) {
+                        if (!resp.iserror) {
+                            search(1);
+                        }
+                    }, "json");
+                }
+            });
+
+        });
+
+        function search(newPage) {
+            var queryInfo = {
+                PageIndex: newPage,
+            };
+            $.get("/admin/blog/search", queryInfo, function(resp) {
+                $("#content").html(resp);
+                var totalrecord = $("#content").find("table").data("totalrecord");
+                refreshPager(newPage, totalrecord);
+            });
+        }
+
+        function refreshPager(pageIndex, totalrecord) {
+            var pageSize = $(".dataTables_info").data("pagesize");
+            var recordCount = totalrecord;
+            var pageStart = (pageIndex - 1) * pageSize + 1;
+            var pageEnd = pageIndex * pageSize;
+            if (pageEnd > recordCount) {
+                pageEnd = recordCount;
+            }
+            $(".dataTables_info").find("[name=pageStart]").html(pageStart);
+            $(".dataTables_info").find("[name=pageEnd]").html(pageEnd);
+            $(".dataTables_info").find("[name=pageTotal]").html(recordCount);
+        }
+    </script>
+}
