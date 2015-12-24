@@ -4,6 +4,7 @@ using System.Web;
 using AC.Dao;
 using AC.Dao.Blog;
 using AC.IO;
+using AC.Page;
 using AC.Service.Blog;
 using AC.Service.DTO.Blog;
 using AC.Transaction.Common;
@@ -141,6 +142,11 @@ namespace AC.Service.Impl.Blog
         public IList<Sections> Query(SectionsQueryInfo queryInfo)
         {
             return sectionsDao.Query(queryInfo);
+        }
+
+        public IPagedList<Sections> QueryPaged(SectionsQueryInfo queryInfo)
+        {
+            return sectionsDao.QueryPaged(queryInfo);
         }
 
         public IList<Sections> GetByBlogSectionIds(string blogSectionIds)

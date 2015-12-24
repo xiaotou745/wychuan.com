@@ -1,0 +1,19 @@
+﻿<p>安装<code>Maven</code>后我们会在用户目录下发现<code>.m2</code> 文件夹。默认情况下，该文件夹下放置了<code>Maven</code>本地仓库<code>.m2/repository</code>。所有的<code>Maven</code>构件(artifact)都被存储到该仓库中，以方便重用。</p>
+<p>有时候，我们可能会因为c盘空间、安全性等原因，想要为<code>maven repository</code>换个家，操作起来并不难：</p>
+<p>修改<code>maven</code>的配置文件，位置为<code>%MAVEN_HOME%/conf/setting.xml</code></p>
+    <pre><code>&lt;!-- localRepository
+| The path to the local repository maven will use to store artifacts.
+|
+| Default: ${user.home}/.m2/repository
+&lt;localRepository>/path/to/local/repo&lt;/localRepository>
+--></code>
+</pre>
+<p>修改为:</p>
+<pre><code>&lt;localrepository>D:\Eclipse\jars\maven&lt;/localrepository></code></pre>
+<p>把<code>maven</code>配置文件中的<code>localRepository</code>节点值更改成你想换的目录即可；</p>
+<div class="bs-callout bs-callout-warning">
+    <h4>注意事项</h4>
+    <ul>
+        <li><code>windows</code>目录分隔线是\，配置需要使用/</li>
+    </ul>
+</div>

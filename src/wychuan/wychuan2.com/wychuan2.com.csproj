@@ -516,8 +516,10 @@
     <Content Include="Scripts\blog\jquery.placeholder.js" />
     <Content Include="Scripts\blog\main.js" />
     <Content Include="Scripts\blog\masonry.pkgd.min.js" />
+    <Content Include="Scripts\blog\mybloglist.js" />
     <Content Include="Scripts\blog\myblog.js" />
     <Content Include="Scripts\blog\rrssb.min.js" />
+    <Content Include="Scripts\blog\sectionlist.js" />
     <Content Include="Scripts\blog\section.js" />
     <Content Include="Scripts\blog\setting.js" />
     <Content Include="Scripts\bootstrap-paginator.js" />
@@ -731,6 +733,33 @@
     <Content Include="Views\Blog\Demo.cshtml" />
     <Content Include="Views\Section\Preview.cshtml" />
     <Content Include="Views\Section\Index.cshtml" />
+    <Content Include="Views\shell\_ls.cshtml" />
+    <Content Include="Views\shell\shell-cmd-base.cshtml" />
+    <Content Include="Views\shell\_cd.cshtml" />
+    <Content Include="Views\shell\_pwd.cshtml" />
+    <Content Include="Views\shell\shell.cshtml" />
+    <Content Include="Views\shell\_shell-wildcardchar.cshtml" />
+    <Content Include="Views\java\maven\mavenskills.cshtml" />
+    <Content Include="Views\java\maven\_mavenskills-repos.cshtml" />
+    <Content Include="Views\java\maven\_mavenskills-sdk.cshtml" />
+    <Content Include="Views\etao\etao.cshtml" />
+    <Content Include="Views\etao\_etao-vpn.cshtml" />
+    <Content Include="Views\etao\_etao-accounts.cshtml" />
+    <Content Include="Views\etao\_etao-git.cshtml" />
+    <Content Include="Views\java\mavenstart\mavenstart.cshtml" />
+    <Content Include="Views\java\mavenstart\_mavenstart-basic.cshtml" />
+    <Content Include="Views\java\mavenstart\_mavenstart-download.cshtml" />
+    <Content Include="Views\java\mavenstart\_mavenstart-install.cshtml" />
+    <Content Include="Views\java\mavenstart\_mavenstart-setting.cshtml" />
+    <Content Include="Views\java\mavenstart\_mavenstart-project.cshtml" />
+    <Content Include="Views\java\tomcatsetting\tomcat-setting.cshtml" />
+    <Content Include="Views\java\tomcatsetting\_tomcat-setting-tools.cshtml" />
+    <Content Include="Views\java\tomcatsetting\_tomcat-setting-install.cshtml" />
+    <Content Include="Views\java\tomcatsetting\_tomcat-setting-jdkpath.cshtml" />
+    <Content Include="Views\java\tomcatsetting\_tomcat-setting-jdktest.cshtml" />
+    <Content Include="Views\shell\_cat.cshtml" />
+    <Content Include="Views\shell\_find.cshtml" />
+    <Content Include="Views\shell\_grep.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

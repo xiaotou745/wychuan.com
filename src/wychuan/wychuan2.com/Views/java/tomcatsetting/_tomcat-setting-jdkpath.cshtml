@@ -1,0 +1,14 @@
+﻿<ol>
+    <li>新建变量名：<strong class="text-danger">JAVA_HOME</strong>，变量值：<code>C:\\Program Files\Java\jdk1.7.0</code></li>
+    <li>打开<strong class="text-danger">PATH</strong>，添加变量值：<code>%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin</code></li>
+    <li>新建变量名：<strong class="text-danger">CLASSPATH</strong>，变量值：<code>.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar</code></li>
+</ol>
+<div class="bs-callout bs-callout-warning" id="callout-tables-responsive-overflow">
+    <h4>备注</h4>
+    <ul>
+        <li>.表示当前路径，<code>%JAVA_HOME%</code>就是引用前面指定的<code>JAVA_HOME</code>；</li>
+        <li><code>JAVA_HOME</code>指明<code>JDK</code>安装路径，此路径下包括<code>lib</code>，<code>bin</code>，<code>jre</code>等文件夹，<code>tomcat</code>，<code>eclipse</code>等的运行都需要依靠此变量。</li>
+        <li><code>PATH</code>使得系统可以在任何路径下识别<code>java</code>命令。</li>
+        <li><code>CLASSPATH</code>为<code></code>java加载类(<code>class</code> or <code>lib</code>)路径，只有类在<code>classpath</code>中，<code>java</code>命令才能识别。</li>
+    </ul>
+</div>

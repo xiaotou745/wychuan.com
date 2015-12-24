@@ -90,8 +90,19 @@ namespace AC.Service.DTO.Blog
     {
         public int UserId { get; set; }
 
+        /// <summary>
+        /// 一级目录ID
+        /// </summary>
+        public int? FirstCategoryId { get; set; }
+
+        /// <summary>
+        /// 二级类目ID
+        /// </summary>
         public int? CategoryId { get; set; }
 
+        /// <summary>
+        /// tagID列表
+        /// </summary>
         public List<int> TagIds { get; set; }
     }
 }

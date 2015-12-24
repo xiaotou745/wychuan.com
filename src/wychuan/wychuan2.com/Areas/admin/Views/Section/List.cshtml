@@ -1,10 +1,21 @@
-﻿@model wychuan2.com.Areas.admin.Models.Blog.SectionListModel
+﻿@using AC.Service.DTO.Blog
+@using AC.Util
+@model wychuan2.com.Areas.admin.Models.Blog.SectionListModel
 @{
     ViewBag.Title = "段落-列表";
     Layout = "../Shared/_Layout.cshtml";
 }
 
+@{
+    string strCategories = JsonHelper.ToJson(Model.Categories);
+    string strTags = JsonHelper.ToJson(Model.Tags);
+
+    List<BlogCategoryDTO> lstFirsts = Model.Categories.Where(c => c.ParentId == 0).ToList();
+
+}
+
 @section styles{
+<link href="~/Content/plugins/chosen/chosen.css" rel="stylesheet" />
 <style type="text/css">
     .content11 {
         width: 500px;
@@ -25,12 +36,51 @@
             </div>
             <div class="ibox-content">
                 <div class="row m-b-sm m-t-sm">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <select class="form-control" name="selFirstCategoryQ">
+                                <option value="">一级类目</option>
+                                @foreach (var first in lstFirsts)
+                                {
+                                    <option value="@first.Id">@first.Name</option>
+                                }
+                            </select>
+                            <span class="input-group-addon">-</span>
+                            <select class="form-control" name="selSecondCategoryQ">
+                                <option value="">二级类目</option>
+                            </select>
+                        </div>
+                    </div>
 
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <select id="selTagsQ" data-placeholder="所有Tag" class="chosen-select" multiple>
+                                <option value="">请选择Tag</option>
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <option value="@tag.Id" hassubinfo="true">@tag.TagName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" type="button" id="btnSearch" value="查询">查询</button>
                     </div>
                 </div>
                 <div id="content">
                     @Html.Partial("_SectionList",Model)
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div data-pagesize="@Model.PagedSections.PageSize" data-totalrecord="@Model.PagedSections.RecordCount" class="dataTables_info">
+                            显示 <span name="pageStart"></span> 到 <span name="pageEnd"></span> 项，共 <span name="pageTotal"></span> 项
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate">
+                            <ul class="pagination"></ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,47 +88,18 @@
 </div>
 
 @section scripts{
+<script type="text/javascript" src="~/Scripts/bootstrap-paginator.js"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+<script src="~/Scripts/mvcParamMatch.js"></script>
     <script type="text/javascript">
-        $(function() {
-            $("#content").delegate(".J_Toggle", "click", function() {
-                var id = $(this).parents("tr").data("id");
-                var currentShow = $(this).data("show");
-                if (currentShow) {
-                    $("[parentid=" + id + "]").hide();
-                    $(this).data("show", false);
-                    $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
-                } else {
-                    $("[parentid=" + id + "]").show();
-                    $(this).data("show", true);
-                    $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
-                }
-            });
-
-            $("#content").delegate(".J_Remove", "click", function () {
-                if (!confirm("确定要删除此段落吗？不可恢复。")) {
-                    return;
-                }
-                var id = $(this).parents("tr").data("id");
-                $.get("/admin/section/remove", { id: id }, function(resp) {
-                    console.log(resp);
-                    if (resp.iserror) {
-                        alert(resp.message);
-                        return;
-                    }
-                    refresh();
-                });
-            });
-        });
-        
-        function refresh() {
-            $.ajax({
-                url: "/admin/section/refresh",
-                type: "get",
-                data: null,
-                success: function(resp) {
-                    $("#content").html(resp);
-                }
-            });
-        }
+        var pager = {
+            pageIndex: @Model.PagedSections.PageIndex,
+            pageSize: @Model.PagedSections.PageSize,
+            totalRecord: @Model.PagedSections.RecordCount,
+            totalPageCount: @(Model.PagedSections.PageCount==0?1:Model.PagedSections.PageCount)
+        };
+        window.categories = @Html.Raw(strCategories);
+        window.tags = @Html.Raw(strTags);
     </script>
+    <script src="~/Scripts/blog/sectionlist.js"></script>
 }

@@ -7,6 +7,7 @@ using System.Text;
 using AC.Data.Core;
 using AC.Data.Generic;
 using AC.Extension;
+using AC.Page;
 using AC.Service.DTO.Blog;
 using AC.Util;
 
@@ -21,8 +22,6 @@ namespace AC.Dao.Blog
     /// </summary>
     public class SectionsDao : DaoBase
     {
-        #region ISectionsDao  Members
-
         #region Insert
         /// <summary>
         /// 增加一条记录
@@ -75,6 +74,7 @@ where  Id=@Id ";
         }
         #endregion
 
+        #region Delete
         /// <summary>
         /// 删除一条记录
         /// </summary>
@@ -88,7 +88,9 @@ where  Id=@Id ";
 
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, DELETE_SQL, dbParameters);
         }
+        #endregion
 
+        #region Query
         /// <summary>
         /// 查询对象
         /// </summary>
@@ -103,12 +105,39 @@ select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.Creat
         bc2.Name FirstCategoryName
 from    Sections s ( nolock )
         join BlogCategory bc ( nolock ) on bc.Id = s.CategoryId
-        join BlogCategory bc2 ( nolock ) on bc.ParentId = bc2.Id" + condition;
+        join BlogCategory bc2 ( nolock ) on bc.ParentId = bc2.Id where " + condition;
             return dbParameters.Count > 0
                 ? DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, dbParameters, new SectionsRowMapper())
                 : DbHelper.QueryWithRowMapper(ConnStringOfAchuan, querySql, new SectionsRowMapper());
         }
+        #endregion
 
+        #region QueryPaged
+        public IPagedList<Sections> QueryPaged(SectionsQueryInfo queryInfo)
+        {
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            string where = BindQueryCriteria(queryInfo, dbParameters);
+
+            PagedQueryBuilder<Sections> pageQuery = PagedQueryBuilder<Sections>.Create()
+                .SetColumnList(@"
+s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, 
+        bc.Name CategoryName, bc2.Id FirstCategoryId,
+        bc2.Name FirstCategoryName")
+                .SetOrderByColumn("s.Id")
+                .SetRowMapper(new SectionsRowMapper())
+                .SetTableList(@"
+Sections s ( nolock )
+        join BlogCategory bc ( nolock ) on bc.Id = s.CategoryId
+        join BlogCategory bc2 ( nolock ) on bc.ParentId = bc2.Id")
+                .SetWhere(where)
+                .SetDbParameters(dbParameters)
+                .SetPaginator(queryInfo);
+
+            return QueryPaged<Sections>(pageQuery);
+        }
+        #endregion
+
+        #region GetByBlogSectionIds
         public IList<Sections> GetByBlogSectionIds(string blogSectionIds)
         {
             const string QUERY_SQL = @"
@@ -129,7 +158,9 @@ where   s2.SectionId in ( {0} )";
             return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, QUERY_SQL.format(strParams), dbParameters,
                 new SectionsRowMapper());
         }
+        #endregion
 
+        #region GetById
 
         /// <summary>
         /// 根据ID获取对象
@@ -206,14 +237,14 @@ where   s.Id=@Id ";
 
         #endregion
 
-        #region  Other Members
+        #region  BindQueryCriteria
 
         /// <summary>
         /// 构造查询条件
         /// </summary>
         public static string BindQueryCriteria(SectionsQueryInfo queryInfo, IDbParameters dbParameters)
         {
-            var stringBuilder = new StringBuilder(" where 1=1 ");
+            var stringBuilder = new StringBuilder(" 1=1 ");
             if (queryInfo == null)
             {
                 return stringBuilder.ToString();
@@ -248,11 +279,22 @@ where   s.Id=@Id ";
                 dbParameters.AddInParameters(queryInfo.SectionIds, DbType.String, 50, out strSectionIds);
                 stringBuilder.Append(" and s.SectionId in ({0})".format(strSectionIds));
             }
+            if (queryInfo.CategoryId.HasValue)
+            {
+                stringBuilder.Append(" and s.CategoryId=@CategoryId");
+                dbParameters.Add("CategoryId", DbType.Int32, 4).Value = queryInfo.CategoryId.Value;
+            }
+            else if(queryInfo.FirstCategoryId.HasValue)
+            {
+                stringBuilder.Append(" and bc.ParentId=@FirstCategoryId");
+                dbParameters.Add("FirstCategoryId", DbType.Int32, 4).Value = queryInfo.FirstCategoryId.Value;
+            }
             return stringBuilder.ToString();
         }
 
         #endregion
 
+        #region GetBySectionId
         public Sections GetBySectionId(string sectionId)
         {
             const string GETBYID_SQL = @"
@@ -269,5 +311,6 @@ where   s.SectionId=@SectionId ";
 
             return DbHelper.QueryForObject(ConnStringOfAchuan, GETBYID_SQL, dbParameters, new SectionsRowMapper());
         }
+        #endregion
     }
 }

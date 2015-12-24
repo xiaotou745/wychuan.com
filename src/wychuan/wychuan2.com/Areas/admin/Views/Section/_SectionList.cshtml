@@ -2,62 +2,79 @@
 @model wychuan2.com.Areas.admin.Models.Blog.SectionListModel
            
 @{
-    List<Sections> rootSections = Model.Sections.Where(s => s.ParentId == 0).ToList();
+    //List<Sections> rootSections = Model.Sections.Where(s => s.ParentId == 0).ToList();
+    List<Sections> rootSections = Model.PagedSections.ContentList;
 }
 
-<div class="table-responsive">
-    <table class="table table-bordered table-condensed table-striped">
-        <thead>
-            <tr>
-                <th></th>
-                <th>SectionId</th>
-                <th>标题</th>
-                <th>内容</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (rootSections.Count > 0)
-            {
-                foreach (Sections root in rootSections)
+@if (Model.IsParents)
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped" data-totalrecord="@Model.PagedSections.RecordCount">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>SectionId</th>
+                    <th>标题</th>
+                    <th>内容</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (rootSections.Count > 0)
                 {
-                    var childs = Model.Sections.Where(s => s.ParentId == root.Id).ToList();
-                    <tr data-id="@root.Id" data-show="true">
-                        <td width="10px">
-                            <a class="J_Toggle" data-show="false"><i class="fa fa-plus"></i></a>
-                        </td>
-                        <td><a class="J_Edit" href="/admin/section?id=@root.Id">
-                                <strong class="text-navy">@root.SectionId</strong>
-                            </a>
-                        </td>
-                        <td>@root.Title</td>
-                        <td><div class="content11">@root.Content</div></td>
-                        <td>
-                            <a class="J_Remove">删除</a>
-                            <a href="/admin/section?parentid=@root.Id">添加段落</a>
-                            <a target="_blank" href="/section/@root.SectionId">预览</a>
-                        </td>
-                    </tr>
-                    foreach (var child in childs)
+                    foreach (Sections root in rootSections)
                     {
-                        <tr style="display:none;" data-id="@child.Id" parentid="@root.Id">
-                            <td width="10px"></td>
-                            <td><a href="/admin/section?id=@child.Id">@child.SectionId</a></td>
-                            <td>@child.Title</td>
-                            <td><div class="content11">@child.Content</div></td>
-                            <td><a class="J_Remove">删除</a></td>
+                        <tr id="@("section"+root.Id)" data-id="@root.Id"  data-childs="false">
+                            <td width="10px">
+                                <a class="J_Toggle" data-show="false"><i class="fa fa-plus"></i></a>
+                            </td>
+                            <td>
+                                <a class="J_Edit" href="/admin/section?id=@root.Id">
+                                    <strong class="text-navy">@root.SectionId</strong>
+                                </a>
+                            </td>
+                            <td>@root.Title</td>
+                            <td><div class="content11">@root.Content</div></td>
+                            <td>
+                                <a class="J_Remove">删除</a>
+                                <a href="/admin/section?parentid=@root.Id">添加段落</a>
+                                <a target="_blank" href="/section/@root.SectionId">预览</a>
+                            </td>
                         </tr>
+                        @*foreach (var child in childs)
+                        {
+                            <tr style="display:none;" data-id="@child.Id" parentid="@root.Id">
+                                <td width="10px"></td>
+                                <td><a href="/admin/section?id=@child.Id">@child.SectionId</a></td>
+                                <td>@child.Title</td>
+                                <td><div class="content11">@child.Content</div></td>
+                                <td><a class="J_Remove">删除</a></td>
+                            </tr>
+                        }*@
                     }
                 }
-            }
-            else
-            {
-                <tr>
-                    <td class="success text-center" colspan="5">
-                        暂时没有明细
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                else
+                {
+                    <tr>
+                        <td class="success text-center" colspan="5">
+                            暂时没有明细
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    foreach (var child in rootSections)
+    {
+        <tr data-id="@child.Id" parentid="@child.ParentId">
+            <td width="10px"></td>
+            <td><a href="/admin/section?id=@child.Id">@child.SectionId</a></td>
+            <td>@child.Title</td>
+            <td><div class="content11">@child.Content</div></td>
+            <td><a class="J_Remove">删除</a></td>
+        </tr>
+    }
+}

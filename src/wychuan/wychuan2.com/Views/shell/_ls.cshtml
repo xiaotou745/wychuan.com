@@ -1,0 +1,110 @@
+﻿<p class="lead"><code>ls</code>命令就是list的缩写，缺省下<code>ls</code>用来打印出当前目录的清单，如果<code>ls</code>指定其他目录，那么就会显示指定目录里的文件及文件夹清单。</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>ls [OPTION]... [FILE]...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>列出目标目录中所有的子目录和文件</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-l</code>列出文件的详细信息。<br />
+    <code class="m-r-md">-a或--all</code>列出目录下的所有文件，包括以 . 开头的隐含文件。<br />
+    <code class="m-r-md">-h或--human-readable</code>用"K","M","G"来显示文件和目录的大小<br />
+    <code class="m-r-md">-S</code>按照文件和目录的大小排序。<br />
+    <code class="m-r-md">-t</code>按照文件和目录的更改时间排序<br />
+    <code class="m-r-md">-c</code>按照文件和目录的更改时间排序<br />
+    <code class="m-r-md">-X</code>按照文件和目录的最后一个扩展名排序<br />
+    <code class="m-r-md">-u</code>按照文件和目录的最后存取时间排序<br />
+    <code class="m-r-md">-r或--reverse</code>反向排序。<br />
+    <code class="m-r-md">-U</code>列出文件和目录名称时不予排序(ls -l的结果默认是按名称排序的)。<br />
+    <code class="m-r-md">-p -F</code>在每个文件名后附上一个字符以说明该文件的类型。“*”表示可执行的普通文件；“/”表示目录；“@@”表示符号链接；“|”表示FIFOs；“=”表示套接字(sockets)。。 这个选项在某些无法显示颜色的终端上会比较有用。<br />
+    <code class="m-r-md">-m</code>横向输出文件名，并以“，”作分格符。<br />
+    <code class="m-r-md">-A --almost-all</code>显示除 “.”和“..”外的所有文件。。<br />
+    <code class="m-r-md">-b或--escape</code>显示脱离字符<br />
+    <code class="m-r-md">-B或--ignore-backups</code>忽略备份文件和目录<br />
+    <code class="m-r-md">-C</code>以又上至下，从左到右的直行方式显示文件和目录名称。<br />
+    <code class="m-r-md">-d或--directory</code>显示目录名称而非其内容<br />
+    <code class="m-r-md">-D或--dired</code>用Emacs的模式产生文件和目录列表<br />
+    <code class="m-r-md">-f</code>此参数的效果和同时指定"aU"参数相同，并关闭"lst"参数的效果<br />
+    <code class="m-r-md">-F或--classify</code>在执行文件，目录，Socket，符号连接，管道名称后面，各自加上"*","/","=","@@","|"号。<br />
+    <code class="m-r-md">-L或--dereference</code> 如遇到性质为符号连接的文件或目录，直接列出该连接所指向的原始文件或目录<br />
+    <code class="m-r-md">-g</code>次参数将忽略不予处理<br />
+    <code class="m-r-md">-G或--no-group</code>不显示群组名称<br />
+    <code class="m-r-md">--full-time</code>列出完整的日期与时间<br />
+    <code class="m-r-md">-s或--size</code>显示文件和目录的大小，以区块为单位<br />
+</p>
+
+<p><strong>4. 常用操作</strong></p>
+<p>
+    <ul>
+        <li>列出某目录下所有文件，包括文件大小、时间等：<code>$ ls -lah --full-time</code></li>
+        <li>对某目录下文件进行排序：<code>$ ls -lSh </code><span>#按照文件大小排序</span></li>
+    </ul>
+</p>
+
+<p><strong>5. 命令实例</strong></p>
+<p>
+    列出文件列表：
+    <ol>
+        <li>列出当前目录下文件的详细信息：<pre><code>[root@localhost data]# ls -l
+total 117496
+drwxr-xr-x. 11 smb  games     4096 Oct 20 14:21 activeMQ
+-rw-r--r--.  1 root root  55438331 Oct 20 14:13 apache-activemq-5.9.0-bin.tar.gz
+-rw-r--r--.  1 root root   9106353 Jul 30 14:34 apache-tomcat-8.0.24.tar.gz
+drwxr-xr-x.  5 root root      4096 Oct 20 14:08 mongodb
+-rw-r--r--.  1 root root  55748872 Dec  4  2012 mongodb-linux-x86_64-2.2.1.tgz
+drwxr-xr-x.  3 root root      4096 Dec 15 16:10 service
+drwxr-xr-x.  2 root root      4096 Jul 31 10:03 tomcat
+</code></pre></li>
+        <li>列出当前目录下所有的文件，包括隐藏文件：<pre><code>[root@localhost data]# ls -a
+.  ..  activeMQ  apache-activemq-5.9.0-bin.tar.gz  apache-tomcat-8.0.24.tar.gz  mongodb  mongodb-linux-x86_64-2.2.1.tgz  service  tomcat
+</code></pre></li>
+        <li>显示文件大小：<pre><code>[root@localhost data]# ls -sh
+total 115M
+4.0K activeMQ   53M apache-activemq-5.9.0-bin.tar.gz  8.7M apache-tomcat-8.0.24.tar.gz  4.0K mongodb   54M mongodb-linux-x86_64-2.2.1.tgz  4.0K service  4.0K tomcat</code></pre></li>
+    </ol>
+
+    对文件进行排序：
+    <ol>
+        <li>按照文件大小进行排序：<pre><code>[root@localhost data]# ls -lSh
+total 115M
+-rw-r--r--.  1 root root   54M Dec  4  2012 mongodb-linux-x86_64-2.2.1.tgz
+-rw-r--r--.  1 root root   53M Oct 20 14:13 apache-activemq-5.9.0-bin.tar.gz
+-rw-r--r--.  1 root root  8.7M Jul 30 14:34 apache-tomcat-8.0.24.tar.gz
+drwxr-xr-x. 11 smb  games 4.0K Oct 20 14:21 activeMQ
+drwxr-xr-x.  5 root root  4.0K Oct 20 14:08 mongodb
+drwxr-xr-x.  3 root root  4.0K Dec 15 16:10 service
+drwxr-xr-x.  2 root root  4.0K Jul 31 10:03 tomcat</code></pre></li>
+        <li>按照文件更改时间进行排序：<pre><code>[root@localhost data]# ls --full-time -lt
+total 117496
+drwxr-xr-x.  3 root root      4096 2015-12-15 16:10:10.463931002 +0800 service
+drwxr-xr-x. 11 smb  games     4096 2015-10-20 14:21:47.585654901 +0800 activeMQ
+-rw-r--r--.  1 root root  55438331 2015-10-20 14:13:33.000000000 +0800 apache-activemq-5.9.0-bin.tar.gz
+drwxr-xr-x.  5 root root      4096 2015-10-20 14:08:30.387654900 +0800 mongodb
+drwxr-xr-x.  2 root root      4096 2015-07-31 10:03:50.012045601 +0800 tomcat
+-rw-r--r--.  1 root root   9106353 2015-07-30 14:34:34.000000000 +0800 apache-tomcat-8.0.24.tar.gz
+-rw-r--r--.  1 root root  55748872 2012-12-04 17:15:44.000000000 +0800 mongodb-linux-x86_64-2.2.1.tgz</code></pre></li>
+        <li>按照文件的扩展名排序：<pre><code>[root@localhost data]# ls -lX
+total 117496
+drwxr-xr-x. 11 smb  games     4096 Oct 20 14:21 activeMQ
+drwxr-xr-x.  5 root root      4096 Oct 20 14:08 mongodb
+drwxr-xr-x.  3 root root      4096 Dec 15 16:10 service
+drwxr-xr-x.  2 root root      4096 Jul 31 10:03 tomcat
+-rw-r--r--.  1 root root  55438331 Oct 20 14:13 apache-activemq-5.9.0-bin.tar.gz
+-rw-r--r--.  1 root root   9106353 Jul 30 14:34 apache-tomcat-8.0.24.tar.gz
+-rw-r--r--.  1 root root  55748872 Dec  4  2012 mongodb-linux-x86_64-2.2.1.tgz</code></pre></li>
+        <li>按照文件的最后存取时间排序：<code>$ ls -lu</code></li>
+        <li>反序排序：<code>$ ls -lShr</code></li>
+    </ol>
+    
+    <strong>其它</strong>
+    <ol>
+        <li>显示目录名而非其内容：<pre><code>[root@localhost data]# ls -d tomcat/
+tomcat/</code></pre></li>
+        <li>显示文件和目录的大小:<pre><code>[root@localhost data]# ls -s
+total 117496
+    4 activeMQ                           8896 apache-tomcat-8.0.24.tar.gz  54444 mongodb-linux-x86_64-2.2.1.tgz      4 tomcat
+54140 apache-activemq-5.9.0-bin.tar.gz      4 mongodb                          4 service</code></pre></li>
+    </ol>
+</p>

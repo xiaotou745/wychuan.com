@@ -236,6 +236,25 @@ from    MyBlogs s ( nolock )
                 dbParameters.Add("@UserId", DbType.Int32, 4).Value = queryInfo.UserId;
             }
 
+            if (queryInfo.CategoryId.HasValue)
+            {
+                stringBuilder.Append(" and s.CategoryId=@CategoryId");
+                dbParameters.Add("CategoryId", DbType.Int32, 4).Value = queryInfo.CategoryId.Value;
+            }
+            else if (queryInfo.FirstCategoryId.HasValue)
+            {
+                stringBuilder.Append(" and bc.ParentId=@ParentId");
+                dbParameters.Add("ParentId", DbType.Int32, 4).Value = queryInfo.FirstCategoryId.Value;
+            }
+
+            if (queryInfo.TagIds != null && queryInfo.TagIds.Count > 0)
+            {
+                string paramsstr;
+                dbParameters.AddInParameters(queryInfo.TagIds, DbType.Int32, 4, out paramsstr);
+                stringBuilder.AppendFormat(@" and s.Id in (select  btr.BlogId
+from    BlogTagReletion btr ( nolock )
+where   btr.TagId in ( {0} ))", paramsstr);
+            }
             return stringBuilder.ToString();
         }
 

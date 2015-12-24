@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AC.Page;
 using AC.Service.DTO.Blog;
 
 namespace AC.Service.Blog
@@ -43,6 +44,13 @@ namespace AC.Service.Blog
         /// 查询方法
         /// </summary>
         IList<Sections> Query(SectionsQueryInfo queryInfo);
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="queryInfo"></param>
+        /// <returns></returns>
+        IPagedList<Sections> QueryPaged(SectionsQueryInfo queryInfo);
 
         IList<Sections> GetByBlogSectionIds(string blogSectionIds);
     }

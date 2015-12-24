@@ -158,7 +158,9 @@ namespace AC.Dao
         {
             IDbParameters dbParameters = queryInfo.DbParameters;
 
-            object recordResult = DbHelper.ExecuteScalar(ConnStringOfAchuan, queryInfo.GetRecordCountSqlText(), dbParameters);
+            string recordCountSqlText = queryInfo.GetRecordCountSqlText();
+            AppLogger.Logger.Info(recordCountSqlText);
+            object recordResult = DbHelper.ExecuteScalar(ConnStringOfAchuan, recordCountSqlText, dbParameters);
             if (recordResult == null)
             {
                 return new PagedList<T>(new List<T>(), 0, 0);
@@ -170,10 +172,12 @@ namespace AC.Dao
                              : recordCount / queryInfo.PageSize + 1;
 
 
+            string recordResultSqlText = queryInfo.GetRecordResultSqlText();
+            AppLogger.Logger.Info(recordResultSqlText);
             var lstResult = dbParameters.Count > 0
-                ? DbHelper.QueryWithRowMapper(ConnStringOfAchuan, queryInfo.GetRecordResultSqlText(),
+                ? DbHelper.QueryWithRowMapper(ConnStringOfAchuan, recordResultSqlText,
                     dbParameters, queryInfo.RowMapper)
-                : DbHelper.QueryWithRowMapper(ConnStringOfAchuan, queryInfo.GetRecordResultSqlText(),
+                : DbHelper.QueryWithRowMapper(ConnStringOfAchuan, recordResultSqlText,
                     queryInfo.RowMapper);
             var result = new PagedList<T>(lstResult, recordCount, pageCount);
             result.PageIndex = queryInfo.PageIndex;

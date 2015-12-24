@@ -78,7 +78,7 @@ namespace AC.Service.DTO.Blog
     /// Generate By: wangyuchuan
     /// Generate Time: 2015-12-11 17:39:47
     /// </summary>
-    public class SectionsQueryInfo
+    public class SectionsQueryInfo : Page.Paginator
     {
         /// <summary>
         /// 用户ID
@@ -94,6 +94,15 @@ namespace AC.Service.DTO.Blog
         /// parentId
         /// </summary>
         public int? ParentId { get; set; }
+
+        /// <summary>
+        /// 一级类目
+        /// </summary>
+        public int? FirstCategoryId { get; set; }
+        /// <summary>
+        /// 二级类目
+        /// </summary>
+        public int? CategoryId { get; set; }
 
         /// <summary>
         /// sectionId列表查询条件

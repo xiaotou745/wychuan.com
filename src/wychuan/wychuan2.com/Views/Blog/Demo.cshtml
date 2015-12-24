@@ -3,6 +3,10 @@
     ViewBag.Title = "Test";
 }
 
+@section styles{
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+}
+
 
 <div class="bs-docs-header" id="content" tabindex="-1">
     <div class="container">
@@ -15,120 +19,80 @@
     <div class="row">
         <div class="col-md-9" role="main">
             <div class="bs-docs-section">
-                <h1 id="tomcat-setting" class="page-header">
-                    <a class="anchorjs-link " href="#tomcat-setting" aria-label="Anchor link for: dropdowns" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>配置tomcat环境
-                </h1>
-                <p class="lead">如何下载安装tomcat，如何配置环境变量？配置过程中是否和作者一样经常出现错误？</p>
-                <h2 id="tomcat-setting-tools"><a class="anchorjs-link " href="#tomcat-setting-tools" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>工具/原料</h2>
-                <p class="lead">工欲善其事，必先利其器，在开始之前，先准备好下面原料：</p>
-                <ol>
-                    <li>
-                        JDK-Java开发工具包<p>下载地址<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a> </p>
-                    </li>
-                    <li>
-                        tomcat<p>下载地址<a href="http://tomcat.apache.org/" target="_blank">http://tomcat.apache.org/</a> </p>
-                    </li>
-                    <li>windows os(windows8.1)</li>
-                </ol>
-                
-                <h2 id="tomcat-setting-install"><a class="anchorjs-link " href="#tomcat-setting-install" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>安装jdk&tomcat</h2>
-                <ol>
-                    <li>安装<code>JDK</code>：直接运行<code>jdk-7-windows-i586.exe</code>可执行程序，默认安装即可。</li>
-                    <div class="bs-callout bs-callout-warning">
-                        <h4>注意事项</h4>
-                        <p>路径可以其他盘符，不建议路径包含中文名及特殊符号。</p>
-                    </div>
-                    <li>安装Tomcat：直接解压缩下载文件“<code>apache-tomcat-7.0.33-windows-x86.zip</code>”到C盘下。安装路径建议修改为：<code>c:	omcat</code>。</li>
-                    <div class="bs-callout bs-callout-warning">
-                        <h4>注意事项</h4>
-                        <p>如下载的是可执行文件，双击运行，默认安装即可。</p>
-                    </div>
-                </ol>
-                
-                <h2 id="tomcat-setting-jdkpath"><a class="anchorjs-link " href="#tomcat-setting-jdkpath" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>配置jdk环境变量</h2>
-                <ol>
-                    <li>新建变量名：<strong class="text-danger">JAVA_HOME</strong>，变量值：<code>C:Program FilesJavajdk1.7.0</code></li>
-                    <li>打开<strong class="text-danger">PATH</strong>，添加变量值：<code>%JAVA_HOME%in;%JAVA_HOME%jrein</code></li>
-                    <li>新建变量名：<strong class="text-danger">CLASSPATH</strong>，变量值：<code>.;%JAVA_HOME%libdt.jar;%JAVA_HOME%lib	ools.jar</code></li>
-                </ol>
-                
-                <div class="bs-callout bs-callout-warning" id="callout-tables-responsive-overflow">
-                    <h4>备注</h4>
-                    <ul>
-                        <li>.表示当前路径，<code>%JAVA_HOME%</code>就是引用前面指定的<code>JAVA_HOME</code>；</li>
-                        <li><code>JAVA_HOME</code>指明<code>JDK</code>安装路径，此路径下包括<code>lib</code>，<code>bin</code>，<code>jre</code>等文件夹，<code>tomcat</code>，<code>eclipse</code>等的运行都需要依靠此变量。</li>
-                        <li><code>PATH</code>使得系统可以在任何路径下识别<code>java</code>命令。</li>
-                        <li><code>CLASSPATH</code>为<code></code>java加载类(<code>class</code> or <code>lib</code>)路径，只有类在<code>classpath</code>中，<code>java</code>命令才能识别。</li>
-                    </ul>
-                </div>
-                
-                <h2 id="tomcat-setting-jdktest">
-                    <a class="anchorjs-link " href="#tomcat-setting-jdktest" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
-                    测试JDK
-                </h2>
-                <p class="lead">在<code>CMD</code>命令下输入<code>javac</code>，<code>java</code>，<code>javadoc</code>命令：出现图示界面，表示安装成功。</p>
-                <img src="/UpImgs/tomcat-setting/javac.jpg" class="img-responsive" alt="Responsive image">
-                <img src="/UpImgs/tomcat-setting/java.jpg" class="img-responsive" alt="Responsive image">
-
-                <h2 id="tomcat-setting-tomcatpath">
-                    <a class="anchorjs-link " href="#tomcat-setting-tomcatpath" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
-                    配置Tomcat环境变量
-                </h2>
-                <ol>
-                    <li>新建变量名：<code>CATALINA_BASE</code>，变量值：<code>C:\tomcat</code></li>
-                    <li>新建变量名：<code>CATALINA_HOME</code>，变量值：<code>C:\tomcat</code></li>
-                    <li>打开<code>PATH</code>，添加变量值：<code>%CATALINA_HOME%\lib;%CATALINA_HOME%\bin</code></li>
-                </ol>
-
-
-                <h2 id="tomcat-setting-tomcatstart">
-                    <a class="anchorjs-link " href="#tomcat-setting-tomcatstart" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
-                    启动Tomcat服务
-                </h2>
-                
-                <p class="lead">启动tomcat有以下两种方法：</p>
-                <ol>
-                    <li>在<code>CMD</code>命令下输入命令：<code>startup</code>，出现如下对话框，表明服务启动成功。</li>
-                    <li>右键点击桌面上的“我的电脑”->“管理”->“服务和应用程序”->“服务”，找到“<code>Apache Tomcat</code>”服务，右键点击该服务，选择“属性”，将“启动类型”由“手动”改成“自动”。</li>
-                </ol>
-                <img src="/UpImgs/tomcat-setting/tomcatstartup.jpg" class="img-responsive" alt="Responsive image">
-                <img src="/UpImgs/tomcat-setting/tomcatstartuped.jpg" class="img-responsive" alt="Responsive image">
-
-                <h2 id="tomcat-setting-tomcattest">
-                    <a class="anchorjs-link " href="#tomcat-setting-tomcattest" aria-label="Anchor link for: dropdowns example" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
-                    测试Tomcat
-                </h2>
-                <p class="lead">打开浏览器，在地址栏中输入<code>http://localhost:8080</code>回车，如果看到<code>Tomcat</code>自带的一个<code>JSP</code>页面，说明你的<code>JDK</code>和<code>Tomcat</code>已搭建成功。</p>
-                <img src="~/UpImgs/tomcat-setting/localhost8080.jpg" class="img-responsive" alt="Responsive image">
-                
-                <div class="bs-callout bs-callout-warning" id="callout-tables-responsive-overflow">
-                    <h4>注意事项</h4>
-                    <ul>
-                        <li><code>JAVA_HOME</code>中的路径不能用分号结尾，如<code>C:\Program Files\Java\jdk1.7.0</code>。</li>
-                        <li><code>CATALINA_BASE</code>，<code>CATALINA_HOME</code>，<code>TOMCAT_HOME</code>中的路径不能以“\”结尾。</li>
-                        <li><code>JAVA_HOME</code>的路径一定不要写成了<code>JRE</code>的路径。</li>
-                        <li>在环境变量中修改添加变量时，一定要注意分号、空格，是否有多余的字母。可能因为<code>path</code>路径中多了一个字母，就会出现怎么都配置不成功的情况。如果配置不成功，一定要反复检查。</li>
-                    </ul>
-                    <p>以上错误，非常容易出现错误：<code>CATALINA_HOME</code>或是<code>JAVA_HOME</code>没有配置好。如错误提示“The CATALINA_HOME environment variable is not defined correctly”</p>
-                </div>
+                <h1 id="shell">shell</h1>
+                @Html.Partial("~/Views/shell/shell.cshtml")
             </div>
+            <div class="bs-docs-section">
+                <h1 id="shell-cmd-base">Shell命令</h1>
+                @Html.Partial("~/Views/shell/shell-cmd-base.cshtml")                
+            </div>
+            <div class="bs-docs-section">
+                <h1 id="shell-cmd-files">Shell命令-文件管理</h1>
+                <h2></h2>
+            </div>
+            @*<div class="bs-docs-section">
+                <h1 id="etao">Etao备忘</h1>
+@Html.Partial("~/Views/etao/etao.cshtml")
+            </div>
+            <div class="bs-docs-section">
+                <h1 id="mavenstart" class="page-header">Maven入门</h1>
+                @Html.Partial("~/Views/java/mavenstart/mavenstart.cshtml")
+            </div>
+            <div class="bs-docs-section">
+                <h1 id="mavenskills">mavenskills</h1>
+                @Html.Partial("~/Views/java/maven/mavenskills.cshtml")
+            </div>*@
         </div>
         <div class="col-md-3" role="complementary">
             <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
                 <ul class="nav bs-docs-sidenav">
-
-                    <li>
-                        <a href="#tomcat-setting">配置tomcat环境</a>
+                    <li><a href="#shell">Shell</a>
                         <ul class="nav">
-                            <li><a href="#tomcat-setting-tools">工具/原料</a></li>
-                            <li><a href="#tomcat-setting-install">安装jdk&tomcat</a></li>
-                            <li><a href="#tomcat-setting-jdkpath">配置jdk环境变量</a></li>
-                            <li><a href="#tomcat-setting-jdktest">测试JDK</a></li>
-                            <li><a href="#tomcat-setting-tomcatpath">配置Tomcat环境变量</a></li>
-                            <li><a href="#tomcat-setting-tomcatstart">启动Tomcat服务</a></li>
-                            <li><a href="#tomcat-setting-tomcattest">测试Tomcat</a></li>
+                            <li><a href="#shell-wildcardchar">通配符</a></li>
                         </ul>
                     </li>
+                    <li><a href="#shell-cmd-base">Shell-Cmd</a>
+                        <ul class="nav">
+                            <li><a href="#shell-cmd-pwd">pwd</a></li>
+                            <li><a href="#shell-cmd-cd">cd</a></li>
+                            <li><a href="#shell-cmd-ls">ls</a></li>
+                            <li><a href="#shell-cmd-dir">dir&vdir</a></li>
+                            <li><a href="#shell-cmd-cat">cat&more</a></li>
+                            <li><a href="#shell-cmd-head">head&tail</a></li>
+                            <li><a href="#shell-cmd-less">less</a></li>
+                            <li><a href="#shell-cmd-grep">grep</a></li>
+                            <li><a href="#shell-cmd-find">find</a></li>
+                            <li><a href="#shell-cmd-locate">locate</a></li>
+                            <li><a href="#shell-cmd-whereis">whereis</a></li>
+                            <li><a href="#shell-cmd-who">who&whoami&uname</a></li>
+                            <li><a href="#shell-cmd-man">man&whatis&apropos</a></li>
+                        </ul>
+                    </li>
+                   @* <li>
+                        <a href="#etao">etao备忘</a>
+                        <ul class="nav">
+                            <li><a href="#etao-vpn">VPN</a></li>
+                            <li><a href="#etao-accounts">账号</a></li>
+                            <li><a href="#etao-git">git</a></li>
+                        </ul>
+                    </li>*@
+                    @*<li>
+                        <a href="#mavenstart">Maven入门</a>
+                        <ul class="nav">
+                            <li><a href="#mavenstart-basic">基本概念</a></li>
+                            <li><a href="#mavenstart-download">Download</a></li>
+                            <li><a href="#mavenstart-install">安装</a></li>
+                            <li><a href="#mavenstart-setting">环境变量</a></li>
+                            <li><a href="#mavenstart-project">项目目录约定</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#mavenskills">Maven小技巧</a>
+                        <ul class="nav">
+                            <li><a href="#mavenskills-repos">修改默认repository</a></li>
+                            <li><a href="#mavenskills-sdk">Maven配置JDK默认Version</a></li>
+                        </ul>
+                    </li>*@
                 </ul>
                 <a class="back-to-top" href="#top">
                     返回顶部

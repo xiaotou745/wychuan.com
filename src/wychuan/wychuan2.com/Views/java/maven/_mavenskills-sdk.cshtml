@@ -1,0 +1,42 @@
+﻿<p>在<code>Maven</code>的默认配置中，对于<code>jdk</code>的配置是1.4版本，那么创建/导入<code>maven</code>工程过程中，工程中未指定jdk版本。</p>
+<p>对工程进行<code>Maven</code>的<code>update</code>，就会出现工程依赖的<code>JRE System Library</code>会自动变成<code>JavaSE-1.4</code>。</p>
+<ol>
+    <li>
+        解决方案1：修改<code>Maven</code>的默认<code>jdk</code>配置
+        <p><code>Maven</code>的<code>conf\setting.xml</code>文件中找到<code>jdk</code>配置的地方，修改如下：</p>
+        <pre><code>
+&lt;profiles>
+    &lt;profile>
+        &lt;id>jdk1.8&lt;/id>
+        &lt;activation>
+            &lt;activebydefault>true&lt;/activebydefault>
+            &lt;jdk>1.8&lt;/jdk>
+        &lt;/activation>
+        &lt;properties>
+            &lt;maven.compiler.source>1.8&lt;/maven.compiler.source>
+            &lt;maven.compiler.target>1.8&lt;/maven.compiler.target>
+            &lt;maven.compiler.compilerversion>1.8&lt;/maven.compiler.compilerversion>
+        &lt;/properties>
+    &lt;/profile>
+&lt;/profiles>
+</code></pre>
+    </li>
+    <li>
+        解决方案2：修改项目中<code>pom.xml</code>文件，这样避免在导入项目时的<code>jdk</code>版本指定
+        <p>打开项目中<code>pom.xml</code>文件，修改如下：</p>
+        <pre><code>
+&lt;build>
+    &lt;plugins>
+        &lt;plugin>
+            &lt;groupid>org.apache.maven.plugins&lt;/groupid>
+            &lt;artifactid>maven-compiler-plugin&lt;/artifactid>
+            &lt;configuration>
+                &lt;source>1.6&lt;/source>
+                &lt;target>1.6&lt;/target>
+            &lt;/configuration>
+        &lt;/plugin>
+    &lt;/plugins>
+&lt;/build>
+</code></pre>
+    </li>
+</ol>

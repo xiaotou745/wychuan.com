@@ -1,14 +1,27 @@
-﻿@model wychuan2.com.Areas.admin.Models.Blog.BlogListModel
+﻿@using AC.Service.DTO.Blog
+@using AC.Util
+@model wychuan2.com.Areas.admin.Models.Blog.BlogListModel
 @{
     ViewBag.Title = "随笔-列表";
     Layout = "../Shared/_Layout.cshtml";
 }
 
 @{
+    string strCategories = JsonHelper.ToJson(Model.Categories);
+    string strTags = JsonHelper.ToJson(Model.Tags);
+
+    List<BlogCategoryDTO> lstFirsts = Model.Categories.Where(c => c.ParentId == 0).ToList();
+    List<BlogCategoryDTO> lstSeconds = new List<BlogCategoryDTO>();
+    if (lstFirsts.Count > 0)
+    {
+        lstSeconds = Model.Categories.Where(c => c.ParentId == lstFirsts.First().Id).ToList();
+    }
+    
 }
 
 @section styles{
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="~/Content/plugins/chosen/chosen.css" rel="stylesheet" />
     <style type="text/css">
         .content {
             width: 300px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
@@ -26,12 +39,43 @@
             </div>
             <div class="ibox-content">
                 <div class="row m-b-sm m-t-sm">
-                    <div class="col-md-12">
-                        
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <select class="form-control" name="selFirstCategoryQ">
+                                <option value="">一级类目</option>
+                                @foreach (var first in lstFirsts)
+                                {
+                                    <option value="@first.Id">@first.Name</option>
+                                }
+                            </select>
+                            <span class="input-group-addon">-</span>
+                            <select class="form-control" name="selSecondCategoryQ">
+                                <option value="">二级类目</option>
+                                @*@foreach (var second in lstSeconds)
+                                {
+                                    <option value="@second.Id">@second.Name</option>
+                                }*@
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <select id="selTagsQ" data-placeholder="所有Tag" class="chosen-select" multiple>
+                                <option value="">请选择Tag</option>
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <option value="@tag.Id" hassubinfo="true">@tag.TagName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary"  type="button" id="btnSearch" value="查询">查询</button>
                     </div>
                 </div>
                 <div id="content">
-                    @Html.Partial("_BlogList",Model)
+                    @Html.Partial("_BlogList", Model)
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -52,6 +96,8 @@
 
 @section scripts{
     <script type="text/javascript" src="~/Scripts/bootstrap-paginator.js"></script>
+    <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+    <script src="~/Scripts/mvcParamMatch.js"></script>
     <script type="text/javascript">
         var pager = {
             pageIndex: @Model.BlogsPaged.PageIndex,
@@ -59,48 +105,8 @@
             totalRecord: @Model.BlogsPaged.RecordCount,
             totalPageCount: @Model.BlogsPaged.PageCount
         };
-        $(function() {
-            pager.pageChanged = search;
-            page(pager);
-            refreshPager(1, pager.totalRecord);
-
-            $("#content").delegate(".J_Remove", "click", function() {
-                if (confirm("确定要删除此随笔吗？")) {
-                    var $tr = $(this).parents("tr");
-                    var id = $tr.data("id");
-
-                    $.get("/admin/blog/remove", { id: id }, function(resp) {
-                        if (!resp.iserror) {
-                            search(1);
-                        }
-                    }, "json");
-                }
-            });
-
-        });
-
-        function search(newPage) {
-            var queryInfo = {
-                PageIndex: newPage,
-            };
-            $.get("/admin/blog/search", queryInfo, function(resp) {
-                $("#content").html(resp);
-                var totalrecord = $("#content").find("table").data("totalrecord");
-                refreshPager(newPage, totalrecord);
-            });
-        }
-
-        function refreshPager(pageIndex, totalrecord) {
-            var pageSize = $(".dataTables_info").data("pagesize");
-            var recordCount = totalrecord;
-            var pageStart = (pageIndex - 1) * pageSize + 1;
-            var pageEnd = pageIndex * pageSize;
-            if (pageEnd > recordCount) {
-                pageEnd = recordCount;
-            }
-            $(".dataTables_info").find("[name=pageStart]").html(pageStart);
-            $(".dataTables_info").find("[name=pageEnd]").html(pageEnd);
-            $(".dataTables_info").find("[name=pageTotal]").html(recordCount);
-        }
+        window.categories = @Html.Raw(strCategories);
+        window.tags = @Html.Raw(strTags);
     </script>
+    <script src="~/Scripts/blog/mybloglist.js"></script>
 }

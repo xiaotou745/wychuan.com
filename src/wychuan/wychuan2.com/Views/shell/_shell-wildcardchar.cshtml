@@ -1,0 +1,39 @@
+﻿<p class="head">Shell 有一套被称作通配符的专用符号，它们是“*”、“?”和“[ ]”。</p>
+<p>假如进入当前目录，查看当前目录文件列表为：</p>
+<pre><code>[root@localhost etc]# ls
+text1 text2 text3 textA textB textC text.java</code></pre>
+<ul>
+    <li>
+        “*”用于匹配文件名中任意长度的字符串。
+        <pre><code>[root@localhost etc]# ls *.java
+text.java</code></pre>
+    </li>
+    <li>
+        和“*”相类似的通配符是“?”。但和“*”匹配任意长度的字符串不同，“?”只匹 配一个字符。
+        <pre><code>[root@localhost etc]# ls test?
+text1 text2 text3 textA textB textC</code></pre>
+    </li>
+    <li>
+        “[ ]”用于匹配所有出现在方括号内的字符，也可以使用短线“-”来指定一个字符集范围。
+        <pre><code>[root@localhost etc]# ls test[12A]
+text1 text2 textA
+[root@localhost etc]# ls test[1-9]
+text1 text2 text3</code></pre>
+    </li>
+</ul>
+<div class="bs-callout bs-callout-warning">
+    <h4>命令提示符</h4>
+    <p>在 BASH 中，命令行以一个美元符 号“$”作为提示符，表示用户可以输入命令了。</p>
+    <p>在 BASH 的美元提示符前，一般还会有一段信息，包括用户名、主机名和当前目 录。一个完整的提示符如</p>
+    <pre><code>[test@localhost etc]$</code></pre>
+    <p>如果正在以 root 身份执行命令，那么 Shell 提示符将成为“#”</p>
+    <pre><code>[root@localhost etc]#</code></pre>
+</div>
+<div class="bs-callout bs-callout-info">
+    <h4>命令自动补全</h4>
+    <p>BASH 提供了这样一种特性——命令行补全，可以大大简化文件名或命令的输入。 </p>
+    <ul>
+        <li>只需要输入前面几个字符，然后按下 Tab 键，Shell 会自动把文件名或命令补全。</li>
+        <li>连续按下 Tab 键两次，Shell 会以 列表的形式给出所有以键入字符开头的文件。</li>
+    </ul>
+</div>

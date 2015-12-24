@@ -86,12 +86,22 @@ namespace wychuan2.com.Areas.admin.Controllers
         #region 列表
         public ActionResult List()
         {
-            var queryInfo = new SectionsQueryInfo {UserId = ApplicationUser.Current.UserId};
+            var queryInfo = new SectionsQueryInfo
+            {
+                UserId = ApplicationUser.Current.UserId,
+                PageIndex = 1,
+                ParentId = 0,
+            };
 
-            IList<Sections> sectionses = sectionService.Query(queryInfo);
+            //IList<Sections> sectionses = sectionService.Query(queryInfo);
 
             SectionListModel model = new SectionListModel();
-            model.Sections = sectionses;
+            model.Categories = blogCategoryService.GetByUserId(ApplicationUser.Current.UserId);
+            model.Tags = blogTagsService.GetByUserId(ApplicationUser.Current.UserId);
+
+            //model.Sections = sectionses;
+            model.IsParents = true;
+            model.PagedSections = sectionService.QueryPaged(queryInfo);
 
             return View(model);
         }
@@ -109,14 +119,17 @@ namespace wychuan2.com.Areas.admin.Controllers
 
         #region Refresh
 
-        public ActionResult Refresh()
+        public ActionResult Refresh(SectionsQueryInfo queryInfo)
         {
-            var queryInfo = new SectionsQueryInfo { UserId = ApplicationUser.Current.UserId };
+            if (queryInfo == null)
+            {
+                return null;
+            }
+            queryInfo.UserId = ApplicationUser.Current.UserId;
 
-            IList<Sections> sectionses = sectionService.Query(queryInfo);
-
-            SectionListModel model = new SectionListModel();
-            model.Sections = sectionses;
+            var model = new SectionListModel();
+            model.IsParents = queryInfo.ParentId == 0 ? true : false;
+            model.PagedSections = sectionService.QueryPaged(queryInfo);
 
             return View("_SectionList", model);
         }
