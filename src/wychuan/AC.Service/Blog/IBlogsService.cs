@@ -6,6 +6,8 @@ namespace AC.Service.Blog
 {
     public interface IBlogsService
     {
+        #region Create, Modify,Remove,Get,Query
+
         /// <summary>
         /// 新增一条记录
         ///<param name="blog">要新增的对象</param>
@@ -17,8 +19,6 @@ namespace AC.Service.Blog
         ///<param name="blog">要修改的对象</param>
         /// </summary>
         void Modify(BlogsDTO blog);
-
-        void ModifySections(BlogsDTO blog);
 
         /// <summary>
         /// 删除一条记录
@@ -43,6 +43,14 @@ namespace AC.Service.Blog
         /// <param name="queryInfo"></param>
         /// <returns></returns>
         IPagedList<BlogsDTO> QueryPaged(BlogsQueryInfo queryInfo);
+
+        #endregion
+
+        /// <summary>
+        /// 更新随笔段落
+        /// </summary>
+        /// <param name="blog"></param>
+        void ModifySections(BlogsDTO blog);
 
         BlogsDTO GetByIdWithSections(int id);
 

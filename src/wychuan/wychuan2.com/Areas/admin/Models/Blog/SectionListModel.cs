@@ -30,5 +30,7 @@ namespace wychuan2.com.Areas.admin.Models.Blog
         /// 父段落列表
         /// </summary>
         public bool IsParents { get; set; }
+
+        public int ParentId { get; set; }
     }
 }

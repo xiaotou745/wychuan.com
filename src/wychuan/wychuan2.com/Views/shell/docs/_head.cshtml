@@ -1,0 +1,50 @@
+﻿<p> <code>head</code>的用法是显示出一个档案的前几行</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>head [OPTION]... [FILE]...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Print the first 10 lines of each FILE to standard output.
+    With more than one FILE, precede<code>vt. 领先，在…之前；优于，高于</code> each with a header giving the file name.
+With no FILE, or when FILE is -, read standard input.
+</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-n, --lines=[-]K</code><span class="label label-danger">常用</span>后面接数字，表示显示几行的意思。
+    <small>print the first K lines instead of the first 10;
+                             with the leading `-', print all but the last
+                             K lines of each file</small><br />
+    <code class="m-r-md">-c, --bytes=[-]K</code>和 -n 相似，只不过表示显示多少K的意思。
+    <small>print the first K bytes of each file;
+                             with the leading `-', print all but the last
+                             K bytes of each file</small>
+</p>
+
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>显示<code>/etc/sudo.config</code>文件的前10行:
+        <pre><code>[root@localhost tmp]# head /etc/sudo.conf 
+#
+# Default /etc/sudo.conf file
+#
+# Format:
+#   Plugin plugin_name plugin_path plugin_options ...
+#   Path askpass /path/to/askpass
+#   Path noexec /path/to/sudo_noexec.so
+#   Debug sudo /var/log/sudo_debug all@warn
+#   Set disable_coredump true
+#</code></pre>
+        <p><code>head</code>参数默认显示前10行代码。</p>
+    </li>
+    <li>如果要更改显示的行数，可以使用<code>-n</code>参数：
+        <pre><code>[root@localhost tmp]# head -n2 /etc/sudo.conf 
+#
+# Default /etc/sudo.conf file</code></pre>
+        如果参数<code>-n</code>后面跟的数字为负数，表示显示除了后N行之外的内容。
+        <pre><code>[root@localhost tmp]# head -n -55 /etc/sudo.conf 
+#
+# Default /etc/sudo.conf file</code></pre>
+        如上所示，<code>sudo.config</code>文件一共57行，显示-55行即等同于显示前两行。
+    </li>
+</ol>

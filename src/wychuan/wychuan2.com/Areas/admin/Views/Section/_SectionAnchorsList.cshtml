@@ -1,0 +1,33 @@
+﻿@model wychuan2.com.Areas.admin.Models.Blog.SectionPublishModel
+
+
+<table class="table table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>anchorId</th>
+            <th>anchorTitle</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.CurrentSection!=null
+            && Model.CurrentSection.Anchors != null && Model.CurrentSection.Anchors.Count > 0)
+        {
+            foreach (var anchor in Model.CurrentSection.Anchors)
+            {
+                <tr data-id="@anchor.Id">
+                    <td>@anchor.AnchorId</td>
+                    <td>@anchor.AnchorText</td>
+                    <td>
+                        <a data-toggle="modal" data-type="2" href="#modalAnchors">编辑</a>
+                        <a href="javascript:;" class="J_RemoveAnchor">删除</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="3" class="text-center">暂时没有锚点信息。</td></tr>
+        }
+    </tbody>
+</table>

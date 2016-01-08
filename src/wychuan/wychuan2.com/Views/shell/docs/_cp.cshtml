@@ -1,0 +1,62 @@
+﻿<p class="lead"><code>cp</code>是<strong>Copy</strong>的缩写，此指令用来复制档案或目录。</p>
+<p><strong>1. 命令格式</strong></p>
+<p><code>cp [OPTION]... [-T] SOURCE DEST</code><br />
+  or:  <code>cp [OPTION]... SOURCE... DIRECTORY</code><br />
+  or:  <code>cp [OPTION]... -t DIRECTORY SOURCE...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Copy SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-a, --archive</code><span class="label label-danger">常用</span>相当于-pdr的意思。<br />
+    <code class="m-r-md">-d</code>如果源文件为链接文件的属性(link file)，则复制链接文属性而非档案本身。<br />
+    <code class="m-r-md">-f, --force</code>如果目标文件已经存在且无法开启，则移除后再重试。
+        <small>if an existing destination file cannot be
+            opened, remove it and try again (redundant<code>adj. 多余的，过剩的</code> if
+                                 the -n option is used)</small><br />
+    <code class="m-r-md">-i, --interactive</code><span class="label label-danger">常用</span>如果目录文件已存在，覆盖之前会先询问用户。
+        <small>prompt before overwrite (overrides a previous -n option)</small><br />
+    <code class="m-r-md">-l, --link</code>进行硬式链接(hard link)的连接档建立，而非复制档案本身。
+        <small>link files instead of copying</small><br />
+    <code class="m-r-md">-p, --no-dereference</code>。
+    <small>never follow symbolic links in SOURCE</small><br />
+    <code class="m-r-md">-P</code><span class="label label-danger">常用</span>连同档案的属性一起复制过去，而非使用默认属性（备份常用）。<br />等同于<code>--preserve=mode,ownership,timestamps</code>。
+    <small>same as --preserve=mode,ownership,timestamps</small><br />
+    <code class="m-r-md">--preserve[=ATTR_LIST]</code>。复制的过程中保存档案的特殊属性（权限、所有者、时间等）
+    <small>preserve the specified attributes (default:mode,ownership,timestamps), if possible
+                                 additional attributes: context, links, xattr,all</small><br />
+    <code class="m-r-md">-R, -r, --recursive</code><span class="label label-danger">常用</span>递归复制，主要用于目录的复制行为。
+    <small>copy directories recursively</small><br />
+    <code class="m-r-md">-s, --symbolic-link</code>复制成为符号链接文件（symbolic link)，亦即【快捷方式】档案。
+    <small>make symbolic links instead of copying</small><br />
+    <code class="m-r-md">-u, --update</code>只有源文件比目标文件新或目标文件不存在时才进行复制；
+    <small>copy only when the SOURCE file is newer
+                                 than the destination file or when the
+                                 destination file is missing</small><br />
+    <code class="m-r-md">-v 或 --verbose</code>打印出来过程。<small>explain what is being done</small>
+</p>
+
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>使用root身份，将家目录下的install.log复制到<code>/tmp/demo/</code>目录下，并改名为install2.log<br />
+        <pre><code>[root@localhost ~]# ls -l /tmp/demo/
+[root@localhost ~]# cp ~/install.log /tmp/demo/install2.log
+[root@localhost ~]# cp -i ~/install.log /tmp/demo/install2.log
+cp: overwrite `/tmp/demo/install2.log'? y
+[root@localhost ~]# ls -l /tmp/demo/
+-rw-r--r--. 1 root root 8815 Jan  6 15:12 install2.log
+[root@localhost ~]# </code></pre>
+        第二次<code>cp</code>时，由于文件已存在，所以使用<code>-i</code>选项， 则覆盖前会提示是否覆盖，输入<code>y</code>确认，输入<code>n</code>取消；
+    </li>
+    
+</ol>
+
+<p><strong>5. 总结</strong></p>
+<p>由于<code>cp</code>有种种的文件属性与权限的特性，所以，在复制时，你必须要清楚的了解到：</p>
+<ul>
+    <li>是否需要完整的保留来源档案的信息？</li>
+    <li>来源档案是否为连结档 (symbolic link file)？</li>
+    <li>来源档是否为特殊的档案，例如 FIFO, socket 等？</li>
+    <li>来源文件是否为目录？  </li>
+</ul>

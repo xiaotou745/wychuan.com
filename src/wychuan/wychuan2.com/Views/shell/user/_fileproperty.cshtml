@@ -1,0 +1,57 @@
+﻿<p>使用<code>ls</code>指令，查看当前目录下的文档列表：</p>
+<pre><code>[root@localhost ~]# ls -l
+total 2620
+-rw-------. 1 root root    1096 Mar  5  2015 anaconda-ks.cfg
+-rw-r--r--. 1 root root 2621440 Sep 16 11:04 api-http.war
+drwxr-xr-x. 3 root root    4096 Sep 16 15:52 c:
+-rw-r--r--. 1 root root   25150 Nov  6 14:29 dump.rdb
+-rw-r--r--. 1 root root    8815 Mar  5  2015 install.log
+-rw-r--r--. 1 root root    3384 Mar  5  2015 install.log.syslog
+-rw-r--r--. 1 root root       2 Mar 31  2015 overcommit_memory~
+drwxr-xr-x. 6 root root    4096 Mar  5  2015 soft</code></pre>
+
+<p>查看上述结果，可以看到每个文档都是7部分组成，首先我们来解释一下这七部分各代表的含义：</p>
+<img src="~/img/linux/docsproperty1.jpg" />
+<ol>
+    <li><p><strong>第一栏表示档案类型与权限，此栏共10个字符长度，各个长度的字符代表的含义如下图所示：</strong></p>
+    <img src="~/img/linux/docsproperty2.jpg" />
+    <ul>
+        <li>
+            <p>第一个字符用来表示档案类型，代表了这个档案是『目录、档案或链接文件等等』</p>
+            <div class="bs-callout bs-callout-warning">
+                <h4>档案类型</h4>
+                <ul>
+                    <li>当为[ d ]则是目录，例如上表档名为『c:』的那一行； </li>
+                    <li>当为[ - ]则是档案，例如上表档名为『anaconda-ks.cfg』那一行； </li>
+                    <li>若是[ l ]则表示为连结档(link file)； </li>
+                    <li>若是[ b ]则表示为装置文件里面的可供储存的接口设备(可随机存取装置)；</li>
+                    <li>若是[ c ]则表示为装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)。 </li>
+                </ul>
+            </div>
+        </li>
+        <li><p>第2-10个字符，每三个为一组，分别代表档案的拥有者、同群组、其他人的权限。权限表示为[rwx]，[ r ]代表可读 (read)、[ w ]代表可写(write)、[ x ]代表可执行(execute)。 这三个权限的位置不会改变，如果没有权限，就会出现减号[ - ]而已。</p></li>
+    </ul>
+    </li>
+    <li><p><strong>第二栏表示有多少档名连结到此节点(i-node)：</strong></p>
+        <p>
+            每个档案都会将他的权限与属性记录到文件系统的i-node中，不过，我们使用的目录树却是使用文件名来记录，
+            因此每个档名就会连结到一个i-node啰！这个属性记录的，
+            就是有多少不同的档名连结到相同的一个i-node号码去就是了。
+        </p> 
+    </li>
+    <li><p>第三栏表示这个档案(或目录)的『拥有者账号』</p></li>
+    <li><p>第四栏表示这个档案的所属群组</p></li>
+    <li><p>第五栏为这个档案的容量大小，默认单位为bytes；</p></li>
+    <li><p>第六栏为这个档案的建档日期或者是最近的修改日期：</p>
+        <div class="bs-callout bs-callout-warning">
+            <h4>注意</h4>
+            <p>这一栏的内容分别为日期(月/日)及时间。如果这个档案被修改的时间距离现在太久了，那么时间部分会仅显示年份而已。 
+                如果想要显示完整的时间格式，可以利用ls的选项，亦即：<code>$ ls -l --full-time</code>就能够显示出完整的时间格式了包括年、月、日、时间。 </p>
+        </div>
+    </li>
+    <li><p>第七栏为这个档案的档名</p>
+        <p>
+            比较特殊的是：如果档名之前多一个『 . 』，则代表这个档案为『隐藏档』，你可以使用『ls』及『ls -a』这两个指令去感受一下什么是隐藏档！
+        </p>
+    </li>
+</ol>

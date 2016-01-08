@@ -1,0 +1,47 @@
+﻿<p class="lead"><code>mv</code>是<strong>Move</strong>的缩写，此指令用来移动档案与目录，或者重命名。</p>
+<p><strong>1. 命令格式</strong></p>
+<p><code>mv [OPTION]... [-T] SOURCE DEST</code><br />
+    or <code>mv [OPTION]... SOURCE... DIRECTORY</code><br />
+    or <code>mv [OPTION]... -t DIRECTORY SOURCE...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-f, --force</code><span class="label label-danger">常用</span>如果目标档案已存在，不必询问而直接覆盖。
+    <small>do not prompt before overwriting</small><br />
+    <code class="m-r-md">-i, --interactive</code><span class="label label-danger">常用</span>如果目标档案已存在，询问是否覆盖。
+    <small>prompt before overwrite</small><br />
+    <code class="m-r-md">-n, --no-clobber</code>不覆盖已存在档案。<small>do not overwrite an existing file</small>
+    <br /><strong>从上面可以看出，<code>-f</code><code>-i</code><code>-n</code>三个选项含义相悖，如果使用了两个以上的参数，则最后一个起作用。</strong>
+    <br />
+    
+    <code class="m-r-md">-u, --update</code><span class="label label-danger">常用</span>只有源文件比目标文件新或目标文件不存在时才进行复制；
+    <small>
+        copy only when the SOURCE file is newer
+        than the destination file or when the
+        destination file is missing
+    </small><br />
+    <code class="m-r-md">-v 或 --verbose</code>打印出来过程。<small>explain what is being done</small>
+</p>
+
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>复制一档案，建立一目录，将档案移动到目录中。
+        <pre><code>[root@localhost tmp]# cp ~/install.log ./install1
+[root@localhost tmp]# mkdir cmdofmv
+[root@localhost tmp]# mv install1 cmdofmv/</code></pre>
+    </li>
+    <li>将第1步刚创建的目录<strong>cmdofmv</strong>更名为<strong>cmdOfMv</strong><br />
+        <code>[root@localhost tmp]# mv cmdofmv/ cmdOfMv</code>
+    </li>
+    <li>再建立两个档案，然后全部移动到/tmp/cmdOfMv当中
+        <pre><code>[root@localhost tmp]# cp ~/install.log install2
+[root@localhost tmp]# cp ~/install.log install3
+[root@localhost tmp]# mv install2 install3 cmdOfMv/</code></pre>
+        <strong>注意事项：</strong>如果有多个源档案或目录，则最后一个目标文件一定是目录，即所有的数据移动到该目录的意思。
+    </li>
+    <li>当前，我们也可以使用<code>-u</code>选项来测试新旧档案。</li>
+</ol>
+

@@ -11,6 +11,8 @@ namespace AC.Service.Blog
     /// </summary>
     public interface ISectionsService
     {
+        #region  Create, Modify,Remove,Get,Query
+
         /// <summary>
         /// 新增一条记录
         ///<param name="sections">要新增的对象</param>
@@ -31,14 +33,14 @@ namespace AC.Service.Blog
         /// <summary>
         /// 根据Id得到一个对象实体
         /// </summary>
-        Sections GetById(int id);
+        Sections GetById(int id, bool getChilds = false, bool getAnchors = false, bool getTags = false);
 
         /// <summary>
         /// 根据sectionId获取对象
         /// </summary>
         /// <param name="sectionId"></param>
         /// <returns></returns>
-        Sections GetBySectionId(string sectionId);
+        Sections GetBySectionId(string sectionId, bool getChilds = false, bool getAnchors = false, bool getTags = false);
 
         /// <summary>
         /// 查询方法
@@ -52,6 +54,39 @@ namespace AC.Service.Blog
         /// <returns></returns>
         IPagedList<Sections> QueryPaged(SectionsQueryInfo queryInfo);
 
-        IList<Sections> GetByBlogSectionIds(string blogSectionIds);
+        #endregion
+
+        #region 获取随笔的段落列表(包括子段落)
+
+        /// <summary>
+        /// 获取随笔的段落列表(包括子段落)
+        /// </summary>
+        /// <param name="blogSectionIds"></param>
+        /// <param name="getAnchors">是否获取锚点，默认为false</param>
+        /// <returns></returns>
+        IList<Sections> GetByBlogSectionIds(string blogSectionIds,bool getAnchors=false);
+
+        #endregion
+
+        #region 获取子段落
+
+        /// <summary>
+        /// 获取子段落
+        /// </summary>
+        /// <param name="sectionIds"></param>
+        /// <returns></returns>
+        IList<Sections> GetChilds(IList<int> sectionIds);
+
+        #endregion
+
+        #region 更新子段落
+
+        /// <summary>
+        /// 保存子段落
+        /// </summary>
+        /// <param name="childs"></param>
+        void SaveChilds(Sections childs);
+
+        #endregion
     }
 }

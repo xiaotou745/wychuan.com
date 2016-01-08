@@ -1,0 +1,44 @@
+﻿<p class="lead"><code>mkdir</code>是<strong>Make Directory</strong>的缩写?，此指令用来创建新的目录。</p>
+<p><strong>1. 命令格式</strong></p>
+<p><code>mkdir [OPTION]... DIRECTORY...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Create the DIRECTORY(ies), if they do not already exist.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-m或--mode</code>配置文件档案的权限。<small>set file mode (as in chmod), not a=rwx - umask</small><br />
+    <code class="m-r-md">-p 或 --parents</code>递归建立指定的目录（包含上层目录）,如果目录已存在不会报错。<small>no error if existing, make parent directories as needed</small><br />
+    <code class="m-r-md">-v 或 --verbose</code>打印建立的目录。<small>print a message for each created directory</small>
+</p>
+
+<p><strong>4. 常用操作</strong></p>
+<ol>
+    <li>在当前目录下创建<strong>demo</strong>目录：<code>$ mkdir demo</code><br />
+        <ul>
+            <li>如果当前目录已存在，则创建失败：<br /><code>mkdir: cannot create directory `demo': File exists</code></li>
+            <li>如果创建的时候使用<code>-p</code>选项，则目录即使已存在也不会报错：<br /><code>$ mkdir -p demo</code></li>
+            <li>如果使用<code>-v</code>选项，且要创建的目录不存在，则在控制台会有创建成功的提示：<br />
+                <code>$ mkdir -v demo</code><br />
+                <code>mkdir: created directory `demo'</code>
+            </li>
+            <li>默认情况下新建的目录的权限跟<code>umask</code>有关。</li>
+        </ul>
+    </li>
+    <li>创建目录的同时，可以使用<code>-m</code>选项为要创建的目录预设权限：<br />
+        <code>$ mkdir -m 777 demo1</code><br />
+        <pre><code>$ ls -l
+drwxr-xr-x. 2 root root 4096 Jan  6 10:48 demo
+drwxrwxrwx. 2 root root 4096 Jan  6 11:10 demo1</code></pre>
+    </li>
+    <li>默认情况下，目录必须一层一层的创建，上级目录不存在的情况下不能创建下级目录：<br />
+        <code>mkdir demo2/test/test/test</code><br />
+        <code>mkdir: cannot create directory `demo2/test/test/test': No such file or directory</code><br />
+        为了解决上述问题，可以使用<code>-p</code>选项，<code>-p</code>可以递归创建目录，且目录已存在也不会报错。<br />
+        <code>mkdir -pv demo2/test/test/test</code><br />
+        <pre><code>[root@localhost chuan]# mkdir -pv demo2/test/test/test
+mkdir: created directory `demo2/test'
+mkdir: created directory `demo2/test/test'
+mkdir: created directory `demo2/test/test/test'</code></pre>
+    </li>
+</ol>

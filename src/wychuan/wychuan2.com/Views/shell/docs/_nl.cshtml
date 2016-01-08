@@ -1,0 +1,82 @@
+﻿<p> <code>nl</code>是<strong>Number Line</strong>的缩写吧， 主要的功能是将一个文档的内容添加行号打印出来</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>nl [OPTION]... [FILE]...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Write each FILE to standard output, with line numbers added.
+    With no FILE, or when FILE is -, read standard input.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-b, --body-numbering=STYLE</code><span class="label label-danger">常用</span>指定行号指定的方式，方式如下：<small>use STYLE for numbering body lines</small><br />
+    STYLE is one of:
+        <ul><li><code>a</code>        number all lines(列出所有行的行号，不论是否为空行)</li>
+            <li><code>t</code>         number only nonempty lines(列出所有非空行的行号)</li>
+            <li><code>n</code>         number no lines(不显示行号)</li>
+            <li><code>pBRE</code>      number only lines that contain a match for the basic regular
+            expression, BRE(包括指定正则表达式的行才显示行号)</li>
+        </ul>
+<p>
+<p>
+    <code class="m-r-md">-n, --number-format=FORMAT</code><span class="label label-danger">常用</span>列出行号表示的方法，主要有三种：<small>insert line numbers according to FORMAT</small><br />
+    FORMAT is one of:
+    <ul>
+        <li><code>ln</code>   left justified, no leading zeros(行号在屏幕的最左边显示，不加0)</li>
+        <li><code>rn</code>   right justified, no leading zeros(行号在屏幕的最右边显示，不加0)</li>
+        <li><code>rz</code>   right justified, leading zeros（行号在自己字段的最右边显示，加0）</li>
+    </ul>
+</p>
+<p>
+    <code class="m-r-md">-w, --number-width=NUMBER</code><span class="label label-danger">常用</span>行号字段占用的位数，主要在加0的时候用来控制加几个0吧。<small>use NUMBER columns for line numbers</small><br />
+    <code class="m-r-md">-v, --starting-line-number=NUMBER</code><small>first line number on each logical page</small><br />
+    <code class="m-r-md">-i, --line-increment=NUMBER</code><small>line number increment at each line</small><br />
+    <code class="m-r-md">-l, --join-blank-lines=NUMBER</code><small>group of NUMBER empty lines counted as one</small><br />
+    <code class="m-r-md">-s, --number-separator=STRING</code><small>add STRING after (possible) line number</small><br />
+    <code class="m-r-md">-h, --header-numbering=STYLE</code><small>use STYLE for numbering header lines</small><br />
+    <code class="m-r-md">-f, --footer-numbering=STYLE</code><small>use STYLE for numbering footer lines</small><br />
+    <code class="m-r-md">-d, --section-delimiter=CC</code><small>use CC for separating logical pages</small><br />
+</p>
+<p><code>nl</code>默认使用的参数为：<code>-v1 -i1 -l1 -sTAB -w6 -nrn -hn -bt -fn</code></p>
+
+<p><strong>4. 范例</strong></p>
+<ol>
+    <li>用<code>nl</code>列出/tmp/chuan/file文件的内容：
+        <pre><code>[root@localhost chuan]# nl file
+       
+     1
+     2  line 3
+     3  line 4
+     4          line 5
+       </code></pre>
+        <strong>注意：</strong>这个档案其实一共有6行，其中第1行为空白，第2行为tab，第6行为空白。
+        由于第1行和第6行为空白，所以不会加上行号（第2行的tab非空白，所以有行号)
+    </li>
+    <li>对file文件的内容，不论是否为空白都加上行号呢？
+        <pre><code>[root@localhost chuan]# nl -ba file
+     1
+     2
+     3  line 3
+     4  line 4
+     5          line 5
+     6</code></pre>
+    </li>
+    <li>前面两步操作结果可以看出，行号前面有空格，默认情况下，行号占位为6个字符，我们可以通过<code>-nrz</code>选项给行号补0
+        <pre><code>[root@localhost chuan]# nl -ba -nrz file
+000001
+000002
+000003  line 3
+000004  line 4
+000005          line 5
+000006</code></pre>
+    </li>
+    <li>我们也可以使用<code>-wNUMBER</code>自己设置行号的占位，如把行号占位更改为3位：
+        <pre><code>[root@localhost chuan]# nl -ba -nrz -w3 file
+001
+002
+003     line 3
+004     line 4
+005             line 5
+006</code></pre>
+    </li>
+</ol>

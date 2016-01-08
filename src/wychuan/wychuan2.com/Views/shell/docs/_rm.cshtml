@@ -1,0 +1,39 @@
+﻿<p class="lead"><code>rm</code>是<strong>Remove</strong>的缩写，此指令用来删除档案或目录。</p>
+<p><strong>1. 命令格式</strong></p>
+<p><code>rm [OPTION]... FILE...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Remove (unlink) the FILE(s).</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-f, --force</code><span class="label label-danger">常用</span>忽略不存在的文档，不会出现警告信息。
+    <small>ignore nonexistent files, never prompt</small><br />
+    <code class="m-r-md">-i</code><span class="label label-danger">常用</span>删除之前询问操作者是否确定操作。
+    <small>prompt before every removal</small><br />
+    <code class="m-r-md">-I</code>删除超过3个文件或递归删除文件时进行提示，比起<code>-i</code>每次删除都会提示，体验要好不少。
+    <small>prompt once before removing more than three files, or
+                          when removing recursively.  Less intrusive than -i,
+                          while still giving protection against most mistakes</small><br />
+    <code class="m-r-md">-r, -R, --recursive</code><span class="label label-danger">常用</span>递归删除，一般用于目录删除操作。
+        <small>remove directories and their contents recursively</small><br />
+    <code class="m-r-md">-v 或 --verbose</code>打印出来过程。<small>explain what is being done</small>
+</p>
+
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>删除一个以<code>-</code>开头的档案。
+        <pre><code>[root@localhost chuan]# rm -aaaa
+rm: invalid option -- 'a'
+Try `rm ./-aaaa' to remove the file `-aaaa'.
+Try `rm --help' for more information.
+[root@localhost chuan]# rm -- -aaaa
+rm: remove regular empty file `-aaaa'? y
+[root@localhost chuan]# rm ./-aaaa 
+rm: remove regular empty file `./-aaaa'? y</code></pre>
+        <p>档名最好不要使用<code>-</code>号开头， 因为<code>-</code>后面接的是选项，因此，
+            单纯的使用<code>$ rm -aaaa</code>系统的指令就会误判。所以，只能用避过首位字符是 "-" 的方法:
+            就是加上本目录<code>./</code>或者使用<code>$ rm -- -aaaa</code>也可以 </p>
+    </li>
+</ol>
+

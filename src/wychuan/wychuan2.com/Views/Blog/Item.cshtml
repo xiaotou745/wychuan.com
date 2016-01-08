@@ -45,13 +45,13 @@ else
                 foreach (var blogSection in Model.BlogSections)
                 {
                     <div class="bs-docs-section">
-                        <h1 id="@blogSection.SectionId" class="page-header">@blogSection.Title</h1>
+                        <h1 id="@("b"+blogSection.SectionId)" class="page-header">@blogSection.Title</h1>
                         @Html.Raw(blogSection.Content)
                         @if (blogSection.Childs != null)
                         {
                             foreach (var child in blogSection.Childs)
                             {
-                                <h2 id="@child.SectionId">
+                                <h2 id="@("b"+child.SectionId)">
                                     @child.Title
                                 </h2>
                                 @Html.Raw(child.Content)
@@ -69,13 +69,30 @@ else
                         foreach (var blogSection in Model.BlogSections)
                         {
                             <li>
-                                <a href="#@blogSection.SectionId">@blogSection.Title</a>
-                                @if (blogSection.Childs != null)
+                                <a href="#@("b"+blogSection.SectionId)">@blogSection.Title</a>
+                                @if (blogSection.Childs != null || blogSection.Anchors!=null)
                                 {
                                     <ul class="nav">
-                                        @foreach (var child in blogSection.Childs)
+                                        @if (blogSection.Anchors != null)
                                         {
-                                            <li><a href="#@child.SectionId">@child.Title</a></li>
+                                            foreach (var anchor in blogSection.Anchors)
+                                            {
+                                                <li><a href="#@anchor.AnchorId">@anchor.AnchorText</a></li>
+                                            }
+                                        }
+                                        @if (blogSection.Childs != null)
+                                        {
+                                            foreach (var child in blogSection.Childs)
+                                            {
+                                                <li><a href="#@("b"+child.SectionId)">@child.Title</a></li>
+                                                if (child.Anchors != null)
+                                                {
+                                                    foreach (var childAnchor in child.Anchors)
+                                                    {
+                                                        <li><a href="#@childAnchor.AnchorId">@childAnchor.AnchorText</a></li>
+                                                    }
+                                                }
+                                            }
                                         }
                                     </ul>
                                 }

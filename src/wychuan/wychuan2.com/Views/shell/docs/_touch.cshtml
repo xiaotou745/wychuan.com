@@ -1,0 +1,96 @@
+﻿<p class="lead"><code>touch</code>，此指令的作用是修改档案时间或建立新档案。</p>
+<p>在讲解<code>touch</code>这个命令之前，需要先了解一下档案的时间知识，一个档案有三个时间：
+    <strong class="text-danger">内容变更时间</strong>、<strong class="text-danger">状态变更时间</strong>、<strong class="text-danger">读取变更时间。</strong></p>
+<ul>
+    <li><code>modification time (mtime)</code><br />
+        当该档案的『内容数据』变更时，就会更新这个时间！内容数据指的是档案的内容，而不是档案的属性或权限。
+    </li>
+    <li><code>status time (ctime)</code><br />
+        当该档案的『状态 (status)』改变时，就会更新这个时间，举例来说，像是权限与属性被更改了，都会更新这个时间
+    </li>
+    <li><code>access time (atime)</code><br />
+        当『该档案的内容被取用』时，就会更新这个读取时间 (access)。举例来说，我们使用 <code>cat</code> 去读 取 /etc/man.config ， 就会更新该档案的 atime 了。
+    </li>
+</ul>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>touch [OPTION]... FILE...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Update the access and modification times of each FILE to the current time.</p>
+<p></p>
+<p>
+    <a href="javascript:;" data-toggle="tooltip" title="A FILE argument that does not exist is created empty, unless -c or -h is supplied.">
+        如果参数<code>FILE</code>不存在，除非使用了<code>-c</code>或<code>-h</code>参数，否则会创建一个空的档案。
+    </a>
+</p>
+<p>
+        A FILE argument string of - is handled specially and causes touch to
+        change the times of the file associated with standard output.
+</p>
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-a</code><span class="label label-danger">常用</span>仅修改access time。<small>change only the access time</small><br />
+    
+    <code class="m-r-md">-m</code><span class="label label-danger">常用</span>仅修改modify time。
+    <small>change only the modification time</small><br />
+
+    <code class="m-r-md">-c, --no-create</code><span class="label label-danger">常用</span>仅修改档案的时间，如果该档案不存在，不创建新档案。<small>do not create any files</small><br />
+
+    <code class="m-r-md">-d, --date=STRING</code><span class="label label-danger">常用</span>后面可以接预修订的日期，而不使用当前的日期。
+    <small>parse STRING and use it instead of current time</small><br />
+
+    <code class="m-r-md">-t STAMP</code>后面可以接预修订的日期，而不使用当前的日期，格式[[CC]YY]MMDDhhmm[.ss]。
+    <small>use [[CC]YY]MMDDhhmm[.ss] instead of current time</small><br />
+
+    <code class="m-r-md">-r, --reference=FILE</code>使用指定文件的时间而不使用当前时间。
+    <small>use this file's times instead of current time</small><br />
+</p>
+<p><strong>注意：</strong><code>-d</code>和<code>-t</code>参数格式不一样。</p>
+
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>创建一个空档案：touch.txt，查看其时间：
+        <pre><code>[root@localhost ~]# cd /tmp/
+[root@localhost tmp]# touch touch.txt
+[root@localhost tmp]# ls -l --full-time touch.txt ; ls -l --time=atime --full-time touch.txt ;ls -l --time=ctime --full-time touch.txt 
+-rw-r--r--. 1 root root 0 2016-01-07 15:34:38.236580000 +0800 touch.txt
+-rw-r--r--. 1 root root 0 2016-01-07 15:34:38.236580000 +0800 touch.txt
+-rw-r--r--. 1 root root 0 2016-01-07 15:34:38.236580000 +0800 touch.txt</code></pre>
+        默认创建的空档案的<code>ctime, mtime,atime</code>都为当前时间；
+        <code>;</code>号可以在一行内写多个指令；
+    </li>
+    <li>复制touch.txt档案为touch2.txt档案，查看touch2.txt时间：
+        <pre><code>[root@localhost tmp]# cp -a touch.txt touch2.txt
+[root@localhost tmp]# ls -l --full-time touch2.txt ; ls -l --time=atime --full-time touch2.txt ;ls -l --time=ctime --full-time touch2.txt 
+-rw-r--r--. 1 root root 0 2016-01-07 15:34:38.236580000 +0800 touch2.txt
+-rw-r--r--. 1 root root 0 2016-01-07 15:34:38.236580000 +0800 touch2.txt
+-rw-r--r--. 1 root root 0 2016-01-07 15:36:47.542580000 +0800 touch2.txt</code></pre>
+        完全复制档案为touch2.txt，<code>mtime</code>和<code>atime</code>都一样，但是由于是档案新建，所以<code>ctime</code>不同；
+    </li>
+    <li>修改touch2.txt的时间，更改为2天前：
+        <pre><code>[root@localhost tmp]# touch -d "2 days ago" touch2.txt 
+[root@localhost tmp]# ls -l --full-time touch2.txt ; ls -l --time=atime --full-time touch2.txt ;ls -l --time=ctime --full-time touch2.txt 
+-rw-r--r--. 1 root root 0 2016-01-05 15:43:45.743851599 +0800 touch2.txt
+-rw-r--r--. 1 root root 0 2016-01-05 15:43:45.743851599 +0800 touch2.txt
+-rw-r--r--. 1 root root 0 2016-01-07 15:43:45.743580000 +0800 touch2.txt</code></pre>
+        可以看到，时间变成了2天前，但是<code>ctime</code>没有更改；
+    </li>
+    <li>修改touch.txt的时间为2016/01/08 15:30：
+        <pre><code>[root@localhost tmp]# touch -t 1601081530 touch.txt 
+[root@localhost tmp]# ls -l --full-time touch.txt ; ls -l --time=atime --full-time touch.txt ;ls -l --time=ctime --full-time touch.txt 
+-rw-r--r--. 1 root root 0 2016-01-08 15:30:00.000000000 +0800 touch.txt
+-rw-r--r--. 1 root root 0 2016-01-08 15:30:00.000000000 +0800 touch.txt
+-rw-r--r--. 1 root root 0 2016-01-07 15:47:14.386580000 +0800 touch.txt
+[root@localhost tmp]#</code></pre>
+        可以看到，<code>mtime</code>和<code>atime</code>都变成了指定时间，但是<code>ctime</code>没有更改；
+    </li>
+    <li>当然也可以通过<code>-m</code>或<code>-a</code>来限制只更改<code>mtime</code>或<code>atime</code></li>
+</ol>
+
+<p><strong>5. 总结</strong></p>
+<p><code>touch</code>常被使用的地方：</p>
+<ul>
+    <li>创建一个空的档案</li>
+    <li>将某个档案日期修订为当前时间</li>
+</ul>

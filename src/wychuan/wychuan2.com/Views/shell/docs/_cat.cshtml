@@ -1,0 +1,89 @@
+﻿<p> <code>cat</code> 是 Concatenate （连续）的简写， 主要的功能是将一个档案的内容连续的印出在屏幕上面</p>
+<p><code>cat</code>命令的用途是连接文件或标准输入并打印。这个命令常用来显示文件内容，或者将几个文件连接起来显示，或者从标准输入读取内容并显示，它常与重定向符号配合使用。 </p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>cat [OPTION]... [FILE]...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>把档案串连接后传到基本输出（萤幕或加 > fileName 到另一个档案）<small>Concatenate<code>[kən'kætɪneɪt] adj. 连结的；连锁的</code> FILE(s), or standard input, to standard output.</small></p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-n, --number</code><span class="label label-danger">常用</span>由 1 开始对所有输出的行数编号<small>number all output lines</small><br />
+    <code class="m-r-md">-b, --number-nonblank</code>和 -n 相似，只不过对于空白行不编号<small>number nonempty output lines</small><br />
+    <code class="m-r-md">-s, --squeeze-blank</code>当遇到有连续两行以上的空白行，就代换为一行的空白行<small>suppress repeated empty output lines</small><br />
+    <code class="m-r-md">-v, --show-nonprinting</code>列出一些看不出来的特殊字符。使用 ^ 和 M- 引用，除了 LFD 和 TAB 之外<small>use ^ and M- notation, except for LFD and TAB</small><br />
+    <code class="m-r-md">-E, --show-ends</code>在每行结束处显示 $<small>display $ at end of each line</small><br />
+    <code class="m-r-md">-T, --show-tabs</code>将跳格字符显示为 ^I<small>display TAB characters as ^I</small><br />
+    <code class="m-r-md">-A, --show-all</code>等价于 -vET<br />
+    <code class="m-r-md">-e</code>等价于 -vE<br />
+    <code class="m-r-md">-t</code>与 -vT 等价<br />
+</p>
+
+<p><strong>4. 常用操作</strong></p>
+<p>
+    <code>cat</code>命令主要有三大功能：
+    <ol>
+        <li>一次性查看文件内容：<code>$ cat filename</code></li>
+        <li>创建文件或向已存在文件追加内容：<code>$ cat > filename</code> 或 <code>$ cat >> filename</code></li>
+        <li>合并文件功能：<code>$ cat filename1 filename2 filename3 > filename</code></li>
+    </ol>
+    例如：
+    <ul>
+        <li>把 file1 的档案内容加上行号后输入 file2 这个档案里：<code>cat -n file1 > file2</code></li>
+        <li>把 file1 和 file2 的档案内容加上行号（空白行不加）之后将内容附加到 file3 里：
+            <code>cat -b file1 file2 >> file3</code></li>
+        <li>把test.txt文件扔进垃圾箱，赋空值test.txt：
+<code>cat /dev/null > /etc/test.txt</code></li>
+    </ul>
+</p>
+
+<p><strong>5. 命令实例</strong></p>
+<p><code>cat</code>常用的有下面几个功能</p>
+<ul>
+    <li>查看文件内容。<code>$ cat filename</code>
+        <p>
+            <code>[root@localhost tmp]# cat 1.txt</code> <small>#查看当前目录下1.txt的文件内容</small><br />
+            <code>[root@localhost tmp]# cat -n 1.txt</code><small>#对当前目录中的1.txt文件的所有的行(包括空白行）进行编号输出显示</small><br />
+            <code>[root@localhost tmp]# cat -E 1.txt</code><small>#查看当前目录下的1.txt文件内容，并且在每行的结尾处附加$符号</small><br />
+            <code>[root@localhost tmp]# cat -b 1.txt</code><small>#查看当前目录下的1.txt内容，并且对非空白行进行编号，行号从1开始；</small>
+        </p>
+        <p><code>cat</code> 可以同时显示多个文件的内容，比如我们可以在一个<code>cat</code>命令上同时显示两个文件的内容；<br />
+            <code>[root@localhost tmp]# cat 1.txt 2.txt</code>
+        </p>
+        <p><code>cat</code> 对于内容极大的文件来说，可以通过管道|传送到<code>more</code> 工具，然后一页一页的查看；<br />
+            <code>[root@localhost tmp]# cat 1.txt 2.txt | more</code></p>
+    </li>
+    <li>创建一个文件：<code>$ cat > filename  </code>，最后按 <code>Ctrl + D</code> 结束输入，会将你输入的数据保存到文件。
+        <p>cat有创建文件的功能，使用<code>$ cat > filename</code>可以创建filename文件
+            <pre><code>[root@localhost tmp]# cat > 3.txt
+this is 3.txt
+[root@localhost tmp]# cat 3.txt 
+this is 3.txt</code></pre>
+            <code>cat</code>还有向已存在文件追加内容的功能，使用<code>$ cat >> filename</code>向文件追加内容.
+            <pre><code>[root@localhost tmp]# cat >> 3.txt 
+this is 3.txt line2
+[root@localhost tmp]# cat 3.txt
+this is 3.txt
+this is 3.txt line2</code></pre>
+        </p>
+    </li>
+    <li>将几个文件合并为一个文件： <code>$cat file1 file2 > file</code>
+        <p><code>cat</code>可以连接多个文件的内容并且输出到一个新文件中，<code>$ cat filename1 filename2 > filename</code>
+            <pre><code>[root@localhost tmp]# cat 1.txt 
+this is 1.txt
+[root@localhost tmp]# cat 2.txt 
+this is 2.txt
+[root@localhost tmp]# cat 1.txt 2.txt > 3.txt
+[root@localhost tmp]# cat 3.txt 
+this is 1.txt
+this is 2.txt</code></pre>
+            <code>cat</code>可以把一个或多个文件的内容追加到一个已存在的文件中：<code>$ cat file1 file2 >> file3</code></p>
+        <pre><code>[root@localhost tmp]# cat 1.txt 2.txt >> 3.txt 
+[root@localhost tmp]# cat 3.txt 
+this is 1.txt
+this is 2.txt
+this is 1.txt
+this is 2.txt</code></pre>
+    </li>
+</ul>

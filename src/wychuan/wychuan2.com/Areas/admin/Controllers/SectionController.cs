@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AC.Extension;
 using AC.Service;
 using AC.Service.Blog;
+using AC.Service.DTO;
 using AC.Service.DTO.Blog;
 using AC.Service.Impl.Blog;
 using AC.Util;
@@ -20,6 +22,16 @@ namespace wychuan2.com.Areas.admin.Controllers
         private readonly IBlogTagsService blogTagsService = new BlogTagsService();
 
         private readonly ISectionsService sectionService = new SectionsService();
+        private readonly ISectionAnchorsService anchorService = new SectionAnchorsService();
+
+        #region Childs
+
+        public AjaxResult SaveChilds(Sections section)
+        {
+            sectionService.SaveChilds(section);
+            return AjaxResult.Success();
+        }
+        #endregion
 
         #region Section Publish
 
@@ -28,7 +40,7 @@ namespace wychuan2.com.Areas.admin.Controllers
         /// </summary>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        public ActionResult Index(int? id, int? parentId)
+        public ActionResult Index(int? id)
         {
             var model = new SectionPublishModel();
 
@@ -37,24 +49,7 @@ namespace wychuan2.com.Areas.admin.Controllers
 
             if (id.HasValue) //编辑
             {
-                model.CurrentSection = sectionService.GetById(id.Value);
-                if (model.CurrentSection.ParentId == 0)
-                {
-                    model.Operate = SectionOperate.ModifyParent;
-                }
-                else
-                {
-                    model.Operate = SectionOperate.ModifyChild;
-                }
-            }
-            else if (parentId.HasValue) //新增子段落
-            {
-                model.ParentSection = sectionService.GetById(parentId.Value);
-                model.Operate = SectionOperate.CreateChild;
-            }
-            else //新增父段落
-            {
-                model.Operate = SectionOperate.CreateNew;
+                model.CurrentSection = sectionService.GetById(id.Value, true, true, true);
             }
 
             return View(model);
@@ -69,14 +64,26 @@ namespace wychuan2.com.Areas.admin.Controllers
         public ActionResult Save(Sections section)
         {
             section.UserId = ApplicationUser.Current.UserId;
-            if (section.Id == 0)
+            try
             {
-                section.Id = sectionService.Create(section);
+                if (section.Id == 0)
+                {
+                    section.Id = sectionService.Create(section);
+                }
+                else
+                {
+                    sectionService.Modify(section);
+                }
             }
-            else
+            catch (ServiceException exception)
             {
-                sectionService.Modify(section);
+                return Json(AjaxResult.Error(exception.Message));
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
 
             return Json(AjaxResult.Success(section.Id));
         }
@@ -90,7 +97,7 @@ namespace wychuan2.com.Areas.admin.Controllers
             {
                 UserId = ApplicationUser.Current.UserId,
                 PageIndex = 1,
-                ParentId = 0,
+                //ParentId = 0,
             };
 
             //IList<Sections> sectionses = sectionService.Query(queryInfo);
@@ -128,11 +135,57 @@ namespace wychuan2.com.Areas.admin.Controllers
             queryInfo.UserId = ApplicationUser.Current.UserId;
 
             var model = new SectionListModel();
-            model.IsParents = queryInfo.ParentId == 0 ? true : false;
+            model.ParentId = queryInfo.ParentId ?? 0;
+            model.IsParents = queryInfo.IsParents;
             model.PagedSections = sectionService.QueryPaged(queryInfo);
 
             return View("_SectionList", model);
         }
+        #endregion
+
+        #region Anchors
+        #region Save Anchor
+
+        public AjaxResult SaveAnchor(SectionAnchors anchor)
+        {
+            if (anchor == null)
+            {
+                return AjaxResult.Error("参数为空.");
+            }
+            if (anchor.Id == 0)
+            {
+                anchor.Id = anchorService.Create(anchor);
+            }
+            else
+            {
+                anchorService.Modify(anchor);
+            }
+            return AjaxResult.Success(anchor.Id);
+        } 
+        #endregion
+
+        #region Refresh Anchors
+
+        public ActionResult RefreshAnchors(int sectionId)
+        {
+            IList<SectionAnchors> anchors = anchorService.GetBySectionId(sectionId);
+
+            SectionPublishModel model = new SectionPublishModel(){CurrentSection = new Sections()};
+            model.CurrentSection.Anchors = anchors;
+
+            return View("_SectionAnchorsList", model);
+        }
+
+        #endregion
+
+        #region Remove Anchor
+
+        public AjaxResult RemoveAnchor(int id)
+        {
+            anchorService.Remove(id);
+            return AjaxResult.Success();
+        }
+        #endregion
         #endregion
     }
 }

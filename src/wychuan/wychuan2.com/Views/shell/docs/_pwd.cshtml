@@ -1,0 +1,17 @@
+﻿<p><code>pwd</code>是Print Working Directory的缩写，也就是显示目前所在目录的指令 </p>
+
+<p><strong>选项与参数</strong></p>
+<p>
+    <code class="m-r-md">-P</code>显示出确实的路径，而非使用链接(link)路径。<br />
+</p>
+
+<p><strong>常用操作</strong></p>
+<p>
+    <pre><code>[root@localhost mail]# cd /var/mail/
+[root@localhost mail]# pwd
+/var/mail
+[root@localhost mail]# pwd -P
+/var/spool/mail
+[root@localhost mail]# ls -al
+lrwxrwxrwx.  1 root root   10 Mar  5  2015 mail -> spool/mail</code></pre>
+</p>

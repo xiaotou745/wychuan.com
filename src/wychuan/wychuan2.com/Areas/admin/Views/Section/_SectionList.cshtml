@@ -26,7 +26,10 @@
                     {
                         <tr id="@("section"+root.Id)" data-id="@root.Id"  data-childs="false">
                             <td width="10px">
-                                <a class="J_Toggle" data-show="false"><i class="fa fa-plus"></i></a>
+                                @if (root.HasChilds)
+                                {
+                                    <a class="J_Toggle" data-show="false"><i class="fa fa-plus"></i></a>
+                                }
                             </td>
                             <td>
                                 <a class="J_Edit" href="/admin/section?id=@root.Id">
@@ -37,7 +40,8 @@
                             <td><div class="content11">@root.Content</div></td>
                             <td>
                                 <a class="J_Remove">删除</a>
-                                <a href="/admin/section?parentid=@root.Id">添加段落</a>
+                                @*<a href="/admin/section?parentid=@root.Id">添加段落</a>
+                                <a href="/admin/section/childs?parentid=@root.Id">已有子段落</a>*@
                                 <a target="_blank" href="/section/@root.SectionId">预览</a>
                             </td>
                         </tr>
@@ -69,7 +73,7 @@ else
 {
     foreach (var child in rootSections)
     {
-        <tr data-id="@child.Id" parentid="@child.ParentId">
+        <tr data-id="@child.Id" parentid="@Model.ParentId">
             <td width="10px"></td>
             <td><a href="/admin/section?id=@child.Id">@child.SectionId</a></td>
             <td>@child.Title</td>

@@ -403,6 +403,8 @@
     <Content Include="img\gallery\8s.jpg" />
     <Content Include="img\gallery\9s.jpg" />
     <Content Include="img\html_logo.png" />
+    <Content Include="img\linux\docsproperty1.jpg" />
+    <Content Include="img\linux\docsproperty2.jpg" />
     <Content Include="img\mvc_logo.png" />
     <Content Include="img\off_canvas.jpg" />
     <Content Include="img\p1.jpg" />
@@ -503,6 +505,8 @@
     <Content Include="Areas\admin\Views\Blog\_BlogSectionList.cshtml" />
     <Content Include="Areas\admin\Views\Blog\Pre.cshtml" />
     <Content Include="Areas\admin\Views\Blog\_BlogList.cshtml" />
+    <Content Include="Areas\admin\Views\Section\_SectionChildList.cshtml" />
+    <Content Include="Areas\admin\Views\Section\_SectionAnchorsList.cshtml" />
     <None Include="Properties\PublishProfiles\www2.wychuan.com.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\beautifyhtml.js" />
@@ -733,10 +737,10 @@
     <Content Include="Views\Blog\Demo.cshtml" />
     <Content Include="Views\Section\Preview.cshtml" />
     <Content Include="Views\Section\Index.cshtml" />
-    <Content Include="Views\shell\_ls.cshtml" />
+    <Content Include="Views\shell\docs\_ls.cshtml" />
     <Content Include="Views\shell\shell-cmd-base.cshtml" />
-    <Content Include="Views\shell\_cd.cshtml" />
-    <Content Include="Views\shell\_pwd.cshtml" />
+    <Content Include="Views\shell\docs\_cd.cshtml" />
+    <Content Include="Views\shell\docs\_pwd.cshtml" />
     <Content Include="Views\shell\shell.cshtml" />
     <Content Include="Views\shell\_shell-wildcardchar.cshtml" />
     <Content Include="Views\java\maven\mavenskills.cshtml" />
@@ -757,9 +761,26 @@
     <Content Include="Views\java\tomcatsetting\_tomcat-setting-install.cshtml" />
     <Content Include="Views\java\tomcatsetting\_tomcat-setting-jdkpath.cshtml" />
     <Content Include="Views\java\tomcatsetting\_tomcat-setting-jdktest.cshtml" />
-    <Content Include="Views\shell\_cat.cshtml" />
+    <Content Include="Views\shell\docs\_cat.cshtml" />
     <Content Include="Views\shell\_find.cshtml" />
     <Content Include="Views\shell\_grep.cshtml" />
+    <Content Include="Views\shell\user\_permission.cshtml" />
+    <Content Include="Views\shell\user\users.cshtml" />
+    <Content Include="Views\shell\user\_fileproperty.cshtml" />
+    <Content Include="Views\shell\docs\_mkdir.cshtml" />
+    <Content Include="Views\shell\docs\_rmdir.cshtml" />
+    <Content Include="Views\shell\_path.cshtml" />
+    <Content Include="Views\shell\docs\docs.cshtml" />
+    <Content Include="Views\shell\docs\_cp.cshtml" />
+    <Content Include="Views\shell\docs\_rm.cshtml" />
+    <Content Include="Views\shell\docs\_mv.cshtml" />
+    <Content Include="Views\shell\docs\_nl.cshtml" />
+    <Content Include="Views\shell\docs\_more.cshtml" />
+    <Content Include="Views\shell\docs\_less.cshtml" />
+    <Content Include="Views\shell\docs\_head.cshtml" />
+    <Content Include="Views\shell\docs\_tail.cshtml" />
+    <Content Include="Views\shell\_files.cshtml" />
+    <Content Include="Views\shell\docs\_touch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

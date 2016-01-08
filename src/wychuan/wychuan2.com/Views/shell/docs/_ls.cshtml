@@ -8,8 +8,8 @@
 
 <p><strong>3. 命令参数</strong></p>
 <p>
-    <code class="m-r-md">-l</code>列出文件的详细信息。<br />
-    <code class="m-r-md">-a或--all</code>列出目录下的所有文件，包括以 . 开头的隐含文件。<br />
+    <code class="m-r-md">-l</code><span class="label label-danger">常用</span>列出文件的详细信息。<small>use a long listing format</small><br />
+    <code class="m-r-md">-a, --all</code><span class="label label-danger">常用</span>列出目录下的所有文件，包括以 . 开头的隐含文件。<small>do not ignore entries starting with .</small><br />
     <code class="m-r-md">-h或--human-readable</code>用"K","M","G"来显示文件和目录的大小<br />
     <code class="m-r-md">-S</code>按照文件和目录的大小排序。<br />
     <code class="m-r-md">-t</code>按照文件和目录的更改时间排序<br />
@@ -24,15 +24,16 @@
     <code class="m-r-md">-b或--escape</code>显示脱离字符<br />
     <code class="m-r-md">-B或--ignore-backups</code>忽略备份文件和目录<br />
     <code class="m-r-md">-C</code>以又上至下，从左到右的直行方式显示文件和目录名称。<br />
-    <code class="m-r-md">-d或--directory</code>显示目录名称而非其内容<br />
+    <code class="m-r-md">-d或--directory</code><span class="label label-danger">常用</span>显示目录名称而非其内容。
+    <small>list directory entries instead of contents,and do not dereference symbolic links</small><br />
     <code class="m-r-md">-D或--dired</code>用Emacs的模式产生文件和目录列表<br />
     <code class="m-r-md">-f</code>此参数的效果和同时指定"aU"参数相同，并关闭"lst"参数的效果<br />
     <code class="m-r-md">-F或--classify</code>在执行文件，目录，Socket，符号连接，管道名称后面，各自加上"*","/","=","@@","|"号。<br />
     <code class="m-r-md">-L或--dereference</code> 如遇到性质为符号连接的文件或目录，直接列出该连接所指向的原始文件或目录<br />
     <code class="m-r-md">-g</code>次参数将忽略不予处理<br />
     <code class="m-r-md">-G或--no-group</code>不显示群组名称<br />
-    <code class="m-r-md">--full-time</code>列出完整的日期与时间<br />
-    <code class="m-r-md">-s或--size</code>显示文件和目录的大小，以区块为单位<br />
+    <code class="m-r-md">--full-time</code><span class="label label-primary">有用</span>列出完整的日期与时间<br />
+    <code class="m-r-md">-s或--size</code><span class="label label-primary">有用</span>显示文件和目录的大小，以区块为单位<br />
 </p>
 
 <p><strong>4. 常用操作</strong></p>
@@ -65,7 +66,7 @@ total 115M
 4.0K activeMQ   53M apache-activemq-5.9.0-bin.tar.gz  8.7M apache-tomcat-8.0.24.tar.gz  4.0K mongodb   54M mongodb-linux-x86_64-2.2.1.tgz  4.0K service  4.0K tomcat</code></pre></li>
     </ol>
 
-    对文件进行排序：
+    <strong>对文件进行排序：</strong>
     <ol>
         <li>按照文件大小进行排序：<pre><code>[root@localhost data]# ls -lSh
 total 115M
@@ -100,8 +101,13 @@ drwxr-xr-x.  2 root root      4096 Jul 31 10:03 tomcat
     
     <strong>其它</strong>
     <ol>
-        <li>显示目录名而非其内容：<pre><code>[root@localhost data]# ls -d tomcat/
-tomcat/</code></pre></li>
+        <li>显示目录名而非其内容：<pre><code>[root@localhost chuan]# ls demo
+test
+[root@localhost chuan]# ls -d demo
+demo</code></pre>
+            <code>demo</code>目录下有<code>test</code>目录，如果不带<code>-d</code>参数，则列出的是demo目录下的内容，使用<code>-d</code>参数，则只列出demo目录，
+        在查看目录的详情信息时比较有用。
+        </li>
         <li>显示文件和目录的大小:<pre><code>[root@localhost data]# ls -s
 total 117496
     4 activeMQ                           8896 apache-tomcat-8.0.24.tar.gz  54444 mongodb-linux-x86_64-2.2.1.tgz      4 tomcat

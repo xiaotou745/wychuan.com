@@ -15,11 +15,11 @@ namespace wychuan2.com.Controllers
         // GET: Section
         public ActionResult Index(string id)
         {
-            Sections section = sectionService.GetBySectionId(id);
-            if (section != null)
-            {
-                section.Childs = sectionService.Query(new SectionsQueryInfo {ParentId = section.Id});
-            }
+            Sections section = sectionService.GetBySectionId(id, true, true);
+            //if (section != null)
+            //{
+            //    section.Childs = sectionService.Query(new SectionsQueryInfo {ParentId = section.Id});
+            //}
             return View(section);
         }
 

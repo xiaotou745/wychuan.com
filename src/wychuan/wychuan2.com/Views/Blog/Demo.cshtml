@@ -23,8 +23,17 @@
                 @Html.Partial("~/Views/shell/shell.cshtml")
             </div>
             <div class="bs-docs-section">
+                <h1 id="users">文档权限用户管理</h1>
+                @Html.Partial("~/Views/shell/user/users.cshtml")
+            </div>
+            <div class="bs-docs-section">
                 <h1 id="shell-cmd-base">Shell命令</h1>
                 @Html.Partial("~/Views/shell/shell-cmd-base.cshtml")                
+            </div>
+            
+            <div class="bs-docs-section">
+                <h1 id="shell-cmd-docs">档案与目录</h1>
+                @Html.Partial("~/Views/shell/docs/docs.cshtml")
             </div>
             <div class="bs-docs-section">
                 <h1 id="shell-cmd-files">Shell命令-文件管理</h1>
@@ -51,6 +60,13 @@
                             <li><a href="#shell-wildcardchar">通配符</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#users">用户管理与文档权限</a>
+                        <ul class="nav">
+                            <li><a href="#user-manager">用户管理</a></li>
+                            <li><a href="#docs-permission">文档权限</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#shell-cmd-base">Shell-Cmd</a>
                         <ul class="nav">
                             <li><a href="#shell-cmd-pwd">pwd</a></li>
@@ -66,6 +82,12 @@
                             <li><a href="#shell-cmd-whereis">whereis</a></li>
                             <li><a href="#shell-cmd-who">who&whoami&uname</a></li>
                             <li><a href="#shell-cmd-man">man&whatis&apropos</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#shell-cmd-docs">Shell-Cmd-Docs</a>
+                        <ul class="nav">
+                            <li><a href="#shell-cmd-cat">cat</a></li>
                         </ul>
                     </li>
                    @* <li>

@@ -18,7 +18,7 @@
                 {
                     <li data-status="@task.Status" data-priority="@task.PriorityLevel" data-id="@task.Id" class="@(string.IsNullOrEmpty(task.Class) ? "danger-element" : task.Class)">
                         <h3>@task.Title</h3>
-                        <span>@task.Content</span>
+                        <pre>@task.Content</pre>
                         <div class="agile-detail">
                             <a href="javascript:;" class="pull-right J_Remove"><i class="fa fa-trash-o"></i></a>
                             <a href="#modalTask" data-toggle="modal" data-type="2" data-whatever="修改任务" class="pull-right J_Edit m-r-sm"><i class="fa fa-edit"></i></a>
@@ -40,7 +40,7 @@
                 {
                     <li data-status="@task.Status" data-priority="@task.PriorityLevel" data-id="@task.Id" class="@(string.IsNullOrEmpty(task.Class) ? "warning-element" : task.Class)">
                         <h3>@task.Title</h3>
-                        <span>@task.Content</span>
+                        <pre>@task.Content</pre>
                         <div class="agile-detail">
                             <a href="javascript:;" class="pull-right J_Remove"><i class="fa fa-trash-o"></i></a>
                             <a href="#modalTask" data-toggle="modal" data-type="2" data-whatever="修改任务" class="pull-right J_Edit m-r-sm"><i class="fa fa-edit"></i></a>
@@ -62,7 +62,7 @@
                 {
                     <li data-status="@task.Status" data-priority="@task.PriorityLevel" data-id="@task.Id" class="@(string.IsNullOrEmpty(task.Class) ? "success-element" : task.Class)">
                         <h3>@task.Title</h3>
-                        <span>@task.Content</span>
+                        <pre>@task.Content</pre>
                         <div class="agile-detail">
                             <a href="javascript:;" class="pull-right btn btn-xs btn-white J_Hide">Hide</a>
                             <i class="fa fa-clock-o"></i> @task.PubTime

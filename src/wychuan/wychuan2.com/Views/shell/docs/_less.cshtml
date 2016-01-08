@@ -1,0 +1,115 @@
+﻿<p class="lead"><code>less</code>的用法比<code>more</code>更有弹性，功能更强大。</p>
+
+<p><strong>1. 全局快捷键</strong></p>
+<table class="table table-condensed">
+    <tr>
+        <td><code>h  H</code></td>
+        <td>Display this help</td>
+    </tr>
+    <tr>
+        <td><code>q  :q  Q  :Q  ZZ</code></td>
+        <td>Exit</td>
+    </tr>
+</table>
+
+<p><strong>2. 移动控制</strong></p>
+<table class="table table-condensed">
+    <tr>
+        <td><code>e  ^E  j  ^N  CR</code></td>
+        <td>Forward  one line   (or N lines).</td>
+    </tr>
+    <tr>
+        <td><code>y  ^Y  k  ^K  ^P</code></td>
+        <td>Backward one line   (or N lines).</td>
+    </tr>
+    <tr>
+        <td><code>f  ^F  ^V  SPACE</code></td>
+        <td>Forward  one window (or N lines).</td>
+    </tr>
+    <tr>
+        <td><code>b  ^B  ESC-v</code></td>
+        <td>Backward one window (or N lines).</td>
+    </tr>
+    <tr>
+        <td><code>z</code></td>
+        <td>Forward  one window (and set window to N).</td>
+    </tr>
+    <tr>
+        <td><code>w</code></td>
+        <td>Backward one window (and set window to N).</td>
+    </tr>
+    <tr>
+        <td><code>ESC-SPACE</code></td>
+        <td>Forward  one window, but don't stop at end-of-file.</td>
+    </tr>
+    <tr>
+        <td><code>d  ^D</code></td>
+        <td>Forward  one half-window (and set half-window to N).</td>
+    </tr>
+    <tr>
+        <td><code>u  ^U</code></td>
+        <td>Backward one half-window (and set half-window to N).</td>
+    </tr>
+    <tr>
+        <td><code>ESC-)  RightArrow</code></td>
+        <td>Left  one half screen width (or N positions).</td>
+    </tr>
+    <tr>
+        <td><code>ESC-(  LeftArrow</code></td>
+        <td>Right one half screen width (or N positions).</td>
+    </tr>
+    <tr>
+        <td><code>F</code></td>
+        <td>Forward forever; like "tail -f".</td>
+    </tr>
+    <tr>
+        <td><code>r  ^R  ^L</code></td>
+        <td>Repaint screen.</td>
+    </tr>
+    <tr>
+        <td><code>R </code></td>
+        <td>Repaint screen, discarding buffered input.</td>
+    </tr>
+</table>
+
+<p><strong>3. 搜索</strong></p>
+<table class="table table-condensed">
+    <tr>
+        <td><code>/pattern</code></td>
+        <td>Search forward for (N-th) matching line.</td>
+    </tr>
+    <tr>
+        <td><code>?pattern</code></td>
+        <td>Search backward for (N-th) matching line.</td>
+    </tr>
+    <tr>
+        <td><code>n</code></td>
+        <td>Repeat previous search (for N-th occurrence).</td>
+    </tr>
+    <tr>
+        <td><code>N</code></td>
+        <td>Repeat previous search in reverse direction.</td>
+    </tr>
+    <tr>
+        <td><code>ESC-n</code></td>
+        <td>Repeat previous search, spanning files</td>
+    </tr>
+    <tr>
+        <td><code>ESC-N</code></td>
+        <td>Repeat previous search, reverse dir. & spanning files.</td>
+    </tr>
+    <tr>
+        <td><code>ESC-u</code></td>
+        <td>Undo (toggle) search highlighting.</td>
+    </tr>
+    <tr>
+        <td><code>&pattern</code></td>
+        <td>Display only matching lines</td>
+    </tr>
+</table>
+<p>Search patterns may be modified by one or more of:<br />
+        ^N or !  Search for NON-matching lines.<br />
+        ^E or *  Search multiple files (pass thru END OF FILE).<br />
+        ^F or @@  Start search at FIRST file (for /) or last file (for ?).<br />
+        ^K       Highlight matches, but don't move (KEEP position).<br />
+        ^R       Don't use REGULAR EXPRESSIONS.</p>

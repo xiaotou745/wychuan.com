@@ -44,12 +44,29 @@
                 <ul class="nav bs-docs-sidenav">
                     <li>
                         <a href="#@Model.SectionId">@Model.Title</a>
-                        @if (Model.Childs != null)
+                        @if (Model.Childs != null || Model.Anchors != null)
                         {
                             <ul class="nav">
-                                @foreach (var child in Model.Childs)
+                                @if (Model.Anchors != null)
                                 {
-                                    <li><a href="#@child.SectionId">@child.Title</a></li>
+                                    foreach (var anchor in Model.Anchors)
+                                    {
+                                        <li><a href="#@anchor.AnchorId">@anchor.AnchorText</a></li>
+                                    }
+                                }
+                                @if (Model.Childs != null)
+                                {
+                                    foreach (var child in Model.Childs)
+                                    {
+                                        <li><a href="#@child.SectionId">@child.Title</a></li>
+                                        if (child.Anchors != null)
+                                        {
+                                            foreach (var childAnchor in child.Anchors)
+                                            {
+                                                <li><a href="#@childAnchor.AnchorId">@childAnchor.AnchorText</a></li>
+                                            }
+                                        }
+                                    }
                                 }
                             </ul>
                         }

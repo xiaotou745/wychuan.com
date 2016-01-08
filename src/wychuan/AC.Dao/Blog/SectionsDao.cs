@@ -29,8 +29,8 @@ namespace AC.Dao.Blog
         public int Insert(Sections sections)
         {
             const string INSERT_SQL = @"
-insert into Sections(SectionId,UserId,Title,Content,CategoryId,ParentId)
-values(@SectionId,@UserId, @Title,@Content,@CategoryId,@ParentId)
+insert into Sections(SectionId,UserId,Title,Content,CategoryId)
+values(@SectionId,@UserId, @Title,@Content,@CategoryId)
  
 select @@IDENTITY";
 
@@ -40,7 +40,6 @@ select @@IDENTITY";
             dbParameters.AddWithValue("Title", sections.Title);
             dbParameters.AddWithValue("Content", sections.Content);
             dbParameters.AddWithValue("CategoryId", sections.CategoryId);
-            dbParameters.AddWithValue("ParentId", sections.ParentId);
 
             object result = DbHelper.ExecuteScalar(ConnStringOfAchuan, INSERT_SQL, dbParameters);
             if (result == null)
@@ -59,7 +58,7 @@ select @@IDENTITY";
         {
             const string UPDATE_SQL = @"
 update  Sections
-set  SectionId=@SectionId,Title=@Title,Content=@Content,CategoryId=@CategoryId,ParentId=@ParentId
+set  SectionId=@SectionId,Title=@Title,Content=@Content,CategoryId=@CategoryId
 where  Id=@Id ";
 
             IDbParameters dbParameters = DbHelper.CreateDbParameters();
@@ -68,7 +67,6 @@ where  Id=@Id ";
             dbParameters.AddWithValue("Title", sections.Title);
             dbParameters.AddWithValue("Content", sections.Content);
             dbParameters.AddWithValue("CategoryId", sections.CategoryId);
-            dbParameters.AddWithValue("ParentId", sections.ParentId);
 
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, UPDATE_SQL, dbParameters);
         }
@@ -85,7 +83,6 @@ where  Id=@Id ";
             IDbParameters dbParameters = DbHelper.CreateDbParameters();
             dbParameters.AddWithValue("Id", id);
 
-
             DbHelper.ExecuteNonQuery(ConnStringOfAchuan, DELETE_SQL, dbParameters);
         }
         #endregion
@@ -100,7 +97,7 @@ where  Id=@Id ";
 
             string condition = BindQueryCriteria(queryInfo, dbParameters);
             string querySql = @"
-select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, 
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, s.HasChilds, s.ChildIds,
         bc.Name CategoryName, bc2.Id FirstCategoryId,
         bc2.Name FirstCategoryName
 from    Sections s ( nolock )
@@ -120,7 +117,7 @@ from    Sections s ( nolock )
 
             PagedQueryBuilder<Sections> pageQuery = PagedQueryBuilder<Sections>.Create()
                 .SetColumnList(@"
-s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, 
+s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, s.HasChilds, s.ChildIds,
         bc.Name CategoryName, bc2.Id FirstCategoryId,
         bc2.Name FirstCategoryName")
                 .SetOrderByColumn("s.Id")
@@ -141,14 +138,16 @@ Sections s ( nolock )
         public IList<Sections> GetByBlogSectionIds(string blogSectionIds)
         {
             const string QUERY_SQL = @"
-select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, 0 'ParentId', s.CreateTime, s.UserId, s.HasChilds, s.ChildIds
 from    Sections s ( nolock )
 where   s.SectionId in ( {0} )
 union all
-select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId
-from    Sections s ( nolock )
-        join Sections s2 ( nolock ) on s.ParentId = s2.Id
-where   s2.SectionId in ( {0} )";
+select  child.Id, child.SectionId, child.Title, child.Content, child.CategoryId, s.Id 'ParentId', child.CreateTime,
+        child.UserId, child.HasChilds, child.ChildIds
+from Sections s(nolock)
+	join SectionChilds sc(nolock) on s.Id=sc.SectionId
+	join Sections child(nolock) on child.Id=sc.ChildId
+where s.SectionId in ( {0} )";
 
             string strParams;
             List<string> sectionIds = blogSectionIds.ToList();
@@ -168,7 +167,7 @@ where   s2.SectionId in ( {0} )";
         public Sections GetById(int id)
         {
             const string GETBYID_SQL = @"
-select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, 
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, s.HasChilds, s.ChildIds,
         bc.Name CategoryName, bc2.Id FirstCategoryId,
         bc2.Name FirstCategoryName
 from    Sections s ( nolock )
@@ -182,6 +181,84 @@ where   s.Id=@Id ";
             return DbHelper.QueryForObject(ConnStringOfAchuan, GETBYID_SQL, dbParameters, new SectionsRowMapper());
         }
 
+        #endregion
+
+        #region Childs
+        #region GetChilds
+
+        public IList<Sections> GetChilds(int id)
+        {
+            const string GET_CHILDS_SQL = @"
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, sc.SectionId 'ParentId', s.CreateTime, s.UserId, s.HasChilds, s.ChildIds
+from SectionChilds sc(nolock)
+	join Sections s(nolock) on sc.ChildId=s.Id
+where sc.SectionId=@SectionId";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("SectionId", DbType.Int32, 4, id);
+
+            return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, GET_CHILDS_SQL, dbParameters, new SectionsRowMapper());
+        }
+
+        public IList<Sections> GetChilds(IList<int> sectionIds)
+        {
+            const string GET_CHILDS_SQL = @"
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, sc.SectionId 'ParentId', s.CreateTime, s.UserId, s.HasChilds, s.ChildIds
+from SectionChilds sc(nolock)
+	join Sections s(nolock) on sc.ChildId=s.Id
+where sc.SectionId in ({0})";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            string outSectionIds;
+            dbParameters.AddInParameters(sectionIds, DbType.Int32, 4, out outSectionIds);
+
+            return DbHelper.QueryWithRowMapper(ConnStringOfAchuan, GET_CHILDS_SQL.format(outSectionIds), dbParameters, new SectionsRowMapper());
+        }
+        #endregion
+       
+
+        #region SaveChilds
+
+        public void SaveChild(SectionChilds child)
+        {
+            const string INSERT_SQL = @"
+insert into SectionChilds ( SectionId, ChildId )
+values  ( @SectionId,
+          @ChildId 
+          )";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters();
+            dbParameters.AddWithValue("SectionId", child.SectionId);
+            dbParameters.AddWithValue("ChildId", child.ChildId);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, INSERT_SQL, dbParameters);
+        }
+        #endregion
+
+        #region DeleteChilds
+
+        public void DeleteChilds(int id)
+        {
+            const string DELETE_SQL = "delete from SectionChilds where SectionId=@SectionId";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("SectionId", DbType.Int32, 4, id);
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, DELETE_SQL, dbParameters);
+        }
+        #endregion
+
+        #region Update Section Childs Info
+
+        public void UpdateChildsInfo(int id, List<int> childIds)
+        {
+            const string UPDATE_SQL = "update Sections set HasChilds=@HasChilds,ChildIds=@ChildIds where Id=@Id";
+
+            IDbParameters dbParameters = DbHelper.CreateDbParameters("Id", DbType.Int32, 4, id);
+            dbParameters.Add("HasChilds", DbType.Boolean).Value = (childIds != null && childIds.Count > 0);
+            dbParameters.Add("ChildIds", DbType.String, 256).Value = childIds.SplitString(',');
+
+            DbHelper.ExecuteNonQuery(ConnStringOfAchuan, UPDATE_SQL, dbParameters);
+        }
+        #endregion
         #endregion
 
         #region  Nested type: SectionsRowMapper
@@ -217,6 +294,8 @@ where   s.Id=@Id ";
                 {
                     result.CreateTime = DateTime.Parse(obj.ToString());
                 }
+                result.HasChilds = ParseHelper.ToBool(dataReader["HasChilds"], false);
+                result.ChildIds = dataReader["ChildIds"].ToString();
 
                 if (dataReader.HasColumn("FirstCategoryId"))
                 {
@@ -251,6 +330,13 @@ where   s.Id=@Id ";
             }
             
             //TODO:在此加入查询条件构建代码
+            if (queryInfo.ParentId.HasValue)
+            {
+                stringBuilder.Append(" and s.Id in (select sc.ChildId from SectionChilds sc(nolock) where sc.SectionId=@ParentId)");
+                dbParameters.Add("ParentId", DbType.Int32, 4).Value = queryInfo.ParentId.Value;
+                return stringBuilder.ToString();
+            }
+
             if (!string.IsNullOrEmpty(queryInfo.SectionId))
             {
                 stringBuilder.Append(" and s.SectionId like '%{0}%'".format(queryInfo.SectionId));
@@ -260,11 +346,7 @@ where   s.Id=@Id ";
                 stringBuilder.Append(" and s.UserId=@UserId");
                 dbParameters.Add("UserId", DbType.Int32, 4).Value = queryInfo.UserId;
             }
-            if (queryInfo.ParentId.HasValue)
-            {
-                stringBuilder.Append(" and s.ParentId=@ParentId");
-                dbParameters.Add("ParentId", DbType.Int32, 4).Value = queryInfo.ParentId.Value;
-            }
+            
             if (queryInfo.TagIds != null && queryInfo.TagIds.Count > 0)
             {
                 string strTagIds;
@@ -298,7 +380,7 @@ where   s.Id=@Id ";
         public Sections GetBySectionId(string sectionId)
         {
             const string GETBYID_SQL = @"
-select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, 
+select  s.Id, s.SectionId, s.Title, s.Content, s.CategoryId, s.ParentId, s.CreateTime, s.UserId, s.HasChilds, s.ChildIds,
         bc.Name CategoryName, bc2.Id FirstCategoryId,
         bc2.Name FirstCategoryName
 from    Sections s ( nolock )

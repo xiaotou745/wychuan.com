@@ -8,6 +8,7 @@ using AC.Extension;
 using AC.Page;
 using AC.Service;
 using AC.Service.Blog;
+using AC.Service.DTO;
 using AC.Service.DTO.Blog;
 using AC.Service.Impl.Blog;
 using AC.Util;
@@ -33,7 +34,7 @@ namespace wychuan2.com.Areas.admin.Controllers
                 return View("_BlogSectionList", null);
             }
             queryInfo.UserId = ApplicationUser.Current.UserId;
-            queryInfo.ParentId = 0;
+            //queryInfo.ParentId = 0;
             if (!string.IsNullOrEmpty(queryInfo.StrTagIds))
             {
                 queryInfo.TagIds = queryInfo.StrTagIds.ToNumberList();
@@ -196,15 +197,26 @@ namespace wychuan2.com.Areas.admin.Controllers
         public ActionResult Save(BlogsDTO blog)
         {
             blog.AuthorId = ApplicationUser.Current.UserId;
-            if (blog.Id == 0)
+            try
             {
-                blog.Author = ApplicationUser.Current.UserName;
+                if (blog.Id == 0)
+                {
+                    blog.Author = ApplicationUser.Current.UserName;
 
-                blog.Id = blogService.Create(blog);
+                    blog.Id = blogService.Create(blog);
+                }
+                else
+                {
+                    blogService.Modify(blog);
+                }
             }
-            else
+            catch (ServiceException exception)
             {
-                blogService.Modify(blog);
+                return Json(AjaxResult.Error(exception.Message));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             return Json(AjaxResult.Success(blog.Id));

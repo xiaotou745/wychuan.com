@@ -53,6 +53,7 @@
     <Compile Include="Blog\IBlogCategoryService.cs" />
     <Compile Include="Blog\IBlogsService.cs" />
     <Compile Include="Blog\IBlogTagsService.cs" />
+    <Compile Include="Blog\ISectionAnchorsService.cs" />
     <Compile Include="Blog\ISectionsService.cs" />
     <Compile Include="Config\CategoryConfigInfo.cs" />
     <Compile Include="Config\ICategoryService.cs" />
@@ -61,6 +62,9 @@
     <Compile Include="DTO\Blog\BlogsDTO.cs" />
     <Compile Include="DTO\Blog\BlogSections.cs" />
     <Compile Include="DTO\Blog\BlogTagsDTO.cs" />
+    <Compile Include="DTO\Blog\SectionAnchors.cs" />
+    <Compile Include="DTO\Blog\SectionChilds.cs" />
+    <Compile Include="DTO\Blog\SectionIdExistsException.cs" />
     <Compile Include="DTO\Blog\SectionsTags.cs" />
     <Compile Include="DTO\LiCai\AccountDTO.cs" />
     <Compile Include="DTO\LiCai\AccountType.cs" />
@@ -70,6 +74,7 @@
     <Compile Include="DTO\LiCai\BillTemplateDTO.cs" />
     <Compile Include="DTO\LiCai\LiCaiDetailsDTO.cs" />
     <Compile Include="DTO\Blog\Sections.cs" />
+    <Compile Include="DTO\ServiceException.cs" />
     <Compile Include="DTO\Tools\CompanyDTO.cs" />
     <Compile Include="DTO\Tools\CompanyTimelineDTO.cs" />
     <Compile Include="DTO\Tools\MyNotesDTO.cs" />

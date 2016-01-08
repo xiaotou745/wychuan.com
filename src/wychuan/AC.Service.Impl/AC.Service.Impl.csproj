@@ -47,6 +47,7 @@
     <Compile Include="Blog\BlogCategoryService.cs" />
     <Compile Include="Blog\BlogsService.cs" />
     <Compile Include="Blog\BlogTagsService.cs" />
+    <Compile Include="Blog\SectionAnchorsService.cs" />
     <Compile Include="Blog\SectionsService.cs" />
     <Compile Include="Cache\BlogCacheProvider.cs" />
     <Compile Include="Cache\UserCacheProvider.cs" />

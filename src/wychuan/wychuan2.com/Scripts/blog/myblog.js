@@ -7,6 +7,11 @@
     $(".chosen-select").chosen({ width: "350px" });
     //查询段落列表
     $("#btnSearchSections").bind("click", searchSections);
+    $("#txtSectionIdQ").bind("keypress", function (e) {
+        if (e.keyCode == "13") {
+            searchSections();
+        }
+    });
     $("#btnSave").bind("click", saveBlog);//保存随笔
     $("#btnSaveBlogSections").bind("click", saveBlogSections);//保存随笔对应的段落
    
@@ -56,63 +61,63 @@
             }
         });
     });
-    var uploader = WebUploader.create({
-        // 选完文件后，是否自动上传。
-        auto: true,
-        // swf文件路径
-        swf: '/Content/plugins/webuploader/Uploader.swf',
-        // 文件接收服务端。
-        server: '/admin/blog/UploadFile',
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: '#filePicker',
-        // 只允许选择图片文件。
-        accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/*'
-        }
-    });
-    // 当有文件添加进来的时候
-    uploader.on('fileQueued', function (file) {
-        console.log("fileQueued");
-        var $li = $(
-            '<div id="' + file.id + '" class="file-item thumbnail">' +
-                '<img>' +
-                '<div class="info">' + file.name + '</div>' +
-                '<div class="error"></div>' +
-                '</div>'
-        ),
-            $img = $li.find('img');
+    //var uploader = WebUploader.create({
+    //    // 选完文件后，是否自动上传。
+    //    auto: true,
+    //    // swf文件路径
+    //    swf: '/Content/plugins/webuploader/Uploader.swf',
+    //    // 文件接收服务端。
+    //    server: '/admin/blog/UploadFile',
+    //    // 选择文件的按钮。可选。
+    //    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    //    pick: '#filePicker',
+    //    // 只允许选择图片文件。
+    //    accept: {
+    //        title: 'Images',
+    //        extensions: 'gif,jpg,jpeg,bmp,png',
+    //        mimeTypes: 'image/*'
+    //    }
+    //});
+    //// 当有文件添加进来的时候
+    //uploader.on('fileQueued', function (file) {
+    //    console.log("fileQueued");
+    //    var $li = $(
+    //        '<div id="' + file.id + '" class="file-item thumbnail">' +
+    //            '<img>' +
+    //            '<div class="info">' + file.name + '</div>' +
+    //            '<div class="error"></div>' +
+    //            '</div>'
+    //    ),
+    //        $img = $li.find('img');
 
 
-        // $list为容器jQuery实例
-        $("#fileList").append($li);
+    //    // $list为容器jQuery实例
+    //    $("#fileList").append($li);
 
-        // 创建缩略图
-        // 如果为非图片文件，可以不用调用此方法。
-        // thumbnailWidth x thumbnailHeight 为 100 x 100
-        uploader.makeThumb(file, function (error, src) {
-            if (error) {
-                $img.replaceWith('<span>不能预览</span>');
-                return;
-            }
+    //    // 创建缩略图
+    //    // 如果为非图片文件，可以不用调用此方法。
+    //    // thumbnailWidth x thumbnailHeight 为 100 x 100
+    //    uploader.makeThumb(file, function (error, src) {
+    //        if (error) {
+    //            $img.replaceWith('<span>不能预览</span>');
+    //            return;
+    //        }
 
-            $img.attr('src', src);
-        }, 200, 200);
-    });
-    uploader.on('uploadSuccess', function (file, resp) {
-        $('#fileList').attr("filepath", resp.message);
-        $('#' + file.id).find('.error').text('已上传');
-    });
+    //        $img.attr('src', src);
+    //    }, 200, 200);
+    //});
+    //uploader.on('uploadSuccess', function (file, resp) {
+    //    $('#fileList').attr("filepath", resp.message);
+    //    $('#' + file.id).find('.error').text('已上传');
+    //});
 
-    uploader.on('uploadError', function (file, reason) {
-        $('#' + file.id).find('.error').text('上传出错');
-    });
+    //uploader.on('uploadError', function (file, reason) {
+    //    $('#' + file.id).find('.error').text('上传出错');
+    //});
 
-    uploader.on('uploadComplete', function (file) {
-        $('#' + file.id).find('.progress').fadeOut();
-    });
+    //uploader.on('uploadComplete', function (file) {
+    //    $('#' + file.id).find('.progress').fadeOut();
+    //});
 
     $("#btnPreview").bind("click", function () {
         var blog = getBlog();
@@ -150,7 +155,9 @@ function searchSections() {
     var params = {
         StrCheckedSectionIds: arrChecked.join(","),
         SectionId: $("#txtSectionIdQ").val(),
-        StrTagIds: tagIds.join(",")
+        StrTagIds: tagIds.join(","),
+        CategoryId: $("[name=selSecondCategoryQ]").val(),
+        FirstCategoryId: $("[name=selFirstCategoryQ]").val()
     };
 
     $.get("/admin/blog/searchsections", params, function (resp) {
@@ -201,7 +208,7 @@ function getBlog() {
 
 function saveBlog() {
     var blog = getBlog();
-    console.log(blog);
+    //console.log(blog);
     $.ajax({
         url: "/admin/blog/save",
         type: "post",
@@ -212,6 +219,8 @@ function saveBlog() {
                 $("#hidId").val(resp.data);
                 alert("success");
                 $("#taglist a:eq(1)").tab("show");
+            } else {
+                alert(resp.message);
             }
         }
     });

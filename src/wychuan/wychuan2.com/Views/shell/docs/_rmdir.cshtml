@@ -1,0 +1,39 @@
+﻿<p class="lead"><code>rmdir</code>是<strong>Remove Directory</strong>的缩写?，此指令用来删除空的目录。</p>
+<p><strong>1. 命令格式</strong></p>
+<p><code>rmdir [OPTION]... DIRECTORY...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Remove the DIRECTORY(ies), if they are empty.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-p 或 --parents</code>删除目录及其祖先目录，使用此参数可以实现级联删除。
+    <br /><small>remove DIRECTORY and its ancestors<code>['ænsɛstɚ](祖先)</code>; e.g., `rmdir -p a/b/c' is similar to `rmdir a/b/c a/b a'</small><br />
+    <code class="m-r-md">-v 或 --verbose</code>打印删除的目录。<small>output a diagnostic<code>[daɪəg'nɒstɪk]诊断</code> for every directory processed</small>
+</p>
+
+<p><strong>4. 常用操作</strong></p>
+<ol>
+    <li>删除当前目录下的<strong>demo</strong>目录：<code>$ rmdir demo</code><br />
+        <ul>
+            <li>如果要删除的目录不存在：<br /><code>rmdir: failed to remove `demo': No such file or directory</code></li>
+            <li>如果使用<code>-v</code>选项，则在控制台会有创建成功的提示：<br />
+                <code>$ rmdir -v demo</code><br />
+                <code>rmdir: removing directory, `demo'</code>
+            </li>
+            <li>如果要删除的目录不为空（即有子目录或子档案)，则删除失败：<br />
+                <pre><code>[root@localhost chuan]# rmdir -v demo2/
+rmdir: removing directory, `demo2/'
+rmdir: failed to remove `demo2/': Directory not empty</code></pre></li>
+        </ul>
+    </li>
+    <li>使用<code>-p</code>选项可以做到级联删除：<br />
+        <pre><code>[root@localhost chuan]# rmdir -pv demo2/test/test/test/
+rmdir: removing directory, `demo2/test/test/test/'
+rmdir: removing directory, `demo2/test/test'
+rmdir: removing directory, `demo2/test'
+rmdir: removing directory, `demo2'</code></pre>
+        效果等同于从最底层目录开始一个一个删除：<br />
+        <code>[root@localhost chuan]# rmdir demo2/test/test/test/ demo2/test/test/ demo2/test/ demo2/</code>
+    </li>
+</ol>

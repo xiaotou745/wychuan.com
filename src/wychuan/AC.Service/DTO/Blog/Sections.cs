@@ -17,6 +17,11 @@ namespace AC.Service.DTO.Blog
         public IList<Sections> Childs { get; set; }
 
         /// <summary>
+        /// 锚点列表
+        /// </summary>
+        public IList<SectionAnchors> Anchors { get; set; }
+
+        /// <summary>
         /// 自增ID
         /// </summary>
         public int Id { get; set; }
@@ -62,6 +67,16 @@ namespace AC.Service.DTO.Blog
         public string FirstCategoryName { get; set; }
 
         /// <summary>
+        /// 是否有子段落
+        /// </summary>
+        public bool HasChilds { get; set; }
+
+        /// <summary>
+        /// 子段落IDs,每个id用,号分隔
+        /// </summary>
+        public string ChildIds { get; set; }
+
+        /// <summary>
         /// 父ID
         /// </summary>
         public int ParentId { get; set; }
@@ -86,14 +101,16 @@ namespace AC.Service.DTO.Blog
         public int UserId { get; set; }
 
         /// <summary>
-        /// sectionId
+        /// sectionId 模糊查询
         /// </summary>
         public string SectionId { get; set; }
 
         /// <summary>
-        /// parentId
+        /// parentId，如果此条件生效，则其它条件无效
         /// </summary>
         public int? ParentId { get; set; }
+
+        public bool IsParents { get; set; }
 
         /// <summary>
         /// 一级类目
@@ -109,13 +126,16 @@ namespace AC.Service.DTO.Blog
         /// </summary>
         public List<string> SectionIds { get; set; }
 
+        #region Tag查询
         /// <summary>
         /// 标签列表查询条件
         /// </summary>
         public List<int> TagIds { get; set; }
 
         public string StrTagIds { get; set; }
+        #endregion
 
+        #region 排除的段落ID列表
         /// <summary>
         /// 当前随笔已选择的段落ID列表
         /// </summary>
@@ -134,5 +154,6 @@ namespace AC.Service.DTO.Blog
         /// 已选
         /// </summary>
         public string StrCheckedSectionIds { get; set; }
+        #endregion
     }
 }

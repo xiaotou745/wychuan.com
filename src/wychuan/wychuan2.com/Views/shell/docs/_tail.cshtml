@@ -1,0 +1,76 @@
+﻿<p> <code>tail</code>的用法是显示出一个档案的后几行</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>tail [OPTION]... [FILE]...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Print the last 10 lines of each FILE to standard output.
+With more than one FILE, precede<code>vt. 领先，在…之前；优于，高于</code> each with a header giving the file name.
+With no FILE, or when FILE is -, read standard input.
+</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-n, --lines=[-]K</code><span class="label label-danger">常用</span>后面接数字，表示显示几行的意思。
+    <small>output the last K lines, instead of the last 10;
+        or use -n +K to output lines starting with the Kth</small><br />
+
+    <code class="m-r-md">-c, --bytes=[-]K</code>和 -n 相似，只不过表示显示多少K的意思。
+    <small>output the last K bytes; alternatively, use -c +K
+        to output bytes starting with the Kth of each file</small><br />
+
+    <code class="m-r-md">-f, --follow[={name|descriptor}]</code><span class="label label-danger">常用</span>表示持续侦测后面所接的档名，要等到按下<code>ctrl+c</code>才会结束侦测。
+    <small>
+        output appended data as the file grows;
+        -f, --follow, and --follow=descriptor are
+        equivalent
+    </small>
+
+</p>
+
+<p>If the first character of K (the number of bytes or lines) is a `+',
+    print beginning with the Kth item from the start of each file, otherwise,
+    print the last K items in the file.  K may have a multiplier suffix:
+    b 512, kB 1000, K 1024, MB 1000*1000, M 1024*1024,
+    GB 1000*1000*1000, G 1024*1024*1024, and so on for T, P, E, Z, Y.</p>
+
+<p>
+    With --follow (-f), tail defaults to following the file descriptor, which
+    means that even if a tail'ed file is renamed, tail will continue to track
+    its end.  This default behavior is not desirable when you really want to
+    track the actual name of the file, not the file descriptor (e.g., log
+    rotation).  Use --follow=name in that case.  That causes tail to track the
+    named file in a way that accommodates renaming, removal and creation.
+</p>
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>显示<code>/etc/sudo.config</code>文件的后10行:
+        <pre><code>[root@localhost tmp]# tail /etc/sudo.conf 
+# Core dumps:
+#
+# By default, sudo disables core dumps while it is executing (they
+# are re-enabled for the command that is run).
+# To aid in debugging sudo problems, you may wish to enable core
+# dumps by setting "disable_coredump" to false.
+#
+# Set to false here so as not to interfere with /proc/sys/fs/suid_dumpable
+#
+Set disable_coredump false</code></pre>
+        <p><code>tail</code>参数默认显示后10行代码。</p>
+    </li>
+    <li>如果要更改显示的行数，可以使用<code>-n</code>参数：
+        <pre><code>[root@localhost tmp]# tail -n2 /etc/sudo.conf 
+#
+Set disable_coredump false</code></pre>
+        如果参数<code>-n</code>后面跟的数字为+N，表示显示从N行开始的所有内容。
+        <pre><code>[root@localhost tmp]# tail -n +55 /etc/sudo.conf 
+# Set to false here so as not to interfere with /proc/sys/fs/suid_dumpable
+#
+Set disable_coredump false</code></pre>
+        如上所示，<code>sudo.config</code>文件一共57行，显示+55行即等同于显示55,56,57三行。
+    </li>
+    <li>有时候档案的内容一直在变（如日志文件），随时会有数据写入，你想要让该档案有数据写入时就立刻显示到屏幕上，就利用 <code>-f</code> 这个选项，他可以一直侦测你想要侦测的档案，
+        新加入的数据都会被显示到屏幕上。 直到你按下<code>ctrl+c</code>才会停止tail的侦测。
+        <br /><code>$ tail -f /tmp/server.log</code>
+    </li>
+</ol>

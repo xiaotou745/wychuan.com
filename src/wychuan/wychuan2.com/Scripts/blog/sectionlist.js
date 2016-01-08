@@ -16,6 +16,7 @@
             var hasload = $tr.data("childs");
             if (!hasload) {
                 var queryInfo = {
+                    IsParents:false,
                     ParentId: id,
                     PageIndex: 1,
                     PageSize: 200
@@ -83,7 +84,7 @@ function getQueryInfo(newPage) {
         FirstCategoryId: firstCategoryId,
         CategoryId: secondCategoryId,
         TagIds: tagIds,
-        ParentId: 0,
+        IsParents: true,
         PageIndex: newPage,
     };
     return queryInfo;
