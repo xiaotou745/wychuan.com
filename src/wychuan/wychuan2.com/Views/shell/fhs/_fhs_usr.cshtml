@@ -1,0 +1,68 @@
+﻿<p> 很多读者都会误会<code>/usr</code> 为<code>user</code> 的缩写，其实<code>usr</code> 是<code>Unix Software Resource</code>的缩写， 也就是『Unix
+操作系统软件资源』所放置的目录，而不是用户的数据。</p>
+<p>
+    因为是所有系统默认的软件(<code>distribution</code>发布者提供的软件)都会放置到<code>/usr</code>底下，因此这个目录有点
+    类似 <code>Windows</code> 系统的<code>C:\Windows\ + C:\Program files\</code>这两个目录的综合体，系统刚安装完毕
+    时，这个目录会占用最多的硬盘容量。  一般来说，<code>/usr</code>的次目录建议有底下这些：
+</p>
+
+<table class="table table-condensed table-bordered">
+    <tr>
+        <td>目录</td>
+        <td>应放档案内容</td>
+    </tr>
+    <tr>
+        <td><code>/usr/X11R6/</code></td>
+        <td>
+            为<code>X Window System</code>重要数据所放置的目录，之所以取名为 <code>X11R6</code>是因为最后
+            的X版本为第11版，且该版的第 6次释出之意。
+        </td>
+    </tr>
+    <tr>
+        <td><code>/usr/bin/</code></td>
+        <td>绝大部分的用户可使用指令都放置在这里，请注意到它与<code>/bin</code>的不同之处。(是否与
+开机过程有关)</td>
+    </tr>
+    <tr>
+        <td><code>/usr/include/</code></td>
+        <td><code>c/c++</code>等程序语言的档头(<code>header</code>)与包含档(<code>include</code>)放置处，当我们以 <code>tarball</code> 方
+式 (<code>*.tar.gz</code> 的方式安装软件)安装某些数据时，会使用到里面的许多包含档。</td>
+    </tr>
+    <tr>
+        <td><code>/usr/lib/</code></td>
+        <td>包含各应用软件的函数库，目录档案 (object file)，以及不被一般使用者惯用的执
+行档或脚本(script)。 某些软件会提供一些特殊的指令来进行服务器的设定，这些
+指令也不会经常被系统管理员操作， 那就会被摆放到这个目录下。要注意的
+是，如果你使用 <code>X86_64</code>的 <code>Linux</code>系统， 那可能会有<code>/usr/lib64/</code>目录产生
+喔！ </td>
+    </tr>
+    <tr>
+        <td><code>/usr/local/</code></td>
+        <td>系统管理员在本机自行安装自己下载的软件(非<code>distribution</code>默认提供者)，建议安
+装到此目录， 这样会比较便于管理。举例来说，你的 <code>distribution</code>提供的软件较
+旧，你想安装较新的软件但又不想移除旧版， 此时你可以将新版软件安装于
+            <code>/usr/local/</code>目录下，可与原先的旧版软件有分别啦！ 你可以自行到<code>/usr/local</code> 去
+看看，该目录下也是具有 <code>bin</code>, <code>etc</code>, <code>include</code>, <code>lib</code>...的次目录喔！</td>
+    </tr>
+    <tr>
+        <td><code>/usr/sbin/</code></td>
+        <td>非系统正常运作所需要的系统指令。最常见的就是某些网络服务器软件的服务指
+令(daemon)啰！</td>
+    </tr>
+    <tr>
+        <td><code>/usr/share/</code></td>
+        <td>放置共享文件的地方，在这个目录下放置的数据几乎是不分硬件架构均可读取的
+数据， 因为几乎都是文本文件嘛！在此目录下常见的还有这些次目录：
+            <ul>
+                <li><code>/usr/share/man</code>：联机帮助文件</li>
+                <li><code>/usr/share/doc</code>：软件杂项的文件说明</li>
+                <li><code>/usr/share/zoneinfo</code>：与时区有关的时区档案 </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td><code>/usr/src/</code></td>
+        <td>一般原始码建议放置到这里，<code>src</code> 有<code>source</code>的意思。至于核心原始码则建议放置
+            到<code>/usr/src/linux/</code>目录下。</td>
+    </tr>
+</table>

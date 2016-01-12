@@ -23,22 +23,30 @@
                 @Html.Partial("~/Views/shell/shell.cshtml")
             </div>
             <div class="bs-docs-section">
-                <h1 id="users">文档权限用户管理</h1>
-                @Html.Partial("~/Views/shell/user/users.cshtml")
+                <h1 id="users">权限管理</h1>
+                @Html.Partial("~/Views/shell/permission/permission.cshtml")
             </div>
             <div class="bs-docs-section">
+                <h1 id="fhs">FHS</h1>
+                @Html.Partial("~/Views/shell/fhs/fhs.cshtml")
+            </div>
+            @*<div class="bs-docs-section">
+                <h1 id="users">文档权限用户管理</h1>
+                @Html.Partial("~/Views/shell/user/users.cshtml")
+            </div>*@
+            @*<div class="bs-docs-section">
                 <h1 id="shell-cmd-base">Shell命令</h1>
                 @Html.Partial("~/Views/shell/shell-cmd-base.cshtml")                
-            </div>
+            </div>*@
             
             <div class="bs-docs-section">
                 <h1 id="shell-cmd-docs">档案与目录</h1>
                 @Html.Partial("~/Views/shell/docs/docs.cshtml")
             </div>
-            <div class="bs-docs-section">
+            @*<div class="bs-docs-section">
                 <h1 id="shell-cmd-files">Shell命令-文件管理</h1>
                 <h2></h2>
-            </div>
+            </div>*@
             @*<div class="bs-docs-section">
                 <h1 id="etao">Etao备忘</h1>
 @Html.Partial("~/Views/etao/etao.cshtml")

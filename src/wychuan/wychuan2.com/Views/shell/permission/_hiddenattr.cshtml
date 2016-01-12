@@ -1,0 +1,107 @@
+﻿<p><code>linux</code>系统中的档案除了读写执行等属性之外，还有一些隐藏属性，隐藏属性的设置和读取分别
+    使用<code>chattr</code>和<code>lsattr</code>两个命令。</p>
+
+<h2 id="chattr">chattr(配置档案隐藏属性)</h2>
+<p><code>chattr</code>是<code>change attribute</code>的缩写，作用是配置档案的隐藏属性。</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>chattr [-RVf] [-+=AacDdeijsSu] [-v version] files...</code>
+</p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>
+    配置档案的隐藏属性
+</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-R</code><span class="label label-danger">常用</span>进行递归的持续变更，即连同子目录下的所有档案、目录都变更。<br />
+</p>
+
+<p><strong>4. 隐藏属性意义</strong></p>
+<ul>
+    <li><code class="m-r-md">A(Atime)</code><br />
+        当设定了<code>A</code>这个属性时，若你有存取此档案或目录时，他的访问时间<code>atime</code>
+        将不会被修改，可避免I/O较慢的机器过度地存取磁盘，这对速度较慢的计算机有帮助。
+    </li>
+    <li><code class="m-r-md">a(Append Only)</code><br />
+        当设定了<code>a</code>之后，这个档案将只能增加数据，而不能删除也不能修改数据，只有<code>root</code>才能设定这个属性。
+    </li>
+    <li><code class="m-r-md">c(C：Compress)</code><br />
+        这个属性设定之后，将会自动地将此档案压缩，在读取的时候将会自动的解压。但是在存储的时候，将会先进行压缩后再进行存储（对于大档案蛮有
+        用的）。系统以透明的方式压缩这个文件。从这个文件读取时，返回的是解压之后的数据；而向这个文件中写入数据时，数据首先被压缩之后才写入磁盘。
+    </li>
+    <li><code class="m-r-md">D</code><br />检查压缩文件中的错误。</li>
+    <li><code class="m-r-md">d(No dump)</code><br />
+        当 <code>dump</code> 程序被执行的时候，设定 <code>d</code> 属性将可使该档案(或目录)不会被
+        <code>dump</code> 备份
+    </li>
+    <li><code class="m-r-md">e</code></li>
+    <li>
+        <code class="m-r-md">i(Immutable)</code><br />
+        这个 <code>i</code> 可就很厉害了！他可以让一个档案
+        <span class="text-primary"><strong>不能被删除、改名、设定连结、也无法写入或新增资料！</strong></span>
+        如果目录具有这个属性，那么任何的进程只能修改目录之下的文件，不允许建立和删除文件。
+        只有<code> root</code> 能设定此属性。
+    </li>
+    <li><code class="m-r-md">j</code></li>
+    <li><code class="m-r-md">s(Secure Delete)</code><br />
+        当档案设定了 <code>s</code> 属性时，如果这个档案被删除，他将会被完全的移除出这个
+        硬盘空间，所以如果误删了，就完全无法救回来了！ 让系统在删除这个文件时，使用0填充文件所在的区域。
+    </li>
+    <li><code class="m-r-md">S(Sync)</code><br />
+        一般档案是异步写入磁盘的，如果加上<code>S</code>这个属性之后，当你进行任何档案的修改，该改动会同步写入磁盘。
+    </li>
+    <li><code class="m-r-md">u(Undelete)</code><br />
+        与 <code>s</code> 相反的，当使用 <code>u</code> 来配置文件案时，如果该档案被删除了，则数据内容
+        其实还存在磁盘中，可以使用此属性来防止误删档案。当一个应用程序请求删除这个文件，系统会保留其数据块以便以后能够恢复删除这个文件。
+    </li>
+    
+</ul>
+<p><strong>注意：属性设定常见的是 <code>a</code> 与 <code>i</code> 的设定值，而且很多设定值必须要身为 <code>root</code> 才
+       能设定 </strong></p>
+
+<p><strong>5. Example</strong></p>
+<ul>
+    <li>给file2加上<code>i</code>属性，尝试编辑一下：
+        <pre><code>[root@localhost chuan]# chattr +i file2 
+[root@localhost chuan]# cat >> file2
+-bash: file2: Permission denied
+</code></pre>
+        再尝试一下删除、重命名呢？
+        <pre><code>[root@localhost chuan]# lsattr file2
+----i--------e- file2
+[root@localhost chuan]# rm file2
+rm: remove regular file `file2'? y
+rm: cannot remove `file2': Operation not permitted
+[root@localhost chuan]# mv file2 file3
+mv: cannot move `file2' to `file3': Operation not permitted</code></pre>
+    </li>
+    <li>把file2的<code>i</code>属性取消，其它不变：
+        <pre><code>[root@localhost chuan]# chattr -i file2
+[root@localhost chuan]# lsattr file2 
+-------------e- file2</code></pre>
+    </li>
+</ul>
+
+
+<h2 id="lsattr">lsattr(显示档案隐藏属性)</h2>
+<p><code>lsattr</code>是<code>list attribute</code>的缩写，作用是显示档案的隐藏属性。</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>lsattr [-RVadlv] [files...]</code>
+</p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>
+    显示档案的隐藏属性
+</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-R</code>连同子目录的数据也一并列出来！<br />
+    <code class="m-r-md">-a</code>将隐藏文件的属性也秀出来；<br />
+    <code class="m-r-md">-d</code>如果接的是目录，仅列出目录本身的属性而非目录内的文件名；
+</p>

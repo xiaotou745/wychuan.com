@@ -1,0 +1,57 @@
+﻿@using wychuan2.com.Models
+@model AC.Service.DTO.Blog.BlogsDTO
+@{
+    Layout = "../Shared/_Layout_Kindle.cshtml";
+    ViewBag.Title = @Model.Title;
+}
+
+@{
+    if (!Model.IsPublic)
+    {
+        if (!ApplicationUser.IsLogin())
+        {
+            Response.Redirect("/admin");
+        }
+    }
+}
+@section styles{
+    <style type="text/css">
+        .content11 {
+            width: 700px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+}
+@if (!Model.IsPublic && ApplicationUser.Current.UserId != Model.AuthorId)
+{
+    <div class="text-center m-t-lg"><strong class="text-navy">你没有读此随笔的权限</strong></div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12" role="main">
+            @if (Model.BlogSections != null)
+            {
+                foreach (var blogSection in Model.BlogSections)
+                {
+                    <div class="bs-docs-section">
+                        <h1 id="@("b" + blogSection.SectionId)" class="page-header">@blogSection.Title</h1>
+                        @Html.Raw(blogSection.Content)
+                        @if (blogSection.Childs != null)
+                        {
+                            foreach (var child in blogSection.Childs)
+                            {
+                                <h2 id="@("b" + child.SectionId)">
+                                    @child.Title
+                                </h2>
+                                @Html.Raw(child.Content)
+                            }
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}

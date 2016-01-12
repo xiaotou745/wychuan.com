@@ -1,0 +1,67 @@
+﻿<p> <code>FHS</code> 是 <code>Filesystem Hierarchy Standard</code>的缩写，它是Linux目录配置的依据。</p>
+<p>
+    <code>FHS</code>的主要目的是希望让使用者可以了
+    解到已安装软件通常放置于哪个目录下， 所以他们希望独立的软件开发商、操作系统制作者、以及想
+    要维护系统的用户，都能遵循<code>FHS</code>的标准。 也就是说，<code>FHS</code>的重点在于规范每个特定的目录下应该
+    要放置什么样子的数据而已。
+</p>
+
+<p>
+    事实上，FHS是根据过去的经验一直再持续的改版的，FHS依据文件系统使用的频繁与否与是否允许使用者随意更动，
+    而将目录定义成为四种交互作用的形态：
+</p>
+
+<table class="table table-condensed table-bordered">
+    <tr>
+        <td></td>
+        <td>可分享的(shareable)</td>
+        <td>不可分享的(unshareable)</td>
+    </tr>
+    <tr>
+        <td>不变的(static)</td>
+        <td><code>/usr</code>(软件放置处)</td>
+        <td><code>/etc</code>(配置文件)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><code>/opt</code> (第三方协力软件)   </td>
+        <td><code>/boot</code> (开机与核心档)</td>
+    </tr>
+    <tr>
+        <td>可变动的(variable) </td>
+        <td><code>/var/mail</code> (使用者邮件邮箱) </td>
+        <td><code>/var/run</code> (程序相关) </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><code>/var/spool/news </code> (新闻组)   </td>
+        <td><code>/var/lock</code> (程序相关)</td>
+    </tr>
+</table>
+
+<ul>
+    <li>
+        可分享的：可以分享给其他系统挂载使用的目录，包括执行文件与用户的邮件等数据。 是
+        能够分享给网络上其他主机挂载用的目录。
+    </li>
+    <li>
+        不可分享的：自己机器上面运作的装置档案或者是与程序有关的 socket 档案等， 由于仅与自身
+        机器有关，所以当然就不适合分享给其他主机了。
+    </li>
+    <li>
+        不变的：有些数据是不会经常变动的，跟随着 <code>distribution</code>而不变动。 例如函式库、文件说明
+        文件、系统管理员所管理的主机服务配置文件等等；
+    </li>
+    <li>可变动的：经常改变的数据，例如登录文件、一般用户可以自行收受的新闻组等。</li>
+</ul>
+
+<p>
+    事实上，<code>FHS</code>针对目录树架构仅定义出三层目录底下应该放置什么数据而已，分别是底下这三个目录的
+    定义：
+</p>
+<ul>
+    <li> <code>/ (root, 根目录)</code>：与开机系统有关；</li>
+    <li><code>/usr (unix software resource)</code>：与软件安装/执行有关；</li>
+    <li><code>/var (variable)</code>：与系统运作过程有关。</li>
+</ul>
+

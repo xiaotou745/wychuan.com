@@ -1,0 +1,204 @@
+﻿<p>
+    FHS标准建议：根目录(/)所在分割槽应该越小越好， 且应用程序所安装的软件最好不要与根目录
+    放在同一个分割槽内，保持根目录越小越好。 如此不但效能较佳，根目录所在的文件系统也较不容易
+    发生问题。
+</p>
+
+<table class=" table table-condensed table-bordered">
+    <tr>
+        <td>目录</td>
+        <td>应放档案内容</td>
+    </tr>
+    <tr>
+        <td><code>/bin</code></td>
+        <td>
+            系统有很多放置执行文件的目录，但<code>/bin</code>比较特殊。<span class="text-danger">
+                <strong>
+                    因为<code>/bin</code>放置的是在单人维护模
+                    式下还能够被操作的指令
+                </strong>
+            </span>。 在<code>/bin</code> 底下的指令可以被 <code>root</code> 与一般账号所使用，主要有
+            ：<a href="/blog/item/cat" target="_blank"><code>cat</code></a>,
+            <a href="/blog/item/chmod" target="_blank"><code>chmod</code></a>,
+            <a href="/blog/item/chown" target="_blank"><code>chown</code></a>,
+            <a href="/blog/item/date" target="_blank"><code>date</code></a>,
+            <a href="/blog/item/mv" target="_blank"><code>mv</code></a>,
+            <a href="/blog/item/mkdir" target="_blank"><code>mkdir</code></a>,
+            <a href="/blog/item/cp" target="_blank"><code>cp</code></a>,
+            <a href="/blog/item/bash" target="_blank"><code>bash</code></a> 等等常用的指令。
+        </td>
+    </tr>
+    <tr>
+        <td><code>/boot</code></td>
+        <td>
+            <span class="text-danger"><strong>这个目录主要在放置开机会使用到的档案</strong></span>，包括<code>Linux</code>核心档案以及开机选单与开机
+            所需配置文件等等。 <span class="text-danger"><strong><code>Linux kernel</code>常用 <code>vmlinuz</code></strong></span>，如果使用 <code>grub</code> 这
+            个开机管理程序， 则还会存在<code>/boot/grub/</code>这个目录！
+        </td>
+    </tr>
+    <tr>
+        <td><code>/dev</code></td>
+        <td>
+            在<code>Linux</code>系统上，<span class="text-danger"><strong>任何装置与接口设备都是以档案的型态存在于这个目录当中的</strong></span>。 你
+            只要透过存取这个目录底下的某个档案，就等于存取某个装置～ 比要重要的档案有
+            <code>/dev/null</code>, <code>/dev/zero</code>, <code>/dev/tty</code>, <code>/dev/lp*</code>, <code>/dev/hd*</code>, <code>/dev/sd*</code>等等
+        </td>
+    </tr>
+    <tr>
+        <td><code>/etc</code></td>
+        <td>
+            <span class="text-danger"><strong>系统主要的配置文件几乎都放置在这个目录内</strong></span>，例如人员的账号密码文件、 各种服务
+            的启始档等等。一般来说，这个目录下的各文件属性是可以让一般使用者查阅的。 但
+            是只有root 有权力修改。<code>FHS</code>建议不要放置可执行文件(binary)在这个目录中。比
+            较重要的档案有： <code>/etc/inittab</code>, <code>/etc/init.d/</code>, <code>/etc/modprobe.conf</code>, <code>/etc/X11/</code>,
+            <code>/etc/fstab</code>, <code>/etc/sysconfig/</code> 等等。另外，其下重要的目录有：
+            <ul>
+                <li>
+                    <code class="m-r-md">etc/init.d/</code>：所有服务的预设启动 script 都是放在这里的，例如要启动或者关
+                    闭 <code>iptables</code> 的话：<code> /etc/init.d/iptables start</code>、<code>/etc/init.d/iptables stop</code>
+                </li>
+                <li>
+                    <code class="m-r-md">/etc/xinetd.d/</code>：这就是所谓的 <code>super daemon</code>管理的各项服务的配置文件目
+                    录。
+                </li>
+                <li>
+                    <code class="m-r-md">/etc/X11/</code>：与 <code>X Window</code> 有关的各种配置文件都在这里，尤其是 <code>xorg.conf</code>
+                    这个 <code>X Server</code> 的配置文件。
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td><code>/home</code></td>
+        <td>
+            这是系统默认的用户家目录 (home directory)。在你新增一个一般使用者账户时，  默
+            认的用户家目录都会规范到这里来。比较重要的是家目录有两种代号：<br />
+            ~：代表目前这个用户的家目录，而<br />
+            ~dmtsai ：则代表 dmtsai 的家目录！
+        </td>
+    </tr>
+    <tr>
+        <td><code>/lib</code></td>
+        <td>
+            系统的函式库非常的多，而<code>/lib</code> 放置的则是在开机时会用到的函数库。  以及在<code>/bin</code>或
+            <code>/sbin</code>底下的指令会呼叫的函式库而已。 什么是函式库呢？妳可以将他想成是『外
+            挂』，某些指令必须要有这些『外挂』才能够顺利完成程序的执行之意。 尤其重要的
+            是<code>/lib/modules</code>/这个目录， 因为该目录会放置核心相关的模块(驱动程序)！
+        </td>
+    </tr>
+    <tr>
+        <td><code>/media</code></td>
+        <td>
+            <code>media</code> 是『媒体』的英文，顾名思义，这个<code>/media</code> 底下放置的就是可移除的装置！
+            包括软盘、光盘、DVD等等装置都暂时挂载于此。常见的档名有：
+            <code>/media/floppy</code>, <code>/media/cdrom</code> 等等。
+        </td>
+    </tr>
+    <tr>
+        <td><code>/mnt </code></td>
+        <td>
+            如果妳想要暂时挂载某些额外的装置，一般建议妳可以放置到这个目录中。 在古早时
+            候，这个目录的用 <code>/media</code> 相同啦！只是有了<code>/media</code> 之后，这个目录就用来暂时
+            挂载用了
+        </td>
+    </tr>
+    <tr>
+        <td><code>opt</code></td>
+        <td>
+            这个是给第三方协力软件放置的目录。什么是第三方协力软件啊？ 举例来说，<code>KDE</code>
+            这个桌面管理系统是一个独立的计划，不过他可以安装到 <code>Linux</code>系统中，因此 <code>KDE</code>
+            的软件就建议放置到此目录下了。 另外，如果妳想要自行安装额外的软件(非原本的
+            <code>distribution</code> 提供的)，那么也能够将你的软件安装到这里来。 不过，以前的<code>Linux</code>系
+            统中，我们还是习惯放置在<code>/usr/local</code> 目录下呢！
+        </td>
+    </tr>
+    <tr>
+        <td><code>/root</code></td>
+        <td>
+            系统管理员(<code>root</code>)的家目录。之所以放在这里，是因为如果进入单人维护模式而仅挂
+            载根目录时， 该目录就能够拥有<code>root</code> 的家目录，所以我们会希望<code>root</code> 的家目录与根
+            目录放置在同一个分割槽中。
+        </td>
+    </tr>
+
+    <tr>
+        <td><code>/sbin</code></td>
+        <td>
+            <code>Linux</code>有非常多指令是用来设定系统环境的，这些指令只有 <code>root</code> 才能够利用来【设
+            定』系统，其他用户最多只能用来查询而已。  放在<code>/sbin</code>底下的为开机过程中所
+            需要的，里面包括了开机、修复、还原系统所需要的指令。 至于某些服务器软件程
+            序，一般则放置到<code>/usr/sbin/</code>当中。至于本机自行安装的软件所产生的系统执行文件
+            (system binary)， 则放置到<code>/usr/local/sbin/</code>当中了。常见的指令包括：<code>fdisk</code>, <code>fsck</code>,
+            <code>ifconfig</code>, <code>init</code>, <code>mkfs</code> 等等。
+        </td>
+    </tr>
+    <tr>
+        <td><code>/srv </code></td>
+        <td>
+            <code>srv</code>可以视为<code>service</code>的缩写，是一些网络服务启动之后，这些服务所需要取用的
+            数据目录。 常见的服务例如<code>WWW</code>, <code>FTP</code> 等等。举例来说，<code>WWW</code> 服务器需要的网页
+            资料就可以放置在<code>/srv/www/</code>里面。
+        </td>
+    </tr>
+    <tr>
+        <td><code>/tmp</code></td>
+        <td>
+            这是让一般用户或者是正在执行的程序暂时放置档案的地方，  这个目录是任何人都能
+            够存取的，所以你需要定期的清理一下。当然，重要数据不可放置在此目录啊！ 因为
+            <code>FHS</code>甚至建议在开机时，应该要将<code>/tmp</code> 下的数据都删除！
+        </td>
+    </tr>
+    <tr>
+        <td><code></code></td>
+        <td></td>
+    </tr>
+</table>
+
+<p>
+    事实上 FHS针对根目录所定义的标准就仅有上面的咚咚，不过我们的 Linux底下还有许多目录你也需
+    要了解一下的。 底下是几个在Linux当中也是非常重要的目录喔：
+</p>
+
+<table class=" table table-condensed table-bordered">
+    <tr>
+        <td><code>/lost+found</code></td>
+        <td>
+            这个目录是使用 标准的ext2/ext3 文件系统格式才会产生的一个目录，目的在于当
+            文件系统发生错误时， 将一些遗失的片段放置到这个目录下。这个目录通常会在
+            分割槽的最顶层存在， 例如你加装一颗硬盘于/disk 中，那在这个系统下就会自动
+            产生一个这样的目录『/disk/lost+found』
+        </td>
+    </tr>
+    <tr>
+        <td><code>/proc</code></td>
+        <td>
+            这个目录本身是一个『虚拟文件系统(virtual filesystem)』喔！他放置的数据都是
+            在内存当中， 例如系统核心、行程信息(process)、周边装置的状态及网络状态等
+            等。因为这个目录下的数据都是在内存当中， 所以本身不占任何硬盘空间啊！比
+            较重要的档案例如：/proc/cpuinfo, /proc/dma, /proc/interrupts,
+            /proc/ioports, /proc/net/* 等等。
+        </td>
+    </tr>
+    <tr>
+        <td><code>/sys</code></td>
+        <td>
+            这个目录其实跟/proc 非常类似，也是一个虚拟的文件系统，主要也是记录与核心
+            相关的信息。 包括目前已加载的核心模块与核心侦测到的硬件装置信息等等。这
+            个目录同样不占硬盘容量喔！
+        </td>
+    </tr>
+</table>
+
+<p>
+    另外要注意的是，因为根目录与开机有关，开机过程中仅有根目录会被挂
+    载， 其他分割槽则是在开机完成之后才会持续的进行挂载的行为。就是因为如此，因此根目录下与开
+    机过程有关的目录， 就不能够与根目录放到不同的分割槽去！那哪些目录不可与根目录分开呢？有底
+    下这些：
+</p>
+<ul>
+    <li> <code>/etc</code>：配置文件</li>
+    <li><code>/bin</code>：重要执行档</li>
+    <li><code>/dev</code>：所需要的装置档案</li>
+    <li><code>/lib</code>：执行档所需的函式库与核心所需的模块</li>
+    <li><code>/sbin</code>：重要的系统执行文件</li>
+</ul>

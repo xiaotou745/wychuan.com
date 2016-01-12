@@ -1,0 +1,48 @@
+﻿<p> <code>chown</code> 是 <code>change owner</code>的简写， 主要的功能是改变档案的拥有者。</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>chown [OPTION]... [OWNER][:[GROUP]] FILE...</code><br />
+  or:  <code>chown [OPTION]... --reference=RFILE FILE...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Change the owner and/or group of each FILE to OWNER and/or GROUP.<br />
+    With --reference, change the owner and group of each FILE to those of RFILE.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-R, --recursive</code><span class="label label-danger">常用</span>进行递归的持续变更，即连同子目录下的所有档案、目录都变更。<br />
+    <small>operate on files and directories recursively</small><br />
+</p>
+
+<p><strong>4. Example</strong></p>
+Owner is unchanged if missing.  Group is unchanged if missing, but changed
+to login group if implied<code>adj. 含蓄的；暗指的</code> by a `:' following a symbolic<code>adj. 象征的；符号的；使用符号的</code> OWNER.
+OWNER and GROUP may be numeric as well as symbolic.
+<ul>
+    <li><code>chown root /u</code>:Change the owner of /u to "root".</li>
+    <li><code>chown root:staff /u</code>:Likewise<code>adv. 同样地；也 同上。</code>, but also change its group to "staff".</li>
+    <li><code>chown -hR root /u</code>:Change the owner of /u and subfiles to "root".</li>
+</ul>
+
+
+<p><strong>5. 命令实例</strong></p>
+<ul>
+    <li>
+        更改test.txt档案的拥有者为root:
+        <pre><code>[root@localhost wangyuchuan]# chown root test.txt 
+[root@localhost wangyuchuan]# ll
+total 0
+-rw-rw-r--. 1 root root 0 Jan 10 19:48 test.txt</code></pre>
+        接下来，我们再把档案的拥有者和群组改回wangyuchuan
+        <pre><code>[root@localhost wangyuchuan]# chown wangyuchuan:wangyuchuan test.txt
+[root@localhost wangyuchuan]# ll
+total 0
+-rw-rw-r--. 1 wangyuchuan wangyuchuan 0 Jan 10 19:48 test.txt</code></pre>
+    </li>
+    <li>更改test.txt档案的档案拥有者为test:
+        <pre><code>[root@localhost wangyuchuan]# chown test test.txt 
+chown: invalid user: `test'</code></pre>
+    从结果可以看到，用户必须是已存在系统
+中的账号，也就是在/etc/passwd 这个档案中有纪录的用户才行。
+    </li>
+</ul>

@@ -762,11 +762,7 @@
     <Content Include="Views\java\tomcatsetting\_tomcat-setting-jdkpath.cshtml" />
     <Content Include="Views\java\tomcatsetting\_tomcat-setting-jdktest.cshtml" />
     <Content Include="Views\shell\docs\_cat.cshtml" />
-    <Content Include="Views\shell\_find.cshtml" />
-    <Content Include="Views\shell\_grep.cshtml" />
-    <Content Include="Views\shell\user\_permission.cshtml" />
     <Content Include="Views\shell\user\users.cshtml" />
-    <Content Include="Views\shell\user\_fileproperty.cshtml" />
     <Content Include="Views\shell\docs\_mkdir.cshtml" />
     <Content Include="Views\shell\docs\_rmdir.cshtml" />
     <Content Include="Views\shell\_path.cshtml" />
@@ -779,8 +775,22 @@
     <Content Include="Views\shell\docs\_less.cshtml" />
     <Content Include="Views\shell\docs\_head.cshtml" />
     <Content Include="Views\shell\docs\_tail.cshtml" />
-    <Content Include="Views\shell\_files.cshtml" />
     <Content Include="Views\shell\docs\_touch.cshtml" />
+    <Content Include="Views\shell\permission\_fileproperty.cshtml" />
+    <Content Include="Views\shell\permission\permission.cshtml" />
+    <Content Include="Views\shell\permission\_chgrp.cshtml" />
+    <Content Include="Views\shell\permission\_chown.cshtml" />
+    <Content Include="Views\shell\permission\_chmod.cshtml" />
+    <Content Include="Views\shell\fhs\fhs.cshtml" />
+    <Content Include="Views\shell\fhs\_fhs_usr.cshtml" />
+    <Content Include="Views\shell\fhs\_fhs_var.cshtml" />
+    <Content Include="Views\shell\fhs\_fhs.cshtml" />
+    <Content Include="Views\shell\fhs\_fhs_root.cshtml" />
+    <Content Include="Views\shell\permission\_umask.cshtml" />
+    <Content Include="Views\shell\permission\_hiddenattr.cshtml" />
+    <Content Include="Views\shell\permission\_specialpermission.cshtml" />
+    <Content Include="Views\Shared\_Layout_Kindle.cshtml" />
+    <Content Include="Views\Blog\Kindle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,32 @@
+﻿<div class="bs-callout bs-callout-warning">
+    <h4>档案权限</h4>
+    <p>
+        <code>Linux</code>最优秀的地方之一，就在于他的多人多任务环境。
+        而为了让各个使用者具有较保密的档案数据，因此档案的权限 管理就变的很重要了。
+        Linux一般将档案可存取的身份分为三个类别，分别是 <code>owner/group/others</code>，
+        且三种身份各有 <code>read/write/execute</code> 等权限。
+    </p>
+</div>
+
+<p>在Linux里面，任何一个档案都具有『User, Group 及Others』三种身份的个别权限，</p>
+
+<h2 id="docs-property">Linux档案属性</h2>
+@Html.Partial("~/Views/shell/permission/_fileproperty.cshtml")
+
+<h2 id="umask">umask(档案预设权限)</h2>
+@Html.Partial("~/Views/shell/permission/_umask.cshtml")
+
+<h2 id="hiddenattr">档案隐藏属性</h2>
+@Html.Partial("~/Views/shell/permission/_hiddenattr.cshtml")
+
+<h2 id="specialpermission">档案隐藏权限</h2>
+@Html.Partial("~/Views/shell/permission/_specialpermission.cshtml")
+
+<h2 id="chgrp">chgrp</h2>
+@Html.Partial("~/Views/shell/permission/_chgrp.cshtml")
+
+<h2 id="chown">chown</h2>
+@Html.Partial("~/Views/shell/permission/_chown.cshtml")
+
+<h2 id="chmod">chmod</h2>
+@Html.Partial("~/Views/shell/permission/_chmod.cshtml")

@@ -1,0 +1,99 @@
+﻿<p> 档案权限的改变使用是的 <code>chmod</code> 这个指令</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>chmod [OPTION]... MODE[,MODE]... FILE...</code><br />
+    or:  <code>chmod [OPTION]... OCTAL-MODE FILE...</code><br />
+    or:  <code>chmod [OPTION]... --reference=RFILE FILE...</code>
+</p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Change the mode of each FILE to MODE.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-R, --recursive</code><span class="label label-danger">常用</span>进行递归的持续变更，即连同子目录下的所有档案、目录都变更。<br />
+    <small>operate on files and directories recursively</small><br />
+</p>
+
+<p><strong>权限的设定方法有两种， 分别可以使用数字或者是符号来进行权限的变更。</strong></p>
+<ul>
+    <li>
+        <p><strong>数字类型改变档案权限</strong></p>
+
+        <p>
+            Linux档案的基本权限就有九个，分别是 <code>owner/group/others</code>三种身份各有自己的
+            <code>read/write/execute</code> 权限， 档案的权限字符为：<code>-rwxrwxrwx</code>， 这九个权限是三个三个一组的！其中，我们可以使用
+            权限的分数对照表如下：<br />r:4<br />w:2<br />x:1
+        </p>
+
+        <p>
+            每种身份(owner/group/others)各自的三个权限(r/w/x)分数是需要累加的，例如当权限为： <code>-rwxrwx---</code> 分数则是：<br />
+            owner = rwx = 4+2+1 = 7<br />
+            group = rwx = 4+2+1 = 7<br />
+            others= --- = 0+0+0 = 0
+        </p>
+
+        <p>所以等一下我们设定权限的变更时，该档案的权限数字就是 <code>770</code></p>
+
+        <p><strong>example</strong></p>
+        <ol>
+            <li>
+                把档案test.txt的权限全部开启。<br />
+                要全部开启档案权限，即需要设置成<code>-rwxrwxrwx</code>，转换成数字权限即为<code>777</code>，设置过程如下：
+                <pre><code>[root@localhost wangyuchuan]# ll
+-rw-rw-r--. 1 wangyuchuan wangyuchuan 0 Jan 10 19:48 test.txt
+[root@localhost wangyuchuan]# chmod 777 test.txt 
+[root@localhost wangyuchuan]# ll
+-rwxrwxrwx. 1 wangyuchuan wangyuchuan 0 Jan 10 19:48 test.txt</code></pre>
+            </li>
+        </ol>
+    </li>
+    <li>
+        <p><strong>符号类型改变档案权限</strong></p>
+
+        <p>
+            从之前的介绍中我们可以发现，档案分别有<code>user</code>,<code>group</code>,<code>other</code>三种身份。
+            所以我们可以使用<code>u</code>,<code>g</code>,<code>o</code>来代表这三种身份的权限，此外使用<code>a</code>
+            来代表<code>all</code>亦即全部的身份。
+            同样，读写执行的权限<code>read</code>,<code>write</code>,<code>execute</code>分别使用<code>r</code>,<code>w</code>,<code>x</code>来代替。
+        </p>
+        <p>Each MODE is of the form `[ugoa]*([-+=]([rwxXst]*|[ugo]))+'.</p>
+        <table class="table table-condensed table-bordered">
+            <tr>
+                <td><code>chmod</code></td>
+                <td><code>u</code><br /><code>g</code><br /><code>o</code><br /><code>a</code></td>
+                <td><code>+</code><br /><code>-</code><br /><code>=</code></td>
+                <td><code>r</code><br /><code>w</code><br /><code>x</code></td>
+                <td><code>FILE...</code></td>
+            </tr>
+        </table>
+
+        <p><strong>example</strong></p>
+        <ul>
+            <li>
+                更改test.txt档案的权限为<code>-rwxr--r--</code>:
+                <pre><code>[root@localhost wangyuchuan]# chmod u=rwx,g=r,o=r test.txt 
+[root@localhost wangyuchuan]# ll
+-rwxr--r--. 1 wangyuchuan wangyuchuan 0 Jan 10 19:48 test.txt</code></pre>
+                <code>u,g,o</code>三者之间用<code>,</code>号分隔。
+            </li>
+            <li>
+                如果我不知道原先的文件属性，而我只想要增加test.txt这个档案的每个人均可
+                写入的权限:
+                <pre><code>root@localhost wangyuchuan]# chmod a+x test.txt 
+[root@localhost wangyuchuan]# ll
+-rwxr-xr-x. 1 wangyuchuan wangyuchuan 0 Jan 10 19:48 test.txt</code></pre>
+            </li>
+            <li>
+                而如果是要将权限去掉而不更动其他已存在的权限呢？例如要拿掉全部人的可执行权限:
+                <pre><code>root@localhost wangyuchuan]# chmod a-x test.txt 
+[root@localhost wangyuchuan]# ll
+-rw-r--r--. 1 wangyuchuan wangyuchuan 0 Jan 10 19:48 test.txt</code></pre>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+
+

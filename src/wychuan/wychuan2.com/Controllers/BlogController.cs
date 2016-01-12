@@ -27,6 +27,15 @@ namespace wychuan2.com.Controllers
             return View(blogsDTO);
         }
 
+        #region 用来制作电子书的。
+        public ActionResult Kindle(string id)
+        {
+            var blogsDTO = blogService.GetByBlogIdWithSections(id);
+
+            return View(blogsDTO);
+        }
+        #endregion
+
         public ActionResult Category(string id)
         {
             ViewBag.Category = id;

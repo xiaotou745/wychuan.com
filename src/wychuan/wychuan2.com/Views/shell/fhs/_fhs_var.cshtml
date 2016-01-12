@@ -1,0 +1,56 @@
+﻿
+<p>
+    如果/usr 是安装时会占用较大硬盘容量的目录，那么 /var就是在系统运作后才会渐渐占用硬盘容量的目
+    录。 因为/var 目录主要针对常态性变动的档案，包括快取(cache)、登录档(log file)以及某些软件运作
+    所产生的档案， 包括程序档案(lock file, run file)，或者例如MySQL 数据库的档案等等。常见的次目
+    录有：
+</p>
+
+<table class="table table-condensed table-bordered">
+    <tr>
+        <td>目录</td>
+        <td>应放档案内容</td>
+    </tr>
+    <tr>
+        <td><code>/var/cache/</code></td>
+        <td>应用程序本身运行过程中产生的一些暂存档。</td>
+    </tr>
+    <tr>
+        <td><code>/var/lib/ </code></td>
+        <td>程序本身执行的过程中，需要使用到的数据文件放置的目录，在此目录下各自的软
+件应该要有各自的目录。 举例来说，<code>MySQL</code> 的数据库放置到<code>/var/lib/mysql/</code>而
+rpm的数据库则放到<code>/var/lib/rpm</code> 去！</td>
+    </tr>
+    <tr>
+        <td><code>/var/lock/ </code></td>
+        <td>某些装置或者是档案资源一次只能被一个应用程序所使用，如果同时有两个程序使
+用该装置， 就可能产生一些错误的状况，因此就得要将该装置上锁(lock)，以确
+保该装置只会给单一软件所使用。  举例来说，刻录机正在刻录一块光盘，你想一
+下，会不会有两个人同时在使用一个刻录机烧片？  如果两个人同时刻录，那片子写
+入的是谁的资料？所以当第一个人在刻录时该刻录机就会被上锁， 第二个人就得要
+该装置被解除锁定(就是前一个人用完了 )才能够继续使用</td>
+    </tr>
+    <tr>
+        <td><code>/var/log/</code></td>
+        <td>重要到不行！这是登录文件放置的目录！里面比较重要的档案如
+            <code>/var/log/messages</code>, <code>/var/log/wtmp</code>(记录登入者的信息)等。 </td>
+    </tr>
+    <tr>
+        <td><code>/var/mail/</code></td>
+        <td>放置个人电子邮件信箱的目录，不过这个目录也被放置到<code>/var/spool/mail/</code>目录
+中！ 通常这两个目录是互为链接文件啦！</td>
+    </tr>
+    <tr>
+        <td><code>/var/run/</code></td>
+        <td>某些程序或者是服务启动后，会将他们的 <code>PID</code>放置在这个目录下喔！ 至于<code>PID</code>的
+意义我们会在后续章节提到的。</td>
+    </tr>
+    <tr>
+        <td><code>/var/spool/</code></td>
+        <td>这个目录通常放置一些队列数据，所谓的『队列』就是排队等待其他程序使用
+据啦！ 这些数据被使用用通常都会被删除。举例来说，系统收到新信会放置到
+            <code>/var/spool/mail/</code>中， 但使用者收到该信件后该信件原则上就会被删除，信件如果
+暂时寄不出去会被放到<code>/var/spool/mqueue/</code>中， 等到被送出后就被删除。如果是
+工作排程数据(<code>crontab</code>)，就会被放置到<code>/var/spool/cron/</code>目录中！</td>
+    </tr>
+</table>

@@ -1,0 +1,135 @@
+﻿<p><code>SUID, SGID, SBIT </code>是档案除了<code>r,w,x</code>三种权限之外的特殊权限。</p>
+
+<p>
+    使用<code>ls</code>查看一下<code>/usr/bin/passwd</code>档案的权限：<br />
+    <pre><code>[root@localhost chuan]# ll -d /tmp/; ll /usr/bin/passwd 
+drwxrwxrwt. 10 root root 4096 Jan 11 14:29 /tmp/
+-rwsr-xr-x. 1 root root 30768 Feb 22  2012 /usr/bin/passwd</code></pre>
+</p>
+
+<p>上述档案的权限在<code>x</code>的位置出现了两个特殊的权限：<code>s</code>，<code>t</code></p>
+
+
+<h2 id="suid">Set UID</h2>
+<p>
+    <span class="text-danger"><strong>当 <code>s</code> 这个标志出现在档案拥有者的 <code>x</code> 权限上时</strong></span>，例如刚刚提到的 <code>/usr/bin/passwd</code> 这个档案的权限状
+    态：<code>-rw<strong>s</strong>r-xr-x</code>，<span class="text-danger"><strong>此时就被称为 <code>Set UID</code>，简称为 <code>SUID</code> 的特殊权限</strong></span>。
+    那么<code>SUID</code>的权限对于一个档案的特殊功能是什么呢？基本上<code>SUID</code>有这样的限制与功能：
+</p>
+<ul>
+    <li><code>SUID</code> 权限仅对二进制程序(binary program)有效；</li>
+    <li>执行者对于该程序需要具有 <code>x</code> 的可执行权限；</li>
+    <li>本权限仅在执行该程序的过程中有效 (run-time)；</li>
+    <li><strong>执行者将具有该程序拥有者 (<code>owner</code>) 的权限。</strong></li>
+</ul>
+
+<p>
+    <strong>举例说明</strong>
+</p>
+<p>
+    <code>/etc/shadow</code>档案记录<code>Linux</code>系统的所有账户密码，此档案的权限为<br />
+    <code>-r--------. 1 root root 959 Jan 10 19:14 /etc/shadow</code><br />
+    可见此档案只有<code>root</code>可读，且只有<code>root</code>可以强制写入，其它账号都不可读写。那么问题来了，既然此档案只有<code>root</code>
+    可以强制写入，那么其他账号是否可以修改密码呢？（新密码要写入此档案）
+</p>
+<p>
+    我们都知道，每个账号都可以通过<code>passwd</code>命令来修改自己的密码，但是这些账号明明没有<code>/etc/shadow</code>
+    文档的权限，是如何修改密码的？这就是<code>SUID</code>权限的作用了，过程如下：
+</p>
+<pre><code>[wangyuchuan@localhost ~]$ ll /usr/bin/passwd 
+-rwsr-xr-x. 1 root root 30768 Feb 22  2012 /usr/bin/passwd</code></pre>
+<ul>
+    <li>
+        wangyuchuan账号对<code>/usr/bin/passwd</code>文档有<code>x</code>权限，表示此账号可以使用<code>passwd</code>命令，
+    </li>
+    <li><code>/usr/bin/passwd</code>档案的拥有者是<code>root</code>账号，且执行权限为<code>s</code>。</li>
+    <li>
+        那么，根据上述的描述，条件都已经满足（<code>passwd</code>为二进制、wangyuchuan对该程序具有<code>x</code>权限），
+        前两条满足后，根据后两条描述：执行者(wangyuchuan)在执行该程序(<code>/usr/bin/passwd</code>)的过程中，将拥有该程序拥有者(<code>root</code>)
+        的权限。
+    </li>
+    <li>所以wangyuchuan可以通过<code>root</code>来更改<code>/etc/shadow</code>档案的密码信息。</li>
+</ul>
+
+<p>
+    <strong>注意事项</strong>
+    <ul>
+        <li>SUID 仅可用 binary program 上， 不能够用  shell script 上面</li>
+        <li>SUID 对于目录也是无效的</li>
+    </ul>
+</p>
+
+<h2 id="sgid">Set GID</h2>
+<p>
+    <span class="text-danger">
+        <strong>
+            当 <code>s</code> 标志在档案拥有者的 <code>x</code> 项目为 <code>SUID</code>，
+            那么当 <code>s</code> 出现在群组的 <code>x</code> 时则称为 <code>Set GID</code>,简称 <code>SGID</code> 的特殊权限。
+        </strong>
+    </span>
+</p>
+<p>与 <code>SUID</code> 不同的是，<code>SGID</code> 可以针对档案或目录来设定！如果是对档案来说， <code>SGID</code> 有如下的功能：</p>
+<ul>
+    <li><code>SGID</code> 对二进制程序有用 </li>
+    <li>程序执行者对于该程序来说，需具备 <code>x</code> 的权限；</li>
+    <li>执行者在执行的过程中将会获得该程序群组的支持！ </li>
+</ul>
+
+<p><code>SGID</code> 也能够用在目录上面，  当一个目录设定了 <code>SGID</code> 的权限后，他将具有如下的功能：</p>
+<ul>
+    <li>若用户对于此目录具有 <code>r</code> 与 <code>x</code> 的权限时，该用户能够进入此目录。</li>
+    <li>用户在此目录下的有效群组 (effective group)将会变成该目录的群组；</li>
+    <li>
+        用途：若用户在此目录下具有 <code>w</code> 的权限(可以新建档案)，则使用者建立的新档案，该新档案的
+        群组与此目录的群组相同。
+    </li>
+</ul>
+
+<h2 id="sbit">Sticky Bit</h2>
+
+<p>这个 <code>Sticky Bit</code>, <code>SBIT</code> 目前只针对目录有效，对于档案已经没有效果了。 <code>SBIT</code> 对于目录的作用 是： </p>
+<ul>
+    <li>当用户对于此目录具有  <code>w</code>, <code>x</code> 权限，亦即具有写入的权限时；</li>
+    <li>当用户在该目录下建立档案或目录时，仅有自己与  <code>root</code> 才有权力删除该档案</li>
+</ul>
+<p>
+    换句话说：当甲这个用户于A 目录是具有群组或其他人的身份，并且拥有该目录 <code>w</code> 的权限， 这表示
+    『甲用户对该目录内任何人建立的目录或档案均可进行  "删除/更名/搬移" 等动作。』 不过，如果将 A
+    目录加上了 <code>SBIT</code> 的权限项目时， 则甲只能够针对自己建立的档案或目录进行删除/更名/移动等动作，
+    而无法删除他人的档案。
+</p>
+
+<p>
+    举例来说，我们的 <code>/tmp</code> 本身的权限是<code>drwxrwxrwt</code>， 在这样的权限内容下，任何人都可以在
+    <code>/tmp</code> 内新增、修改档案，但仅有该档案/目录建立者与 <code>root</code> 能够删除自己的目录或档案。这个特性也
+    是挺重要的
+</p>
+
+<h2 id="suidsgidsbitset">SUID,SGID,SBIT权限设定</h2>
+<p>
+    前面介绍过 <code>SUID</code> 与 <code>SGID</code> 的功能，那么如何配置文件案使成为具有 <code>SUID</code> 与 <code>SGID</code> 的权限呢？ 我们知道数字型态更改权限的方式为『三个数字』的
+    组合， 那么如果在这三个数字之前再加上一个数字的话，最前面的那个数字就代表这几个权限了！<br />
+    4 为 <code>SUID</code><br />
+    2 为 <code>SGID</code><br />
+    1 为 <code>SBIT</code>
+</p>
+
+<p>
+    假设要将一个档案权限改为<code>-rwsr-xr-x</code>时，由于 <code>s</code> 在用户权力中，所以是  <code>SUID</code> ，因此， 在原先的
+    755 之前还要加上 4 ，也就是：<code> chmod 4755 filename </code>来设定！
+</p>
+
+<p>
+    除了数字法之外，妳也可以透过符号法来处理喔！其中 <code>SUID</code> 为 <code>u+s</code> ，而 <code>SGID</code> 为 <code>g+s</code> ，<code>SBIT</code> 则是
+    <code>o+t</code> 啰！来看看如下的范例：
+</p>
+
+<p>
+    # 设定权限成为 <code>-rws--x--x</code> 的模样：
+<pre><code>[root@www tmp]# chmod u=rwxs,go=x test; ls -l test
+-rws--x--x 1 root root 0 Aug 18 23:47 test</code></pre>
+
+    # 承上，加上 <code>SGID</code> 与 <code>SBIT</code> 在上述的档案权限中！
+<pre><code>[root@www tmp]# chmod g+s,o+t test; ls -l test
+-rws--s--t 1 root root 0 Aug 18 23:47 test </code></pre>
+</p>
