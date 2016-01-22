@@ -1,0 +1,22 @@
+﻿<p class="lead">主要备案Ubuntu的一些必备基础知识，每个Ubuntu新手都会遇到这些问题，进而从这里找到相应的解决方案</p>
+
+<h2 id="ubuntu-basic01">在不同的控制台之间切换</h2>
+<p>在默认的 Ubuntu 系统中，有6个独立的伪终端，比如，您可以把PC的VGA字符终端当作 6个可以选择的VT-100
+    终端来使用。<strong class="text-danger">从一个切换终端到另外一个，你只需要同时按下左Alt键 +Ctrl键和F1 –:F6键</strong>。任何一个伪终端都可以让不同的用户独立登录。
+    多用户环境是 Unix 的 一个很优秀的、使人迷恋的特性。</p>
+<p>如果你偶然的在装有X装口系统的系统上<strong>按下了Alt+Ctrl+F7，控制台就会切换到图形界面，
+                         然后 再按下Ctrl-Alt-F1可以重新回到字符界面</strong>。
+    您可以尝试在在不同的控制台之间切换，
+    然后 再换回到原来的那个，您慢慢就会习惯于这样做。
+</p>
+
+<h2 id="ubuntu-basic02">怎样关闭机器</h2>
+<p>就像任何其它现代的操作系统一样，任何文件操作都会在内存当中缓存数据，<code>Ubuntu</code> 操作系统也需要一个适当的过程，让电脑电源关闭之前保证这些文件的一致性，您可以在 <strong><code>root</code></strong> 命令提示符下使用下面的命令来关闭系统。</p>
+<code>
+    <pre># shutdown -h now</pre>
+</code><p>上面是在正常的多用户模式下面的方法。如果您是处在单用户模式，您可以在<code>root</code>用户的命令提示符下使用下面的命令：</p>
+<code>
+    <pre># poweroff -i -f</pre>
+</code><p>可选择的其它方式，比如您可以用<code>Ctrl-Alt-Delete</code>来关闭系统</p>
+<p>默认系统会自动关闭电源，如果APM和ACPI选项在 <code>BIOS</code>和<code>Linux</code>内核里面都配置有问题的话，等待系统在屏幕上输出"<code>System halted</code>"之后您就可以关闭电源了。</p>
+

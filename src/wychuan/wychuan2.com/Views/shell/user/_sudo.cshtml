@@ -1,0 +1,78 @@
+﻿<p><code>sudo</code>命令使当前账号可以以其他身份来执行指令。</p>
+
+<p><code>sudo</code>可让用户以其他的身份来执行指定的指令，预设的身份为<code>root</code>。在<code>/etc/sudoers</code>中设置了可执行sudo</code>指令的用户。
+    若其未经授权的用户企图使用<code>sudo</code>，则会发出警告的邮件给管理员。用户使用<code>sudo</code>时，必须先输入密码，
+    之后有5分钟的有效期限，超过期限则必须重新输入密码。
+</p>
+<p>相对于 su 需要了解新切换的用户密码  (常常是需要 root 的密码)， sudo 的执行则仅需要自己的密码即
+    可！</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>sudo [-bhHpV][-s &lt;shell>][-u &lt;用户>][指令] 或 sudo [-klv]</code></p>
+<strong>常见用法</strong>
+<p>
+    <code>sudo [-D level] -h | -K | -k | -V</code><br />
+    <code>sudo -v [-AknS] [-D level] [-g groupname|#gid] [-p prompt] [-u user name|#uid]</code><br />
+    <code>sudo -l[l] [-AknS] [-D level] [-g groupname|#gid] [-p prompt] [-U user name] [-u user name|#uid] [-g groupname|#gid] [command]</code><br />
+    <code>sudo [-AbEHknPS] [-r role] [-t type] [-C fd] [-D level] [-g groupname|#gid] [-p prompt] [-u user name|#uid] [-g groupname|#gid] [VAR=value] [-i|-s] [<command>]</code><br />
+    <code>sudo -e [-AknS] [-r role] [-t type] [-C fd] [-D level] [-g groupname|#gid] [-p prompt] [-u user name|#uid] file ...</code><br />
+</p>
+
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-b</code>
+    在后台执行指令。
+    <small>
+        The -b (background) option tells sudo to run the given command in the background.  Note that if you use the -b option you cannot use
+        shell job control to manipulate(<code>vt. 操纵；操作；</code>) the process.  Most interactive(<code>adj. 交互式的；相互作用的</code>) commands will fail to work properly in background mode.
+    </small><br />
+
+    <code class="m-r-md">-u user</code>
+    以指定的用户作为新的身份。若不加上此参数，则预设以root作为新的身份。
+    <small>
+        The -u (user) option causes sudo to run the specified command as a user other than root.  To specify a uid instead of a user name,
+        #uid.  When running commands as a uid, many shells require that the ‘#’ be escaped(<code>转义</code>) with a backslash (‘\’).  Security policies may
+        restrict uids to those listed in the password database.  The sudoers policy allows uids that are not in the password database as long
+        as the targetpw option is not set.  Other security policies may not support this.
+    </small><br />
+
+    <code class="m-r-md">-v</code>
+    延长密码有效期限5分钟。<small></small><br />
+
+    <code class="m-r-md">-k [command]</code>
+    结束密码的有效期限，也就是下次再执行sudo时便需要输入密码。
+    <small>When used alone, the -k (kill) option to sudo invalidates<code>使无效</code> the user’s cached credentials.
+        The next time sudo is run a password will be required.
+    </small><br />
+    
+    <code class="m-r-md">-H</code>
+    将HOME环境变量设为新身份的HOME环境变量。<br />
+    
+    <code class="m-r-md">-l</code>
+    列出目前用户可执行与无法执行的指令。<br />
+    
+    <code class="m-r-md">-p</code>
+    改变询问密码的提示符号。<br />
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>1). 使用<code>wangyuchuan</code>账号建立文件<code>/tmp/chuan.txt</code>：</strong>
+<pre><code>[root@centos-chuan ~]# sudo -u wangyuchuan touch /tmp/chuan.txt
+[root@centos-chuan ~]# ll /tmp/chuan.txt 
+-rw-r--r--. 1 wangyuchuan wangyuchuan 0 1月  20 13:42 /tmp/chuan.txt</code></pre>
+
+<p><strong>4. 延伸</strong></p>
+<p> <code>sudo</code> 预设仅有 <code>root</code> 能使用  <code>sudo</code> 的执行，是由于<code>sudo</code>的执行是这样的流程：
+    <ul>
+        <li>当用户执行  <code>sudo</code> 时，系统于 <code>/etc/sudoers</code> 档案中搜寻该使用者是否有执行  <code>sudo</code> 的权限；</li>
+        <li>若使用者具有 可执行 <code>sudo</code> 的权限后，便让使用者输入自己的用户密码来确认。</li>
+        <li>若密码输入成功，便开始进行 <code>sudo</code> 后续接的指令(但 <code>root</code> 执行 <code>sudo</code> 时，不需要输入密码)；</li>
+        <li>若欲切换的身份与执行者身份相同，那也不需要输入密码。</li>
+    </ul>
+</p>
+<p>所以说，sudo 执行的重点是：『能否使用 <code>sudo</code> 必须要看 <code>/etc/sudoers</code> 的设定值， 而可使用 <code>sudo</code>
+    者是透过输入用户自己的密码来执行后续的指令 』。</p>
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>grep(1), su(1), stat(2), passwd(5), sudoers(5), sudo_plugin(8), sudoreplay(8), visudo(8)</code>

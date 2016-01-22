@@ -1,0 +1,64 @@
+﻿<p><code>chsh</code>, <code>change shell</code>，用来更换登入系统时使用的shell。
+</p>
+<p>每位用户在登入系统时，都会拥有预设的<code>shell</code>环境，这个指令可更改其预设值。若不指定
+任何参数与用户名称，则<code>chsh</code>会以应答的方式进行设置。
+</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>chsh [-s shell] [-l] [-u] [-v] [username]</code>
+</p>
+亦即：
+<p><code>chsh [-luv][-s &lt;shell名称&gt;][用户名称]</code></p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-s, --shell shell</code>
+    更改系统预设的shell环境。<br />
+    <code class="m-r-md">-l, --list-shells</code>
+    列出目前系统可用的shell清单。 <br />
+    <code class="m-r-md">-u, --help</code>
+    在线帮助。<br />
+    <code class="m-r-md">-v, --version</code>
+    显示版本信息。<br />
+</p>
+
+
+<p><strong>3. sample</strong></p>
+<strong>1). 列出系统中所有合法的<code>shell</code>：</strong>
+<pre><code>[root@centos-chuan ~]# chsh -l
+/bin/sh
+/bin/bash
+/sbin/nologin
+/bin/dash</code></pre>
+
+<strong>2). 更改账号<code>wangyuchuan</code>的<code>shell</code>为<code>/sbin/nologin</code>，查看结果：</strong>
+<pre><code>[root@centos-chuan ~]# grep wangyuchuan /etc/passwd
+wangyuchuan:x:501:501:王玉川,易淘,15801495169,18131012089:/home/wangyuchuan:/bin/bash
+[root@centos-chuan ~]# chsh -s /sbin/nologin wangyuchuan
+Changing shell for wangyuchuan.
+Shell changed.
+[root@centos-chuan ~]# grep wangyuchuan /etc/passwd
+wangyuchuan:x:501:501:王玉川,易淘,15801495169,18131012089:/home/wangyuchuan:/sbin/nologin</code></pre>
+
+<p>测试完毕之后，我们再修改回来：</p>
+<pre><code>[root@centos-chuan ~]# chsh -s /bin/bash wangyuchuan
+Changing shell for wangyuchuan.
+Shell changed.</code></pre>
+<p>不论是 <code>chfn</code> 与 <code>chsh</code> ，都是能够让一般用户可以修改  <code>/etc/passwd</code> 
+    这个系统文件的，所以，这两个档案的权限是<code>SUID</code></p>
+<pre><code>[root@centos-chuan ~]# which chsh
+/usr/bin/chsh
+[root@centos-chuan ~]# ll /usr/bin/chsh 
+-rws--x--x. 1 root root 20056 11月 22 2013 /usr/bin/chsh</code></pre>
+
+<p><strong>4. Files</strong></p>
+
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>login(1), passwd(5), shells(5)</code>
+
+
+
+
+
+

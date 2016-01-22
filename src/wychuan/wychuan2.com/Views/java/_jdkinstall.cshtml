@@ -1,0 +1,89 @@
+﻿<strong>下载地址：</strong>
+<p><code>JDK</code>下载地址：<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a></p>
+
+<h2 id="jdkinstallofwindows">windows install</h2>
+<strong>1、安装</strong>
+<p>安装<code>JDK</code>：直接运行<code>jdk-7-windows-i586.exe</code>可执行程序，默认安装即可。</p>
+<small class="text-primary"><strong>注意事项:</strong>路径可以其他盘符，不建议路径包含中文名及特殊符号。</small>
+<p></p>
+
+<strong>2、配置环境变量</strong>
+<ul>
+    <li>新建变量名：<strong class="text-danger">JAVA_HOME</strong>，变量值：<code>C:\\Program Files\Java\jdk1.7.0</code></li>
+    <li>打开<strong class="text-danger">PATH</strong>，添加变量值：<code>%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin</code></li>
+    <li>新建变量名：<strong class="text-danger">CLASSPATH</strong>，变量值：<code>.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar</code></li>
+</ul>
+<small>
+    <strong class="m-l-lg">备注：</strong>
+    <ul>
+        <li>.表示当前路径，<code>%JAVA_HOME%</code>就是引用前面指定的<code>JAVA_HOME</code>；</li>
+        <li><code>JAVA_HOME</code>指明<code>JDK</code>安装路径，此路径下包括<code>lib</code>，<code>bin</code>，<code>jre</code>等文件夹，<code>tomcat</code>，<code>eclipse</code>等的运行都需要依靠此变量。</li>
+        <li><code>PATH</code>使得系统可以在任何路径下识别<code>java</code>命令。</li>
+        <li><code>CLASSPATH</code>为<code></code>java加载类(<code>class</code> or <code>lib</code>)路径，只有类在<code>classpath</code>中，<code>java</code>命令才能识别。</li>
+    </ul>
+</small>
+
+<strong>3、测试</strong>
+<p class="lead">在<code>CMD</code>命令下输入<code>javac</code>，<code>java</code>，<code>javadoc</code>命令：出现图示界面，表示安装成功。</p>
+
+<img src="/UpImgs/tomcat-setting/java.jpg" class="img-responsive" alt="Responsive image">
+<img src="/UpImgs/tomcat-setting/javac.jpg" class="img-responsive" alt="Responsive image">
+
+<h2 id="jdkinstalloflinux">linux install</h2>
+<strong>1、判断是否安装</strong>
+<p>在安装之前，我们首先需要判断一下机器是否已安装过JDK：</p>
+<ul>
+    <li>可以直接使用<code>$java -version</code>及<code>javac</code>命令来检测：
+        <pre><code>[root@localhost ~]# java -version
+java version "1.8.0_51"
+Java(TM) SE Runtime Environment (build 1.8.0_51-b16)
+Java HotSpot(TM) 64-Bit Server VM (build 25.51-b03, mixed mode)
+[root@localhost ~]# javac
+Usage: javac &lt;options&gt; &lt;source files&gt;
+where possible options include
+-g generate all debugging info
+-g:none generate no debugging info></code></pre>
+    </li>
+    <li>使用<code>[root@localhost ~]# rpm -qa | grep -E '^open[jre|jdk]|j[re|dk]'</code><br />
+        <code>jdk-1.7.0_67-fcs.x86_64</code>
+    </li>
+</ul>
+
+<strong>2.下载</strong>
+
+<ol>
+    <li>使用<code>$ getconf LONG_BIT</code>来查看一下系统是多少位的。然后从本文开头指定的下载地址页面下载合适的安装包。</li>
+    <li>创建<code>/usr/java</code>目录，把第一步下载的安装包上传复制到此目录。上传可以考虑<code>rz</code>命令</li>
+    <li>解压<code>$ tar -xzv -f jdk-8u65-linux-x64.gz</code>
+        <pre>[root@centos-chuan java]# ls
+jdk1.8.0_65  jdk-8u65-linux-x64.gz</pre>
+    </li>
+    <li>无须安装，解压之后即算安装完成，接下来就是配置环境变量。</li>
+</ol>
+
+<strong>3.配置环境变量</strong>
+<p><code>linux</code>全局变量设置在<code>/etc/profile</code>文件中，该文件中变量对所有用户生效。
+    <code>linux</code>用户变量设置在 <code>~/.bash_profile</code>
+    本文设置为全局的，在<code>/etc/profile</code>文件中设置<code>JAVA_HOME</code>,<code>CLASSPATH</code>变量
+</p>
+<p></p>
+
+<p><code>$ sudo vim /etc/profile</code><br />
+    按i进入插入模式，光标移到文件最后，添加如下内容:
+    <pre><code>export JAVA_HOME=/usr/local/Java/jdk1.7.0_21 
+export CLASSPATH=.:$JAVA_HOME/lib:$CLASSPATH 
+export PATH=$JAVA_HOME/bin:$PATH</code></pre>
+    按esc,输入:wq保存
+</p>
+
+<strong>4. 测试环境变量是否生效</strong>
+<p>
+<pre><code>[root@centos-chuan java]# source /etc/profile
+[root@centos-chuan java]# java -version
+java version "1.8.0_65"
+Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
+Java HotSpot(TM) 64-Bit Server VM (build 25.65-b01, mixed mode)
+</code></pre>
+</p>
+
+

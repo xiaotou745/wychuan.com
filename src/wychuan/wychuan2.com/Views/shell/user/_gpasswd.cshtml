@@ -1,0 +1,70 @@
+﻿<p><code>gpasswd</code>命令可以让某个群组具有一个管理员，这个群组管理员可以管理哪些账
+号可以加入/移出该群组。</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>gpasswd [option] GROUP</code>
+</p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-a, --add USER</code>
+    将某位使用者的账号加入 groupname 这个群组当中。<small>add USER to GROUP</small><br />
+
+    <code class="m-r-md">-d, --delete USER</code>
+    将某位使用者移出 groupname 这个群组。<small>remove USER from GROUP</small><br />
+    
+    <code class="m-r-md">-r, --remove-password</code>
+    将 groupname 的密码移除。<small>remove the GROUP's password</small><br />
+    <code class="m-r-md">-R, --restrict</code>
+    让 groupname 的密码栏失效。<small>restrict access to GROUP to its members</small><br />
+    
+    <code class="m-r-md">-M, --members USER,...</code><span class="label label-danger">常用</span>
+    将某些账号加入这个群组当中。<small>set the list of members of GROUP</small><br />
+    <code class="m-r-md">-A, --administrators ADMIN,...</code><span class="label label-danger">常用</span>
+    将 groupname 的主控权交由后面的使用者账号 (即设置该群组的管理员) 。<code>/etc/group</code>档案的内容。<small>set the list of administrators for GROUP</small><br />
+    
+    <strong>Except for the -A and -M options, the options cannot be combined.</strong>
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>1). 如果没有加任何参数，表示给群组管理员一个密码(<code>/etc/gshadow</code>):<code>gpasswd groupname</code>：</strong>
+<pre><code>[root@centos-chuan ~]# gpasswd develop
+Changing the password for group develop
+New Password: 
+Re-enter new password: </code></pre>
+
+<strong>2). 给群组设定一个管理员，然后再给你个用户。(<code>gpasswd [-A user1,...] [-M user3,...] groupname </code>：</strong>
+<pre><code>[root@centos-chuan ~]# gpasswd -A wangyuchuan -M test develop
+[root@centos-chuan ~]# grep develop /etc/group /etc/gshadow
+/etc/group:develop:x:504:test
+/etc/gshadow:develop:$6$omKS7BjrQr$uJlbK67Eg0iJD6gn1qMjGuIl5dZq7Dq6u977INfqoGeVZw7GmnGokdbK4CEis9Ci.5lAYyurhJt66UcJ/KJmB1:wangyuchuan:test</code></pre>
+
+<strong>3). 把<code>test</code>从此群组移除，再加进来：<code>gpasswd [-ad] user groupname</code>：</strong>
+    <pre><code>[root@centos-chuan ~]# gpasswd -d test develop
+Removing user test from group develop
+[root@centos-chuan ~]# grep develop /etc/group /etc/gshadow
+/etc/group:develop:x:504:
+/etc/gshadow:develop:$6$omKS7BjrQr$uJlbK67Eg0iJD6gn1qMjGuIl5dZq7Dq6u977INfqoGeVZw7GmnGokdbK4CEis9Ci.5lAYyurhJt66UcJ/KJmB1:wangyuchuan:
+[root@centos-chuan ~]# gpasswd -a test develop
+Adding user test to group develop
+[root@centos-chuan ~]# grep develop /etc/group /etc/gshadow
+/etc/group:develop:x:504:test
+/etc/gshadow:develop:$6$omKS7BjrQr$uJlbK67Eg0iJD6gn1qMjGuIl5dZq7Dq6u977INfqoGeVZw7GmnGokdbK4CEis9Ci.5lAYyurhJt66UcJ/KJmB1:wangyuchuan:test</code></pre>
+    
+<strong>4). 删除密码或失效密码使用：<code>gpasswd [-rR] groupname</code>：</strong>
+    
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+    <li><a href="" target="_blank"><code>/etc/gshadow</code></a>-群 组 资 讯 加 密</li>
+</ul>
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>newgrp(1), groupadd(8), groupdel(8), groupmod(8), grpck(8), group(5), gshadow(5).</code>
+
+
+
+
+
+

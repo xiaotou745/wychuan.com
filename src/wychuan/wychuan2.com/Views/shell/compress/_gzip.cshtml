@@ -1,0 +1,58 @@
+﻿<p class="lead"><code>gzip</code>是<code>Linux</code>下应用度最广的压缩指令。 
+    <code>gzip</code> 可以解开 <code>compress</code>, <code>zip</code> 与 <code>gzip</code> 等软件所压缩的档案。 
+    至于 <code>gzip</code> 所建立的压缩文件为 <code>*.gz</code> 的档案名。
+</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>gzip [OPTION]... [FILE]...</code><br />
+    <code>zcat FILE</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>Compress or uncompress FILEs (by default, compress FILES in-place).</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-c, --stdout</code>将压缩的数据输出到屏幕上，可透过数据流重导向来处理；
+    <small>write on standard output, keep original files unchanged</small><br />
+    <code class="m-r-md">-d, --decompress</code><span class="label label-danger">常用</span>解压缩的参数；<br />
+
+    <code class="m-r-md">-# </code>：压缩等级，-1 最快，但是压缩比最差、-9 最慢，但是压缩比最好！预设是
+    -6 <br />
+    <code class="m-r-md">-v, --verbose</code><span class="label label-danger">常用</span>可以显示出原档案/压缩文件案的压缩百分比等信息；<br />
+    <code class="m-r-md">-t, --test</code>用来检验一个压缩文件的一致性，看看档案有无错误。<small>test compressed file integrity</small>
+
+    <code class="m-r-md">-f, --force</code>force overwrite of output file and compress links<br />
+    <code class="m-r-md">-l, --list</code>list compressed file contents。<br />
+    <code class="m-r-md">-n, --no-name</code>do not save or restore the original name and time stamp<br />
+    <code class="m-r-md">-N, --name</code>save or restore the original name and time stamp<br />
+    <code class="m-r-md">-r, --recursive</code>operate recursively on directories<br />
+    <code class="m-r-md">-S, --suffix=SUF</code>。use suffix SUF on compressed files<br />
+    <strong>With no FILE, or when FILE is -, read standard input.</strong>
+</p>
+
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>将<code>/tmp/file1.txt</code>文件使用<code>gzip</code>命令压缩：
+        <pre><code>[root@localhost tmp]# gzip -v file1.txt 
+file1.txt:       25.8% -- replaced with file1.txt.gz
+[root@localhost tmp]# ll file1.*
+-rw-r--r--. 1 root root 108 Jan 12 16:22 file1.txt.gz</code></pre>
+        <strong>当你使用 <code>gzip</code> 进行压缩时，在预设的状态下原本的档案会被压缩成为 <code>.gz</code> 的檔
+名， 源文件就不再存在了。</strong>
+    </li>
+    <li>将上面压缩的file1.txt.gz文件的内容读取出来：
+        <pre><code>[root@localhost tmp]# zcat file1.txt.gz 
+this is a file.
+我们是中国人民。
+中国人民万岁！
+伟大的中国共产党万岁！</code></pre>
+        <strong><code>cat</code> 可以读取纯文本档，那个 <code>zcat</code> 则可以读取纯文本档被压缩后的压缩文件</strong>
+    </li>
+    <li>将第1步压缩的文件进行解压缩：
+        <pre><code>[root@localhost tmp]# gzip -d file1.txt.gz 
+[root@localhost tmp]# ll file1.*
+-rw-r--r--. 1 root root 97 Jan 12 16:22 file1.txt</code></pre>
+        <strong><code>gzip</code>压缩文件的时候，源文件会被<code>.gz</code>后缀文件替代，相反的，
+            <code>使用gzip -d</code>解压缩文件的时候，<code>.gz</code>压缩文件消失，而源文件出现。</strong>
+    </li>
+</ol>

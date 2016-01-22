@@ -1,0 +1,43 @@
+﻿<p><code>groupadd</code>命令用来新建用户群组。</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>groupadd [options] GROUP</code>
+</p>
+<strong>语法：</strong><br />
+<p>
+    <code>
+        groupadd [-g gid [-o]] [-r] [-f] group
+    </code>
+</p>
+
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-g, --gid GID</code>
+    后面接某个特定的 <code>GID</code> ，用来直接给予某个  <code>GID</code> 。<br />
+
+    <code class="m-r-md">-r, --system</code>
+    建立系统群组！与 <code>/etc/login.defs</code> 内的 <code>GID_MIN</code> 有关<br />
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>1). 建立一个新的群组<code>developer</code>：</strong>
+<pre><code>[root@centos-chuan ~]# groupadd developer
+[root@centos-chuan ~]# grep developer /etc/group /etc/gshadow
+/etc/group:developer:x:504:
+/etc/gshadow:developer:!::</code></pre>
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+    <li><a href="" target="_blank"><code>/etc/gshadow</code></a>-群 组 资 讯 加 密</li>
+</ul>
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>chfn(1), chsh(1), useradd(8), userdel(8), usermod(8), passwd(1), groupdel(8), groupmod(8)</code>
+
+
+
+
+
+

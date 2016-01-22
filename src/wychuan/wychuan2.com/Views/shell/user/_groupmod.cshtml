@@ -1,0 +1,46 @@
+﻿<p><code>groupmod</code>命令(<code>group modify</code>)用来更改群组识别码或名称。。</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>groupmod [options] GROUP</code>
+</p>
+<strong>语法：</strong><br />
+<p>
+    <code>
+        groupmod [-g gid [-o]] [-n group_name] group
+    </code><br />
+    <code>
+        groupmod [-g &lt;群组识别码> &lt;-o>][-n &lt;新群组名称>][群组名称]
+    </code>
+</p>
+
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-g, --gid GID</code>
+    设置欲使用的群组识别码。<br />
+
+    <code class="m-r-md">-n, --new-name NEW_GROUP</code>
+    设置欲使用的新群组名称。 <br />
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>1). 修改<code>developer</code>群组名称为<code>develop</code>：</strong>
+<pre><code>[root@centos-chuan ~]# groupmod -n develop developer
+[root@centos-chuan ~]# grep develop /etc/group /etc/gshadow
+/etc/group:develop:x:504:
+/etc/gshadow:develop:!::</code></pre>
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+    <li><a href="" target="_blank"><code>/etc/gshadow</code></a>-群 组 资 讯 加 密</li>
+</ul>
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>chfn(1), chsh(1), useradd(8), userdel(8), usermod(8), passwd(1), groupadd(8), groupdel(8)</code>
+
+
+
+
+
+

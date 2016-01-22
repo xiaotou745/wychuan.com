@@ -1,0 +1,46 @@
+﻿<p><code>groupdel</code>命令(group delete)用来删除群组。</p>
+<p>需要从系统上删除群组时，可用<code>groupdel</code>指令来完成这项工作。倘若该群组中仍包括某些用户，则必须先删除这些用户后，方能删除群组。</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>groupdel group</code>
+</p>
+
+
+<p><strong>2. 参数</strong></p>
+<p>
+    此命令无参数。
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>1). 删除群组<code>groupdel</code>：</strong>
+<pre><code>[root@centos-chuan ~]# groupdel testa
+groupdel: cannot remove the primary group of user 'testa'</code></pre>
+<p>
+    如上，如果要删除的群组包括某些用户，则必须先删除这些用户后，方可删除群组。
+</p>
+<pre><code>[root@centos-chuan ~]# grep testa /etc/group /etc/passwd
+/etc/group:testa:x:503:
+/etc/passwd:testa:x:503:503::/home/testa:/bin/bash
+[root@centos-chuan ~]# userdel -r testa
+[root@centos-chuan ~]# groupdel testa
+groupdel: group 'testa' does not exist</code></pre>
+<p>
+    另外，通过上面过程又可以发现，删除用户的时候，会把与用户同名的群组一并删除。
+</p>
+
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+    <li><a href="" target="_blank"><code>/etc/gshadow</code></a>-群 组 资 讯 加 密</li>
+</ul>
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>chfn(1), chsh(1), useradd(8), userdel(8), usermod(8), passwd(1), groupadd(8), groupmod(8)</code>
+
+
+
+
+
+

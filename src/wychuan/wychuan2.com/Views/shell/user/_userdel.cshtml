@@ -1,0 +1,40 @@
+﻿<p><code>userdel</code>命令用来删除用户的相关数据。</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>userdel [options] LOGIN</code>
+</p>
+<strong>语法：</strong><br />
+<p>
+    <code>
+        userdel [-r] login
+    </code>
+</p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-r, --remove</code>
+    连同用户的家目录也一起删除。
+    <small>remove home directory and mail spool</small><br />
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>删除用户<code>testbbb</code>，同时删除其家目录。</strong>
+<pre><code>[root@centos-chuan ~]# userdel -r testbbb
+[root@centos-chuan ~]# grep testbbb /etc/passwd /etc/shadow
+[root@centos-chuan ~]# ls /home/
+test  testa  wangyuchuan</code></pre>
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/passwd</code></a> - 使用者帐号资讯</li>
+    <li><a href="" target="_blank"><code>/etc/shadow</code></a>-使用者帐号资讯加密</li>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+</ul>
+<p><strong>5. SEE ALSO</strong></p>
+<code>chfn(1), chsh(1), groupadd(8), groupdel(8), groupmod(8), passwd(1), useradd(8), usermod(8)</code>
+
+
+
+
+
+

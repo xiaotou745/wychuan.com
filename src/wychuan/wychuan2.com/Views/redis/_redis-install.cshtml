@@ -1,0 +1,101 @@
+﻿
+<p><strong>1. 安装环境：</strong></p>
+<ul>
+    <li>CentOS 6.5</li>
+    <li>Redis-3.0.6 </li>
+</ul>
+
+<p><strong>2. 安装步骤</strong></p>
+<strong>下载到家目录：</strong>
+<p>
+    <code>[wangyuchuan@centos-chuan ~]$ wget http://download.redis.io/releases/redis-3.0.6.tar.gz</code>
+    <pre><code>[wangyuchuan@centos-chuan ~]$ ls -lh redis-3.0.6.tar.gz 
+-rw-rw-r--. 1 wangyuchuan wangyuchuan 1.4M 12月 18 23:24 redis-3.0.6.tar.gz</code></pre>
+</p>
+
+<strong>进/usr/local/src</strong>
+<p>
+    <code>[wangyuchuan@centos-chuan ~]$ cd /usr/local/src/</code>
+</p>
+
+<strong>解压到此目录</strong>
+<p>
+    <code>[wangyuchuan@centos-chuan src]$ sudo tar -xzv -f ~/redis-3.0.6.tar.gz </code>
+<pre><code>[wangyuchuan@centos-chuan src]$ ls
+redis-3.0.6</code></pre>
+</p>
+
+<strong>进入redis-3.0.6目录，并编译。</strong>
+<p>
+    <code>$ cd redis-3.0.6/</code><br />
+    <code>$ sudo make</code><br />
+    <pre><code>Hint: It's a good idea to run 'make test' ;)
+make[1]: Leaving directory `/usr/local/src/redis-3.0.6/src'
+</code></pre>
+    上述描述文本出现，表示编译完成。<br />
+    执行完成后，会在当前目录的src目录下生成redis-server, redis-cli等文件。
+</p>
+
+<strong>测试一下。</strong>
+<p><code>$ sudo make test</code><br />
+    <pre><code>\o/ All tests passed without errors!
+Cleanup: may take some time... OK
+make[1]: Leaving directory `/usr/local/src/redis-3.0.6/src'</code></pre>
+    上述表示测试成功，没有错误，接下来可以放心地安装了。
+</p>
+
+<strong>安装</strong>
+<p>
+    <pre><code>$ sudo make PREFIX=/usr/local/redis install
+cd src && make install
+make[1]: Entering directory `/usr/local/src/redis-3.0.6/src'
+Hint: It's a good idea to run 'make test' ;)
+    INSTALL install
+    INSTALL install
+    INSTALL install
+    INSTALL install
+    INSTALL install
+make[1]: Leaving directory `/usr/local/src/redis-3.0.6/src</code></pre>
+    安装成功后，会在/usr/local目录下创建redis目录，并会把redis的执行文件复制到此目录下的bin目录中：
+    <pre><code>[wangyuchuan@centos-chuan redis]$ ls bin/
+redis-benchmark  redis-check-aof  redis-check-dump  redis-cli  redis-sentinel  redis-server</code></pre>
+    在redis目录下创建config目录，并把/usr/local/src/redis-3.0.6目录下的redis.config复制到此目录：
+    <pre><code>[wangyuchuan@centos-chuan redis]$ cd /usr/local/src/redis-3.0.6/
+[wangyuchuan@centos-chuan redis-3.0.6]$ sudo mkdir /usr/local/redis/conf
+[wangyuchuan@centos-chuan redis-3.0.6]$ sudo cp redis.conf /usr/local/redis/conf/</code></pre>
+</p>
+到此为止，redis安装完成了。
+
+<p><strong>3. 启动redis</strong></p>
+<p>可以使用<code>./redis-server /path/to/redis.conf</code>命令指定配置文件来启动redis. </p>
+
+<p><strong>4. 配置</strong></p>
+<div class="table-responsive">
+    <table class="table table-condensed table-striped">
+        <tr>
+            <td><code>daemonize</code></td>
+            <td><code>no(default)</code><br /><code>yes</code></td>
+            <td>默认值no，该参数用于定制redis服务是否以守护模式运行。<br />
+                By default Redis does not run as a daemon. Use 'yes' if you need it.
+                Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
+            </td>
+        </tr>
+        <tr>
+            <td><code>pidfile</code></td>
+            <td><code>/var/run/redis.pid</code></td>
+            <td>默认值/var/run/redis.pid，指定redis服务的进程号文件路径，以守护模式运行时需要配置本参数；<br />
+                When running daemonized, Redis writes a pid file in /var/run/redis.pid by
+                default. You can specify a custom pid file location here.
+            </td>
+        </tr>
+        <tr>
+            <td><code>pidfile</code></td>
+            <td><code>/var/run/redis.pid</code></td>
+            <td>
+                默认值/var/run/redis.pid，指定redis服务的进程号文件路径，以守护模式运行时需要配置本参数；<br />
+                When running daemonized, Redis writes a pid file in /var/run/redis.pid by
+                default. You can specify a custom pid file location here.
+            </td>
+        </tr>
+    </table>
+</div>

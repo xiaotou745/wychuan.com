@@ -1,0 +1,115 @@
+﻿<p><code>passwd</code>命令用来修改账号密码。</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>passwd [选项...] &lt;帐号名称&gt;</code>
+</p>
+<strong>语法：</strong><br />
+<p>
+    <code>
+        passwd [-k] [-l] [-u [-f]] [-d] [-e] [-n mindays] [-x maxdays] [-w warndays] [-i inactivedays] [-S] [--stdin] [username]
+    </code>
+</p>
+
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-k, --keep-tokens</code>
+    保持身份验证令牌不过期<br />
+
+    <code class="m-r-md">-d, --delete            </code>
+    删除已命名帐号的密码（只有根用户才能进行此操作）<br />
+
+    <code class="m-r-md">-l, --lock</code>
+    是 <code>Lock</code> 的意思，会将 <code>/etc/shadow</code> 第二栏最前面加上 ! 使密码失效；
+    <small>lock the password for the named account (root only)</small><br />
+    <code class="m-r-md">-u, --unlock</code>
+    与 <code>-l</code> 相对，是 <code>Unlock</code> 的意思
+    <small>unlock the password for the named account (root only)</small> <br />
+    
+    <code class="m-r-md">-e, --expire</code>
+    expire the password for the named account (root only)<br />
+    
+    <code class="m-r-md">-n, --minimum=DAYS</code>
+    密码的最短有效时限（只有根用户才能进行此操作）<small>后面接天数，<code>shadow</code> 的第 4 字段，多久不可修改密码天数；</small><br />
+    <code class="m-r-md">-x, --maximum=DAYS</code>
+    密码的最长有效时限（只有根用户才能进行此操作）。<small>后面接天数，<code>shadow</code> 的第 5 字段，多久内必须要更动密码</small><br />
+    <code class="m-r-md">-w, --warning=DAYS</code>
+    在密码过期前多少天开始提醒用户（只有根用户才能进行此操作）。<small>后面接天数，<code>shadow</code> 的第 6 字段，密码过期前的警告天数</small><br />
+    <code class="m-r-md">-i, --inactive=DAYS</code>
+    当密码过期后经过多少天该帐号会被禁用（只有根用户才能进行此操作）<small>后面接『日期』，<code>shadow</code> 的第 7 字段，密码失效日期</small><br />
+    <code class="m-r-md">-S, --status</code>
+    报告已命名帐号的密码状态（只有根用户才能进行此操作），<small>列出密码相关参数，亦即 <code>shadow</code> 档案内的大部分信息。</small><br />
+    <code class="m-r-md">--stdin </code><span class="label label-danger">常用</span>
+    从标准输入读取令牌（只有根用户才能进行此操作）<small>可以透过来自前一个管线的数据，作为密码输入，对 <code>shell script</code> 有帮
+助！ </small><br />
+</p>
+
+
+
+<p><strong>3. sample</strong></p>
+<strong>使用<code>root</code>为用户<code>wangyuchuan</code>修改密码：</strong>
+<pre><code>[root@centos-chuan ~]# passwd wangyuchuan
+更改用户 wangyuchuan 的密码 。
+新的 密码：
+重新输入新的 密码：
+passwd： 所有的身份验证令牌已经成功更新。
+[root@centos-chuan ~]# grep wangyuchuan /etc/passwd /etc/shadow
+/etc/passwd:wangyuchuan:x:501:501::/home/wangyuchuan:/bin/bash
+/etc/shadow:wangyuchuan:$6$niuGcH80$i5qE9VlgiP7F.hV6FWwV.qe8m04WoGjI.auAn.wi1Bid4aICRPM88G2321f6IVkz5HigfZP0kkG3bYocqJZhF0:16818:0:99999:7:::</code></pre>
+
+<strong>使用<code>wangyuchuan</code>登录，然后修改自己的密码：</strong>
+<pre><code>[wangyuchuan@centos-chuan ~]$ passwd   #后面没有加账号，就是改自己的密码！
+更改用户 wangyuchuan 的密码 。
+为 wangyuchuan 更改 STRESS 密码。
+（当前）UNIX 密码：
+新的 密码：
+重新输入新的 密码：
+passwd： 所有的身份验证令牌已经成功更新。</code></pre>
+
+<p>新的 distributions 是使用较严格的  PAM 模块来管理密
+    码，这个管理的机制写在 <code>/etc/pam.d/passwd</code> 当中。而该档案与密码有关的测试模块就是使用<code>pam_cracklib.so</code>
+    ，这个模块会检验密码相关的信息， 并且取代 <code>/etc/login.defs</code> 内的 <code>PASS_MIN_LEN</code>
+    的设定</p>
+
+<strong>使用<code> --stdin </code>修改<code>wangyuchuan</code>的密码：</strong>
+<pre><code>[root@centos-chuan ~]# echo "abcd1234"|passwd --stdin wangyuchuan
+更改用户 wangyuchuan 的密码 。
+passwd： 所有的身份验证令牌已经成功更新。</code></pre>
+<p>这个动作会直接更新用户的密码而不用再次手动输入，好处是方便处理，缺点是这个密码会保留在指
+令中， 未来若系统被攻破，人家可以在 <code>/root/.bash_history</code> 找到这个密码呢！所以这个动作通常仅用
+在 <code>shell script</code> 的大量建立使用者账号当中。 </p>
+
+<strong>如果要使<code>wangyuchuan</code>的密码每60天需要变更，密码过期后10天未使用就宣告密码失效：</strong>
+<pre><code>[root@centos-chuan ~]# passwd -S wangyuchuan
+wangyuchuan PS 2016-01-18 0 99999 7 -1 (密码已设置，使用 SHA512 加密。)
+[root@centos-chuan ~]# passwd -x 60 -i 10 wangyuchuan
+调整用户密码老化数据wangyuchuan。
+passwd: 操作成功
+[root@centos-chuan ~]# passwd -S wangyuchuan
+wangyuchuan PS 2016-01-18 0 60 7 10 (密码已设置，使用 SHA512 加密。)</code></pre>
+
+<strong>如果要想锁定某个账号，暂时禁止其登录，使用<code>-l,-u</code>参数：</strong>
+<pre><code>[root@centos-chuan ~]# passwd -l wangyuchuan
+锁定用户 wangyuchuan 的密码 。
+passwd: 操作成功
+[root@centos-chuan ~]# passwd -S wangyuchuan
+wangyuchuan LK 2016-01-18 0 60 7 10 (密码已被锁定。)</code></pre>
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/passwd</code></a> - 使用者帐号资讯</li>
+    <li><a href="" target="_blank"><code>/etc/shadow</code></a>-使用者帐号资讯加密</li>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+    <li><a href="" target="_blank"><code>/etc/default/useradd</code></a>-定义资讯</li>
+    <li><a href="" target="_blank"><code>/etc/login.defs</code></a>-系统广义设定</li>
+    <li><a href="" target="_blank"><code>/etc/skel</code></a>-内含定义档的目录</li>
+</ul>
+
+<p><strong>5. SEE ALSO</strong></p>
+chfn(1), chsh(1), groupadd(8), groupdel(8), groupmod(8), passwd(1), userdel(8), usermod(8)
+
+
+
+
+
+

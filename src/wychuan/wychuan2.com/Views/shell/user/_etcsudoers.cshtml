@@ -1,0 +1,84 @@
+﻿<p>除了 <code> root</code> 之外的其他账号，若想要使用 <code>sudo</code> 执行属于 <code>root</code> 的权限指
+令，则 <code>root</code> 需要先使用 <code>visudo</code> 去修改 <code>/etc/sudoers</code> ，让该账号能够使用全部或部分的  <code>root</code> 指令功
+能。</p>
+
+<p><code>/etc/sudoers</code>档案的设定命令是：<code>$ visodu</code>设定方式有如下几种：</p>
+
+<strong>设定单一用户可以执行<code>root</code>的全部或部分指令：</strong>
+<p>
+    <pre><code>## Next comes the main part: which users can run what software on 
+## which machines (the sudoers file can be shared between multiple
+## systems).
+## Syntax:
+##
+##      user    MACHINE=COMMANDS
+##
+## The COMMANDS section may have other options added to it.
+##
+## Allow root to run any commands anywhere 
+root    ALL=(ALL)       ALL</code></pre>
+
+    上面设定的语法可以解释如下：<br />
+    <code>root[用户名]    ALL[哪些网络主机]=(ALL[可切换的身份])       ALL[可下达的指令]</code>
+    即，<code>root</code>用户不论从哪部主机登录，可以变换身份为任何人，执行系统上面的所有指令。<br />
+    设定<code>wangyuchuan</code>账号不管从哪部主机登录，都可以执行所有指令，那么，我们首先需要在<code>/etc/sudoers</code>
+    档案中加入<code>wangyuchuan</code>账号的设定：
+    <pre><code>[wangyuchuan@centos-chuan ~]$ visudo
+visudo：/etc/sudoers：权限不够</code></pre>
+    如上，默认情况下<code>wangyuchuan</code>没有权限使用<code>visudo</code>命令，切换到<code>root</code>账号，
+    使用<code>visudo</code>编辑<code>/etc/sudoers</code>档案内容如下：
+    <pre><code>## Allow root to run any commands anywhere
+root    ALL=(ALL)       ALL
+## Allow wangyuchuan to run any commands anywhere
+wangyuchuan     ALL=(ALL)       ALL</code></pre>
+    再次切换到<code>wangyuchuan</code>账号，检测效果：
+    <pre><code>[wangyuchuan@centos-chuan ~]$ sudo visudo
+    We trust you have received the usual lecture from the local System
+    Administrator. It usually boils down to these three things:
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+    [sudo] password for wangyuchuan: </code></pre>
+    成功！<code>wangyuchuan</code>账号已经可以通过<code>sudo</code>执行所有命令。
+</p>
+
+<strong>设定某个群组所有成员都可以执行<code>root</code>的全部或部分指令：</strong>
+<p>
+<pre><code>## Allows people in group wheel to run all commands
+%wheel        ALL=(ALL)       ALL</code></pre>
+    上面设定的语法和设定用户的语法类似，只不过把用户名更改为<code>%</code>加群组名。<br />
+    <code>%wheel[群组名]    ALL[哪些网络主机]=(ALL[可切换的身份])       ALL[可下达的指令]</code>
+    即，属于<code>wheel</code>群组的所有用户不论从哪部主机登录，可以变换身份为任何人，执行系统上面的所有指令。<br />
+    设定群组<code>develop</code>的所有成员都可以使用<code>sudo</code>执行<code>root</code>指令：
+    <pre><code>## Allows people in group wheel to run all commands
+# %wheel        ALL=(ALL)       ALL
+%develop        ALL=(ALL)       ALL</code></pre>
+</p>
+<strong>设定使用<code>sudo</code>的时候不再需要输入密码呢？</strong>
+<pre><code>## Same thing without a password
+wangyuchuan ALL=(ALL)   NOPASSWD: ALL
+%develop    ALL=(ALL)   NOPASSWD: ALL</code></pre>
+
+<strong>别名设定：</strong>
+<p>如果我有100个用户都有使用<code>sudo</code>执行<code>root</code>指令的权限，难道要把上面的设定写100行？
+    如果我要修改这100个用户不需要使用密码，再更改100行？这样太麻烦了，没错，我们有更简单的方式处理。
+</p>
+<p>我们可以设定 主机别名、账户别名、指令别名，然后在上述的语法中，用户名（或群组名）、网络主机、可下达的指令部分都可以使用别名来设定。</p>
+
+<pre><code>## Host Aliases
+## Groups of machines. You may prefer to use hostnames (perhaps using
+## wildcards for entire domains) or IP addresses instead.
+# Host_Alias     FILESERVERS = fs1, fs2
+# Host_Alias     MAILSERVERS = smtp, smtp2
+## User Aliases
+## These aren't often necessary, as you can use regular groups
+## (ie, from files, LDAP, NIS, etc) in this file - just use %groupname
+## rather than USERALIAS
+# User_Alias ADMINS = jsmith, mikem
+## Command Aliases
+## These are groups of related commands...
+## Networking
+# Cmnd_Alias NETWORKING = /sbin/route, /sbin/ifconfig, /bin/ping, /sbin/dhclient, /usr/bin/net, /sbin/iptables, /usr/bin/rfcomm, /usr/bin/wvdial, /sbin/iwconfig, /sbin/mii-tool</code></pre>
+<pre><code>## Allows members of the 'sys' group to run networking, software,
+## service management apps and more.
+# %sys ALL = NETWORKING, SOFTWARE, SERVICES, STORAGE, DELEGATING, PROCESSES, LOCATE, DRIVERS</code></pre>

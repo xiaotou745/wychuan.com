@@ -1,0 +1,72 @@
+﻿<p><code>finger</code>的中文字面意义是：『手指』或者是『指纹』的意思。这个 <code>finger</code> 可以查找并显示用户信息。
+    大部分都是在 /etc/passwd 这个档案里面的信息  </p>
+
+<p><code>finger</code>指令会去查找，并显示指定帐号的用户相关信息，包括本地与远端主机的用户皆可，帐号名称没有大小写的差别。
+    单独执行<code>finger</code>指令，它会显示本地主机现在所有的用户的登陆信息，包括帐号名称，真实姓名，登入终端机，闲置时间，
+    登入时间以及地址和电话。
+</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>finger [-lmsp] [user ...] [user@host ...]</code>
+</p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-l</code>
+    列出该用户的帐号名称，真实姓名，用户专属目录，登入所用的Shell，登入时间，转信地址，电子邮件状态，还有计划文件和方案文件内容。<br />
+    <code class="m-r-md">-s</code>
+    列出该用户的帐号名称，真实姓名，登入终端机，闲置时间，登入时间以及地址和电话。<br />
+    <code class="m-r-md">-p</code>
+    列出该用户的帐号名称，真实姓名，用户专属目录，登入所用的Shell，登入时间，转信地址，电子邮件状态，但不显示该用户的计划文件和方案文件内容。<br />
+    <code class="m-r-md">-m</code>
+    排除查找用户的真实姓名。<br />
+</p>
+
+
+
+<p><strong>3. sample</strong></p>
+<strong>观察<code>wangyuchuan</code>的用户相关属性：</strong>
+<pre><code>[root@centos-chuan ~]# finger wangyuchuan
+Login: wangyuchuan                      Name: 
+Directory: /home/wangyuchuan            Shell: /bin/bash
+Last login 一 1月 18 12:44 (CST) on pts/2 from 172.18.10.113
+No mail.
+No Plan.</code></pre>
+
+<p>列出的内容解释如下：</p>
+<ul>
+    <li>Login：为使用者账号，亦即  /etc/passwd 内的第一字段； </li>
+    <li>Name：为全名，亦即 /etc/passwd 内的第五字段(或称为批注)； </li>
+    <li>Directory：就是家目录了；</li>
+    <li>Shell：就是使用  Shell 档案所在；</li>
+    <li>Never logged in.：figner 还会调查用用户登入主机的情况</li>
+    <li>No mail.：调查 /var/spool/mail 当中的信箱资料；</li>
+    <li>No Plan.：调查 ~/.plan 档案，并将该档案取出来说明！ </li>
+</ul>
+
+<strong>
+    找出目前在系统上面登入的用户与登入时间：
+</strong>
+<pre><code>[root@centos-chuan ~]# finger
+Login     Name       Tty      Idle  Login Time   Office     Office Phone
+root      root       tty1       6d  Jan 12 17:51
+root      root       pts/0      30  Jan 19 13:24 (172.18.111.44)
+root      root       pts/1          Jan 19 13:42 (172.18.10.113)</code></pre>
+
+<p><strong>4. Files</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>~/.nofinger</code></a> - </li>
+    <li><a href="" target="_blank"><code>~/.plan</code></a> - </li>
+    <li><a href="" target="_blank"><code>~/.project</code></a> - </li>
+    <li><a href="" target="_blank"><code>~/.pgpkey</code></a> - These files are printed as part of a long-format request. The .project file is limited to one line; the .plan file may be arbi-
+                      trarily long.</li>
+</ul>
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>chfn(1), passwd(1), w(1), who(1).</code>
+
+
+
+
+
+

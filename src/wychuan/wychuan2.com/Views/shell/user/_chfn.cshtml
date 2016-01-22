@@ -1,0 +1,52 @@
+﻿<p><code>chfn</code>, <code>change finger information</code>，用来改变finger指令显示的信息。
+</p>
+<p><code>chfn</code>指令可用来更改执行<code>finger</code>指令时所显示的信息，这些信息都存放
+    在<code>/etc/passwd</code>文件里。若不指定任何参数，则<code>chfn</code>指令会进入问答式界面。
+</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>chfn [-f full-name] [-o office] ,RB [ -p office-phone] [-h home-phone] -u] [-v] [username]</code>
+</p>
+亦即：
+<p>chfn [-f &lt;真实姓名&gt;][-h &lt;家中电话&gt;][-o &lt;办公地址&gt;][-p&lt;办公电话&gt;][-uv][帐号名称]</p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-f, --full-name full-name</code>
+    设置真实姓名。。<br />
+    <code class="m-r-md">-o, --office office</code>
+    设置办公室的地址。<br />
+    <code class="m-r-md">-h, --home-phone home-phone</code>
+    设置家中的电话号码。<br />
+    <code class="m-r-md">-p, --office-phone office-phone</code>
+    设置办公室的电话号码。<br />
+</p>
+
+
+<p><strong>3. sample</strong></p>
+<strong>假如当前登录账号<code>wangyuchuan</code>，自己更改一下自己的相关信息：</strong>
+<pre><code>[wangyuchuan@centos-chuan ~]$ chfn
+Changing finger information for wangyuchuan.
+密码：   &lt;==确认身份，所以输入自己的密码 
+Name []: 王玉川  &lt;==输入你想要呈现的全名
+Office []: 易淘  &lt;==办公室号码
+Office Phone []: 15801495169  &lt;==办公室电话
+Home Phone []: 18131012089  &lt;==家里电话号码 
+Finger information changed.</code></pre>
+<pre><code>[root@centos-chuan ~]# grep wangyuchuan /etc/passwd
+wangyuchuan:x:501:501:王玉川,易淘,15801495169,18131012089:/home/wangyuchuan:/bin/bash</code></pre>
+<p>从上面可以看出，其实<code>chfn</code>修改的就是<code>/etc/passwd</code>的第五个字段，各项内容之间使用<code>,</code>
+    分隔。这些内容有点类似bbs里的个人详情，除非你的主机有很多用户，一般情况下用不着。
+</p>
+
+<p><strong>4. Files</strong></p>
+
+
+<p><strong>5. SEE ALSO</strong></p>
+<code>finger(1), passwd(5)</code>
+
+
+
+
+
+

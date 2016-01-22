@@ -1,0 +1,100 @@
+﻿<p><code>su(super user)</code>是最简单的身份切换指令了，他可以进行任何身份的切换。</p>
+<p><code>su</code>可让用户暂时变更登入的身份。变更时须输入所要变更的用户帐号与密码。
+</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>su [选项]... [-] [用户 [参数]... ]</code>
+</p>
+<strong>语法：</strong><br />
+<p>
+    <code>
+        su [-flmp][--help][--version][-][-c &lt;指令>][-s &lt;shell>][用户帐号]
+    </code>
+</p>
+
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-, -l, --login</code>
+    单纯使用 - 如『 su - 』代表使用 login-shell 的变量档案读取方式来登入系统；
+    若使用者名称没有加上去，则代表切换为 root 的身份。
+    改变身份时，也同时变更工作目录，以及HOME,SHELL,USER,LOGNAME。此外，也会变更PATH变量。
+    <small>make the shell a login shell,
+                               clears all envvars except for TERM,
+                               initializes HOME, SHELL, USER, LOGNAME and PATH</small><br />
+
+    <code class="m-r-md">-m,-p, --preserve-environment</code>
+    表示『使用目前的环境设定，而不读取新使用者的配置文件』,即变更身份时，不要变更环境变量。
+    <small>do not reset HOME, SHELL, USER, LOGNAME
+                               environment variables</small><br />
+    
+    <code class="m-r-md">-s, --shell=SHELL</code>
+    指定要执行的shell。<small>run SHELL if /etc/shells allows it</small><br />
+    
+    <code class="m-r-md">-c, --command=COMMAND</code>
+    执行完指定的指令后，即恢复原来的身份。即仅进行一次指令，所以 -c 后面可以加上指令<br />
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>1). 使用non-login shell的方式切换身份root，并查看其环境：</strong>
+<pre><code>[wangyuchuan@centos-chuan ~]$ su &lt;--注意当前用户为wangyuchuan
+密码： &lt;--输入root账号密码
+[root@centos-chuan wangyuchuan]# id
+uid=0(root) gid=0(root) 组=0(root) 环境=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[root@centos-chuan wangyuchuan]# env | grep wangyuchuan
+USER=wangyuchuan
+PATH=/usr/java/jdk1.8.0_65/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/wangyuchuan/bin
+MAIL=/var/spool/mail/wangyuchuan
+PWD=/home/wangyuchuan
+LOGNAME=wangyuchuan</code></pre>
+
+<p>从上面可以看到，输入密码之后确实切换为了<code>root</code>账号，但是工作目录依然是<code>wangyuchuan</code>，
+    另外，在使用<code>env</code>命令之后可以看到，还是有一堆变量为原本 <code>wangyuchuan</code> 的身份，所以很多数据还是无法直接利用。
+</p>
+<p>不使用<code>-, -l</code>参数来切换用户，读取的变量设定方式为 <code>non-login shell</code> 的方式，这种方式很
+    多原本的变量不会被改变， 尤其是我们之前谈过很多次的 <code>PATH</code> 这个变量，由于没有改变成为 <code>root</code> 的
+    环境 (一堆 <code>/sbin, /usr/sbin</code> 等目录都没有被包含进来)， 因此很多 <code>root</code> 惯用的指令就只能使用绝对路
+    径来执行。其他的还有 <code>MAIL</code> 这个变量，你输入 <code>mail</code> 时， 收到的邮件竟然还是 <code>wangyuchuan</code> 的，而不是
+    <code>root</code> 本身的邮件</p>
+
+<strong>2). 使用 login shell 的方式切换为 root 的身份并观察变量：</strong>
+<pre><code>[wangyuchuan@centos-chuan ~]$ su - 
+密码：
+[root@centos-chuan ~]# env | grep wangyuchuan
+[root@centos-chuan ~]# env | grep root
+USER=root
+MAIL=/var/spool/mail/root
+PATH=/usr/java/jdk1.8.0_65/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+PWD=/root
+HOME=/root
+LOGNAME=root</code></pre>
+
+<strong>3). 使用 root 身份执行一次指令：</strong>
+<pre><code>[wangyuchuan@centos-chuan ~]$ head -n 3 /etc/shadow
+head: 无法打开"/etc/shadow" 读取数据: 权限不够
+[wangyuchuan@centos-chuan ~]$ su --c 'head -n 3 /etc/shadow'
+密码：
+root:$6$u3BdkeixNDUhdeAO$tsRjYhLblmaZ0vFpBuwL2HDndaw2vk2A.1gQPG9Pg.t38l/nxc03Rt8vWT17CLvWk46Nm04BX6ajLds.QBx3V0:16812:0:99999:7:::
+bin:*:15980:0:99999:7:::
+daemon:*:15980:0:99999:7:::
+[wangyuchuan@centos-chuan ~]$ </code></pre>
+
+<strong>总结一下，<code>su</code>的用法如下：</strong>
+<ul>
+    <li>若要完整的切换到新使用者的环境，必须要使用<code>su - username </code>或<code> su -l username </code>，
+        才会连同 <code>PATH/USER/MAIL</code> 等变量都转成新用户的环境。</li>
+    <li>如果仅想要执行一次 <code>root</code> 的指令，可以利用  <code>su - -c "指令串" </code>的方式来处理；</li>
+    <li>使用 <code>root</code> 切换成为任何使用者时，并不需要输入使用者的密码。  </li>
+</ul>
+         
+
+<p><strong>4. 档案</strong></p>
+
+<p><strong>5. SEE ALSO</strong></p>
+
+
+
+
+
+

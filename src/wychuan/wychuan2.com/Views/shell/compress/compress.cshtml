@@ -1,0 +1,32 @@
+﻿<p>在 <code>Linux</code>的环境中，压缩文件案的扩展名大多是：<code>*.tar, *.tar.gz, *.tgz, *.gz, *.Z, *.bz2</code></p>
+
+<p>因为 <code>Linux</code> 支持的压缩指令非常多，且不同的指令所用的压缩技术并不相同，所以不同的压缩指令之间
+    无法互通压缩/解压缩档案。虽然 <code>Linux</code> 档案的属性基本上是与文件名
+    没有绝对关系的，但是为了使人们清晰地知道压缩文件所使用的压缩技术，适当的扩展名还是很有必要的。<code>Linux</code>
+    下常用的压缩文件扩展名如下：
+</p>
+
+<ul>
+    <li><code>*.Z</code>：<code>compress</code> 程序压缩的档案；</li>
+    <li><code>*.gz</code>：<code>gzip</code> 程序压缩的档案；</li>
+    <li><code>*.bz2</code>：<code>bzip2</code> 程序压缩的档案；</li>
+    <li><code>*.tar</code>：<code>tar</code> 程序打包的数据，并没有压缩过；</li>
+    <li><code>*.tar.gz</code>：<code>tar</code> 程序打包的档案，其中并且经过 <code>gzip</code> 的压缩</li>
+    <li><code>*.tar.bz2</code>：<code>tar</code> 程序打包的档案，其中并且经过 <code>bzip2</code> 的压缩</li>
+</ul>
+
+<p><code>Linux</code>上常见的压缩指令就是 <code>gzip</code> 与 <code>bzip2</code> ，
+    不过，这些指令通常仅能针对一个档案来压缩与解压缩，所以<code> tar</code>命令应运而生，<code>tar</code>
+    可以将很多档案『打包』成为一个档案，甚至是目录也可以这么玩。单纯的 <code> tar</code> 功能仅
+    是『打包』而已，亦即是将很多档案集结成为一个档案， 事实上，他并没有提供压缩的功能，而通过先打包再压缩的方式
+    可以解决压缩多个文件（或文件夹）的问题。
+</p>
+
+<h2 id="gzip">gzip,zcat</h2>
+@Html.Partial("~/Views/shell/compress/_gzip.cshtml")
+
+<h2 id="bzip2">bzip2,bzcat</h2>
+@Html.Partial("~/Views/shell/compress/_bzip2.cshtml")
+
+<h2 id="tar">打包指令tar</h2>
+@Html.Partial("~/Views/shell/compress/_tar.cshtml")

@@ -1,0 +1,77 @@
+﻿<p><code>usermod</code>命令用来修改用户的相关数据。</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>usermod [options] LOGIN</code>
+</p>
+<strong>语法：</strong><br />
+<p>
+    <code>
+        usermod [-c comment] [-d home_dir [ -m]]
+        [-e expire_date] [-f inactive_time]
+        [-g initial_group] [-G group[,...]]
+        [-l login_name] [-s shell]
+        [-u uid [ -o]] login
+    </code>
+</p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-c, --comment COMMENT</code>
+    后面接账号的说明，即<code>/etc/passwd</code> 的第五栏的说明栏内容。<br />
+
+    <code class="m-r-md">-d, --home-dir HOME_DIR</code><span class="label label-danger">常用</span>
+    指定某个目录成为家目录，而不要使用默认值，默认值为为 <code>default_home</code> 内 <code>login</code> 名称。<br />
+    
+    <code class="m-r-md">-e, --expiredate EXPIRE_DATE</code>
+    后面接一个日期，格 <code>YYYY-MM-DD</code>此项目可写入 <code>shadow</code> 第八
+    字段，亦即账号失效日的设定项目<br />
+    <code class="m-r-md">-f, --inactive INACTIVE</code>
+    后面接 <code>shadow</code> 的第七字段项目，指定密码是否会失效。0为立刻失效，
+    -1 为永远不失效(密码只会过期而强制于登入时重新设定而已。) <br />
+    
+    <code class="m-r-md">-g, --gid GROUP</code><span class="label label-danger">常用</span>
+    指定一个<code>group</code>名称或id(数字)来做为新用户的初始群组(initial group)，即<code>/etc/passwd</code>第四个字段值;<br />
+    <code class="m-r-md">-G, --groups GROUPS</code><span class="label label-danger">常用</span>
+    定义新用户的非初始群组，每个群组使用","号分隔，此参数或更改<code>/etc/group</code>档案的内容。<br />
+    
+    <code class="m-r-md">-m, --move-home</code><span class="label label-danger">常用</span>
+    move contents of the home directory to the
+    new location (use only with -d)。<br />
+
+    <code class="m-r-md">-l, --login NEW_LOGIN</code>
+    后面接账号名称。亦即是修改账号名称， /etc/passwd 的第一栏
+    <small>new value of the login name。</small><br />
+
+    <code class="m-r-md">-L, --lock</code>
+    暂时将用户的密码冻结，使其无法登录。其实是修改的  /etc/shadow 的密码栏。
+    <small>lock the user account</small><br />
+                        
+    <code class="m-r-md">-s, --shell SHELL</code><span class="label label-danger">常用</span>
+    后面接 Shell 的实际档案，例如 /bin/bash 或 /bin/csh 等等。<br />
+    
+    <code class="m-r-md">-u, --uid UID</code><span class="label label-danger">常用</span>
+    后面接 UID 数字！即 /etc/passwd 第三栏的资料； <br />
+</p>
+
+<p><strong>3. sample</strong></p>
+<strong>把账号<code>demo</code>名称更改为<code>testccc</code>:</strong>
+<pre><code>[root@centos-chuan ~]# usermod -l testbbb demo
+[root@centos-chuan ~]# grep testbbb /etc/passwd /etc/shadow
+/etc/passwd:testbbb:x:502:100::/home/demo:/bin/bash
+/etc/shadow:testbbb:!!:16815:0:99999:7:::</code></pre>
+
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/passwd</code></a> - 使用者帐号资讯</li>
+    <li><a href="" target="_blank"><code>/etc/shadow</code></a>-使用者帐号资讯加密</li>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+</ul>
+<p><strong>5. SEE ALSO</strong></p>
+<code>chfn(1), chsh(1), groupadd(8), groupdel(8), groupmod(8), passwd(1), useradd(8), userdel(8)</code>
+
+
+
+
+
+

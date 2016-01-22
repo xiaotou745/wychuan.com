@@ -1,0 +1,143 @@
+﻿<p class="lead"><code>tar</code>的参数非常多，具体参数信息自己使用man命令查看。
+</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>tar [OPTION...] [FILE]...</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>GNU `tar' saves many files together into a single tape or disk archive, and can
+    restore individual files from the archive.</p>
+<strong>some examples.</strong>
+<ul>
+    <li><code>tar -cf archive.tar foo bar</code>  # Create archive.tar from files foo and bar.</li>
+    <li><code>tar -tvf archive.tar</code>         # List all files in archive.tar verbosely.</li>
+    <li><code>tar -xf archive.tar </code>         # Extract all files from archive.tar.</li>
+</ul>
+
+<p><strong>3. 命令参数</strong></p>
+<strong>常用操作参数：</strong><br />
+<p>
+    <code class="m-r-md">-c, --create</code><span class="label label-danger">常用</span>建立打包档案，可搭配 -v 来察看过程中被打包的档名(filename)
+    <small>create a new archive</small><br />
+    <code class="m-r-md">-t, --list</code><span class="label label-danger">常用</span>察看打包档案的内容含有哪些档名，重点在察看『档名』就是了；
+    <small>list the contents of an archive</small><br />
+    <code class="m-r-md">-x, --extract, --get</code><span class="label label-danger">常用</span>解打包或解压缩的功能，可以搭配 -C (大写) 在特定目录解开
+    特别留意的是， -c, -t, -x 不可同时出现在一串指令列中。
+    <small>extract files from an archive</small><br />
+    
+    <code class="m-r-md">-v, --verbose  </code><span class="label label-danger">常用</span>在压缩/解压缩的过程中，将正在处理的文件名显示出来！
+    <small>verbosely list files processed</small><br />
+    <code class="m-r-md">-C, --directory=DIR</code><span class="label label-danger">常用</span>这个选项用在解压缩，若要在特定目录解压缩，可以使用这个选项。
+    <small>change to directory DIR</small><br />
+</p>
+<strong>指定文件</strong>
+<p>
+    <code class="m-r-md">-f, --file=ARCHIVE  </code><span class="label label-danger">常用</span>-f 后面要立刻接要被处理的档名！建议 -f 单独写一个选项啰！
+    <small>use archive file or device ARCHIVE</small><br />
+    
+    <code class="m-r-md">-X, --exclude-from=FILE  </code><span class="label label-danger">常用</span>排除某些档案
+    <small>exclude patterns listed in FILE</small><br />
+</p>
+<strong>压缩相关参数</strong><br />
+<p>
+    <code class="m-r-md">-j, --bzip2</code><span class="label label-danger">常用</span>透过 <code>bzip2</code> 的支持进行压缩/解压缩：此时档名最好为 <code>*.tar.bz2</code>
+    <small>filter the archive through bzip2</small><br />
+    <code class="m-r-md">-z, --gzip, --gunzip, --ungzip</code><span class="label label-danger">常用</span>透过 <code>gzip</code>  的支持进行压缩/解压缩：此时档名最好为 <code>*.tar.gz</code>
+    <small>filter the archive through gzip</small><br />
+    <code class="m-r-md">-Z, --compress, --uncompress</code>filter the archive through compress<br />
+    <code class="m-r-md">-J, --xz</code>filter the archive through xz<br />
+    <code class="m-r-md">--lzip  </code>filter the archive through lzip<br />
+    <code class="m-r-md">--lzma  </code>filter the archive through lzma<br />
+</p>
+<strong>文件属性相关</strong><br />
+<p>
+    <code class="m-r-md">-p, --preserve-permissions</code><span class="label label-danger">常用</span>保留备份数据的原本权限与属性，常用于备份 (-c)重要的配置文件
+    <small>--same-permissions
+    extract information about file permissions
+    (default for superuser)</small><br />
+</p>
+
+<p><strong>4.常用用法：</strong></p>
+<p>最常用的用法为：</p>
+<ul>
+    <li>压  缩：<code>$ tar -jcv -f filename.tar.bz2 要被压缩的档案或目录名称</code></li>
+    <li>查  询：<code>tar -jtv -f filename.tar.bz2</code></li>
+    <li>解压缩：<code>tar -jxv -f filename.tar.bz2 -C 欲解压缩的目录</code> </li>
+</ul>
+
+<p><strong>5. 案例</strong></p>
+<ol>
+    <li>使用<code>tar</code>打包压缩<code>file1,file2</code>目录：
+        <pre><code>[root@localhost chuan]# tar -czv -f file.tar.gz file1 file2
+file1
+file2
+[root@localhost chuan]# tar -cjv -f file.tar.bz2 file1 file2
+file1
+file2
+[root@localhost chuan]# ll file*
+-rw-r--r--. 1 root root   0 Jan  7 16:08 file1
+-rw-r--r--. 1 root root  38 Jan 11 14:09 file2
+-rw-r--r--. 1 root root 163 Jan 12 18:18 file.tar.bz2
+-rw-r--r--. 1 root root 164 Jan 12 18:18 file.tar.gz</code></pre>
+    </li>
+    <li>
+        查阅 <code>tar</code> 档案的数据内容(可察看文件名)：<br />
+        <code>$ tar -jtv -f file.tar.bz2 </code><br />
+        <pre><code>-rw-r--r-- root/root         0 2016-01-07 16:08 file1
+-rw-r--r-- root/root        38 2016-01-11 14:09 file2</code></pre>
+        <code>$ tar -ztv -f file.tar.gz </code><br />
+        <pre><code>-rw-r--r-- root/root         0 2016-01-07 16:08 file1
+-rw-r--r-- root/root        38 2016-01-11 14:09 file2</code></pre>
+        <strong>如果加上 <code>-v</code> 这个选项时，详细的档案权限/属性都会被列出来！如果只是想要知道檔名而已， 那么就将
+            <code>-v</code> 拿掉即可。</strong>
+    </li>
+    <li>将备份的数据解压缩，并考虑特定目录的解压缩动作 (-C 选项的应用)：
+        <pre><code>[root@localhost chuan]# ll file*
+-rw-r--r--. 1 root root 163 Jan 12 18:18 file.tar.bz2
+-rw-r--r--. 1 root root 164 Jan 12 18:18 file.tar.gz
+[root@localhost chuan]# tar -jxv -f file.tar.bz2 
+file1
+file2
+[root@localhost chuan]# ll file*
+-rw-r--r--. 1 root root   0 Jan  7 16:08 file1
+-rw-r--r--. 1 root root  38 Jan 11 14:09 file2
+-rw-r--r--. 1 root root 163 Jan 12 18:18 file.tar.bz2
+-rw-r--r--. 1 root root 164 Jan 12 18:18 file.tar.gz</code></pre>
+        <strong>解压缩之后的文件会解压在当前目录下，如果想解压到其它目录下呢？使用<code>-C</code>选项即可</strong>
+        <pre><code>[root@localhost chuan]# tar -xzv -f file.tar.gz -C /tmp/
+file1
+file2
+[root@localhost chuan]# cd /tmp/
+[root@localhost tmp]# ll file*
+-rw-r--r--. 1 root root   0 Jan  7 16:08 file1
+-rw-r--r--. 1 root root  38 Jan 11 14:09 file2</code></pre>
+    </li>
+    <li>
+        仅解开单一档案的方法，比如，我只想解开file1文件:<br />
+        <strong>第一步：查找档案名，可以考虑使用<code>grep</code>来查找</strong>
+        <pre><code>[root@localhost chuan]# tar -jtv -f file.tar.bz2
+-rw-r--r-- root/root         0 2016-01-07 16:08 file1
+-rw-r--r-- root/root        38 2016-01-11 14:09 file2</code></pre>
+        <strong>第二步：<code>$ tar -jxv -f file.tar.bz2 待解压档案名</code></strong>
+        <pre><code>[root@localhost chuan]# tar -jxv -f file.tar.bz2 file1
+file1
+[root@localhost chuan]# ll file*
+-rw-r--r--. 1 root root   0 Jan  7 16:08 file1
+-rw-r--r--. 1 root root 163 Jan 12 18:18 file.tar.bz2
+-rw-r--r--. 1 root root 164 Jan 12 18:18 file.tar.gz</code></pre>
+    </li>
+    <li><strong>我们要打包一个目录，但不想打包该目录下的某些档案呢？</strong>
+        <pre><code>[root@localhost chuan]# tar -cjv -f file1.tar.bz2 --exclude file2 file1 file2
+file1
+[root@localhost chuan]# ll file*
+-rw-r--r--. 1 root root 141 Jan 12 18:59 file1
+-rw-r--r--. 1 root root 317 Jan 12 19:00 file1.tar.bz2
+-rw-r--r--. 1 root root  38 Jan 11 14:09 file2
+-rw-r--r--. 1 root root 163 Jan 12 18:18 file.tar.bz2
+-rw-r--r--. 1 root root 164 Jan 12 18:18 file.tar.gz
+[root@localhost chuan]# tar -jtv -f file1.tar.bz2 
+-rw-r--r-- root/root       141 2016-01-12 18:59 file1</code></pre>
+        如果想要两行输入时，最后面加上反斜杠 (\) 并立刻
+        按下 [enter] ， 就能够到第二行继续输入了
+    </li>
+</ol>

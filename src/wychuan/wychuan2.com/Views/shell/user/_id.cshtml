@@ -1,0 +1,44 @@
+﻿<p><code>id</code>这个指令显示用户的ID，以及所属群组的ID。
+</p>
+<p><code>id</code>会显示用户以及所属群组的实际与有效ID。若两个ID相同，则仅显示实际ID。若仅指定用户名称，则显示目前用户的ID。
+</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>id [选项]... [用户名]</code>
+</p>
+亦即：
+<p><code>id [-gGnru][--help][--version][用户名称]</code></p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-Z, --context</code>
+    仅显示当前用户的安全环境<br />
+    <code class="m-r-md">-g, --group</code>
+    显示用户所属群组的ID。 <br />
+    <code class="m-r-md"> -G, --groups</code>
+    显示用户所属附加群组的ID。<br />
+    <code class="m-r-md">-u, --user</code>
+    显示用户ID。<br />
+    <code class="m-r-md">-n, --name</code>
+    显示用户，所属群组或附加群组的名称。不与-ugG 一起使用<br />
+    <code class="m-r-md">-r, --real</code>
+    显示真实ID 而非有效ID，与-ugG 一起使用<br />
+</p>
+
+
+<p><strong>3. sample</strong></p>
+<strong>1). 查看一下当前账号的相关ID信息吧。</strong>
+<pre><code>[wangyuchuan@centos-chuan ~]$ id
+uid=501(wangyuchuan) gid=501(wangyuchuan) 组=501(wangyuchuan) 环境=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023</code></pre>
+
+
+<p><strong>4. Files</strong></p>
+
+
+<p><strong>5. SEE ALSO</strong></p>
+
+
+
+
+
+

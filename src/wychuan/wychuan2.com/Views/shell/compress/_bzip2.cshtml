@@ -1,0 +1,70 @@
+﻿<p class="lead"><code>bzip2</code>是是为了取代 <code>gzip</code> 并提供更佳的压缩比而来的。
+    <code>bzip2</code>的用法基本上和<code>gzip</code>一样。
+</p>
+
+<p><strong>1. 命令格式</strong></p>
+<p><code>bzip2 [flags and input files in any order]</code><br />
+    <code>bzcat FILE</code></p>
+
+<p><strong>2. 命令功能</strong></p>
+<p>bzip2, a block-sorting file compressor.</p>
+<p>If invoked as `bzip2', default action is to compress.
+              as `bunzip2',  default action is to decompress.
+              as `bzcat', default action is to decompress to stdout.</p>
+
+<p><strong>3. 命令参数</strong></p>
+<p>
+    <code class="m-r-md">-d, --decompress</code><span class="label label-danger">常用</span>解压缩的参数；<br />
+    <code class="m-r-md">-z --compress</code><span class="label label-danger">常用</span>压缩的参数；<br />
+    <code class="m-r-md">-k --keep</code><span class="label label-danger">常用</span>保留源文件，而不会删除原始的档案<br />
+    <code class="m-r-md">-f, --force</code>overwrite existing output files<br />
+    <code class="m-r-md">-t, --test</code>用来检验一个压缩文件的一致性，看看档案有无错误。<small>test compressed file integrity</small>
+    <code class="m-r-md">-c, --stdout</code>将压缩的数据输出到屏幕上，可透过数据流重导向来处理；
+    <small>output to standard out</small><br />
+    <code class="m-r-md">-v, --verbose</code><span class="label label-danger">常用</span>可以显示出原档案/压缩文件案的压缩百分比等信息；<br />
+    <code class="m-r-md">-s --small</code>use less memory (at most 2500k)；<br />
+    
+    <code class="m-r-md">-1 ... -9 </code>：压缩等级，-1 最快，但是压缩比最差、-9 最慢，但是压缩比最好！预设是-6 <br />
+    <small><code class="m-r-md">--fast</code>alias for -1<br />
+        <code>--best</code>alias for -9</small><br />
+
+    <strong>If no file names are given, bzip2 compresses or decompresses
+   from standard input to standard output.  You can combine
+   short flags, so `-v -4' means the same as -v4 or -4v, &c..</strong>
+</p>
+
+<p><strong>4. 案例</strong></p>
+<ol>
+    <li>将<code>/tmp/file1.txt</code>文件使用<code>bzip2</code>命令压缩：
+        <pre><code>[root@localhost tmp]# bzip2 -z file1.txt 
+[root@localhost tmp]# ll file1.*
+-rw-r--r--. 1 root root 123 Jan 12 16:22 file1.txt.bz2</code></pre>
+    </li>
+    <li>将上面压缩的file1.txt.bz2的文件内容读取出来：
+        <pre><code>[root@localhost tmp]# bzcat file1.txt.bz2 
+this is a file.
+我们是中国人民。
+中国人民万岁！
+伟大的中国共产党万岁！</code></pre>
+        <strong><code>bzcat</code> 可以读取纯文本档被<code>bzip2</code>压缩后的压缩文件</strong>
+    </li>
+    <li>将第1步压缩的文件进行解压缩：
+        <pre><code>[root@localhost tmp]# bzip2 -d file1.txt.bz2 
+[root@localhost tmp]# ll file1.*
+-rw-r--r--. 1 root root 97 Jan 12 16:22 file1.txt</code></pre>
+    </li>
+    <li>如果想要在压缩之后保留源文件呢？
+        <pre><code>[root@localhost tmp]# bzip2 -zk file1.txt 
+[root@localhost tmp]# ll file1.txt*
+-rw-r--r--. 1 root root  97 Jan 12 16:22 file1.txt
+-rw-r--r--. 1 root root 123 Jan 12 16:22 file1.txt.bz2</code></pre>
+        目前此目录下已有源文件和压缩文件两个文件了，如果我要再压缩一次源文件呢？
+        <pre><code>[root@localhost tmp]# bzip2 -z file1.txt
+bzip2: Output file file1.txt.bz2 already exists.</code></pre>
+        可见，压缩文件已存在，可以使用<code>-f</code>参数，强制覆盖已存在的压缩文件：
+        <pre><code>[root@localhost tmp]# bzip2 -fzv file1.txt
+  file1.txt:  0.789:1, 10.144 bits/byte, -26.80% saved, 97 in, 123 out.
+[root@localhost tmp]# ll file1.txt*
+-rw-r--r--. 1 root root 123 Jan 12 16:22 file1.txt.bz2</code></pre>
+    </li>
+</ol>

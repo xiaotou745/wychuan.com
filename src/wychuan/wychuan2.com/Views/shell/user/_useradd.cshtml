@@ -1,0 +1,190 @@
+﻿<p><code>useradd</code>命令用来新建用户或更改新用户的默认值。</p>
+<p><strong>1. 命令格式</strong></p>
+<p>
+    <code>useradd [options] LOGIN</code>
+</p>
+<strong>语法：</strong><br />
+<p>
+    <code>
+        useradd [-c comment] [-d home_dir]
+        [-e expire_date] [-f inactive_time]
+        [-g initial_group] [-G group[,...]]
+        [-m [-k skeleton_dir] | -M] [-s shell]
+        [-u uid [ -o]] [-n] [-r] login
+    </code>
+</p>
+<p>
+    or <code>
+           useradd -D [-g default_group] [-b default_home]
+           [-f default_inactive] [-e default_expire_date]
+           [-s default_shell]
+       </code>
+</p>
+
+<p><strong>2. 参数</strong></p>
+<p>
+    <code class="m-r-md">-c, --comment COMMENT</code>
+    <code>/etc/passwd</code> 的第五栏的说明栏内容。<br />
+
+    <code class="m-r-md">-d, --home-dir HOME_DIR</code><span class="label label-danger">常用</span>
+    指定某个目录成为家目录，而不要使用默认值，默认值为为 <code>default_home</code> 内 <code>login</code> 名称。<br />
+    
+    <code class="m-r-md">-e, --expiredate EXPIRE_DATE</code>
+    后面接一个日期，格 <code>YYYY-MM-DD</code>此项目可写入 <code>shadow</code> 第八
+    字段，亦即账号失效日的设定项目<br />
+    <code class="m-r-md">-f, --inactive INACTIVE</code>
+    后面接 <code>shadow</code> 的第七字段项目，指定密码是否会失效。0为立刻失效，
+    -1 为永远不失效(密码只会过期而强制于登入时重新设定而已。) <br />
+    
+    <code class="m-r-md">-g, --gid GROUP</code><span class="label label-danger">常用</span>
+    指定一个<code>group</code>名称或id(数字)来做为新用户的初始群组(initial group)，即<code>/etc/passwd</code>第四个字段值;<br />
+    <code class="m-r-md">-G, --groups GROUPS</code><span class="label label-danger">常用</span>
+    定义新用户的非初始群组，每个群组使用","号分隔，此参数或更改<code>/etc/group</code>档案的内容。<br />
+    
+    <code class="m-r-md">-m, --create-home</code><span class="label label-danger">常用</span>
+    强制！要建立用户家目录。 (一般账号默认值)。<br />
+    <code class="m-r-md">-M, --no-create-home</code>
+    强制！不要建立用户家目录。(系统账号默认值) 。<br />
+    
+    <code class="m-r-md">-r, --system</code><span class="label label-danger">常用</span>
+    建立一个系统的账号，这个账号的 <code>UID</code> 会有限制 (参考 <code>/etc/login.defs</code>)，<br />
+    <small>
+        系统帐号的<code>UID</code>会比定义在系统档上<code>/etc/login.defs</code>.的<code>UID_MIN</code>来的小。注意
+        <code>useradd</code>此用法所建立的帐号不会建立使用者目录，也不会在乎纪录在<code>/etc/login.defs</code>.的定义值。如果你想要有使用
+        者目录须额外指定-m参数来建立系统帐号。这是RED HAT额外增设的选项。
+    </small><br />
+
+    <code class="m-r-md">-s, --shell SHELL</code><span class="label label-danger">常用</span>
+    后面接一个 <code>shell</code> ，若没有指定则预设是 <code>/bin/bash </code><br />
+    
+    <code class="m-r-md">-u, --uid UID</code><span class="label label-danger">常用</span>
+    直接指定一个特定的 <code>UID</code> 给这个账号。必须为唯一的ID值，除非用<code>-o</code>选项。数字不可为负值。预设为最小不得小于999而逐次增加。<br />
+</p>
+<strong>使用<code>-D</code>查看或修改默认值：</strong>
+<p>
+    <pre><code>[root@centos-chuan ~]# useradd -D
+GROUP=100
+HOME=/home
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel
+CREATE_MAIL_SPOOL=yes</code></pre>
+</p>
+<p>这个数据其实是由 <code>/etc/default/useradd</code> 呼叫出来的，我们可以使用<code>cat</code>查看一下此档案内容：
+    <pre><code>[root@centos-chuan ~]# cat /etc/default/useradd 
+# useradd defaults file
+GROUP=100
+HOME=/home
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel
+CREATE_MAIL_SPOOL=yes</code></pre>
+</p>
+<p>
+    <code class="m-r-md">-g default_group</code>
+    新建账号的初始群组。如上面的<code>GROUP=100</code><br />
+    <small>系统上面 <code>GID</code> 为 100 者即是 <code>users</code> 这个群组，此设定项目指的就是让新设使用
+        组为 <code>users</code> 这一个群组的意思。 但是通过上面的案例我们知道，结果非是如此。这是
+        因为针对群组的角度有两种不同的机制所致， 这两种机制分别是：
+        <ul>
+            <li>私有群组机制：系统会建立一个与账号一样的群组给使用者作为初始群组。<br />
+                这种群组的设定机制会比较有保密性，这是因为使用者有自己的群组，且家目录权限是
+                700 (仅有自己可进入自己的家目录) 之故。这种机制不会使用  <code>GROUP=100</code> 这个
+                设定值。代表性的 distributions 有 RHEL, Fedora, CentOS 等；</li>
+            <li> 公共群组机制：就是以 <code>GROUP=100</code> 这个设定值作为新建账号的初始群组，因此每个账
+                号都属于 <code>users</code> 这个群组， 且默认家目录通常的权限会是<code>drwxr-xr-x ... username users ...</code>，
+                由于每个账号都属于 <code>users</code> 群组，因此大家都可以互相分享家目录内的数据
+                之故。代表 distributions 如 SuSE 等。 </li>
+        </ul> 
+        由于<code>centos</code>使用的是私有群组机制，所以此默认值不生效。<br />
+    </small><br />
+</p>
+<p><code class="m-r-md">-b default_home</code>
+    用户家目录的基准目录(basedir)。如上面的<code>HOME=/home</code>用户的家目录通常是与账号相同的目录，这个目录会
+    放到此值的后面，所以<code>wangyuchuan</code>的家目录就会在<code>/home/wangyuchuan</code>了。<br />
+</p>
+<p>
+    <code class="m-r-md">-e default_expire_date</code>
+    账号失效的日期。如上<code>EXPIRE=</code><br />
+    <small>就是 <code>shadow</code> 内的第八字段，你可以直接设定账号在哪个日期后就直接失效，而不理会密码的问
+题。 通常不会设定此项目，但如果是付费的会员制系统，或许这个字段可以设定</small>
+</p>
+<p>
+    <code class="m-r-md">-f default_inactive</code>
+    帐号过期几日后停权 ，如上<code>INACTIVE=-1</code><br />
+    <small>在 shadow 档案结构当中，第七个字段的设定值将会影响到密码过期后， 在多久时间
+        内还可使用旧密码登录。此参数就是指定此值。  0 代表密码过期立刻失效， 如果
+        是 -1 则是代表密码永远不会失效，如果是数字，如 30 ，则代表过期 30 天后才失效。</small>
+</p>
+
+<p>
+    <code class="m-r-md">-s default_shell</code>
+    默认使用的  <code>shell</code> 程序文件名，如上<code>SHELL=/bin/bash</code>  <br />
+    <small>
+        系统默认的 <code>shell</code> 就写在这里。假如你的系统为 <code>mail server</code> ，你希望每个账号都只能使用 <code>email</code>
+        的收发信件功能， 而不许用户登录系统取得  <code>shell</code> ，那么可以将这里设定为 <code>/sbin/nologin</code> ，如
+        此一来，新建的使用 者默认就无法登录。
+    </small>
+</p>
+
+
+
+<p><strong>3. sample</strong></p>
+<strong>新建用户<code>wangyuchuan</code>，查看其家目录：</strong>
+<pre><code>[root@centos-chuan skel]# useradd -m wangyuchuan
+[root@centos-chuan skel]# ll -d /home/wangyuchuan/
+drwx------. 2 wangyuchuan wangyuchuan 4096 1月  15 14:18 /home/wangyuchuan/</code></pre>
+<p>
+    新建的用户家目录权限为<code>drwx------</code>，请注意这一点.<br />
+    在<code>/etc/passwd, /etc/shadow, /etc/group</code>档案中搜索<code>wangyuchuan</code>账号，查看其信息。
+</p>
+<pre><code>[root@centos-chuan skel]# grep wangyuchuan /etc/passwd /etc/shadow /etc/group
+/etc/passwd:wangyuchuan:x:501:501::/home/wangyuchuan:/bin/bash
+/etc/shadow:wangyuchuan:!!:16815:0:99999:7:::
+/etc/group:wangyuchuan:x:501:</code></pre>
+<p>
+    可以看到，默认情况下会建立一个和用户名完全一样的群组名作为新账号的初始群组。
+</p>
+<p>
+    系统建立账号的过程如下：
+    <ul>
+        <li>在 <code>/etc/passwd</code> 里面建立一行与账号相关的数据，包括建立 <code>UID/GID/</code>家目录等；</li>
+        <li>在 <code>/etc/shadow</code> 里面将此账号的密码相关参数填入，但是尚未有密码；</li>
+        <li>在 <code>/etc/group</code> 里面加入一个与账号名称一模一样的组名；</li>
+        <li>    在 <code>/home</code> 底下建立一个与账号同名的目录作为用  700 </li>
+    </ul>
+</p>
+<strong>指定<code>uid</code>和初始群组建立账号：</strong>
+    <pre><code>[root@centos-chuan skel]# useradd -u 502 -g users demo
+[root@centos-chuan skel]# grep demo /etc/passwd /etc/shadow /etc/group
+/etc/passwd:demo:x:502:100::/home/demo:/bin/bash
+/etc/shadow:demo:!!:16815:0:99999:7:::</code></pre>
+    
+<strong>创建一个系统账号<code>mysql</code>用来运行<code>mysql</code>数据库：</strong>
+    <pre><code>[root@centos-chuan skel]# useradd -r mysql
+[root@centos-chuan skel]# grep mysql /etc/passwd /etc/shadow /etc/group
+/etc/passwd:mysql:x:498:498::/home/mysql:/bin/bash
+/etc/shadow:mysql:!!:16815::::::
+/etc/group:mysql:x:498:</code></pre>
+    
+
+<p><strong>4. 档案</strong></p>
+<ul>
+    <li><a href="" target="_blank"><code>/etc/passwd</code></a> - 使用者帐号资讯</li>
+    <li><a href="" target="_blank"><code>/etc/shadow</code></a>-使用者帐号资讯加密</li>
+    <li><a href="" target="_blank"><code>/etc/group</code></a>-群组资讯</li>
+    <li><a href="" target="_blank"><code>/etc/default/useradd</code></a>-定义资讯</li>
+    <li><a href="" target="_blank"><code>/etc/login.defs</code></a>-系统广义设定</li>
+    <li><a href="" target="_blank"><code>/etc/skel</code></a>-内含定义档的目录</li>
+</ul>
+
+<p><strong>5. SEE ALSO</strong></p>
+chfn(1), chsh(1), groupadd(8), groupdel(8), groupmod(8), passwd(1), userdel(8), usermod(8)
+
+
+
+
+
+

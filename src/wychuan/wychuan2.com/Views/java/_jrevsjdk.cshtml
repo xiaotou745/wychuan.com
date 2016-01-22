@@ -1,0 +1,77 @@
+﻿<strong>1、定义</strong>
+<p>
+    <code>JRE</code>:<code><strong>J</strong>ava <strong>R</strong>untime <strong>E</strong>nvironment</code><br />
+    <code>JDK</code>:<code><strong>J</strong>ava <strong>D</strong>evelopment <strong>K</strong>it</code><br />
+</p>
+<p>
+    <code>JRE(Java Runtime Enviroment)</code>是<code>Java</code>的运行时环境。面向<code>Java</code>程序的使用者，而不是开发者。如果你仅下载并安装了<code>JRE</code>，那么你的系统只能运行<code>Java</code>程序。
+    <code>JRE</code>是运行<code>Java</code>程序所必须环境的集合，包含<code>JVM</code>标准实现及 <code>Java</code>核心类库。它包括<code>Java</code>虚拟机、
+    <code>Java</code>平台核心类和支持文件。它不包含开发工具(编译器、调试器等)。
+</p>
+<p>
+    <code>JDK(Java Development Kit)</code>又称<code>J2SDK(Java2 Software Development Kit)</code>，
+    是<code>Java</code>开发工具包，它提供了<code>Java</code>的开发环境(提供了编译器<code>Javac</code>等工具，
+    用于将<code>java</code>文件编译为<code>class</code>文件)和运行环境(提 供了<code>JVM</code>和<code>Runtime</code>辅助包，用于解析<code>class</code>文件使其得到运行)。
+    如果你下载并安装了<code>JDK</code>，那么你不仅可以开发<code>java</code>程序，也同时拥有了运行<code>java</code>程序的平台。
+    <code>JDK</code>是整个<code>java</code>的核心，包括了<code>java</code>运行环境(<code>JRE</code>)，一堆<code>java</code>工具
+    <code>tools.jar</code>和<code>java</code>标准类库 (<code>rt.jar</code>)。还包含了很多<code>java</code>程序调试和分析的工具：<code>jconsole</code>，<code>jvisualvm</code>等工具软件，
+    还包含了<code>java</code>程序编写所需的文档和<code>demo</code>例子程序。<br />
+    <code>JDK</code>是程序员使用<code>java</code>语言编写<code>java</code>程序所需的开发工具包，是提供给程序员使用的。
+</p>
+<p>
+    简单来说，<code>JRE</code>可以支撑<code>java</code>程序的运行，包括<code>JVM</code>虚拟机（<code>java.exe</code>等）和基本的类库（<code>rt.jar</code>等），
+    <code>JDK</code>可以支持<code>java</code>程序的开发，包括编译器（<code>javac.exe</code>）、开发工具（<code>javadoc.exe、jar.exe、keytool.exe、jconsole.exe</code>）和更多的类库（如<code>tools.jar</code>）等。<br />
+    如果你需要运行<code>java</code>程序，只需安装<code>JRE</code>就可以了。如果你需要编写<code>java</code>程序，需要安装<code>JDK</code>。
+</p>
+
+<p>
+    <img class="img-responsive" src="/img/java/jrevsjdk.jpg" />
+</p>
+
+<strong>2、区别</strong>
+<p>
+    <code>JRE</code>主要包含：<code>java</code>类库的<code>class</code>文件(都在lib目录下打包成了jar)和虚拟机(<code>jvm.dll</code>)；<code>JDK</code>主要包含：<code>java</code>类库
+    的 <code>class</code>文件(都在lib目录下打包成了jar)并自带一个<code>JRE</code>。那么为什么<code>JDK</code>要自带一个<code>JRE</code>呢？
+    而且<code>jdk/jre/bin</code>下的client 和server两个文件夹下都包含<code>jvm.dll</code>(说明<code>JDK</code>自带的<code>JRE</code>有两个虚拟机)。
+</p>
+<p>
+    记得在环境变量path中设置<code>jdk/bin</code>路径吗？老师会告诉大家不设置的话<code>javac</code>和<code>java</code>是用不了的。确实<code>jdk/bin</code>目录下包含了
+    所有的命令。可是有没有人想过我们用的<code>java</code>命令并不是<code>jdk/bin</code>目录下的而是<code>jre/bin</code>目录下的呢？不信可以做一个实验，
+    大家可以把<code>jdk/bin</code>目录下的<code>java.exe</code>剪切到别的地方再运行<code>java</code>程序，发现了什么？一切OK！(<code>JRE</code>中没有
+    <code>javac</code>命令，原因很简单，它不是开发环境)那么有人会问了？我明明没有设置<code>jre/bin</code>目录到环境变量中啊？试想一下如果<code>java</code>
+    为了提供给大多数人使用，他们是不需要jdk做开发的，只需要<code>jre</code>能让<code>java</code>程序跑起来就可以了，那么每个客户还需要手动去
+    设置环境变量多麻烦啊？所以安装<code>jre</code>的时候安装程序自动帮你把<code>jre</code>的<code>java.exe</code>添加到了系统变量中，验证的方法很简单，
+    去<code>Windows/system32</code>下面去看看吧，发现了什么？有一个<code>java.exe</code>。
+</p>
+<strong>3、难点</strong>
+<p>
+    如果安装了<code>JDK</code>，会发现你的电脑有两套<code>JRE</code>，一套位于<code>C:\Program Files\Java\jre6</code>， 另外一套位于 <code>C:\Program Files\Java\jdk1.6.0_41\jre</code>目录下。
+    <code>JRE</code>的地位就象一台PC机一样，我们写好的Win32应用程序需要操作系统帮我们运行，同样的，我们编写的<code>Java</code>程序也必须要<code>JRE</code>才能运行。所以当你装完<code>JDK</code>后，
+    如果分别在硬盘上的两个不同地方安装了两套<code>JRE</code>，那么你可以想象你的电脑有两台虚拟的Java
+    PC机，都具有运行<code>Java</code>程序的功能。所以我们可以说，只要你的电脑安装了<code>JRE</code>，就可以正确运行<code>Java</code>应用程序。
+</p>
+<ul>
+    <li>为什么Sun要让<code>JDK</code>安装两套相同的<code>JRE</code>？
+        <p>这是因为<code>JDK</code>里面有很多用<code>Java</code>所编写的开发工具，如<code>javac.exe、jar.exe</code>等，这些命令放置在 <code>C:\Program Files\Java\jdk1.6.0_41\bin</code>目录里。
+    因为他们是<code>java</code>编写的命令，所以要依靠<code>java</code>的jar包，这些jar包存放在<code>C:\Program Files\Java\jdk1.6.0_41\lib</code>目录里
+            如果将<code>C:\Program Files\Java\jdk1.6.0_41\lib\</code>目录里面的<code>tools.jar</code>改名为<code>tools1.jar</code>，然后运行<code>javac.exe</code>，显示如下结果：<br />
+            <code>Exception in thread "main" java.lang.NoClassDefFoundError: com/sun/tools/javac /Main</code><br />
+            但是输入 <code>java -cp C:\Program Files\Java\jdk1.6.0_41\lib\tools1.jar com.sun.tools.javac.Main</code><br />
+    会得到与<code>javac.exe</code>相同的结果。
+    从这里我们可以证明<code>javac.exe</code>只是一个包装器（Wrapper），而制作的目的是为了让开发者免于输入太长的指命。
+            而且我们可以发现<code>C:\Program Files\Java\jdk1.6.0_41\bin</code>目录下的程序都很小，不大于29K，从这里我们可以得出一个结论。
+            就是<code>JDK</code>里的工具几乎是用<code>Java</code>所编写，所以也是<code>Java</code>应用程序，因此要使用<code>JDK</code>所
+            附的工具来开发<code>Java</code>程序，也必须要自行附一套<code>JRE</code>才行，所以位于<code>C:\Program Files\Java\jdk1.6.0_41\jre</code>
+        目录下的那套<code>JRE</code>就是用来运行一般<code>Java</code>程序用的。</p>
+    </li>
+    <li>如果一台电脑安装两套以上的<code>JRE</code>，谁来决定呢？
+        <p>这个重大任务就落在<code>java.exe</code>身上。<code>java.exe</code>的工作就是找到合适的<code>JRE</code>来运行Java程序。
+            <code>java.exe</code>依照底下的顺序来查找<code>JRE</code>：<br />
+            <ol>
+                <li>自己的目录下有没有<code>JRE</code>；</li>
+                <li>父目录有没有<code>JRE</code>；</li>
+                <li>查询注册表：<code>HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment</code></li>
+            </ol>
+    所以<code>java.exe</code>的运行结果与你的电脑里面哪个<code>JRE</code>被执行有很大的关系。</p>
+    </li>
+</ul>
